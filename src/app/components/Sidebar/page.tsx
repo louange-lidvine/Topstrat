@@ -15,7 +15,7 @@ function Sidebar() {
   }
   
   return (
-      <body className="flex items-center">
+      <div className="flex items-center">
           <div className="flex h-screen text-white">
               <div className="flex-shrink-0 w-64 bg-blue-default m-4 rounded-md">
                 <div className="user-part h-56">
@@ -43,7 +43,7 @@ function Sidebar() {
             
           </div>
          
-      </body>
+      </div>
   );
 }
 
