@@ -46,9 +46,9 @@ const page: React.FC = () => {
          <div className="input flex justify-center">
          <input type="text" placeholder='untitled' className='border m-4 py-2 outline-none px-10 text-center rounded-md ' />
         </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }} className=''>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }} className="w-[600px] py-20 px-10 mt-6 bg-white ">
         {objects.map((object, index) => (
-          <div key={index} onClick={() => handleObjectClick(object)} className='px-6 ml-8 my-6 x-8 border w-96 rounded-md pt-2 pb-6'>
+          <div key={index} onClick={() => handleObjectClick(object)} className='px-6 my-6 x-8 border w-96 rounded-md pt-2 pb-6'>
             <input type="radio" name="check" id="check" />
             <h2 className='ml-4 font-bold text-blue-default text-center'>{object.name}</h2> 
             <h2 className='font-md'>{object.desc}</h2>
