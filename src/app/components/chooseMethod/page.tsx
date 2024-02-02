@@ -3,9 +3,9 @@ import React from 'react'
 
 function Choose() {
   return (
-      <div className='w-56 bg-white border-blue-default border-2 text-black m-2'>
+      <div className='w-56 bg-white border-2 border-blue-default text-black m-4'>
         <div className='ml-6 pt-2'>
-          <h1 className='font-bold'>Choose method</h1>
+          <h1 className='font-bold text-md'>Choose method</h1>
         <div className='flex my-4'>
         <input type="radio" name="quick method" id="" />
        <h2 className='text-sm ml-2'>Quick method</h2>  

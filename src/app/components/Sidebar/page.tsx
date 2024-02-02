@@ -5,8 +5,6 @@ import Profile from "../profile/page";
 import { FaPlus } from "react-icons/fa";
 import Choose from "../chooseMethod/page";
 
-
-
 function Sidebar() {
   const [chooseVisible,setChooseVisible]=useState(false)
 

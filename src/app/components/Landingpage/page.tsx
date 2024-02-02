@@ -26,9 +26,17 @@ project and provide clear objectives'/>
  <Prompt content='Generate a strategic plan for a rabbit rearing
 project and provide clear objectives'/>
         </div>
+<<<<<<< Updated upstream
         <div className="input flex ml-6">
          <input type="text" placeholder='untitled' className='border m-4 py-2 outline-none w-[800px] px-8 rounded-md ' />
          <button type='submit' className=''>Generate</button>
+=======
+        <div className="input flex justify-between ml-6 w-[800px] border  m-4 py-3 px-6 rounded-md space-x-5 ">
+        
+         <div> <input type="text" placeholder='Add a short description' className='outline-none bg-transparent w-[700px]' /></div>
+         <div>     <button type='submit' className='text-blue-default font-bold'>Generate</button></div>
+    
+>>>>>>> Stashed changes
         </div>
 
         </div>
