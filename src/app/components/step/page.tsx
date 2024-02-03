@@ -63,7 +63,7 @@ const page: React.FC = () => {
          <input type="text" placeholder='Add a short description' className='outline-none bg-transparent w-[700px]' />
          <button type='submit' className='text-blue-default font-bold'>Generate</button>
         </div>
-
+        
       <ReactModal isOpen={isModalOpen}
        onRequestClose={handleCloseModal}
        className="w-[600px]  p-10 mt-20 bg-white shadow-lg ml-[350px]"
