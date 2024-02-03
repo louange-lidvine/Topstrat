@@ -17,6 +17,8 @@ function Sidebar() {
   
   return (
       <div className=" items-center   overflow-hidden fixed">
+
+      <body className="flex items-center   overflow-hidden fixed">
           <div className="flex h-screen text-white  fixed">
               <div className="flex-shrink-0 w-64 bg-blue-default m-4 rounded-md">
                   <div className="user-part h-56">
@@ -25,7 +27,10 @@ function Sidebar() {
                   <hr className="w-56 ml-3" />
                   <div className="lower-part">
                       <div className="projects">
+
                           <div className="title grid grid-cols-2 space-x-16 h-48">
+
+                          <div className="title grid grid-cols-2 space-x-16 h-56">
                               <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
                                   Projects
                               </h1>
@@ -42,6 +47,9 @@ function Sidebar() {
               </div>
           </div>
       </div>
+
+      </body>
+
   );
 }
 
