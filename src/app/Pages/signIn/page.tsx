@@ -6,14 +6,14 @@ import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
 
 function Page() {
     return (
-        <div className="min-h-screen flex items-center px-32">
+        <div className="min-h-screen flex items-center px-10 md:px-16  lg:px-32">
             <Image
                 src={Background}
                 className="w-full h-full fixed left-0 top-0 -z-10"
                 alt="background-img"
             />
-            <div className="flex flex-row justify-around w-[100%]">
-                <div className="w-[60%] flex items-center">
+            <div className="flex flex-col items-center  lg:flex-row  w-[100%]">
+                <div className="w-[60%] lg:flex items-center hidden ">
                     <Image
                         src={Graphics}
                         alt="graphics-image"
@@ -22,7 +22,7 @@ function Page() {
                     />
                 </div>
 
-                <div className="max-w-md p-4 rounded w-[40%] flex flex-col justify-center">
+                <div className="max-w-md p-4 rounded w-full  lg:w-[40%] flex flex-col justify-center">
                     <h1 className="text-2xl font-bold mb-4">
                         Create an account
                     </h1>
