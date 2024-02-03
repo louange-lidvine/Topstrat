@@ -1,3 +1,4 @@
+
 "use client"
 import React, { useState } from 'react';
 import {FaArrowRight} from 'react-icons/fa'
@@ -77,3 +78,13 @@ const page: React.FC = () => {
 
 export default page;
 
+=======
+import React from 'react'
+
+function page() {
+  return (
+    <div>this the homepage</div>
+  )
+}
+
+export default page
