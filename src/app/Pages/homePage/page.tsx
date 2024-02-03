@@ -43,16 +43,16 @@ function Page() {
                 </div>
             </nav>
 
-            <div className="flex w-[100%] justify-between p-9">
+            <div className="flex flex-col  md:flex-row w-[100%] justify-between p-9">
                 {/* Your content goes here */}
                 <Image
                     src={Office}
                     alt="Office"
                     width={500}
                     height={300}
-                    className="w-1/2"
+                    className="md:w-1/2"
                 />
-                <div className="flex flex-col gap-12  w-1/2 justify-center items-center">
+                <div className="flex flex-col gap-12  md:w-1/2 justify-center items-center">
                     <div className="text-blue-default  text-6xl  font-bold ">
                         <h1>Strategic </h1>
                         <h1>planning</h1>
