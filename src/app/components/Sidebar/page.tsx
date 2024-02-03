@@ -17,8 +17,6 @@ function Sidebar() {
   
   return (
       <div className=" items-center   overflow-hidden fixed">
-
-      <body className="flex items-center   overflow-hidden fixed">
           <div className="flex h-screen text-white  fixed">
               <div className="flex-shrink-0 w-64 bg-blue-default m-4 rounded-md">
                   <div className="user-part h-56">
@@ -47,8 +45,6 @@ function Sidebar() {
               </div>
           </div>
       </div>
-
-      </body>
 
   );
 }
