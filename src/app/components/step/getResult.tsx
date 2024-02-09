@@ -73,7 +73,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title }) => {
       ) : (
         <ul>
           {prompts.map((prompt, index) => (
-            <li key={index} onClick={() => handlePromptClick(prompt)} style={{ cursor: 'pointer' }} className='w-100 border h-20 m-5 rounded-md'>
+            <li key={index} onClick={() => handlePromptClick(prompt)} style={{ cursor: 'pointer' }} className='lg:w-100 border lg:h-20 m-5 rounded-md'>
               {`${prompt.slice(0, 70)}...`}
             </li>
           ))}

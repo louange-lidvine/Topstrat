@@ -22,7 +22,7 @@ function Sidebar() {
     <div className="fixed top-0 left-0 h-screen w-full overflow-hidden">
       <div className="lg:hidden fixed top-0 left-0 w-full bg-blue-default text-white">
         <div className="flex justify-between items-center px-4 py-2">
-          <h1 className="text-xl font-bold">Menu</h1>
+          <h1 className="text-xl font-bold">Topstrat</h1>
           <BiMenu className="text-2xl" onClick={toggleMenu} />
         </div>
         {menuVisible && (

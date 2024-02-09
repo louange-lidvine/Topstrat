@@ -134,12 +134,12 @@ const page: React.FC = () => {
   };
 
   return (
-    <div className='border my-4 rounded-md mx-2 w-[1150px] absolute top-[-1px] left-[320px]'>
+    <div className='border lg:mt-4 mt-10 my-4 rounded-md mx-2 lg:w-[1150px] lg:absolute lg:top-[-1px] lg:left-[320px]'>
          <div className="input flex justify-center">
-         <input type="text" placeholder='untitled' className='border m-4 py-2 outline-none px-10 text-center rounded-md ' />
+         <input type="text" placeholder='untitled' className='border m-4 py-2 outline-none lg:px-10 text-center rounded-md ' />
         </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }} className="w-[1100px] py-20 px-20 mt-6 ml-10 bg-white ">
-        {objects.map((object, index) => (
+        <div className="lg:w-[1100px] grid lg:grid-cols-2 grid-cols-1 gap-4 py-20 lg:px-20 lg:mt-6 lg:ml-10 bg-white">
+          {objects.map((object, index) => (
           <div key={index} onClick={() => handleObjectClick(object)} className='px-6 my-6 x-8 border w-100 text-lg rounded-md pt-2 pb-6'>
             <input type="radio" name="check" id="check" />
             <h2 className='ml-4 font-bold text-blue-default text-center'>{object.name}</h2> 
@@ -150,10 +150,10 @@ const page: React.FC = () => {
           </div>
         ))}
       </div>
-      <div className="input flex justify-between ml-24 w-[960px] border  m-4 py-3 px-6 rounded-md space-x-5 ">
+      <div className="input flex justify-between lg:ml-24 lg:w-[960px] border  m-4 py-3 px-6 rounded-md space-x-5 ">
         
          <div> 
-          <input type="text" placeholder='Add a short description' className='outline-none bg-transparent w-[600px]' /></div>
+          <input type="text" placeholder='Add a short description' className='outline-none bg-transparent lg:w-[600px]' /></div>
          <div>     
           <button type='submit' className='text-blue-default font-bold'>Generate</button></div>
     
@@ -161,10 +161,10 @@ const page: React.FC = () => {
         
       <ReactModal isOpen={isModalOpen}
        onRequestClose={handleCloseModal}
-       className="w-[600px]  p-10 mt-20 bg-white shadow-lg ml-[500px]"
+       className="w-[600px]  p-10 mt-20 bg-white shadow-lg lg:ml-[500px]"
       >
         {selectedObject && <Step title={selectedObject.name}  desc={selectedObject.component}/>}
-        <div className="input flex space-x-44 w-[500px] border  my-4 py-3 px-6 rounded-md ">
+        <div className="input flex lg:space-x-44 lg:w-[500px] border  my-4 py-3 px-6 rounded-md ">
          <input type="text" placeholder='Add a short description' className='outline-none bg-transparent w-[300px]' />
          <button type='submit' className='text-blue-default font-bold' onClick={handleButtonClick}>Generate</button>
         </div>
@@ -174,7 +174,7 @@ const page: React.FC = () => {
 
     <ReactModal isOpen={isSecModalOpen}
     onRequestClose={handleCloseModal}
-    className="w-[600px]  px-10 py-20 mt-20 bg-white shadow-lg ml-[500px]">
+    className="w-[600px]  px-10 py-20 mt-20 bg-white shadow-lg lg:ml-[500px]">
     {selectedObject && <PromptGet title={selectedObject.name} />}
     <div className="buttons flex space-x-5 float-end">
       <button type="submit" className='bg-[#0F872F] py-2 px-4 rounded-md'>Save</button>
