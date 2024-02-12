@@ -26,11 +26,11 @@ function Payment() {
         className="w-full h-full fixed left-0 top-0 -z-10"
         alt="background-img"
       />
-      <div className="flex w-full my-6">
+      <div className="lg:flex w-full my-6">
         <div className="pic w-[50%]">
           <Image
             src={payPic}
-            className="w-[600px] h-[700px] pt-32 ml-16"
+            className="hidden lg:block lg:w-[600px] lg:h-[700px] lg:pt-32 lg:ml-16"
 
             alt="background-img"
           />
@@ -51,7 +51,7 @@ function Payment() {
 
           <div className="packages">
             <h1 className='text-xl font-bold'>Choose an appropriate package</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10">
               <Package title="Topstrat Free" />
               <Package title="Topstrat Pro" />
               <Package title="Topstrat Plus" />

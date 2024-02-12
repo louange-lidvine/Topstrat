@@ -196,9 +196,14 @@ function Payment() {
                                 </span>
                             </div>
                         </div>
+                       
                         <div className="bg-gray-300  w-full  text-center py-5">
+                           <Link href='/Pages/ChoosePayment'>
                             Back to subscription Packages
+                        </Link>
                         </div>
+                      
+                        
                     </div>
                     <div className="flex flex-col  px-48 gap-5 border  border-gray-400 rounded-md items-center justify-center  lg: w-[30%] py-20  lg:px-16 ">
                         <h2 className="font-bold">Your payment details</h2>
@@ -255,7 +260,7 @@ function Payment() {
                 </div>
                 <div className="bg-blue-default text-white font-bold px-6 py-2 absolute right-2 bottom-2 rounded-md">
                     {/* Your content goes here */}
-                    <Link href="../../components/step/page.tsx">
+                    <Link href="../../components/step">
                         Continue
                     </Link>
                 </div>
