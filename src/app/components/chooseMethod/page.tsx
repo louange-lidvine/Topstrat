@@ -30,28 +30,39 @@
 
 
 import React, { useState } from 'react';
-import { Popover, TextInput, Button } from '@mantine/core';
+import { Popover, TextInput, Button, Group } from '@mantine/core';
 import { FaPlus } from "react-icons/fa";
+import { Radio } from '@mantine/core';
 
 function Choose() {
   const [opened, setOpened] = useState(false);
   return (
     <Popover 
     width={250}
-   opened position="bottom-start" 
+    opened position="bottom-start" 
     withArrow arrowPosition="side" 
     arrowOffset={115} 
     arrowSize={18} 
-    clickOutsideEvents={['mouseup', 'touchend']}
-    // opened={opened} 
+    // clickOutsideEvents={['mouseup', 'touchend']}
+    // opened={opened}
+    // onClose={() => setOpened(false)}
     onChange={setOpened}
     >
       <Popover.Target>
           <FaPlus className="mt-4" />
        </Popover.Target>
       <Popover.Dropdown className='ml-32 mt-[300px]'>
-        <TextInput label="Name" placeholder="Name" size="xs" />
-        <TextInput label="Email" placeholder="john@doe.com" size="xs" mt="xs" />
+      <Radio.Group
+      name="favoriteFramework"
+      label="Choose method"
+      className=''
+      withAsterisk
+    >
+      <Group my="lg">
+        <Radio value="quick" label="Quick generation" />
+        <Radio value="step" label="Step by step" />
+      </Group>
+    </Radio.Group>
       </Popover.Dropdown>
     </Popover>
   );
