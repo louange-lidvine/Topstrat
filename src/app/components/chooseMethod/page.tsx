@@ -12,7 +12,7 @@ function Choose() {
         </div>
      
      <div className='flex my-4'>
-       <input type="radio" name="step" id="" />
+       <input type="radio" name="step" id="" /> 
        <h2 className='ml-2 text-sm'>Step by Step </h2> 
      </div>
       <button type="submit" className='bg-orange-default text-sm px-3 py-1 mr-5 mb-2 float-right rounded-md'>

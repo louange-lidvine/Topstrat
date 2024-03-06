@@ -50,6 +50,15 @@ function Sidebar() {
                 {chooseVisible && <Choose />}
               </div>
             </div>
+
+
+
+
+
+
+
+
+            
             <h2 className="mt-2 ml-10 font-bold">Dashboard</h2>
             <h2 className="mt-2 ml-10 font-bold">Settings</h2>
             <h2 className="mt-2 ml-10 font-bold">Logout</h2>
