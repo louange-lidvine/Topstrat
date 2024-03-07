@@ -37,15 +37,16 @@ import { Radio } from '@mantine/core';
 function Choose() {
   const [opened, setOpened] = useState(false);
   return (
+    
     <Popover 
     width={250}
-    opened position="bottom-start" 
+    // opened position="bottom-start" 
     withArrow arrowPosition="side" 
     arrowOffset={115} 
     arrowSize={18} 
     // clickOutsideEvents={['mouseup', 'touchend']}
     // opened={opened}
-    // onClose={() => setOpened(false)}
+    onClose={() => setOpened(false)}
     onChange={setOpened}
     >
       <Popover.Target>
