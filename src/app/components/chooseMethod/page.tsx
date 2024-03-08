@@ -33,8 +33,20 @@ import React, { useState } from 'react';
 import { Popover, TextInput, Button, Group } from '@mantine/core';
 import { FaPlus } from "react-icons/fa";
 import { Radio } from '@mantine/core';
+import { useRouter } from 'next/navigation';
+
 
 function Choose() {
+  const router = useRouter();
+
+  const handleRadioChange = (value: string) => {
+    if (value === 'quick') {
+      router.push('/components/Landingpage'); 
+    } else if (value === 'step') {
+      // Redirect to the step page
+      router.push('/components/step'); 
+    }
+  };
   const [opened, setOpened] = useState(false);
   return (
     
@@ -56,8 +68,9 @@ function Choose() {
       <Radio.Group
       name="favoriteFramework"
       label="Choose method"
-      className=''
       withAsterisk
+      onChange={handleRadioChange}
+
     >
       <Group my="lg">
         <Radio value="quick" label="Quick generation" />
