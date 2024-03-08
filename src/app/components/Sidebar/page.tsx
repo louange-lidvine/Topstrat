@@ -39,7 +39,7 @@ function Sidebar() {
                 <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
                   Projects
                 </h1>
-                <Choose/>
+                <Choose />
               </div>
             </div>
 

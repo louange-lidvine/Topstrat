@@ -34,6 +34,7 @@ import { Popover, TextInput, Button, Group } from '@mantine/core';
 import { FaPlus } from "react-icons/fa";
 import { Radio } from '@mantine/core';
 import { useRouter } from 'next/navigation';
+import '@mantine/core/styles/Popover.css';
 
 
 function Choose() {
@@ -49,9 +50,8 @@ function Choose() {
   };
   const [opened, setOpened] = useState(false);
   return (
-    
     <Popover 
-    width={250}
+      width={250}
     // opened position="bottom-start" 
     withArrow arrowPosition="side" 
     arrowOffset={115} 

@@ -14,7 +14,8 @@ function page() {
     <div className=' flex lg:w-[1150px] lg:mt-0 mt-10 lg:absolute lg:top-[-1px] lg:left-[320px]'>
       <Image  src={Background} className="w-full h-full fixed left-0 top-0 -z-10" alt="background-img"/>
        <div className=''>
-        <div className='border my-4 rounded-md mx-2 lg:w-[1150px] opacity-25 float-right'>
+        {/* opacity of 25 */}
+        <div className='border my-4 rounded-md mx-2 lg:w-[1150px]  float-right'>
         <div className="input flex justify-center">
          <input type="text"className='border m-4 py-2 outline-none lg:px-10 text-center rounded-md 'value={title} onChange={handleInputChange} />
         </div>
