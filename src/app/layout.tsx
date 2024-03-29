@@ -1,6 +1,7 @@
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import '@mantine/core/styles.css';
 import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -12,7 +13,9 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+
   return (
+  
     <html lang="en">
       <head>
       <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
@@ -24,9 +27,11 @@ export default function RootLayout({
         fontFamily:"poppins,sans-serif"
       }}>{children}</body>
     </html>
+   
   );
 
     return (
+        <MantineProvider>
         <html lang="en">
             <head>
                 <link
@@ -48,6 +53,8 @@ export default function RootLayout({
                 {children}
             </body>
         </html>
+        </MantineProvider>
     );
 
 }
+

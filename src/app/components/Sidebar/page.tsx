@@ -27,7 +27,7 @@ function Sidebar() {
         )}
       </div>
 
-      <div className="hidden lg:flex flex-col h-[710px] text-white w-72 bg-blue-default m-4 rounded-md">
+      <div className="hidden lg:flex flex-col h-[710px] lg:bg-fixed text-white w-72 bg-blue-default m-4 rounded-md">
         <div className="user-part h-56">
           <Profile pic={user} name="Lauren Spencer" />
         </div>
@@ -39,7 +39,7 @@ function Sidebar() {
                 <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
                   Projects
                 </h1>
-                <Choose />
+                <Choose/>
               </div>
             </div>
 

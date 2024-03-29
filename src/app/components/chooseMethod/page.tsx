@@ -30,7 +30,7 @@
 
 
 import React, { useState } from 'react';
-import { Popover, TextInput, Button, Group } from '@mantine/core';
+import { Popover, Group } from '@mantine/core';
 import { FaPlus } from "react-icons/fa";
 import { Radio } from '@mantine/core';
 import { useRouter } from 'next/navigation';
@@ -82,3 +82,5 @@ function Choose() {
   );
 }
 export default Choose
+
+
