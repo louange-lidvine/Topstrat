@@ -23,7 +23,7 @@ function page() {
           <h1 className='text-3xl my-40 font-bold text-center text-blue-default'>Strategic plan</h1>
         </div>
         <div className='prompt grid lg:grid-cols-2 grid-cols-1'>
-        <Prompt content='Generate a strategic plan for a rabbit rearing
+<Prompt content='Generate a strategic plan for a rabbit rearing
 project and provide clear objectives'/>
  <Prompt content='Generate a strategic plan for a rabbit rearing
 project and provide clear objectives'/>
