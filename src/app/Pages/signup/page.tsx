@@ -3,6 +3,7 @@ import Image from "next/image";
 import Google from "../../../../public/assets/Google.png";
 import Background from "../../../../public/assets/bg.png";
 import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
+import Link from "next/link";
 
 function Page() {
     return (
@@ -104,9 +105,12 @@ function Page() {
                         <div className="flex-row">
                             <p>
                                 Already have an account?{" "}
-                                <span className="text-blue-default  ">
+                                <Link href='Pages/signIn'>
+                                   <span className="text-blue-default  ">
                                     Sign in
                                 </span>
+                                </Link>
+                             
                             </p>
                         </div>
                     </form>
