@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import Image from "next/image";
+import GoogleButton from "@/app/constants/(auth)/googleButton";
 import Google from "../../../../public/assets/Google.png";
 import Background from "../../../../public/assets/bg.png";
 import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
@@ -9,14 +10,12 @@ import axios from "axios";
 import { GoogleLogin } from "react-google-login";
 
 function Page() {
-    const responseGoogle = (response:any) => {
-        console.log(response);
-   response.redirect('/Components/landingPage');
+    const handleGoogleSuccess = (response: any) => {
+     response.redirect('/Components/LandingPage')
     };
 
-    const errorGoogle = (error:any) => {
-        console.error(error);
-      console.log(error);
+    const handleGoogleFailure = (error: any) => {
+        // Handle Google sign-up failure
     };
 
     const [formData, setFormData] = useState({
@@ -150,7 +149,7 @@ function Page() {
                         <div className="flex-grow border-t border-gray-400"></div>
                     </div>
 
-                    <div className="flex  p-4 border border-black rounded-md items-center justify-center text-center">
+                    {/* <div className="flex  p-4 border border-black rounded-md items-center justify-center text-center">
                             <Image
                                 src={Google}
                                 alt="Google"
@@ -158,7 +157,8 @@ function Page() {
                                 height={20}
                             />
                             <div >Sign up with Google</div>
-                        </div>
+                        </div> */}
+                          <GoogleButton onSuccess={handleGoogleSuccess} onFailure={handleGoogleFailure} />
 
                     <div className="flex-row">
                         <p>

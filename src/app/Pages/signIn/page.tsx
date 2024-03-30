@@ -1,11 +1,20 @@
 import React from "react";
 import Image from "next/image";
 import Google from "../../../../public/assets/Google.png";
+import GoogleButton from "@/app/constants/(auth)/googleButton";
 import Background from "../../../../public/assets/bg.png";
 import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
 import Link from "next/link";
 
 function Page() {
+    const handleGoogleSuccess = (response: any) => {
+        response.redirect('/Components/LandingPage');
+    };
+
+    const handleGoogleFailure = (error: any) => {
+        // Handle Google sign-up failure
+    };
+
     return (
         <div className="min-h-screen flex items-center px-10 md:px-16  lg:px-32">
             <Image
@@ -73,7 +82,7 @@ function Page() {
                             <span>Remember me</span>
                             <span>Forgot Password?</span>
                         </div>
-
+{/* 
                         <div className="flex  p-4 border border-black rounded-md items-center justify-center text-center">
                             <Image
                                 src={Google}
@@ -82,7 +91,11 @@ function Page() {
                                 height={20}
                             />
                             <div >Sign up with Google</div>
-                        </div>
+                        </div> */}
+            
+            
+            <GoogleButton onSuccess={handleGoogleSuccess} onFailure={handleGoogleFailure} />
+
 
                         <div className="flex-row">
                             <p>
