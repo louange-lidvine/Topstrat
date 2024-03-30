@@ -37,7 +37,7 @@ function Choose() {
       <Popover.Dropdown className="ml-32 mt-[300px]" style={{ position: 'fixed' }}>
       <Radio.Group
       name="favoriteFramework"
-      label="Choose method"
+      label="Choose method" 
       withAsterisk
       onChange={handleRadioChange}
 
