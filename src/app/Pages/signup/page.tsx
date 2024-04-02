@@ -2,12 +2,10 @@
     import React, { useState } from "react";
     import Image from "next/image";
     import GoogleButton from "@/app/constants/(auth)/googleButton";
-    import Google from "../../../../public/assets/Google.png";
     import Background from "../../../../public/assets/bg.png";
     import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
     import Link from "next/link";
     import axios from "axios";
-    import { GoogleLogin } from "react-google-login";
 
     function Page() {
         const handleGoogleSuccess = (response: any) => {
@@ -28,18 +26,6 @@
         const handleChange = (e:any) => {
             setFormData({ ...formData, [e.target.name]: e.target.value });
         };
-
-        // const handleSubmit = async (e:any) => {
-        //     e.preventDefault();
-        //     try {
-        //         const response = await axios.post("https://topstrat-backend.onrender.com/auth/signup", formData)
-        //         console.log(response.data);
-            
-        //     } catch (error) {
-        //         console.error("Error:", error);
-        //         // Handle error
-        //     }
-        // };
 
         const handleSubmit = async (e: any) => {
             e.preventDefault();
@@ -198,3 +184,6 @@
     }
 
     export default Page;
+
+
+  

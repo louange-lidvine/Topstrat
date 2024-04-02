@@ -1,7 +1,6 @@
 "use client"
 import React,{useState} from "react";
 import Image from "next/image";
-import Google from "../../../../public/assets/Google.png";
 import GoogleButton from "@/app/constants/(auth)/googleButton";
 import Background from "../../../../public/assets/bg.png";
 import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
@@ -26,7 +25,6 @@ function Page() {
             // Redirect or perform any action after successful login
         } catch (error) {
             console.error("Login error:", error);
-            // Handle login error
         }
     };
     const handleGoogleSuccess = (response: any) => {
@@ -127,3 +125,4 @@ function Page() {
 }
 
 export default Page;
+

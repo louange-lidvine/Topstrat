@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { Popover, Group } from '@mantine/core';
 import { FaPlus } from "react-icons/fa";
