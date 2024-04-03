@@ -8,11 +8,11 @@
     import axios from "axios";
 
     function Page() {
-        const handleGoogleSuccess = (response: any) => {
+        const handleSuccess = (response: any) => {
         response.redirect('/Components/LandingPage')
         };
 
-        const handleGoogleFailure = (error: any) => {
+        const handleError = (error: any) => {
             // Handle Google sign-up failure
         };
 
@@ -163,8 +163,11 @@
                                 />
                                 <div >Sign up with Google</div>
                             </div> */}
-                            <GoogleButton onSuccess={handleGoogleSuccess} onFailure={handleGoogleFailure} />
-
+                            <GoogleButton onSuccess={function (credentialResponse: any): void {
+                                throw new Error("Function not implemented.");
+                            } } onError={function (): void {
+                                throw new Error("Function not implemented.");
+                            } }  />
                         <div className="flex-row">
                             <p>
                                 Already have an account?{" "}

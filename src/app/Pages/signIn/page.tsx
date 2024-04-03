@@ -27,11 +27,11 @@ function Page() {
             console.error("Login error:", error);
         }
     };
-    const handleGoogleSuccess = (response: any) => {
+    const handleSuccess = (response: any) => {
         console.log("Google login success:", response);  
     };
 
-    const handleGoogleFailure = (error: any) => {
+    const handleError = (error: any) => {
         // Handle Google sign-up failure
         console.error("Google login error:", error);
     };
@@ -105,7 +105,11 @@ function Page() {
                         <span>Forgot Password?</span>
                     </div>
 
-                    <GoogleButton onSuccess={handleGoogleSuccess} onFailure={handleGoogleFailure}   />
+                    <GoogleButton onSuccess={function (credentialResponse: any): void {
+                            throw new Error("Function not implemented.");
+                        } } onError={function (): void {
+                            throw new Error("Function not implemented.");
+                        } }  />
 
                     <div className="flex-row">
                         <p>
