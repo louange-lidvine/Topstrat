@@ -13,11 +13,6 @@ const Step: React.FC<StepProps> = ({ title, desc: DescComponent }) => {
       <div className='my-5'>
         <DescComponent />
       </div>
-      <div className="input flex space-x-44 w-[500px] border  my-4 py-3 px-6 rounded-md ">
-         <input type="text" placeholder='Add a short description' className='outline-none bg-transparent w-[300px]' />
-         <button type='submit' className='text-blue-default font-bold'>Generate</button>
-        </div>
-    
      </div>
   );
 };

@@ -1,12 +1,52 @@
-import React from "react";
-import Image from "next/image";
-import Google from "../../../../public/assets/Google.png";
-import Background from "../../../../public/assets/bg.png";
-import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
+    "use client"
+    import React, { useState } from "react";
+    import Image from "next/image";
+    import GoogleButton from "@/app/constants/(auth)/googleButton";
+    import Background from "../../../../public/assets/bg.png";
+    import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
+    import Link from "next/link";
+    import axios from "axios";
 
-function Page() {
-    return (
-        <div className="min-h-screen flex items-center px-16 lg:px-32 ">
+    function Page() {
+        const handleGoogleSuccess = (response: any) => {
+        response.redirect('/Components/LandingPage')
+        };
+
+        const handleGoogleFailure = (error: any) => {
+            // Handle Google sign-up failure
+        };
+
+        const [formData, setFormData] = useState({
+            firstname: "",
+            lastname:"",
+            email: "",
+            password: "",
+        });
+
+        const handleChange = (e:any) => {
+            setFormData({ ...formData, [e.target.name]: e.target.value });
+        };
+
+        const handleSubmit = async (e: any) => {
+            e.preventDefault();
+            try {
+                const response = await axios.post("https://topstrat-backend.onrender.com/auth/signup", formData, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log(response.data);
+                // Handle successful response
+            } catch (error) {
+                console.error("Error:", error);
+                // Handle error
+            }
+        };
+        
+        
+        return (
+            <div className="min-h-screen flex items-center px-16 lg:px-32 ">
             <Image
                 src={Background}
                 className="w-full h-full fixed left-0 top-0 -z-10"
@@ -26,15 +66,32 @@ function Page() {
                     <h1 className="text-2xl font-bold mb-4">
                         Create an account
                     </h1>
-                    <form className="flex flex-col space-y-4">
+                    <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
                         <div className="flex flex-col">
-                            <label htmlFor="fullName" className="mb-1">
-                                Full Name:
+                            <label htmlFor="firstname" className="mb-1">
+                                First Name:
                             </label>
                             <input
                                 type="text"
-                                id="fullName"
-                                name="fullName"
+                                id="firstname"
+                                name="firstname"
+                                value={formData.firstname}
+                                onChange={handleChange}
+                                className="border border-black p-3 rounded-md placeholder-transparent bg-opacity-0"
+                                required
+                            />
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="lastname" className="mb-1">
+                                Last Name:
+                            </label>
+                            <input
+                                type="text"
+                                id="lastname"
+                                name="lastname"
+                                value={formData.lastname}
+                                onChange={handleChange}
                                 className="border border-black p-3 rounded-md placeholder-transparent bg-opacity-0"
                                 required
                             />
@@ -48,12 +105,14 @@ function Page() {
                                 type="email"
                                 id="email"
                                 name="email"
+                                value={formData.email}
+                                onChange={handleChange}
                                 className="border p-3 order-black rounded-md placeholder-transparent bg-opacity-0 border-black"
                                 required
                             />
                         </div>
 
-                        <div className="flex flex-col">
+                        {/* <div className="flex flex-col">
                             <label htmlFor="username" className="mb-1">
                                 username:
                             </label>
@@ -61,18 +120,22 @@ function Page() {
                                 type="username"
                                 id="username"
                                 name="username"
+                                value={formData.username}
+                                onChange={handleChange}
                                 className="border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black"
                                 required
                             />
-                        </div>
+                        </div> */}
                         <div className="flex flex-col">
-                            <label htmlFor="email" className="mb-1">
+                            <label htmlFor="password" className="mb-1">
                                 Password
                             </label>
                             <input
                                 type="password"
                                 id="password"
                                 name="password"
+                                value={formData.password}
+                                onChange={handleChange}
                                 className="border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black"
                                 required
                             />
@@ -91,29 +154,36 @@ function Page() {
                             <div className="flex-grow border-t border-gray-400"></div>
                         </div>
 
-                        <div className="flex items-center space-x-2 p-4 border border-black rounded ">
-                            <Image
-                                src={Google}
-                                alt="Google"
-                                width={20}
-                                height={20}
-                            />
-                            <p>Sign up with Google</p>
-                        </div>
+                        {/* <div className="flex  p-4 border border-black rounded-md items-center justify-center text-center">
+                                <Image
+                                    src={Google}
+                                    alt="Google"
+                                    width={20}
+                                    height={20}
+                                />
+                                <div >Sign up with Google</div>
+                            </div> */}
+                            <GoogleButton onSuccess={handleGoogleSuccess} onFailure={handleGoogleFailure} />
 
                         <div className="flex-row">
                             <p>
                                 Already have an account?{" "}
+                                <Link href='signIn'>
                                 <span className="text-blue-default  ">
                                     Sign in
                                 </span>
+                                </Link>
+                            
                             </p>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    );
-}
+        );
+    }
 
-export default Page;
+    export default Page;
+
+
+  
