@@ -11,6 +11,8 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Loader from '@/app/shared/loader/page';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer,toast } from 'react-toastify';
+import { setCookie } from "cookies-next";
+import { jwtDecode } from "jwt-decode";
 
 function Page() {
   const router = useRouter();
@@ -32,18 +34,59 @@ function Page() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true); 
-    try {
-      const response = await axios.post('https://topstrat-backend.onrender.com/auth/signin', formData);
-      console.log('Login success:', response.data);
-      toast.success('Logged in successfully')
-      router.push('/components/Landingpage');
-    } catch (error) {
-      console.error('Login error:', error);
-      toast.error('Incorrect email or password')
-      router.push('/Pages/signIn');
-    } finally {
-      setLoading(false); 
-    }
+
+    // try {
+    //   const response = await axios.post('https://topstrat-backend.onrender.com/auth/signin', formData);
+    //   console.log('Login success:', response.data);
+    //   setCookie("token", res.data.data);
+    //   const decoded = jwtDecode(res.data.data) as { role: string };
+    //   console.log(decoded);
+    //   toast.success('Logged in successfully')
+    //   router.push('/components/Landingpage');
+    // } catch (error) {
+    //   console.error('Login error:', error);
+    //   toast.error('Incorrect email or password')
+    //   router.push('/Pages/signIn');
+    // } finally {
+    //   setLoading(false); 
+    // }
+
+
+    axios
+    .post("https://topstrat-backend.onrender.com/auth/signin", formData)
+    .then((res) => {
+      console.log(res.data);
+      const token = res.data.token;
+      console.log(token);
+      setCookie("token", token);
+      const decoded = jwtDecode(token) as { role: string };
+      console.log(decoded);
+      if (decoded.role == "admin") {
+        router.push("/components/Dashboard");
+        toast.success("Admin Logged in successfully!");
+      } else if (decoded.role == "user") {
+        router.push("/components/landingPage");
+        toast.success("User Logged in successfully!");
+        router.push("/components/landingPage");
+      } else {
+        toast.error("Role Not valid!");
+      }
+      setCookie("token", res?.data);
+    })
+    .catch((err: any) => {
+      console.log("Error occured: ", err.message);
+      if (err?.response?.data?.success) {
+        if (
+          String(err?.response?.data?.error) ==
+          "Verify the account to continue!"
+        ) {
+          return router.push("/verify");
+        }
+        return toast.error(err?.response?.data?.error);
+      } else {
+        return toast.error(err.message);
+      }
+    });
   };
 
   return (
@@ -95,7 +138,7 @@ function Page() {
             <button type="submit" className="bg-blue-default text-white p-4 rounded hover:bg-[rgba(11, 108, 121, 1.2)]">
               Sign in
             </button>
-            <div className='ml-[170px]'>
+            <div className='ml-[150px]'>
                       {loading && <Loader />} 
             </div>
   

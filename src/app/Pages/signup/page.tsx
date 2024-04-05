@@ -160,7 +160,7 @@
                             Sign Up
                         </button>
 
-                    <div className='ml-[170px]'>
+                    <div className='ml-[150px]'>
                       {loading && <Loader />} 
                     </div>
 
