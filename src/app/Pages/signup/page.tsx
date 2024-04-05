@@ -6,16 +6,21 @@
     import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
     import Link from "next/link";
     import axios from "axios";
+    import { FaEye, FaEyeSlash } from 'react-icons/fa';
+    import { useRouter } from 'next/navigation';
+    import Loader from '@/app/shared/loader/page';
+    import 'react-toastify/dist/ReactToastify.css';
+    import { toast ,ToastContainer } from 'react-toastify';
 
     function Page() {
-        const handleSuccess = (response: any) => {
-        response.redirect('/Components/LandingPage')
+        const router = useRouter();
+        const [showPassword, setShowPassword] = useState(false);
+        const [password, setPassword] = useState('');
+        const [loading, setLoading] = useState(false);
+      
+        const togglePasswordVisibility = () => {
+          setShowPassword(prevState => !prevState);
         };
-
-        const handleError = (error: any) => {
-            // Handle Google sign-up failure
-        };
-
         const [formData, setFormData] = useState({
             firstname: "",
             lastname:"",
@@ -29,6 +34,7 @@
 
         const handleSubmit = async (e: any) => {
             e.preventDefault();
+            setLoading(true); 
             try {
                 const response = await axios.post("https://topstrat-backend.onrender.com/auth/signup", formData, {
                     headers: {
@@ -37,10 +43,12 @@
                     }
                 });
                 console.log(response.data);
-                // Handle successful response
+                toast.success('Created account successfully')
+                router.push('/Pages/signIn');
             } catch (error) {
                 console.error("Error:", error);
-                // Handle error
+                toast.error('Failed to create account, please try again')
+                router.push('/Pages/signup');
             }
         };
         
@@ -126,20 +134,24 @@
                                 required
                             />
                         </div> */}
-                        <div className="flex flex-col">
-                            <label htmlFor="password" className="mb-1">
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black"
-                                required
-                            />
-                        </div>
+                 <div className="flex flex-col">
+                  <label htmlFor="password"  className="mb-1">Password:</label>
+                <div className="flex space-between border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  value={password}
+                  className="outline-none w-full bg-transparent"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              <button type="button" onClick={togglePasswordVisibility}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+             </button>
+             </div>
+    
+
+                   </div>
 
                         <button
                             type="submit"
@@ -147,6 +159,10 @@
                         >
                             Sign Up
                         </button>
+
+                    <div className='ml-[170px]'>
+                      {loading && <Loader />} 
+                    </div>
 
                         <div className="flex items-center space-x-4">
                             <div className="flex-grow border-t border-gray-400"></div>
@@ -180,6 +196,7 @@
                             </p>
                         </div>
                     </form>
+                    <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl pauseOnFocusLoss />
                 </div>
             </div>
         </div>
