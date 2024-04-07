@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 function NotFoundPage() {
@@ -10,7 +9,7 @@ function NotFoundPage() {
       <h1 className="text-[20px]">You Are Lost!</h1>
       <button
         onClick={() => router.back()}
-        className="py-3 px-9 mt-5 border-[1px] border-[#ccc] rounded-lg"
+        className="py-3 px-9 mt-5 border-[1px] bg-blue-default text-white rounded-lg"
       >
         Return
       </button>
