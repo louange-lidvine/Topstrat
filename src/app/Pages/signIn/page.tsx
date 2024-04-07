@@ -56,7 +56,7 @@ function Page() {
     .post("https://topstrat-backend.onrender.com/auth/signin", formData)
     .then((res) => {
       console.log(res.data);
-      const token = res.data.token;
+      const token = res.data.access_token;
       console.log(token);
       setCookie("token", token);
       const decoded = jwtDecode(token) as { role: string };
@@ -65,9 +65,9 @@ function Page() {
         router.push("/components/Dashboard");
         toast.success("Admin Logged in successfully!");
       } else if (decoded.role == "user") {
-        router.push("/components/landingPage");
+        router.push("/components/Landingpage");
         toast.success("User Logged in successfully!");
-        router.push("/components/landingPage");
+        router.push("/components/Landingpage");
       } else {
         toast.error("Role Not valid!");
       }
