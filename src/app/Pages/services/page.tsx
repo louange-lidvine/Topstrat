@@ -18,13 +18,13 @@ function page() {
                             Home
                             <div className="flex-grow border-t border-blue-default "></div>
                         </Link>
-                        <Link href="/services" className="hover:text-gray-300">
+                        <Link href="/Pages/services" className="hover:text-gray-300">
                             Services
                         </Link>
-                        <Link href="/about" className="hover:text-gray-300">
+                        <Link href="/Pages/About" className="hover:text-gray-300">
                             About
                         </Link>
-                        <Link href="/contacts" className="hover:text-gray-300">
+                        <Link href="/Pages/Contacts" className="hover:text-gray-300">
                             Contacts
                         </Link>
                     </div>

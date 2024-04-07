@@ -31,7 +31,10 @@ export default function middleware(
     req.nextUrl.pathname !== "/Pages/signIn" &&
     req.nextUrl.pathname !== "/Pages/signup" &&
     req.nextUrl.pathname !== "/Pages/homePage" &&
-    req.nextUrl.pathname !== "/Pages/services"
+    req.nextUrl.pathname !== "/Pages/services" &&
+    req.nextUrl.pathname !== "/" &&
+    req.nextUrl.pathname !== "/Pages/About" &&
+    req.nextUrl.pathname !== "/Pages/Contacts" 
   ) {
     return NextResponse.redirect(new URL("/Pages/signIn", req.url));
   }
