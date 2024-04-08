@@ -1,60 +1,64 @@
-    "use client"
-    import React, { useState } from "react";
-    import Image from "next/image";
-    import GoogleButton from "@/app/constants/(auth)/googleButton";
-    import Background from "../../../../public/assets/bg.png";
-    import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
-    import Link from "next/link";
-    import axios from "axios";
-    import { FaEye, FaEyeSlash } from 'react-icons/fa';
-    import { useRouter } from 'next/navigation';
-    import Loader from '@/app/shared/loader/page';
-    import 'react-toastify/dist/ReactToastify.css';
-    import { toast ,ToastContainer } from 'react-toastify';
+"use client"
 
-    function Page() {
-        const router = useRouter();
-        const [showPassword, setShowPassword] = useState(false);
-        const [password, setPassword] = useState('');
-        const [loading, setLoading] = useState(false);
-      
-        const togglePasswordVisibility = () => {
-          setShowPassword(prevState => !prevState);
-        };
-        const [formData, setFormData] = useState({
-            firstname: "",
-            lastname:"",
-            email: "",
-            password: "",
-        });
+import React, { useState } from "react";
+import Image from "next/image";
+import GoogleButton from "@/app/constants/(auth)/googleButton";
+import Background from "../../../../public/assets/bg.png";
+import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
+import Link from "next/link";
+import axios from "axios";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
+import Loader from '@/app/shared/loader/page';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast ,ToastContainer } from 'react-toastify';
 
-        const handleChange = (e:any) => {
-            setFormData({ ...formData, [e.target.name]: e.target.value });
-        };
+function Page() {
+    const router = useRouter();
+    const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+  
+    const togglePasswordVisibility = () => {
+      setShowPassword(prevState => !prevState);
+    };
 
-        const handleSubmit = async (e: any) => {
-            e.preventDefault();
-            setLoading(true); 
-            try {
-                const response = await axios.post("https://topstrat-backend.onrender.com/auth/signup", formData, {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
-                console.log(response.data);
-                toast.success('Created account successfully')
-                router.push('/Pages/signIn');
-            } catch (error) {
-                console.error("Error:", error);
-                toast.error('Failed to create account, please try again')
-                router.push('/Pages/signup');
-            }
-        };
-        
-        
-        return (
-            <div className="min-h-screen flex items-center px-16 lg:px-32 ">
+    const [formData, setFormData] = useState({
+        firstname: "",
+        lastname: "",
+        email:"",
+        password: ""
+    });
+
+    const handleChange = (e: any) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+    };
+    
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        setLoading(true);
+        axios.post("https://topstrat-backend.onrender.com/auth/signup", formData)
+          .then((res) => {
+            setLoading(false);
+            if (res.data) {
+            router.push('/Pages/signIn')
+              toast.success('Account created successfully');
+              setLoading(false);
+              router.push("/Pages/signIn");
+            } 
+          })
+          .catch((err: any) => {
+            toast.error('Failed to create account , Please try again')
+            setLoading(false);
+            console.log("error occurred: ", err);
+          });
+    };
+    
+    return (
+        <div className="min-h-screen flex items-center px-16 lg:px-32 ">
             <Image
                 src={Background}
                 className="w-full h-full fixed left-0 top-0 -z-10"
@@ -119,39 +123,24 @@
                                 required
                             />
                         </div>
-
-                        {/* <div className="flex flex-col">
-                            <label htmlFor="username" className="mb-1">
-                                username:
-                            </label>
-                            <input
-                                type="username"
-                                id="username"
-                                name="username"
-                                value={formData.username}
-                                onChange={handleChange}
-                                className="border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black"
-                                required
-                            />
-                        </div> */}
-                 <div className="flex flex-col">
-                  <label htmlFor="password"  className="mb-1">Password:</label>
-                <div className="flex space-between border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  value={password}
-                  className="outline-none w-full bg-transparent"
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              <button type="button" onClick={togglePasswordVisibility}>
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-             </button>
-             </div>
-    
-
-                   </div>
+                    
+                        <div className="flex flex-col">
+                            <label htmlFor="password" className="mb-1">Password:</label>
+                            <div className="flex space-between border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    className="outline-none w-full bg-transparent"
+                                    required
+                                />
+                                <button type="button" onClick={togglePasswordVisibility}>
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
+                            </div>
+                        </div>
 
                         <button
                             type="submit"
@@ -160,9 +149,9 @@
                             Sign Up
                         </button>
 
-                    <div className='ml-[150px]'>
-                      {loading && <Loader />} 
-                    </div>
+                        <div className='ml-[150px]'>
+                            {loading && <Loader />} 
+                        </div>
 
                         <div className="flex items-center space-x-4">
                             <div className="flex-grow border-t border-gray-400"></div>
@@ -170,27 +159,22 @@
                             <div className="flex-grow border-t border-gray-400"></div>
                         </div>
 
-                        {/* <div className="flex  p-4 border border-black rounded-md items-center justify-center text-center">
-                                <Image
-                                    src={Google}
-                                    alt="Google"
-                                    width={20}
-                                    height={20}
-                                />
-                                <div >Sign up with Google</div>
-                            </div> */}
-                            <GoogleButton onSuccess={function (credentialResponse: any): void {
+                        <GoogleButton
+                            onSuccess={function (credentialResponse: any): void {
                                 throw new Error("Function not implemented.");
-                            } } onError={function (): void {
+                            } } 
+                            onError={function (): void {
                                 throw new Error("Function not implemented.");
-                            } }  />
+                            } }  
+                        />
+                        
                         <div className="flex-row">
                             <p>
                                 Already have an account?{" "}
                                 <Link href='signIn'>
-                                <span className="text-blue-default  ">
-                                    Sign in
-                                </span>
+                                    <span className="text-blue-default  ">
+                                        Sign in
+                                    </span>
                                 </Link>
                             
                             </p>
@@ -200,10 +184,7 @@
                 </div>
             </div>
         </div>
-        );
-    }
+    );
+}
 
-    export default Page;
-
-
-  
+export default Page;
