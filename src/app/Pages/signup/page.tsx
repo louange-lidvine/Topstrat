@@ -13,23 +13,28 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 
 function Page() {
+  
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
-    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-
+  
     const togglePasswordVisibility = () => {
-        setShowPassword((prevState) => !prevState);
+      setShowPassword(prevState => !prevState);
     };
+
     const [formData, setFormData] = useState({
         firstname: "",
         lastname: "",
-        email: "",
-        password: "",
+        email:"",
+        password: ""
     });
 
     const handleChange = (e: any) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
     };
 
     const handleSubmit = async (e: any) => {
@@ -54,8 +59,7 @@ function Page() {
             toast.error("Failed to create account, please try again");
             router.push("/Pages/signup");
         }
-    };
-
+    }
     return (
         <div className="min-h-screen flex items-center px-16 lg:px-32 ">
             <Image
@@ -126,6 +130,22 @@ function Page() {
                             />
                         </div>
 
+                    
+                        <div className="flex flex-col">
+                            <label htmlFor="password" className="mb-1">Password:</label>
+                            <div className="flex space-between border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    className="outline-none w-full bg-transparent"
+                                    required
+                                />
+                                <button type="button" onClick={togglePasswordVisibility}>
+
+
                         {/* <div className="flex flex-col">
                             <label htmlFor="username" className="mb-1">
                                 username:
@@ -159,6 +179,7 @@ function Page() {
                                     type="button"
                                     onClick={togglePasswordVisibility}
                                 >
+
                                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                             </div>
@@ -171,8 +192,13 @@ function Page() {
                             Sign Up
                         </button>
 
+
+                        <div className='ml-[150px]'>
+                            {loading && <Loader />} 
+
                         <div className="ml-[150px]">
                             {loading && <Loader />}
+
                         </div>
 
                         <div className="flex items-center space-x-4">
@@ -180,6 +206,19 @@ function Page() {
                             <span className="text-gray-500">or</span>
                             <div className="flex-grow border-t border-gray-400"></div>
                         </div>
+
+                        <GoogleButton
+                            onSuccess={function (credentialResponse: any): void {
+                                throw new Error("Function not implemented.");
+                            } } 
+                            onError={function (): void {
+                                throw new Error("Function not implemented.");
+                            } }  
+                        />
+                        
+                        <div className="flex-row">
+                            <p>
+                                Already have an account?{" "}
 
                         {/* <div className="flex  p-4 border border-black rounded-md items-center justify-center text-center">
                                 <Image
@@ -204,6 +243,7 @@ function Page() {
                             <p>
                                 Already have an account?{" "}
                                 <Link href="signIn">
+
                                     <span className="text-blue-default  ">
                                         Sign in
                                     </span>

@@ -34,24 +34,6 @@ function Page() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true); 
-
-    // try {
-    //   const response = await axios.post('https://topstrat-backend.onrender.com/auth/signin', formData);
-    //   console.log('Login success:', response.data);
-    //   setCookie("token", res.data.data);
-    //   const decoded = jwtDecode(res.data.data) as { role: string };
-    //   console.log(decoded);
-    //   toast.success('Logged in successfully')
-    //   router.push('/components/Landingpage');
-    // } catch (error) {
-    //   console.error('Login error:', error);
-    //   toast.error('Incorrect email or password')
-    //   router.push('/Pages/signIn');
-    // } finally {
-    //   setLoading(false); 
-    // }
-
-
     axios
     .post("https://topstrat-backend.onrender.com/auth/signin", formData)
     .then((res) => {
