@@ -1,15 +1,30 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Background from "../../../../public/assets/bg.png";
+import Background from "../../../../../public/assets/bg.png";
 import Image from "next/image";
-import Prompt from "../prompt/page";
+import Prompt from "../../prompt/page";
 
 function page() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isSecModalOpen, setIsSecModalOpen] = useState<boolean>(false);
     const [prompts, setPrompts] = useState<string[]>([]);
+    const create = () => {
+        useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    const response = await axios.get(
+                        `https://topstrat-backend.onrender.com/projects}`
+                    );
+                    setPrompts(response.data);
+                } catch (error) {
+                    console.error("Error fetching prompts:", error);
+                }
+            };
 
+            fetchData();
+        }, []);
+    };
 
     const [title, setTitle] = useState("untitled");
     const handleInputChange = (event: {

@@ -37,23 +37,35 @@ function Page() {
     axios
     .post("https://topstrat-backend.onrender.com/auth/signin", formData)
     .then((res) => {
+      setLoading(false)
       console.log(res.data);
       const token = res.data.access_token;
       console.log(token);
       setCookie("token", token);
+       // Decode the token to extract user information
+       const decodedToken: any = jwtDecode(token);
+       console.log("Decoded token:", decodedToken);
+       
+       // Store the user's ID in localStorage
+       const userId = decodedToken.userId || decodedToken.sub; // Modify this based on the actual key
+       console.log("User ID:", userId);
+       localStorage.setItem('userId', userId);
       const decoded = jwtDecode(token) as { role: string };
       console.log(decoded);
       if (decoded.role == "admin") {
         router.push("/components/Dashboard");
+        setLoading(false)
         toast.success("Admin Logged in successfully!");
       } else if (decoded.role == "user") {
         router.push("/components/Landingpage");
+        setLoading(false)
         toast.success("User Logged in successfully!");
         router.push("/components/Landingpage");
       } else {
         toast.error("Role Not valid!");
       }
       setCookie("token", res?.data);
+      setLoading(false)
     })
     .catch((err: any) => {
       console.log("Error occured: ", err.message);
