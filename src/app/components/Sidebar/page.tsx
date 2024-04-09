@@ -121,9 +121,9 @@ import React, { useState, useEffect } from "react";
 import user from "../../../../public/assets/user.png";
 import Profile from "../profile/page";
 import { BiMenu } from "react-icons/bi";
-import Choose from "../chooseMethod/page";
 import axios from "axios";
 import Link from "next/link";
+import ChooseMethod from "../chooseMethod/page";
 
 function Sidebar() {
     const [menuVisible, setMenuVisible] = useState(false);
@@ -192,9 +192,7 @@ function Sidebar() {
                                 <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
                                     Projects
                                 </h1>
-                                <Choose
-                                    onStepByStepChoose={handleStepByStepChoose}
-                                />
+                                <ChooseMethod />
                             </div>
                         </div>
                         {projects.map((projectId, index) => (
