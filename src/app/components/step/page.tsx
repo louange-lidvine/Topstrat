@@ -9,6 +9,7 @@ function page() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isSecModalOpen, setIsSecModalOpen] = useState<boolean>(false);
     const [prompts, setPrompts] = useState<string[]>([]);
+   
 
 
     const [title, setTitle] = useState("untitled");
