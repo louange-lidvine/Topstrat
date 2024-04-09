@@ -1,3 +1,4 @@
+
 // import React, { useState } from 'react';
 // import { FaPlus } from 'react-icons/fa';
 // import { useRouter } from 'next/navigation';
@@ -169,7 +170,7 @@ function Choose() {
               className='mr-[5px]'
             />
             <label>Quick generation</label>
-          </div>
+      
           <div className='mb-[10px]'>
             <input
               type="radio"
@@ -177,14 +178,11 @@ function Choose() {
               value="step"
               onChange={() => handleRadioChange('step')}
               className='mr-[5px]'
-            />
-            <label>Step by step</label>
-          </div>
+               />
+           </div>
+         </div>
         </div>
-      )}
-    </div>
-  );
+    );
 }
 
 export default Choose;
-
