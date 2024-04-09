@@ -128,14 +128,6 @@ import Link from "next/link";
 function Sidebar() {
     const [menuVisible, setMenuVisible] = useState(false);
     const [projects, setProjects] = useState([]);
-    const [projectId, setProjectId] = useState("Untitled");
-
-    const handleProjectNameChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setProjectId(event.target.value);
-        window.location.pathname = event.target.value;
-    };
 
     const toggleMenu = () => {
         setMenuVisible(!menuVisible);
@@ -154,10 +146,23 @@ function Sidebar() {
     };
 
     useEffect(() => {
-        fetchProjects(); 
+        fetchProjects(); // Fetch projects when the component mounts
     }, []);
 
-  
+    const handleStepByStepChoose = async () => {
+        try {
+            // Make a POST request to create a new project
+            const response = await axios.post(
+                "https://topstrat-backend.onrender.com/projects",
+                {}
+            );
+            // Refresh projects after creating a new one
+            fetchProjects();
+        } catch (error) {
+            // If there's an error with the API request, handle it here
+            console.error("Error creating project:", error);
+        }
+    };
 
     return (
         <div className="fixed top-0 left-0 h-screen w-full overflow-hidden">
@@ -187,22 +192,15 @@ function Sidebar() {
                                 <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
                                     Projects
                                 </h1>
-                                <Choose/>
+                                <Choose
+                                    onStepByStepChoose={handleStepByStepChoose}
+                                />
                             </div>
                         </div>
-                        <div className="mt-2">
-                            <input
-                                type="text"
-                                placeholder="Untitled"
-                                value={projectId}
-                                onChange={handleProjectNameChange}
-                                className="border border-gray-300 rounded-md px-2 py-1 text-black bg-white border-none"
-                            />
-                        </div>
-                        {projects.map((project: any, index: number) => (
+                        {projects.map((projectId, index) => (
                             <div key={index} className="ml-10 font-bold">
-                                <Link href={`/projects/${project._id}`}>
-                                    <a>{project.name}</a>
+                                <Link href={`/projects/${projectId}`}>
+                                    <a>{projectId}</a>
                                 </Link>
                             </div>
                         ))}
