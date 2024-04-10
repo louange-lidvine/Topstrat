@@ -17,7 +17,6 @@ function ChooseMethod() {
                 // Handle the error or redirect to the login page
                 return;
             }
-
             const response = await axios.post(
                 "https://topstrat-backend.onrender.com/projects/create",
                 {

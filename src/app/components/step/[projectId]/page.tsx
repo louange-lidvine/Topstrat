@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Background from "../../../../../public/assets/bg.png";
 import Image from "next/image";
-import Prompt from "../../../prompt/page";
+import Prompt from "../../prompt/page";
 
 function page() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
