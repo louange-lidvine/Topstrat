@@ -108,12 +108,15 @@
 
 // export default page;
 
+
+
 "use client"
 import React, { useState } from 'react';
+import { useParams } from 'next/navigation';
 import {FaArrowRight} from 'react-icons/fa'
 import ReactModal from 'react-modal';
-import Step from './card';
-import PromptGet from './PromptGet';
+import Step from '../card';
+import PromptGet from '../PromptGet';
 
 const Component1: React.FC = () => <div>The mission of a business refers to a concise statement that outlines the fundamental purpose, core values, and overarching goals of the organization. It defines what the business aims to achieve, whom it serves, and the principles that guide its actions. The mission statement often reflects the company's identity and provides a sense of direction for its activities and decisions.</div>;
 const Component2: React.FC = () => <div> The mission of a business refers to a concise statement that outlines the fundamental purpose, core values, and overarching goals of the organization. It defines what the business aims to achieve, whom it serves, and the principles that guide its actions. The mission statement often reflects the company's identity and provides a sense of direction for its activities and decisions.</div>;
@@ -130,15 +133,17 @@ interface ObjectData {
 }
 
 const objects: ObjectData[] = [
-  { name: 'Vision',desc:"The vision is an aspirational statement defining an organization's ideal future." ,component: Component1 },
-  { name: 'Mission',desc:"The mission is an organization's fundamental purpose.", component: Component2 },
-  { name: 'Values',desc:"Values are guiding principles shaping organizational culture." ,component: Component3 },
-  { name: 'Objectives',desc:"Objectives are measurable goals aligned with an organization's mission.", component: Component4 },
-  { name: 'Log frames',desc:"The Logframe (Logical Framework) is a systematic project management tool." ,component: Component5 },
-  { name: 'Implementation strategies',desc:"Strategies are detailed plans to achieve organizational goals.", component: Component6 },
+  { name: 'mission',desc:"The vision is an aspirational statement defining an organization's ideal future." ,component: Component1 },
+  { name: 'vision',desc:"The mission is an organization's fundamental purpose.", component: Component2 },
+  { name: 'strategy',desc:"The mission is an organization's fundamental purpose.", component: Component2 },
+//   { name: 'Values',desc:"Values are guiding principles shaping organizational culture." ,component: Component3 },
+//   { name: 'Objectives',desc:"Objectives are measurable goals aligned with an organization's mission.", component: Component4 },
+//   { name: 'Log frames',desc:"The Logframe (Logical Framework) is a systematic project management tool." ,component: Component5 },
+//   { name: 'Implementation strategies',desc:"Strategies are detailed plans to achieve organizational goals.", component: Component6 },
 ];
 
 const page: React.FC = () => {
+  const {id} =useParams();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSecModalOpen, setIsSecModalOpen] = useState<boolean>(false);
   const [selectedObject, setSelectedObject] = useState<ObjectData | null>(null);
@@ -200,9 +205,9 @@ const page: React.FC = () => {
 
     <ReactModal isOpen={isSecModalOpen}
     onRequestClose={handleCloseModal}
-    className="w-[600px]  p-10 mt-20 bg-white shadow-lg ml-[500px]">
-    {selectedObject && <PromptGet title={selectedObject.name} />}
-    <div className="buttons flex space-x-5 float-end">
+    className="w-[600px]  px-10 py-20 mt-20 bg-white shadow-lg ml-[500px]">
+    {selectedObject && <PromptGet title={selectedObject.name} projectId={id} />}
+    <div className="buttons flex space-x-5 ">
       <button type="submit" className='bg-[#0F872F] py-2 px-4 rounded-md'>Save</button>
       <button type="submit" className='bg-[#C3BC0D] py-2 px-4 rounded-md'>Enhance</button>
       <button type="submit" className='bg-[#ED0C0C] py-2 px-4 rounded-md'>Re-generate</button>
