@@ -86,9 +86,10 @@
 // export default PromptGet;
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { getCookie } from "cookies-next";
 
 interface PromptGetProps {
-    title: "mission" | "vision" | "strategy"; // Specify that title can only be one of these three values
+    title: string;
     projectId: number;
 }
 
@@ -98,9 +99,18 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId }) => {
 
     useEffect(() => {
         const fetchData = async () => {
+            const token = getCookie("token")
+            const userId = localStorage.getItem("userId");
             try {
-                const response = await axios.get(
-                    `https://topstrat-backend.onrender.com/projects/${projectId}/${title.toLowerCase()}`
+                const response = await axios.post(
+                    `https://topstrat-backend.onrender.com/projects/${projectId}/${title.toLowerCase()}`,
+               
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization":`Bearer ${JSON.parse(token ?? "" ).access_token}`
+                        },
+                    }
                 );
                 setPrompts(response.data);
             } catch (error) {

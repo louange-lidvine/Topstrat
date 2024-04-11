@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
 
 function ChooseMethod() {
     const router = useRouter();
@@ -11,6 +12,7 @@ function ChooseMethod() {
         setIsPopoverOpen(false);
         try {
             const userId = localStorage.getItem("userId");
+            const token = getCookie("token")
             console.log(userId);
             if (!userId) {
                 console.error("User Id not found");
@@ -24,16 +26,24 @@ function ChooseMethod() {
                     userId: userId,
                     name: "project",
                     description: "My project",
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization":`Bearer ${JSON.parse(token ?? "" ).access_token}`
+                    },
                 }
             );
-
+          
+            console.log(response);
             // Assuming the response contains the userId and projectId
-            const { projectId } = response.data;
+            const  projectId = response.data._id;
+            console.log(projectId);
 
             if (value === "quick") {
-                router.push(`/components/Landingpage/${userId}`);
+                router.push(`/components/Landingpage/${projectId}`);
             } else if (value === "step") {
-                router.push(`/components/step/${userId}`);
+                router.push(`/components/step/${projectId}`);
             }
         } catch (error) {
             console.error("Error creating project:", error);
