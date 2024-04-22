@@ -136,8 +136,8 @@ const objects: ObjectData[] = [
   { name: 'mission',desc:"The vision is an aspirational statement defining an organization's ideal future." ,component: Component1 },
   { name: 'vision',desc:"The mission is an organization's fundamental purpose.", component: Component2 },
   { name: 'strategy',desc:"The mission is an organization's fundamental purpose.", component: Component2 },
-//   { name: 'Values',desc:"Values are guiding principles shaping organizational culture." ,component: Component3 },
-//   { name: 'Objectives',desc:"Objectives are measurable goals aligned with an organization's mission.", component: Component4 },
+  { name: 'Values',desc:"Values are guiding principles shaping organizational culture." ,component: Component3 },
+  { name: 'Objectives',desc:"Objectives are measurable goals aligned with an organization's mission.", component: Component4 },
 //   { name: 'Log frames',desc:"The Logframe (Logical Framework) is a systematic project management tool." ,component: Component5 },
 //   { name: 'Implementation strategies',desc:"Strategies are detailed plans to achieve organizational goals.", component: Component6 },
 ];
@@ -145,6 +145,7 @@ const objects: ObjectData[] = [
 const page: React.FC = () => {
   const {id} =useParams();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [prompt, setPrompt] = useState<string>();
   const [isSecModalOpen, setIsSecModalOpen] = useState<boolean>(false);
   const [selectedObject, setSelectedObject] = useState<ObjectData | null>(null);
 
@@ -153,7 +154,9 @@ const page: React.FC = () => {
     setIsModalOpen(true);
     setIsSecModalOpen(false)
   };
-
+  const handleChange = (event: { target: { value: React.SetStateAction<string | undefined>; }; }) => {
+      setPrompt(event.target.value);
+  };
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedObject(null);
@@ -196,8 +199,8 @@ const page: React.FC = () => {
       >
         {selectedObject && <Step title={selectedObject.name}  desc={selectedObject.component}/>}
         <div className="input flex space-x-44 w-[500px] border  my-4 py-3 px-6 rounded-md ">
-         <input type="text" placeholder='Add a short description' className='outline-none bg-transparent w-[300px]' />
-         <button type='submit' className='text-blue-default font-bold' onClick={handleButtonClick}>Generate</button>
+         <input type="text" placeholder='Add a short description' className='outline-none bg-transparent w-[300px]' onChange={handleChange}  value={prompt}/>
+          <button type='submit' className='text-blue-default font-bold' onClick={handleButtonClick}>Generate</button>
         </div>
         <button onClick={handleCloseModal}>Close Modal</button>
 
@@ -206,7 +209,7 @@ const page: React.FC = () => {
     <ReactModal isOpen={isSecModalOpen}
     onRequestClose={handleCloseModal}
     className="w-[600px]  px-10 py-20 mt-20 bg-white shadow-lg ml-[500px]">
-    {selectedObject && <PromptGet title={selectedObject.name} projectId={id} />}
+    {selectedObject && <PromptGet title={selectedObject.name} projectId={id as string} query={prompt} />}
     <div className="buttons flex space-x-5 ">
       <button type="submit" className='bg-[#0F872F] py-2 px-4 rounded-md'>Save</button>
       <button type="submit" className='bg-[#C3BC0D] py-2 px-4 rounded-md'>Enhance</button>

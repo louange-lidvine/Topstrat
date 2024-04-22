@@ -12,8 +12,9 @@ function ChooseMethod() {
         setIsPopoverOpen(false);
         try {
             const userId = localStorage.getItem("userId");
-            const token = getCookie("token")
+            const token = getCookie("token");
             console.log(userId);
+            console.log(token);
             if (!userId) {
                 console.error("User Id not found");
                 // Handle the error or redirect to the login page
@@ -30,14 +31,16 @@ function ChooseMethod() {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization":`Bearer ${JSON.parse(token ?? "" ).access_token}`
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
                     },
                 }
             );
-          
+
             console.log(response);
             // Assuming the response contains the userId and projectId
-            const  projectId = response.data._id;
+            const projectId = response.data._id;
             console.log(projectId);
 
             if (value === "quick") {
@@ -62,29 +65,31 @@ function ChooseMethod() {
                 <div
                     className="popover w-[250px] absolute left-0 text-black bg-[#fff] p-[10px]"
                     style={{
-                        zIndex: '9999',
-                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-                        borderRadius: '4px',
+                        zIndex: "9999",
+                        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                        borderRadius: "4px",
                     }}
                 >
-                    <label className='text-center my-[10px] block'>Choose method</label>
-                    <div className='mb-[10px]'>
+                    <label className="text-center my-[10px] block">
+                        Choose method
+                    </label>
+                    <div className="mb-[10px]">
                         <input
                             type="radio"
                             name="favoriteFramework"
                             value="quick"
-                            onChange={() => handleRadioChange('quick')}
-                            className='mr-[5px]'
+                            onChange={() => handleRadioChange("quick")}
+                            className="mr-[5px]"
                         />
                         <label>Quick generation</label>
                     </div>
-                    <div className='mb-[10px]'>
+                    <div className="mb-[10px]">
                         <input
                             type="radio"
                             name="favoriteFramework"
                             value="step"
-                            onChange={() => handleRadioChange('step')}
-                            className='mr-[5px]'
+                            onChange={() => handleRadioChange("step")}
+                            className="mr-[5px]"
                         />
                         <label>Step by step</label>
                     </div>

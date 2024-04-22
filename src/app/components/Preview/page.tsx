@@ -56,74 +56,78 @@ function Preview() {
               <h2 className="text-xl font-bold text-blue-default">
                   SWOT ANALYSIS
               </h2>
-              <div className="w-[100%]">
-                  <table className="border border-collapse w-1/2  ">
-                      <tr>
-                          <td className="border-2 border-solid border-black p-[6px] text-left px-6  ">
-                              Row 1, Col 1
+              <div className="w-[100%] flex justify-center items-center">
+                  <table className="border border-collapse w-[80%]  ">
+                      <tr className="text-blue-default">
+                          <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">
+                              Strengths(S)
                           </td>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6 ">
-                              Row 1, Col 2
+                              Weaknesses(W)
                           </td>
                       </tr>
                       <tr>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6 ">
-                              Row 2, Col 1
+                              High Reproductive Rate
                           </td>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6 ">
                               {" "}
-                              Row 2, Col 2
+                              Sensitivity to Environmental Conditions
                           </td>
                       </tr>
                       <tr>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 3, Col 1
+                              Low Space Requirements
                           </td>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 3, Col 2
-                          </td>
-                      </tr>
-                      <tr>
-                          <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 4, Col 1
-                          </td>
-                          <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 4, Col 2
+                              Health Challenges
                           </td>
                       </tr>
                       <tr>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 5, Col 1
+                              Versatile Market Demand
                           </td>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 5, Col 2
+                              Limited Awaeness and Market Penetration
+                          </td>
+                      </tr>
+                      <tr className="text-blue-default ">
+                          <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">
+                              Opportunities (O)
+                          </td>
+                          <td className="border-2 border-solid border-black p-[6px] text-left px-6">
+                              Threats (T)
                           </td>
                       </tr>
                       <tr>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 6, Col 1
+                              Trainings and Workkshops
                           </td>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 6, Col 2
-                          </td>
-                      </tr>
-                      <tr>
-                          <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 7, Col 1
-                          </td>
-                          <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 7, Col 2
+                              Market Price Volatility
                           </td>
                       </tr>
                       <tr>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 8, Col 1
+                              Local Partnerships
                           </td>
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                              Row 8, Col 2
+                              Disease Outbreaks
+                          </td>
+                      </tr>
+                      <tr>
+                          <td className="border-2 border-solid border-black p-[6px] text-left px-6">
+                              Market Expansion
+                          </td>
+                          <td className="border-2 border-solid border-black p-[6px] text-left px-6">
+                              competitive Market
                           </td>
                       </tr>
                   </table>
+              </div>
+              {/* <Link href="/signup">Sign Up</Link> */}
+              <div className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 w-1/2">
+                  <div className="flex  items-center justify-center ">next</div>
               </div>
           </div>
       </div>

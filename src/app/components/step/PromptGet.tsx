@@ -90,29 +90,38 @@ import { getCookie } from "cookies-next";
 
 interface PromptGetProps {
     title: string;
-    projectId: number;
+    query: any;
+    projectId: string;
 }
 
-const PromptGet: React.FC<PromptGetProps> = ({ title, projectId }) => {
+const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query }) => {
     const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
-    const [prompts, setPrompts] = useState<string[]>([]);
+    const [prompt, setPrompt] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = getCookie("token")
+            const token = getCookie("token");
             const userId = localStorage.getItem("userId");
             try {
                 const response = await axios.post(
                     `https://topstrat-backend.onrender.com/projects/${projectId}/${title.toLowerCase()}`,
-               
+                    {
+                        query: query,
+                        projectId: projectId,
+                        promptType: title.toLowerCase(),
+                        enhance: true,
+                    },
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization":`Bearer ${JSON.parse(token ?? "" ).access_token}`
+                            Authorization: `Bearer ${
+                                JSON.parse(token ?? "").access_token
+                            }`,
                         },
                     }
                 );
-                setPrompts(response.data);
+                console.log(response);
+                setPrompt(response.data.response);
             } catch (error) {
                 console.error("Error fetching prompts:", error);
             }
@@ -129,12 +138,26 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId }) => {
         setSelectedPrompt(null);
     };
 
+    // const renderedPrompts = [];
+    // for (let index = 0; index < prompts.length; index++) {
+    //     const prompt = prompts[index];
+    //     renderedPrompts.push(
+    //         <li
+    //             key={index}
+    //             onClick={() => handlePromptClick(prompt)}
+    //             style={{ cursor: "pointer" }}
+    //             className="lg:w-100 border lg:h-20 m-5 rounded-md"
+    //         >
+    //             {`${prompt.slice(0, 70)}...`}
+    //         </li>
+    //     );
+    // }
     return (
         <div>
             <h1 className="text-xl font-bold text-center text-blue-default">
                 {title} Prompts
             </h1>
-            {selectedPrompt ? (
+            {/* {selectedPrompt ? (
                 <div>
                     <h2 className="text-md font-md mt-4">
                         Selected Prompt: {selectedPrompt}
@@ -147,19 +170,9 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId }) => {
                     </button>
                 </div>
             ) : (
-                <ul>
-                    {prompts.map((prompt, index) => (
-                        <li
-                            key={index}
-                            onClick={() => handlePromptClick(prompt)}
-                            style={{ cursor: "pointer" }}
-                            className="lg:w-100 border lg:h-20 m-5 rounded-md"
-                        >
-                            {`${prompt.slice(0, 70)}...`}
-                        </li>
-                    ))}
-                </ul>
-            )}
+                <ul>{renderedPrompts}</ul>
+            )} */}
+            <p>{prompt}</p>
         </div>
     );
 };
