@@ -163,8 +163,8 @@ const page: React.FC = () => {
   
 
     return (
-        <div className="w-[100%">
-               <div className="border my-4 rounded-md mx-2  lg:w-[1150px] lg:absolute lg:top-[-1px] lg:left-[320px]">
+        <div className="w-[100%] ">
+               <div className="border my-4 rounded-md mx-2  lg:float-right  z-[9999]">
             <div className="input flex justify-center">
                 <input
                     type="text"
@@ -173,7 +173,7 @@ const page: React.FC = () => {
                 />
             </div>
             <div
-                className=" grid lg:grid-cols-2 grid-cols-1 gap-[16px] lg:w-[1100px] lg:py-20 mx-3 lg:px-20 mt-6 lg:ml-10 bg-white "
+                className="  grid lg:grid-cols-2 grid-cols-1 gap-[16px] lg:w-[1100px] lg:py-20 mx-3 lg:px-20 mt-6 lg:ml-10  "
             >
                 {objects.map((object, index) => (
                     <div

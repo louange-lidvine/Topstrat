@@ -65,7 +65,7 @@ function ChooseMethod() {
                 <div
                     className="popover w-[250px] absolute left-0 text-black bg-[#fff] p-[10px]"
                     style={{
-                        zIndex: "9999",
+                        zIndex: "50",
                         boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
                         borderRadius: "4px",
                     }}
