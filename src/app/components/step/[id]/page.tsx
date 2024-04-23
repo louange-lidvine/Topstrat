@@ -213,7 +213,7 @@ const objects: ObjectData[] = [
     },
     {
         name: "SWOT",
-        desc: "Summary os  Strength ,Weakness,Opportunities and Technology.",
+        desc: "Summary of  Strength ,Weakness,Opportunities and Technology.",
         component: Component5,
     },
     //   { name: 'Log frames',desc:"The Logframe (Logical Framework) is a systematic project management tool." ,component: Component5 },
@@ -332,7 +332,7 @@ const page: React.FC = () => {
             <ReactModal
                 isOpen={isSecModalOpen}
                 onRequestClose={handleCloseModal}
-                className="w-[600px]  px-10 py-20 mt-20 bg-white shadow-lg ml-[500px]"
+                className="w-[900px]  px-10 py-10 mt-20 bg-white shadow-lg ml-[300px]"
             >
                 {selectedObject && (
                     <PromptGet
@@ -341,7 +341,7 @@ const page: React.FC = () => {
                         query={prompt}
                     />
                 )}
-                <div className="buttons flex space-x-5 ">
+                <div className="buttons flex space-x-5 mt-10 ">
                     <button
                         type="submit"
                         className="bg-[#0F872F] py-2 px-4 rounded-md"
