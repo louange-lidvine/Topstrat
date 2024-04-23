@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import Image from "next/image";
 import GoogleButton from "@/app/constants/(auth)/googleButton";
@@ -58,16 +58,19 @@ function Page() {
             console.error("Error:", error);
             toast.error("Failed to create account, please try again");
             router.push("/Pages/signup");
+        } finally {
+            setLoading(false);
         }
-    }
+    };
+
     return (
-        <div className="min-h-screen flex items-center px-16 lg:px-32 ">
+        <div className="min-h-screen flex items-center px-16 lg:px-32">
             <Image
                 src={Background}
                 className="w-full h-full fixed left-0 top-0 -z-10"
                 alt="background-img"
             />
-            <div className="flex flex-col items-center lg:flex-row   w-[100%] ">
+            <div className="flex flex-col items-center lg:flex-row w-[100%]">
                 <div className="w-[60%] lg:flex items-center hidden">
                     <Image
                         src={Graphics}
@@ -76,7 +79,6 @@ function Page() {
                         height={689}
                     />
                 </div>
-
                 <div className="p-4 rounded w-full lg:w-[40%]">
                     <h1 className="text-2xl font-bold mb-4">
                         Create an account
@@ -125,14 +127,15 @@ function Page() {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="border p-3 order-black rounded-md placeholder-transparent bg-opacity-0 border-black"
+                                className="border p-3 border-black rounded-md placeholder-transparent bg-opacity-0"
                                 required
                             />
                         </div>
 
-                    
                         <div className="flex flex-col">
-                            <label htmlFor="password" className="mb-1">Password:</label>
+                            <label htmlFor="password" className="mb-1">
+                                Password:
+                            </label>
                             <div className="flex space-between border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
@@ -143,43 +146,10 @@ function Page() {
                                     className="outline-none w-full bg-transparent"
                                     required
                                 />
-                                <button type="button" onClick={togglePasswordVisibility}>
-
-
-                        {/* <div className="flex flex-col">
-                            <label htmlFor="username" className="mb-1">
-                                username:
-                            </label>
-                            <input
-                                type="username"
-                                id="username"
-                                name="username"
-                                value={formData.username}
-                                onChange={handleChange}
-                                className="border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black"
-                                required
-                            />
-                        </div> */}
-                        <div className="flex flex-col">
-                            <label htmlFor="password" className="mb-1">
-                                Password:
-                            </label>
-                            <div className="flex space-between border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black">
-                                <input
-                                    type={showPassword ? "text" : "password"}
-                                    id="password"
-                                    value={password}
-                                    className="outline-none w-full bg-transparent"
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
-                                    required
-                                />
                                 <button
                                     type="button"
                                     onClick={togglePasswordVisibility}
                                 >
-
                                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                             </div>
@@ -192,13 +162,8 @@ function Page() {
                             Sign Up
                         </button>
 
-
                         <div className='ml-[150px]'>
                             {loading && <Loader />} 
-
-                        <div className="ml-[150px]">
-                            {loading && <Loader />}
-
                         </div>
 
                         <div className="flex items-center space-x-4">
@@ -215,35 +180,11 @@ function Page() {
                                 throw new Error("Function not implemented.");
                             } }  
                         />
-                        
-                        <div className="flex-row">
-                            <p>
-                                Already have an account?{" "}
 
-                        {/* <div className="flex  p-4 border border-black rounded-md items-center justify-center text-center">
-                                <Image
-                                    src={Google}
-                                    alt="Google"
-                                    width={20}
-                                    height={20}
-                                />
-                                <div >Sign up with Google</div>
-                            </div> */}
-                        <GoogleButton
-                            onSuccess={function (
-                                credentialResponse: any
-                            ): void {
-                                throw new Error("Function not implemented.");
-                            }}
-                            onError={function (): void {
-                                throw new Error("Function not implemented.");
-                            }}
-                        />
                         <div className="flex-row">
                             <p>
                                 Already have an account?{" "}
                                 <Link href="signIn">
-
                                     <span className="text-blue-default  ">
                                         Sign in
                                     </span>
