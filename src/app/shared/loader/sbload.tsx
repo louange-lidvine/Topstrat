@@ -1,7 +1,7 @@
 import React from 'react';
 import { ColorRing } from 'react-loader-spinner';
 
-const Loader: React.FC = () => {
+const SbLoad: React.FC = () => {
   return (
     <div className="flex justify-center items-center bg-opacity-50">
       <ColorRing
@@ -11,10 +11,10 @@ const Loader: React.FC = () => {
         ariaLabel="color-ring-loading"
         wrapperStyle={{}}
         wrapperClass="color-ring-wrapper"
-        colors={['#0B6C79', '#0B6C79', '#0B6C79', '#0B6C79', '#0B6C79']}
+        colors={['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff']}
       />
     </div>
   );
 };
 
-export default Loader;
+export default SbLoad;

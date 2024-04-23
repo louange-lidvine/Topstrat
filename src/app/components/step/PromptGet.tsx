@@ -1,107 +1,109 @@
-// import React, { useState } from 'react';
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import { getCookie } from "cookies-next";
+// import Loader from "@/app/shared/loader/page";
 
 // interface PromptGetProps {
-//   title: string;
+//     title: string;
+//     query: any;
+//     projectId: string;
 // }
 
-// const PromptGet: React.FC<PromptGetProps> = ({ title }) => {
-//   const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
+// const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query }) => {
+//     const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
+//     const [prompt, setPrompt] = useState<string | null>(null);
+//     const [loading, setLoading] = useState<boolean>(false); 
 
-//   const getStaticPrompts = (category: string): string[] => {
-//     switch (category.toLowerCase()) {
-//       case 'vision':
-//         return [
-//           'Vision Prompt 1: Longer Version with More Details about the Vision of the Project',
-//           'Vision Prompt 2: Another Longer Version Explaining the Vision in Depth',
-//           'Vision Prompt 3: Elaborate Description of the Vision and Its Significance',
-//         ];
-//       case 'mission':
-//         return [
-//           'Mission Prompt 1: Elaborate Description of the Mission Statement and Its Importance',
-//           'Mission Prompt 2: Detailed Explanation of the Mission Goals and Objectives',
-//           'Mission Prompt 3: In-Depth Overview of the Mission and Its Impact',
-//         ];
-//       case 'log frames':
-//         return [
-//           'Logframe Prompt 1: Comprehensive Logframe Details for Effective Project Management',
-//           'Logframe Prompt 2: In-Depth Explanation of Logical Framework and Its Components',
-//           'Logframe Prompt 3: Detailed Logframe Analysis for Project Success',
-//         ];
-//       case 'goals':
-//         return [
-//           'Goals Prompt 1: Clear and Specific Project Goals for Achievement',
-//           'Goals Prompt 2: Elaboration on the Strategic Goals and Their Alignment',
-//           'Goals Prompt 3: In-Depth Overview of the Project Goals and Their Significance',
-//         ];
-//       case 'objectives':
-//         return [
-//           'Objectives Prompt 1: Detailed and Measurable Objectives for Project Success',
-//           'Objectives Prompt 2: Explanation of Aligned Objectives with Organizational Mission',
-//           'Objectives Prompt 3: In-Depth Overview of Project Objectives and Their Impact',
-//         ];
-//       case 'implementation strategies':
-//         return [
-//           'Implementation Strategies Prompt 1: Comprehensive Plans for Project Execution',
-//           'Implementation Strategies Prompt 2: Detailed Strategies for Achieving Organizational Goals',
-//           'Implementation Strategies Prompt 3: In-Depth Overview of Project Implementation Strategies',
-//         ];
-//       default:
-//         return [];
-//     }
-//   };
+//     useEffect(() => {
+//         const fetchData = async () => {
+//             const token = getCookie("token");
+//             const userId = localStorage.getItem("userId");
+//             setLoading(true);
+//             try {
+//                 const response = await axios.post(
+//                     `https://topstrat-backend.onrender.com/projects/${projectId}/${title.toLowerCase()}`,
+//                     {
+//                         query: query,
+//                         projectId: projectId,
+//                         promptType: title.toLowerCase(),
+//                         enhance: true,
+//                     },
+//                     {
+//                         headers: {
+//                             "Content-Type": "application/json",
+//                             Authorization: `Bearer ${
+//                                 JSON.parse(token ?? "").access_token
+//                             }`,
+//                         },
+//                     }
+//                 );
+//                 console.log(response);
+//                 setPrompt(response.data.response);
+//             } catch (error) {
+//                 console.error("Error fetching prompts:", error);
+//             } finally {
+//                 setLoading(false); 
+//             }
+//         };
 
-//   const prompts = getStaticPrompts(title);
+//         fetchData();
+//     }, [projectId, title]);
 
-//   const handlePromptClick = (prompt: string) => {
-//     setSelectedPrompt(prompt);
-//   };
+//     const handlePromptClick = (prompt: string) => {
+//         setSelectedPrompt(prompt);
+//     };
 
-//   const handleBackButtonClick = () => {
-//     setSelectedPrompt(null);
-//   };
+//     const handleBackButtonClick = () => {
+//         setSelectedPrompt(null);
+//     };
 
-//   return (
-//     <div>
-//       <h1 className='text-xl font-bold text-center text-blue-default'>{title} Prompts</h1>
-//       {selectedPrompt ? (
+//     return (
 //         <div>
-//           <h2 className='text-md font-md mt-4'>Selected Prompt: {selectedPrompt}</h2>
-//           <button onClick={handleBackButtonClick} className='text-blue-default font-bold mt-4'>
-//             Back
-//           </button>
+//             <h1 className="text-xl font-bold text-center text-blue-default">
+//                 {title} Prompts
+//             </h1>
+//             {loading ? ( 
+
+//                 <Loader />
+//             ) : (
+//                 <p>{prompt}</p>
+//             )}
 //         </div>
-//       ) : (
-//         <ul>
-//           {prompts.map((prompt, index) => (
-//             <li key={index} onClick={() => handlePromptClick(prompt)} style={{ cursor: 'pointer' }} className='lg:w-100 border lg:h-20 m-5 rounded-md'>
-//               {`${prompt.slice(0, 70)}...`}
-//             </li>
-//           ))}
-//         </ul>
-//       )}
-//     </div>
-//   );
+//     );
 // };
 
 // export default PromptGet;
+
+"use client"
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
+import Loader from "@/app/shared/loader/page";
 
 interface PromptGetProps {
     title: string;
     query: any;
+    handelNext:(object:any)=>void;
     projectId: string;
 }
 
-const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query }) => {
+const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNext }) => {
     const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
     const [prompt, setPrompt] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [isSwot, setIsSwot] = useState<boolean>(false);
+    const [swotData, setSwotData] = useState<{
+        strengths: string[];
+        weaknesses: string[];
+        opportunities: string[];
+        threats: string[];
+    } | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             const token = getCookie("token");
             const userId = localStorage.getItem("userId");
+            setLoading(true);
             try {
                 const response = await axios.post(
                     `https://topstrat-backend.onrender.com/projects/${projectId}/${title.toLowerCase()}`,
@@ -121,9 +123,17 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query }) => {
                     }
                 );
                 console.log(response);
-                setPrompt(response.data.response);
+                if (title.toLowerCase() === "swot") {
+                    setIsSwot(true);
+                    const responseData = JSON.parse(response.data.response);
+                    setSwotData(responseData);
+                } else {
+                    setPrompt(response.data.response);
+                }
             } catch (error) {
                 console.error("Error fetching prompts:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -138,41 +148,82 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query }) => {
         setSelectedPrompt(null);
     };
 
-    // const renderedPrompts = [];
-    // for (let index = 0; index < prompts.length; index++) {
-    //     const prompt = prompts[index];
-    //     renderedPrompts.push(
-    //         <li
-    //             key={index}
-    //             onClick={() => handlePromptClick(prompt)}
-    //             style={{ cursor: "pointer" }}
-    //             className="lg:w-100 border lg:h-20 m-5 rounded-md"
-    //         >
-    //             {`${prompt.slice(0, 70)}...`}
-    //         </li>
-    //     );
-    // }
     return (
         <div>
             <h1 className="text-xl font-bold text-center text-blue-default">
                 {title} Prompts
             </h1>
-            {/* {selectedPrompt ? (
+            {loading ? (
+                <Loader />
+            ) : isSwot ? (
                 <div>
-                    <h2 className="text-md font-md mt-4">
-                        Selected Prompt: {selectedPrompt}
-                    </h2>
-                    <button
-                        onClick={handleBackButtonClick}
-                        className="text-blue-default font-bold mt-4"
-                    >
-                        Back
-                    </button>
+                    <table className="w-full  border-2 border-collapse border-gray-300">
+                        <tbody>
+                            <tr>
+                                <td className="px-4 border border-gray-300">
+                                    <h3 className="font-bold">Strengths</h3>
+                                    <ul className="list-disc list-inside">
+                                        {swotData?.strengths && swotData.strengths.map((strength, index) => (
+                                            <li key={index}>{strength}</li>
+                                        ))}
+                                    </ul>
+                                </td>
+                                <td className="px-4 border border-gray-300">
+                                    <h3 className="font-bold">Weaknesses</h3>
+                                    <ul className="list-disc list-inside">
+                                        {swotData?.weaknesses && swotData.weaknesses.map((weakness, index) => (
+                                            <li key={index}>{weakness}</li>
+                                        ))}
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="px-4 border border-gray-300">
+                                    <h3 className="font-bold">Opportunities</h3>
+                                    <ul className="list-disc list-inside">
+                                        {swotData?.opportunities && swotData.opportunities.map((opportunity, index) => (
+                                            <li key={index}>{opportunity}</li>
+                                        ))}
+                                    </ul>
+                                </td>
+                                <td className="px-4 border border-gray-300">
+                                    <h3 className="font-bold">Threats</h3>
+                                    <ul className="list-disc list-inside">
+                                        {swotData?.threats && swotData.threats.map((threat, index) => (
+                                            <li key={index}>{threat}</li>
+                                        ))}
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             ) : (
-                <ul>{renderedPrompts}</ul>
-            )} */}
-            <p>{prompt}</p>
+                <p>{prompt}</p>
+                
+            )}
+            <div className="buttons flex space-x-5 mt-10 ">
+                    <button
+                        type="submit"
+                        className="bg-[#0F872F] py-2 px-4 rounded-md"
+                    >
+                        Save
+                    </button>
+                    <button
+                        type="submit"
+                        className="bg-[#ED0C0C] py-2 px-4 rounded-md"
+                        onClick={handleBackButtonClick}
+                    >
+                        Re-generate
+                    </button>
+                    <button
+                        type="submit"
+                        className="bg-[#0F872F] py-2 px-4 rounded-md"
+                        onClick={()=>handelNext(title)}
+                    >
+                        Next
+                    </button>
+                </div>
         </div>
     );
 };
