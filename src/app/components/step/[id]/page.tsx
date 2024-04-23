@@ -5,6 +5,10 @@ import { FaArrowRight } from "react-icons/fa";
 import ReactModal from "react-modal";
 import Step from "../card";
 import PromptGet from "../PromptGet";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+
 
 const Component1: React.FC = () => (
     <div>
@@ -111,6 +115,7 @@ const objects: ObjectData[] = [
 ];
 
 const page: React.FC = () => {
+
     const { id } = useParams();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [prompt, setPrompt] = useState<string>();
@@ -118,6 +123,7 @@ const page: React.FC = () => {
     const [selectedObject, setSelectedObject] = useState<ObjectData | null>(
         null
     );
+    const [finishedObject,setFinishedObject] = useState<string[]>(["mission"])
 
     const handleObjectClick = (object: ObjectData) => {
         setSelectedObject(object);
@@ -133,36 +139,49 @@ const page: React.FC = () => {
         setIsModalOpen(false);
         setSelectedObject(null);
         setIsSecModalOpen(false);
-    };
+    }; 
     const handleButtonClick = () => {
         setIsModalOpen(false);
         setIsSecModalOpen(true);
     };
+    const handleNextObject = (title: string) => {
+        setFinishedObject(prev => [...prev, title]);
+        const objectIndex = objects.findIndex(object => object.name === title);
+        
+        if (objectIndex === objects.length - 1) {
+            // If the last title is reached, navigate to the preview page
+            router.push("/components/Preview");
+        } else {
+            // Otherwise, proceed to the next title
+            setSelectedObject(objects[objectIndex + 1]);
+            setIsModalOpen(true);
+            setIsSecModalOpen(false)
+        }
+    };
+    
+    const router = useRouter();
+  
 
     return (
-        <div className="border my-4 rounded-md mx-2 w-[1150px] absolute top-[-1px] left-[320px]">
+        <div className="w-[100%">
+               <div className="border my-4 rounded-md mx-2  lg:w-[1150px] lg:absolute lg:top-[-1px] lg:left-[320px]">
             <div className="input flex justify-center">
                 <input
                     type="text"
                     placeholder="untitled"
-                    className="border m-4 py-2 outline-none px-10 text-center rounded-md "
+                    className="border m-4 lg:py-2 mt-10 p-2  outline-none px-10 text-center rounded-md "
                 />
             </div>
             <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(2, 1fr)",
-                    gap: "16px",
-                }}
-                className="w-[1100px] py-20 px-20 mt-6 ml-10 bg-white "
+                className=" grid lg:grid-cols-2 grid-cols-1 gap-[16px] lg:w-[1100px] lg:py-20 mx-3 lg:px-20 mt-6 lg:ml-10 bg-white "
             >
                 {objects.map((object, index) => (
                     <div
                         key={index}
-                        onClick={() => handleObjectClick(object)}
-                        className="px-6 my-6 x-8 border w-100 text-lg rounded-md pt-2 pb-6"
+                        onClick={() => finishedObject.includes(object.name) && handleObjectClick(object)}
+                        className={`px-6 my-6 x-8 border lg:w-100 text-lg rounded-md pt-2 pb-6 ${!finishedObject.includes(object.name) && "opacity-60"}`}
                     >
-                        <input type="radio" name="check" id="check" />
+                        {/* <input type="radio" name="check" id="check" /> */}
                         <h2 className="ml-4 font-bold text-blue-default text-center">
                             {object.name}
                         </h2>
@@ -171,12 +190,12 @@ const page: React.FC = () => {
                     </div>
                 ))}
             </div>
-            <div className="input flex justify-between ml-24 w-[960px] border  m-4 py-3 px-6 rounded-md space-x-5 ">
+            <div className="input flex justify-between lg:ml-24 lg:w-[960px] border  m-4 py-3 px-6 rounded-md space-x-5 ">
                 <div>
                     <input
                         type="text"
                         placeholder="Add a short description"
-                        className="outline-none bg-transparent w-[600px]"
+                        className="outline-none bg-transparent lg:w-[600px]"
                     />
                 </div>
                 <div>
@@ -192,7 +211,7 @@ const page: React.FC = () => {
             <ReactModal
                 isOpen={isModalOpen}
                 onRequestClose={handleCloseModal}
-                className="w-[600px]  p-10 mt-20 bg-white shadow-lg ml-[500px] "
+                className="lg:w-[600px]  p-10 mt-20 bg-white shadow-lg lg:ml-[500px] "
             >
                 {selectedObject && (
                     <Step
@@ -200,12 +219,13 @@ const page: React.FC = () => {
                         desc={selectedObject.component}
                     />
                 )}
-                <div className="input flex space-x-44 w-[500px] border  my-4 py-3 px-6 rounded-md ">
+                <div className="input flex border  my-4 py-3 px-5 rounded-md ">
                     <input
                         type="text"
                         placeholder="Add a short description"
-                        className="outline-none bg-transparent w-[300px]"
+                        className="outline-none  space-x-32 mr-4 lg:w-[500px] bg-transparent"
                         onChange={handleChange}
+                        required
                         value={prompt}
                     />
                     <button
@@ -222,37 +242,21 @@ const page: React.FC = () => {
             <ReactModal
                 isOpen={isSecModalOpen}
                 onRequestClose={handleCloseModal}
-                className="w-[900px]  px-10 py-10 mt-20 bg-white shadow-lg ml-[300px]"
+                className="lg:w-[900px]  px-10 py-10 mt-20 bg-white shadow-lg lg:ml-[300px]"
             >
                 {selectedObject && (
                     <PromptGet
                         title={selectedObject.name}
                         projectId={id as string}
                         query={prompt}
+                        handelNext={handleNextObject}
                     />
                 )}
-                <div className="buttons flex space-x-5 mt-10 ">
-                    <button
-                        type="submit"
-                        className="bg-[#0F872F] py-2 px-4 rounded-md"
-                    >
-                        Save
-                    </button>
-                    <button
-                        type="submit"
-                        className="bg-[#C3BC0D] py-2 px-4 rounded-md"
-                    >
-                        Enhance
-                    </button>
-                    <button
-                        type="submit"
-                        className="bg-[#ED0C0C] py-2 px-4 rounded-md"
-                    >
-                        Re-generate
-                    </button>
-                </div>
+                
             </ReactModal>
+        </div> 
         </div>
+    
     );
 };
 

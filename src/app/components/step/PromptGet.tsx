@@ -83,10 +83,11 @@ import Loader from "@/app/shared/loader/page";
 interface PromptGetProps {
     title: string;
     query: any;
+    handelNext:(object:any)=>void;
     projectId: string;
 }
 
-const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query }) => {
+const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNext }) => {
     const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
     const [prompt, setPrompt] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -199,7 +200,30 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query }) => {
                 </div>
             ) : (
                 <p>{prompt}</p>
+                
             )}
+            <div className="buttons flex space-x-5 mt-10 ">
+                    <button
+                        type="submit"
+                        className="bg-[#0F872F] py-2 px-4 rounded-md"
+                    >
+                        Save
+                    </button>
+                    <button
+                        type="submit"
+                        className="bg-[#ED0C0C] py-2 px-4 rounded-md"
+                        onClick={handleBackButtonClick}
+                    >
+                        Re-generate
+                    </button>
+                    <button
+                        type="submit"
+                        className="bg-[#0F872F] py-2 px-4 rounded-md"
+                        onClick={()=>handelNext(title)}
+                    >
+                        Next
+                    </button>
+                </div>
         </div>
     );
 };

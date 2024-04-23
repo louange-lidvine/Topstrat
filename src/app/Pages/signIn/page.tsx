@@ -73,9 +73,7 @@ function Page() {
                     if (
                         String(err?.response?.data?.error) ==
                         "Verify the account to continue!"
-                    ) {
-                        return router.push("/verify");
-                    }
+                    ) 
                     return toast.error(err?.response?.data?.error);
                 } else {
                     return toast.error(err.message);

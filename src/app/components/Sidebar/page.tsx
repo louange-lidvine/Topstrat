@@ -76,10 +76,10 @@
                         <BiMenu className="text-2xl" onClick={toggleMenu} />
                     </div>
                     {menuVisible && (
-                        <div className="px-4 py-2">
-                            <h2 className="mt-2 font-bold">Settings</h2>
-                            <h2 className="mt-2 font-bold">Logout</h2>
-                        </div>
+                    <div className="px-4 py-2">
+                    <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 py-3 h-12 rounded-sm">Settings</h2>
+                    <h2 className=" font-bold  hover:bg-red-400 px-10  py-3 h-12 rounded-sm" onClick={handleButtonClick}>Logout</h2>
+                </div>
                     )}
                 </div>
     
@@ -105,12 +105,12 @@
                                     <Link href={`/components/step/${project._id}`}>
                                         <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
                                     </Link>
-                                    <Link href={`/components/step/${project._id}`}>
+                                    {/* <Link href={`/components/step/${project._id}`}>
                                         <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
                                     </Link>
                                     <Link href={`/components/step/${project._id}`}>
                                         <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
-                                    </Link>
+                                    </Link> */}
                                 </div>
                             )))}
                         </div>
