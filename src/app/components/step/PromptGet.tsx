@@ -22,6 +22,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
         opportunities: string[];
         threats: string[];
     } | null>(null);
+    
 
     useEffect(() => {
         const fetchData = async () => {
