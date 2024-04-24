@@ -54,7 +54,7 @@ function ChooseMethod() {
     };
 
     return (
-        <div className="relative">
+        <div className="absolute">
             <FaPlus
                 className="mt-4"
                 onClick={() => setIsPopoverOpen(!isPopoverOpen)}

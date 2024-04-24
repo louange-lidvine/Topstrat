@@ -7,6 +7,7 @@ import Step from "../card";
 import PromptGet from "../PromptGet";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import {FaForward } from 'react-icons/fa'
 
 
 
@@ -96,12 +97,12 @@ const objects: ObjectData[] = [
         component: Component2,
     },
     {
-        name: "Values",
+        name: "values",
         desc: "Values are guiding principles shaping organizational culture.",
         component: Component3,
     },
     {
-        name: "Objectives",
+        name: "objectives",
         desc: "Objectives are measurable goals aligned with an organization's mission.",
         component: Component4,
     },
@@ -163,99 +164,98 @@ const page: React.FC = () => {
   
 
     return (
-        <div className="w-[100%] ">
-               <div className="border my-4 rounded-md mx-2  lg:float-right  z-[9999]">
-            <div className="input flex justify-center">
-                <input
-                    type="text"
-                    placeholder="untitled"
-                    className="border m-4 lg:py-2 mt-10 p-2  outline-none px-10 text-center rounded-md "
-                />
-            </div>
+    <div className="border my-4 rounded-md w-full lg:w-[78%] lg:mx-2 float-right lg:z-[9999]">
+    <div className="input flex justify-center">
+        <input
+            type="text"
+            placeholder="untitled"
+            className="border m-4 lg:py-2 mt-10 p-2 outline-none lg:px-10 text-center rounded-md"
+        />
+    </div>
+    <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 lg:w-full lg:py-20 lg:px-20 mt-6">
+        {objects.map((object, index) => (
             <div
-                className="  grid lg:grid-cols-2 grid-cols-1 gap-[16px] lg:w-[1100px] lg:py-20 mx-3 lg:px-20 mt-6 lg:ml-10  "
+                key={index}
+                onClick={() => finishedObject.includes(object.name) && handleObjectClick(object)}
+                className={`relative my-6 border w-full lg:w-[calc(50% - 12px)] text-lg rounded-md pt-2 pb-6 ${!finishedObject.includes(object.name) && "opacity-60 "}`}
             >
-                {objects.map((object, index) => (
-                    <div
-                        key={index}
-                        onClick={() => finishedObject.includes(object.name) && handleObjectClick(object)}
-                        className={`px-6 my-6 x-8 border lg:w-100 text-lg rounded-md pt-2 pb-6 ${!finishedObject.includes(object.name) && "opacity-60"}`}
-                    >
-                        {/* <input type="radio" name="check" id="check" /> */}
-                        <h2 className="ml-4 font-bold text-blue-default text-center">
-                            {object.name}
-                        </h2>
-                        <h2 className="font-md">{object.desc}</h2>
-                        <FaArrowRight className="float-right text-orange-default" />
-                    </div>
-                ))}
+                <h2 className="ml-4 font-bold text-blue-default text-center">
+                    {object.name}
+                </h2>
+                <h2 className="font-md">{object.desc}</h2>
+                <FaArrowRight className="absolute bottom-2 right-2 text-orange-default" />
             </div>
-            <div className="input flex justify-between lg:ml-24 lg:w-[960px] border  m-4 py-3 px-6 rounded-md space-x-5 ">
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Add a short description"
-                        className="outline-none bg-transparent lg:w-[600px]"
-                    />
-                </div>
-                <div>
-                    <button
-                        type="submit"
-                        className="text-blue-default font-bold"
-                    >
-                        Generate
-                    </button>
-                </div>
-            </div>
-
-            <ReactModal
-                isOpen={isModalOpen}
-                onRequestClose={handleCloseModal}
-                className="lg:w-[600px]  p-10 mt-20 bg-white shadow-lg lg:ml-[500px] "
-            >
-                {selectedObject && (
-                    <Step
-                        title={selectedObject.name}
-                        desc={selectedObject.component}
-                    />
-                )}
-                <div className="input flex border  my-4 py-3 px-5 rounded-md ">
-                    <input
-                        type="text"
-                        placeholder="Add a short description"
-                        className="outline-none  space-x-32 mr-4 lg:w-[500px] bg-transparent"
-                        onChange={handleChange}
-                        required
-                        value={prompt}
-                    />
-                    <button
-                        type="submit"
-                        className="text-blue-default font-bold"
-                        onClick={handleButtonClick}
-                    >
-                        Generate
-                    </button>
-                </div>
-                <button onClick={handleCloseModal}>Close Modal</button>
-            </ReactModal>
-
-            <ReactModal
-                isOpen={isSecModalOpen}
-                onRequestClose={handleCloseModal}
-                className="lg:w-[900px]  px-10 py-10 mt-20 bg-white shadow-lg lg:ml-[300px]"
-            >
-                {selectedObject && (
-                    <PromptGet
-                        title={selectedObject.name}
-                        projectId={id as string}
-                        query={prompt}
-                        handelNext={handleNextObject}
-                    />
-                )}
-                
-            </ReactModal>
-        </div> 
+        ))}
+    </div>
+    <div className="input flex justify-between lg:mx-auto lg:w-[90%] border m-4 py-3 px-6 rounded-md space-x-5">
+        <div>
+            <input
+                type="text"
+                placeholder="Add a short description"
+                className="outline-none bg-transparent lg:w-full"
+            />
         </div>
+        <div>
+            <button
+                type="submit"
+                className="hidden lg:text-blue-default font-bold"
+            >
+                Generate
+            </button>
+            <div className="lg:hidden block">
+                   <FaForward className="text-blue-default"/>
+            </div>
+         
+        </div>
+    </div>
+
+    <ReactModal
+        isOpen={isModalOpen}
+        onRequestClose={handleCloseModal}
+        className="p-10 mt-20 bg-white shadow-lg lg:w-full lg:max-w-[600px] mx-auto"
+    >
+        {selectedObject && (
+            <Step
+                title={selectedObject.name}
+                desc={selectedObject.component}
+            />
+        )}
+        <div className="input flex border my-4 py-3 px-5 rounded-md space-x-5">
+            <input
+                type="text"
+                placeholder="Add a short description"
+                className="outline-none bg-transparent flex-1 mr-4"
+                onChange={handleChange}
+                required
+                value={prompt}
+            />
+            <button
+                type="submit"
+                className="text-blue-default font-bold"
+                onClick={handleButtonClick}
+            >
+                Generate
+            </button>
+        </div>
+        <button onClick={handleCloseModal}>Close Modal</button>
+    </ReactModal>
+
+    <ReactModal
+        isOpen={isSecModalOpen}
+        onRequestClose={handleCloseModal}
+        className="px-10 py-10 mt-20 bg-white shadow-lg lg:w-full lg:max-w-[900px] mx-auto"
+    >
+        {selectedObject && (
+            <PromptGet
+                title={selectedObject.name}
+                projectId={id as string}
+                query={prompt}
+                handelNext={handleNextObject}
+            />
+        )}
+    </ReactModal>
+</div>
+
     
     );
 };
