@@ -24,7 +24,8 @@ function page() {
     };
 
     return (
-        <div className="border my-4 rounded-md w-full lg:w-[78%] lg:mx-2 float-right lg:z-[9999]">
+   
+                <div className=" border my-4 rounded-md w-full lg:w-[78%] lg:mx-2 float-right lg:z-[9999]"> 
         <div className="input flex justify-center">
             <input
                 type="text"
@@ -63,6 +64,7 @@ function page() {
         </div>
     
     </div>
+    
     );
 }
 

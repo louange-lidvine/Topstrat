@@ -15,7 +15,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="grid-flow-col">
-            <div className="absolute w-full h-screen">
+            <div className=" hidden lg:block lg:absolute">
                 <Image src={Background} alt="background"/>
             </div>
                 <Sidebar/>

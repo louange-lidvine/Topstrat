@@ -7,6 +7,7 @@ import Step from "../card";
 import PromptGet from "../PromptGet";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import {FaForward } from 'react-icons/fa'
 
 
 
@@ -163,7 +164,7 @@ const page: React.FC = () => {
   
 
     return (
-        <div className="border my-4 rounded-md w-full lg:w-[78%] lg:mx-2 float-right lg:z-[9999]">
+    <div className="border my-4 rounded-md w-full lg:w-[78%] lg:mx-2 float-right lg:z-[9999]">
     <div className="input flex justify-center">
         <input
             type="text"
@@ -176,7 +177,7 @@ const page: React.FC = () => {
             <div
                 key={index}
                 onClick={() => finishedObject.includes(object.name) && handleObjectClick(object)}
-                className={`relative my-6 border w-full lg:w-[calc(50% - 12px)] text-lg rounded-md pt-2 pb-6 ${!finishedObject.includes(object.name) && "opacity-60"}`}
+                className={`relative my-6 border w-full lg:w-[calc(50% - 12px)] text-lg rounded-md pt-2 pb-6 ${!finishedObject.includes(object.name) && "opacity-60 "}`}
             >
                 <h2 className="ml-4 font-bold text-blue-default text-center">
                     {object.name}
@@ -197,10 +198,14 @@ const page: React.FC = () => {
         <div>
             <button
                 type="submit"
-                className="text-blue-default font-bold"
+                className="hidden lg:text-blue-default font-bold"
             >
                 Generate
             </button>
+            <div className="lg:hidden block">
+                   <FaForward className="text-blue-default"/>
+            </div>
+         
         </div>
     </div>
 

@@ -11,16 +11,6 @@ export default function middleware(
 ) {
   const token = req.cookies.get("token")?.value;
 
-  // const decoded = jwtDecode(token ?? "");
-  // try {
-  //   const currentDate = new Date().toDateString();
-  //   const decodedDate = new Date(decoded.iat ?? "").toDateString();
-  //   console.log(`Current date: ${currentDate}`);
-  //   console.log(`Decoded date: ${decodedDate}`);
-  // } catch (error) {
-  //   console.error("Error parsing date:", error);
-  // }
-
   if (
     req.nextUrl.pathname === "/components" 
   ) {

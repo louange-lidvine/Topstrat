@@ -55,11 +55,11 @@ function Page() {
                 if (decoded.role == "admin") {
                     router.push("/components/Dashboard");
                     setLoading(false);
-                    toast.success("Admin Logged in successfully!");
+                    toast.success("Admin Logged in successfully");
                 } else if (decoded.role == "user") {
                     router.push("/components/Landingpage");
                     setLoading(false);
-                    toast.success("User Logged in successfully!");
+                    toast.success("User Logged in successfully");
                     router.push("/components/Landingpage");
                 } else {
                     toast.error("Role Not valid!");
@@ -72,11 +72,11 @@ function Page() {
                 if (err?.response?.data?.success) {
                     if (
                         String(err?.response?.data?.error) ==
-                        "Verify the account to continue!"
+                        "Network error occurred"
                     ) 
-                    return toast.error(err?.response?.data?.error);
+                    return toast.error("An error occurred please try again");
                 } else {
-                    return toast.error(err.message);
+                    return toast.error("An error occured try again later");
                 }
             });
     };

@@ -70,13 +70,13 @@
     
         return (
             <div className="fixed top-0 left-0 h-screen w-full overflow-hidden">
-                <div className="lg:hidden fixed top-0 left-0 w-full bg-blue-default text-white">
+                <div className="lg:hidden  fixed w-full bg-blue-default text-white">
                     <div className="flex justify-between items-center px-4 py-2">
-                        <h1 className="text-xl font-bold">Topstrat</h1>
-                        <BiMenu className="text-2xl" onClick={toggleMenu} />
+                    <BiMenu className="text-2xl" onClick={toggleMenu} />
+                    <h1 className="text-xl font-bold">Topstrat</h1>
                     </div>
                     {menuVisible && (
-                    <div className="px-4 py-2">
+                    <div className="px-4 py-2 h-[700px]">
                     <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 py-3 h-12 rounded-sm">Settings</h2>
                     <h2 className=" font-bold  hover:bg-red-400 px-10  py-3 h-12 rounded-sm" onClick={handleButtonClick}>Logout</h2>
                 </div>
