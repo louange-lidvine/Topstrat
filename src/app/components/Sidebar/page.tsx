@@ -76,43 +76,49 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     return (
         <>
             <div
-                className={`hidden lg:flex flex-col  text-white w-[25vw]  bg-blue-default m-2 rounded-md`}
+                className={`hidden lg:flex flex-col  text-white w-[20vw]  bg-blue-default m-2 rounded-md`}
             >
-                <div className="user-part ">
-                    <Profile pic={user} name="Lauren Spencer" />
-                </div>
-                <hr className="w-64 ml-3" />
-                <div className="lower-part">
-                    <div className="projects">
-                        <div className="title grid grid-cols-2 space-x-16 ">
-                            <div className="title grid grid-cols-2 space-x-40 ">
-                                <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
-                                    Projects
-                                </h1>
-                                <ChooseMethod />
+                <div className="flex flex-col justify-between gap-40 ">
+                    <div className="user-part ">
+                        <Profile pic={user} name="Lauren Spencer" />
+                    </div>
+                    <div className="middle-part flex flex-col gap-3">
+                        <hr className="w-64 ml-3" />
+
+                        <div className="projects">
+                            <div className="title grid grid-cols-2 space-x-16 ">
+                                <div
+                                    className="title grid grid-cols-2 space-x-40
+        "
+                                >
+                                    <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
+                                        Projects
+                                    </h1>
+                                    <ChooseMethod />
+                                </div>
                             </div>
-                        </div>
-                        {isLoading ? (
-                            <SbLoad />
-                        ) : (
-                            projects.map((project, index) => (
-                                <div key={index} className="mt-4 ">
-                                    <Link
-                                        href={`/components/step/${project._id}`}
-                                    >
-                                        <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm">
-                                            {project.name}
-                                        </h1>
-                                    </Link>
-                                    {/* <Link href={`/components/step/${project._id}`}>
+                            {isLoading ? (
+                                <SbLoad />
+                            ) : (
+                                projects.map((project, index) => (
+                                    <div key={index} className="mt-4 ">
+                                        <Link
+                                            href={`/components/step/${project._id}`}
+                                        >
+                                            <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm">
+                                                {project.name}
+                                            </h1>
+                                        </Link>
+                                        {/* <Link href={`/components/step/${project._id}`}>
                                         <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
                                     </Link>
                                     <Link href={`/components/step/${project._id}`}>
                                         <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
                                     </Link> */}
-                                </div>
-                            ))
-                        )}
+                                    </div>
+                                ))
+                            )}
+                        </div>
                     </div>
                     <div className="py-10">
                         <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 w-[288px] py-3 h-12 rounded-sm">
@@ -152,56 +158,71 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     </ReactModal>
                 </div>
             </div>
-            <div className="relative w-full lg:hidden text-white bg-blue-default">
+            <div className="relative w-full lg:hidden text-white bg-blue-default gap-10">
                 <div className="flex justify-between items-center px-4 py-2">
                     <BiMenu className="text-2xl" onClick={toggleMenu} />
                     <h1 className="text-xl font-bold">Topstrat</h1>
                 </div>
                 <div
-                    className={` absolute z-10  bg-blue-default h-screen max-w-[50vw] top-[100%] transition-all duration-700 ${
+                    className={` absolute z-10  bg-blue-default h-screen max-w-[40vw] top-[100%] transition-all duration-700 ${
                         menuVisible ? "left-0" : "-left-[200%]"
                     }`}
                 >
-                    <div className="projects">
-                        <div className="title grid grid-cols-2 space-x-16 ">
-                            <div className="title grid grid-cols-2 space-x-40 ">
-                                <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
-                                    Projects
-                                </h1>
-                                <ChooseMethod />
-                            </div>
+                    <div className="projects flex flex-col gap-40">
+                        <div className="user-part ">
+                            <Profile pic={user} name="Lauren Spencer" />
                         </div>
-                        {isLoading ? (
-                            <SbLoad />
-                        ) : (
-                            projects.map((project, index) => (
-                                <div key={index} className="mt-4 ">
-                                    <Link
-                                        href={`/components/step/${project._id}`}
+                        <div className="middle-part flex flex-col gap-3">
+                            <hr className="w-64 ml-3" />
+
+                            <div className="projects">
+                                <div className="title grid grid-cols-2 space-x-16 ">
+                                    <div
+                                        className="title grid grid-cols-2 space-x-40
+        "
                                     >
-                                        <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm">
-                                            {project.name}
+                                        <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
+                                            Projects
                                         </h1>
-                                    </Link>
-                                    {/* <Link href={`/components/step/${project._id}`}>
+                                        <ChooseMethod />
+                                    </div>
+                                </div>
+                                {isLoading ? (
+                                    <SbLoad />
+                                ) : (
+                                    projects.map((project, index) => (
+                                        <div key={index} className="mt-4 ">
+                                            <Link
+                                                href={`/components/step/${project._id}`}
+                                            >
+                                                <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm">
+                                                    {project.name}
+                                                </h1>
+                                            </Link>
+                                            {/* <Link href={`/components/step/${project._id}`}>
                                         <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
                                     </Link>
                                     <Link href={`/components/step/${project._id}`}>
                                         <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
                                     </Link> */}
-                                </div>
-                            ))
-                        )}
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 py-3 h-12 rounded-sm">
+                                Settings
+                            </h2>
+                            <h2
+                                className=" font-bold  hover:bg-red-400 px-10  py-3 h-12 rounded-sm"
+                                onClick={handleButtonClick}
+                            >
+                                Logout
+                            </h2>
+                        </div>
                     </div>
-                    <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 py-3 h-12 rounded-sm">
-                        Settings
-                    </h2>
-                    <h2
-                        className=" font-bold  hover:bg-red-400 px-10  py-3 h-12 rounded-sm"
-                        onClick={handleButtonClick}
-                    >
-                        Logout
-                    </h2>
                 </div>
             </div>
         </>

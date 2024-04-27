@@ -2,7 +2,7 @@ import React from 'react'
 
 function Preview() {
   return (
-      <div className="border border-blue-default my-4 rounded-md mx-2 w-[75%] float-right p-4 font-medium ">
+      <div className="border border-blue-default my-4 rounded-md mx-2  float-right p-4 font-medium ">
           <div className="flex flex-col  justify-center items-center gap-4 text-2xl ">
               <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
                   untitled project
@@ -57,7 +57,7 @@ function Preview() {
                   SWOT ANALYSIS
               </h2>
               <div className="w-[100%] flex justify-center items-center">
-                  <table className="border border-collapse w-[80%]  ">
+                  <table className="border border-collapse w-full overflow-x-auto  ">
                       <tr className="text-blue-default">
                           <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">
                               Strengths(S)

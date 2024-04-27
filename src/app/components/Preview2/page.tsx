@@ -2,7 +2,7 @@ import React from "react";
 
 function Preview() {
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 w-[75%] float-right p-4 font-medium flex flex-col gap-8  h-full">
+        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8  w-full  ">
             <div className="flex flex-col  justify-center items-center gap-8 text-2xl ">
                 <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
                     untitled project
