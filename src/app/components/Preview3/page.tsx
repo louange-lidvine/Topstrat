@@ -1,8 +1,10 @@
+"use client";
 import React from "react";
-
+import { useRouter } from "next/navigation";
 function Preview() {
+    const router = useRouter();
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2  float-right p-4 font-medium flex flex-col gap-8  h-full">
+        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8  w-full  ">
             <div className="flex flex-col  justify-center items-center gap-8 text-2xl ">
                 <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
                     untitled project
@@ -42,7 +44,7 @@ function Preview() {
                     </div>
                     <div className="col-span-1 border border-1 rounded">
                         <div className="p-2 text-blue-default font-bold text-1xl text-center text-2xl  bg-slate-300">
-                            Legal (L)
+                         Legal(L)
                         </div>
                     </div>
                     <div className="col-span-1 border border-1 rounded  bg-slate-300">
@@ -65,7 +67,7 @@ function Preview() {
                     </div>
                     <div className="col-span-1 border border-1 rounded">
                         <div className="p-2 text-blue-default font-bold text-1xl text-center text-2xl  bg-slate-300">
-                            Environmental(E)
+                         Environmental(E)
                         </div>
                     </div>
                     <div className="col-span-1 border border-1 rounded  bg-slate-300">
@@ -101,6 +103,12 @@ function Preview() {
                         </div>
                     </div> */}
                 </div>
+            </div>
+            <div
+                className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 px-6 "
+                onClick={() => router.push("../../components/logframe")}
+            >
+                <div className="flex  items-center justify-center ">next</div>
             </div>
         </div>
     );

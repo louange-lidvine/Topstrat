@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
-
+import { useRouter } from "next/navigation";
 function Preview() {
+     const router = useRouter();
     return (
         <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8  w-full  ">
             <div className="flex flex-col  justify-center items-center gap-8 text-2xl ">
@@ -101,6 +103,12 @@ function Preview() {
                         </div>
                     </div> */}
                 </div>
+            </div>
+            <div
+                className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 px-6 "
+                onClick={() => router.push("../../components/Preview3")}
+            >
+                <div className="flex  items-center justify-center ">next</div>
             </div>
         </div>
     );
