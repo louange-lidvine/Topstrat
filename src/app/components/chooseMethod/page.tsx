@@ -21,31 +21,54 @@ function ChooseMethod() {
                 return;
             }
 
-            const response = await axios.post(
-                "https://topstrat-backend.onrender.com/projects/create",
-                {
-                    userId: userId,
-                    name: "project",
-                    description: "My project",
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
-                        }`,
-                    },
-                }
-            );
-
-            console.log(response);
+           
             // Assuming the response contains the userId and projectId
             const projectId = response.data._id;
             console.log(projectId);
 
             if (value === "quick") {
+               const response= await axios.post(
+                      "https://topstrat-backend.onrender.com/projects/create",
+                      {
+                          userId: userId,
+                          name: "",
+                          description: "",
+                          autoGenerate: true,
+                      },
+                      {
+                          headers: {
+                              "Content-Type": "application/json",
+                              Authorization: `Bearer ${
+                                  JSON.parse(token ?? "").access_token
+                              }`,
+                          },
+                      }
+                  );
+                          const projectId = response.data._id;
+                          console.log(projectId);
+
                 router.push(`/components/Landingpage/${projectId}`);
             } else if (value === "step") {
+                  const response = await axios.post(
+                      "https://topstrat-backend.onrender.com/projects/create",
+                      {
+                          userId: userId,
+                          name: "",
+                          description: "",
+                          autoGenerate: false,
+                      },
+                      {
+                          headers: {
+                              "Content-Type": "application/json",
+                              Authorization: `Bearer ${
+                                  JSON.parse(token ?? "").access_token
+                              }`,
+                          },
+                      }
+                );
+                         const projectId = response.data._id;
+                         console.log(projectId);
+
                 router.push(`/components/step/${projectId}`);
             }
         } catch (error) {
