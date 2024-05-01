@@ -12,7 +12,7 @@ import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import "../app.css";
-
+import EditProj from "../EditProj/page";
 interface SidebarProps {
     isOpen: boolean;
 }
@@ -41,6 +41,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const handleButtonClick = () => {
         setIsModalOpen(true);
     };
+
+
 
     useEffect(() => {
         // Fetch projects from the backend
@@ -101,21 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                 <SbLoad />
                             ) : (
                                 projects.map((project, index) => (
-                                    <div key={index} className="mt-4 ">
-                                        <Link
-                                            href={`/components/step/${project._id}`}
-                                        >
-                                            <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm">
-                                                {project.name}
-                                            </h1>
-                                        </Link>
-                                        {/* <Link href={`/components/step/${project._id}`}>
-                                        <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
-                                    </Link>
-                                    <Link href={`/components/step/${project._id}`}>
-                                        <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
-                                    </Link> */}
-                                    </div>
+                                    <EditProj key={index} project={project} remove={()=>setProjects(projects.filter((proj)=>proj._id === project._id))} />
                                 ))
                             )}
                         </div>
@@ -195,9 +183,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                             <Link
                                                 href={`/components/step/${project._id}`}
                                             >
-                                                <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm">
+                                                <div className=" group hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm">
                                                     {project.name}
-                                                </h1>
+                                                </div>
                                             </Link>
                                             {/* <Link href={`/components/step/${project._id}`}>
                                         <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
