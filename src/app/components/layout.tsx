@@ -22,16 +22,16 @@ export default function RootLayout({
 
     return (
         <html lang="en">
-            <body className="grid-flow-co h-screen w-screen overflow-hidden">
-                {/* <div className="hidden lg:block lg:absolute">
+            <body className="grid-flow-col h-screen w-screen overflow-hidden">
+             <div className="hidden lg:block lg:absolute">
                     <Image src={Background} alt="background" />
-                </div>
-                <button
+                </div> 
+                {/* <button
                     className="lg:hidden absolute top-0 left-0 m-4"
                     onClick={toggleSidebar}
                 >
                     Menu
-                </button> */}
+                </button>  */}
                 <div className="flex flex-col lg:flex-row h-full">
                     <Sidebar isOpen={isSidebarOpen} />
                     <div className="flex-grow overflow-y-auto overflow-x-hidden h-full">{children}</div>
