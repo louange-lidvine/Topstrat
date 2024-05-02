@@ -104,7 +104,7 @@ export default function ({
     return (
         <div
             className="relative hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm"
-            onClick={() => handleProjectClick(project._id)}
+            onClick={() => isPopoverOpen === false &&  handleProjectClick(project._id)}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => {
                 setIsHover(false);
