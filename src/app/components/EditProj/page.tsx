@@ -6,8 +6,10 @@ import { useRouter } from "next/navigation";
 export default function ({
     project,
     remove,
+    selected,
 }: {
     project: any;
+    selected: boolean;
     remove: () => void;
 }) {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -52,9 +54,9 @@ export default function ({
                 }
             );
             if (checkResponseFormat(response.data)) {
-                navigate.push("../Preview");
+                navigate.push(`/components/Preview/${projectId}`);
             } else {
-                navigate.push("../step");
+                navigate.push(`/components/step/${projectId}`);
             }
             // Do something with the response data from the second Axios call
             console.log(response.data);
@@ -78,7 +80,7 @@ export default function ({
                 }
             );
             console.log("Delete API called");
-            remove();  
+            remove();
         } catch (error) {
             console.error("Error deleting:", error);
             console.log("proj id" + projectId);
@@ -98,13 +100,14 @@ export default function ({
     //         })
     //         .catch((err) => {
     //             console.log(err);
-    //         });
+    //         })
     // };
 
     return (
         <div
-            className="relative hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm"
-            onClick={() => isPopoverOpen === false &&  handleProjectClick(project._id)}
+            className={`relative hover:bg-gray-300 hover:bg-opacity-80  px-10 py-3  rounded-sm ${
+                selected && "bg-gray-300 bg-opacity-80"
+            }`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => {
                 setIsHover(false);
@@ -112,22 +115,29 @@ export default function ({
                 setOpenInput(false);
             }}
         >
-            {openInput ? (
-                <input
-                    className="bg-slate-500 text-white w-full"
-                    type="text"
-                    placeholder={project.name}
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
-                />
-            ) : (
-                <p>
-                    {" "}
-                    {project.name.length > 20
-                        ? project.name.slice(20) + "..."
-                        : project.name}
-                </p>
-            )}
+            <div
+                className="  w-[288px] "
+                onClick={() =>
+                    isPopoverOpen === false && handleProjectClick(project._id)
+                }
+            >
+                {openInput ? (
+                    <input
+                        className="bg-slate-500 text-white w-full"
+                        type="text"
+                        placeholder={project.name}
+                        value={newName}
+                        onChange={(e) => setNewName(e.target.value)}
+                    />
+                ) : (
+                    <p>
+                        {" "}
+                        {project.name.length > 20
+                            ? project.name.slice(20) + "..."
+                            : project.name}
+                    </p>
+                )}
+            </div>
             {isHover && (
                 <div
                     className="absolute z-index items-center justify-end bg-slate-500 rounded  text-white top-2 translate-y-1/2 right-5"
@@ -144,7 +154,7 @@ export default function ({
                             }}
                         >
                             <ul className=" flex flex-col gap-3 bg-slate-800">
-                                <li
+                                {/* <li
                                     className=" hover:bg-slate-500 hover:cursor-pointer"
                                     onClick={() => {
                                         setIsPopoverOpen(false);
@@ -152,7 +162,7 @@ export default function ({
                                     }}
                                 >
                                     Rename
-                                </li>
+                                </li> */}
                                 <li
                                     className=" hover:bg-slate-500  hover:cursor-pointer"
                                     onClick={() => {
