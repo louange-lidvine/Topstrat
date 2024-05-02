@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import ReactModal from "react-modal";
-import Loader from "@/app/shared/loader/page";
+import SbLoad from "@/app/shared/loader/sbload";
 
 function ChooseMethod() {
     const router = useRouter();
@@ -129,9 +129,11 @@ function ChooseMethod() {
                     className="flex flex-col justify-center items-center gap-5"
                     onSubmit={handleSubmit}
                 >
+                    <h2>Enter project information</h2>
                     <input
                         type="text"
                         placeholder="Enter name"
+                        className=" w-[400px] border  lg:py-2  p-2 outline-none  text-start rounded-md"
                         name="name"
                         onChange={handleChange}
                         value={formData.name}
@@ -140,11 +142,12 @@ function ChooseMethod() {
                         placeholder="Enter description"
                         rows={4}
                         onChange={handleChange}
+                        className=" w-[400px] border lg:py-2  p-2 outline-none  text-start rounded-md"
                         name="description"
                         value={formData.description}
                     />
-                    <button type="submit" disabled={isLoading}>
-                        {isLoading ? <Loader /> : "Submit"}
+                    <button type="submit" disabled={isLoading} className="bg-[#0F872F] py-2 px-4 rounded-md">
+                        {isLoading ? <SbLoad /> : "Submit"}
                     </button>
                 </form>
                 <button onClick={handleCloseModal}>Cancel</button>
