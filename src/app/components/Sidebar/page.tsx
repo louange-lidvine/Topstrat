@@ -1,7 +1,5 @@
-"use client";
+"use client"
 import React, { useState, useEffect } from "react";
-// import user from "../../../../public/assets/user.png";
-import Profile from "../profile/page";
 import { BiMenu } from "react-icons/bi";
 import axios from "axios";
 import Link from "next/link";
@@ -11,8 +9,10 @@ import SbLoad from "@/app/shared/loader/sbload";
 import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
-import "../app.css";
+import CryptoJS from "crypto-js"; // Import CryptoJS library
+import Profile from "../profile/page";
 import EditProj from "../EditProj/page";
+
 interface SidebarProps {
     isOpen: boolean;
 }
@@ -24,6 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const [projects, setProjects] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [gravatarUrl, setGravatarUrl] = useState<string>("");
 
     const logout = () => {
         setIsLoading(true);
@@ -74,6 +75,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         fetchProjects(); // Fetch projects when the component mounts
     }, []);
 
+    useEffect(() => {
+        // Generate Gravatar URL
+        const generateGravatar = () => {
+            const hashedEmail = CryptoJS.SHA256("your-email@example.com"); // Hash email using SHA-256
+            const gravatarUrl = `https://www.gravatar.com/avatar/${hashedEmail}`; // Construct Gravatar URL
+            setGravatarUrl(gravatarUrl); // Set Gravatar URL
+        };
+
+        generateGravatar(); // Call function to generate Gravatar URL
+    }, []);
     return (
         <>
             <div
@@ -81,10 +92,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             >
                 <div className="flex flex-col justify-between gap-40 ">
                     <div className="user-part ">
-                        <Profile
-                            pic={"https://api.dicebear.com/8.x/avataaars/svg"}
-                            name="Lauren Spencer"
-                        />
+                        <Profile pic={gravatarUrl} name="Lauren Spencer" />
                     </div>
                     <div className="middle-part flex flex-col gap-3">
                         <hr className="w-64 ml-3" />
@@ -160,7 +168,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     </ReactModal>
                 </div>
             </div>
-            <div className="relative w-full lg:hidden text-white bg-blue-default gap-10">
+            <div className="relative w-full lg:hidden z text-white bg-blue-default gap-10">
                 <div className="flex justify-between items-center px-4 py-2">
                     <BiMenu className="text-2xl" onClick={toggleMenu} />
                     <h1 className="text-xl font-bold">Topstrat</h1>
@@ -172,12 +180,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 >
                     <div className="projects flex flex-col gap-40">
                         <div className="user-part ">
-                            <Profile
-                                pic={
-                                    "https://api.dicebear.com/8.x/avataaars/svg"
-                                }
-                                name="Lauren Spencer"
-                            />
+                            <Profile pic={gravatarUrl} name="Lauren Spencer" />
                         </div>
                         <div className="middle-part flex flex-col gap-3">
                             <hr className="w-64 ml-3" />
