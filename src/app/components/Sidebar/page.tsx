@@ -92,7 +92,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             >
                 <div className="flex flex-col justify-between gap-40 ">
                     <div className="user-part ">
-                        <Profile pic={gravatarUrl} name="Lauren Spencer" />
+                        <Profile pic={gravatarUrl} />
                     </div>
                     <div className="middle-part flex flex-col gap-3">
                         <hr className="w-64 ml-3" />
