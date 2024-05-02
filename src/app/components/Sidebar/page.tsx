@@ -9,7 +9,7 @@ import SbLoad from "@/app/shared/loader/sbload";
 import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
-import CryptoJS from "crypto-js"; // Import CryptoJS library
+import CryptoJS from "crypto-js"; 
 import Profile from "../profile/page";
 import EditProj from "../EditProj/page";
 
