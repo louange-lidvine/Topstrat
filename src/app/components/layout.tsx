@@ -26,12 +26,6 @@ export default function RootLayout({
              <div className="hidden lg:block lg:absolute">
                     <Image src={Background} alt="background" />
                 </div> 
-                {/* <button
-                    className="lg:hidden absolute top-0 left-0 m-4"
-                    onClick={toggleSidebar}
-                >
-                    Menu
-                </button>  */}
                 <div className="flex flex-col lg:flex-row h-full">
                     <Sidebar isOpen={isSidebarOpen} />
                     <div className="flex-grow overflow-y-auto overflow-x-hidden h-full">{children}</div>

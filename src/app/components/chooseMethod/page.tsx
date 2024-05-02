@@ -65,7 +65,7 @@ function ChooseMethod() {
 
             // Redirect the user based on the selected method
             if (formData.method === "quick") {
-                router.push(`/components/Landingpage/${projectId}`);
+                router.push(`/components/Preview/${projectId}`);
             } else if (formData.method === "step") {
                 router.push(`/components/step/${projectId}`);
             }
