@@ -17,7 +17,6 @@ const GoogleButton: React.FC<GoogleButtonProps> = ({ onSuccess, onError, buttonT
     <GoogleOAuthProvider clientId="825803595408-bt5tc0r25fsoll2fdevn9p81hvajrgt8.apps.googleusercontent.com">
     <GoogleLogin
   onSuccess={credentialResponse => {
-    console.log(credentialResponse);
     toast.success('Logged in successfully !')
     router.push('/components/Landingpage')
     setCookie("token",credentialResponse.credential)

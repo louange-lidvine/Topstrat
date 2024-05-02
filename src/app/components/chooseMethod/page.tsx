@@ -22,9 +22,9 @@ function ChooseMethod() {
             }
 
            
-            // Assuming the response contains the userId and projectId
-            const projectId = response.data._id;
-            console.log(projectId);
+            // // Assuming the response contains the userId and projectId
+            // const projectId = response.data._id;
+            // console.log(projectId);
 
             if (value === "quick") {
                const response= await axios.post(
@@ -43,7 +43,7 @@ function ChooseMethod() {
                               }`,
                           },
                       }
-                  );
+                  );    
                           const projectId = response.data._id;
                           console.log(projectId);
 
@@ -53,8 +53,8 @@ function ChooseMethod() {
                       "https://topstrat-backend.onrender.com/projects/create",
                       {
                           userId: userId,
-                          name: "",
-                          description: "",
+                          name: "Project 2",
+                          description: "test test project",
                           autoGenerate: false,
                       },
                       {
