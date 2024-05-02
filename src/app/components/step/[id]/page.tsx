@@ -97,12 +97,12 @@ const objects: ObjectData[] = [
         component: Component2,
     },
     {
-        name: "value",
+        name: "values",
         desc: "Values are guiding principles shaping organizational culture.",
         component: Component3,
     },
     {
-        name: "objective",
+        name: "objectives",
         desc: "Objectives are measurable goals aligned with an organization's mission.",
         component: Component4,
     },

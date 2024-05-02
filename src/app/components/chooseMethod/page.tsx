@@ -20,54 +20,31 @@ function ChooseMethod() {
                 // Handle the error or redirect to the login page
                 return;
             }
-
-           
-            // Assuming the response contains the userId and projectId
+            const response = await axios.post(
+                "https://topstrat-backend.onrender.com/projects/create",
+                {
+                    userId: userId,
+                    name: "",
+                    description: "",
+                    autoGenerate: true,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
             const projectId = response.data._id;
             console.log(projectId);
-
+           
+            // Assuming the response contains the userId and projectId
+           
             if (value === "quick") {
-               const response= await axios.post(
-                      "https://topstrat-backend.onrender.com/projects/create",
-                      {
-                          userId: userId,
-                          name: "",
-                          description: "",
-                          autoGenerate: true,
-                      },
-                      {
-                          headers: {
-                              "Content-Type": "application/json",
-                              Authorization: `Bearer ${
-                                  JSON.parse(token ?? "").access_token
-                              }`,
-                          },
-                      }
-                  );
-                          const projectId = response.data._id;
-                          console.log(projectId);
-
                 router.push(`/components/Landingpage/${projectId}`);
             } else if (value === "step") {
-                  const response = await axios.post(
-                      "https://topstrat-backend.onrender.com/projects/create",
-                      {
-                          userId: userId,
-                          name: "",
-                          description: "",
-                          autoGenerate: false,
-                      },
-                      {
-                          headers: {
-                              "Content-Type": "application/json",
-                              Authorization: `Bearer ${
-                                  JSON.parse(token ?? "").access_token
-                              }`,
-                          },
-                      }
-                );
-                         const projectId = response.data._id;
-                         console.log(projectId);
 
                 router.push(`/components/step/${projectId}`);
             }
