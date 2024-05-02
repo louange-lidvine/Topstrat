@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 import { getCookie } from "cookies-next";
 import Loader from "@/app/shared/loader/page";
 
