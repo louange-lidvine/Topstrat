@@ -3,76 +3,78 @@ import { FaPlus } from "react-icons/fa";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
+import ReactModal from "react-modal";
+import Loader from "@/app/shared/loader/page";
 
 function ChooseMethod() {
     const router = useRouter();
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [formData, setFormData] = useState({
+        name: "",
+        description: "",
+        method: "", // Add method field
+    });
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
 
     const handleRadioChange = async (value: string) => {
         setIsPopoverOpen(false);
+        setIsModalOpen(true);
+        setFormData((prevState) => ({
+            ...prevState,
+            method: value,
+        }));
+    };
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsLoading(true);
+
         try {
-            const userId = localStorage.getItem("userId");
             const token = getCookie("token");
-            console.log(userId);
-            console.log(token);
-            if (!userId) {
-                console.error("User Id not found");
-                // Handle the error or redirect to the login page
-                return;
-            }
 
-           
-            // // Assuming the response contains the userId and projectId
-            // const projectId = response.data._id;
-            // console.log(projectId);
+            const response = await axios.post(
+                "https://topstrat-backend.onrender.com/projects/create",
+                { ...formData, autoGenerate: formData.method === "quick" },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
 
-            if (value === "quick") {
-               const response= await axios.post(
-                      "https://topstrat-backend.onrender.com/projects/create",
-                      {
-                          userId: userId,
-                          name: "",
-                          description: "",
-                          autoGenerate: true,
-                      },
-                      {
-                          headers: {
-                              "Content-Type": "application/json",
-                              Authorization: `Bearer ${
-                                  JSON.parse(token ?? "").access_token
-                              }`,
-                          },
-                      }
-                  );    
-                          const projectId = response.data._id;
-                          console.log(projectId);
+            const projectId = response.data._id;
+            console.log(projectId);
 
+            // Redirect the user based on the selected method
+            if (formData.method === "quick") {
                 router.push(`/components/Landingpage/${projectId}`);
-            } else if (value === "step") {
-                  const response = await axios.post(
-                      "https://topstrat-backend.onrender.com/projects/create",
-                      {
-                          userId: userId,
-                          name: "Project 2",
-                          description: "test test project",
-                          autoGenerate: false,
-                      },
-                      {
-                          headers: {
-                              "Content-Type": "application/json",
-                              Authorization: `Bearer ${
-                                  JSON.parse(token ?? "").access_token
-                              }`,
-                          },
-                      }
-                );
-                         const projectId = response.data._id;
-                         console.log(projectId);
-
+            } else if (formData.method === "step") {
                 router.push(`/components/step/${projectId}`);
             }
         } catch (error) {
             console.error("Error creating project:", error);
+            router.push("/Pages/signup");
+        } finally {
+            setIsLoading(false);
+            setIsModalOpen(false);
         }
     };
 
@@ -99,7 +101,7 @@ function ChooseMethod() {
                     <div className="mb-[10px]">
                         <input
                             type="radio"
-                            name="favoriteFramework"
+                            name="method"
                             value="quick"
                             onChange={() => handleRadioChange("quick")}
                             className="mr-[5px]"
@@ -109,7 +111,7 @@ function ChooseMethod() {
                     <div className="mb-[10px]">
                         <input
                             type="radio"
-                            name="favoriteFramework"
+                            name="method"
                             value="step"
                             onChange={() => handleRadioChange("step")}
                             className="mr-[5px]"
@@ -118,6 +120,35 @@ function ChooseMethod() {
                     </div>
                 </div>
             )}
+            <ReactModal
+                isOpen={isModalOpen}
+                onRequestClose={handleCloseModal}
+                className="w-[600px]  p-10 mt-20 bg-white shadow-lg ml-[500px] "
+            >
+                <form
+                    className="flex flex-col justify-center items-center gap-5"
+                    onSubmit={handleSubmit}
+                >
+                    <input
+                        type="text"
+                        placeholder="Enter name"
+                        name="name"
+                        onChange={handleChange}
+                        value={formData.name}
+                    />
+                    <textarea
+                        placeholder="Enter description"
+                        rows={4}
+                        onChange={handleChange}
+                        name="description"
+                        value={formData.description}
+                    />
+                    <button type="submit" disabled={isLoading}>
+                        {isLoading ? <Loader /> : "Submit"}
+                    </button>
+                </form>
+                <button onClick={handleCloseModal}>Cancel</button>
+            </ReactModal>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import user from "../../../../public/assets/user.png";
+// import user from "../../../../public/assets/user.png";
 import Profile from "../profile/page";
 import { BiMenu } from "react-icons/bi";
 import axios from "axios";
@@ -82,7 +82,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             >
                 <div className="flex flex-col justify-between gap-40 ">
                     <div className="user-part ">
-                        <Profile pic={user} name="Lauren Spencer" />
+                        <Profile
+                            pic={"https://api.dicebear.com/8.x/avataaars/svg"}
+                            name="Lauren Spencer"
+                        />
                     </div>
                     <div className="middle-part flex flex-col gap-3">
                         <hr className="w-64 ml-3" />
@@ -103,7 +106,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                 <SbLoad />
                             ) : (
                                 projects.map((project, index) => (
-                                    <EditProj key={index} project={project} remove={()=>setProjects(projects.filter((proj)=>proj._id === project._id))} />
+                                    <EditProj
+                                        key={index}
+                                        project={project}
+                                        remove={() =>
+                                            setProjects(
+                                                projects.filter(
+                                                    (proj) =>
+                                                        proj._id === project._id
+                                                )
+                                            )
+                                        }
+                                    />
                                 ))
                             )}
                         </div>
@@ -158,7 +172,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 >
                     <div className="projects flex flex-col gap-40">
                         <div className="user-part ">
-                            <Profile pic={user} name="Lauren Spencer" />
+                            <Profile
+                                pic={
+                                    "https://api.dicebear.com/8.x/avataaars/svg"
+                                }
+                                name="Lauren Spencer"
+                            />
                         </div>
                         <div className="middle-part flex flex-col gap-3">
                             <hr className="w-64 ml-3" />
