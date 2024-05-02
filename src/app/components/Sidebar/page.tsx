@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import user from "../../../../public/assets/user.png";
+// import user from "../../../../public/assets/user.png";
 import Profile from "../profile/page";
 import { BiMenu } from "react-icons/bi";
 import axios from "axios";
