@@ -155,7 +155,7 @@ const page: React.FC = () => {
 
         if (objectIndex === objects.length - 1) {
             // If the last title is reached, navigate to the preview page
-            router.push("/components/Preview");
+            router.push(`/components/Preview/${id}`);
         } else {
             // Otherwise, proceed to the next title
             setSelectedObject(objects[objectIndex + 1]);
@@ -190,7 +190,7 @@ const page: React.FC = () => {
             try {
                 const token = getCookie("token");
                 const response = await axios.get(
-                    `https://topstrat-backend.onrender.com/projects/prompts/latest/${projectId}`,
+                   ` https://topstrat-backend.onrender.com/projects/prompts/latest/${projectId}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -321,4 +321,4 @@ const page: React.FC = () => {
     );
 };
 
-export default page;
+export default page;
