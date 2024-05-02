@@ -2,7 +2,7 @@ import React from 'react';
 import Image, { StaticImageData } from 'next/image';
 
 interface ProfileProps {
-  pic: StaticImageData;
+  pic: string;
   name: string;
 }
 

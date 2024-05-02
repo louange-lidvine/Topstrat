@@ -37,31 +37,31 @@ export default function ({
         return true;
     };
 
-    // const handleProjectClick = async (projectId: string) => {
-    //     try {
-    //         const token = getCookie("token");
-    //         const response = await axios.get(
-    //             `https://topstrat-backend.onrender.com/projects/prompts/latest/${projectId}`,
-    //             {
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                     Authorization: `Bearer ${
-    //                         JSON.parse(token ?? "").access_token
-    //                     }`,
-    //                 },
-    //             }
-    //         );
-    //         if (checkResponseFormat(response.data)) {
-    //             navigate.push("../Preview");
-    //         } else {
-    //             navigate.push("../step");
-    //         }
-    //         // Do something with the response data from the second Axios call
-    //         console.log(response.data);
-    //     } catch (error) {
-    //         console.error("Error fetching project data:", error);
-    //     }
-    // };
+    const handleProjectClick = async (projectId: string) => {
+        try {
+            const token = getCookie("token");
+            const response = await axios.get(
+                `https://topstrat-backend.onrender.com/projects/prompts/latest/${projectId}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            if (checkResponseFormat(response.data)) {
+                navigate.push("../Preview");
+            } else {
+                navigate.push("../step");
+            }
+            // Do something with the response data from the second Axios call
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error fetching project data:", error);
+        }
+    };
 
     const handleDelete = async (projectId: string) => {
         try {
@@ -104,7 +104,7 @@ export default function ({
     return (
         <div
             className="relative hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm"
-            // onClick={() => handleProjectClick(project._id)}
+            onClick={() => handleProjectClick(project._id)}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => {
                 setIsHover(false);
