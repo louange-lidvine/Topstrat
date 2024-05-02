@@ -50,8 +50,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             setIsLoading(true);
             try {
                 const token = getCookie("token");
+                const id = localStorage.getItem("userId");
                 const response = await axios.get(
-                    "https://topstrat-backend.onrender.com/projects",
+                    `https://topstrat-backend.onrender.com/projects/user/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
