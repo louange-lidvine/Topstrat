@@ -10,7 +10,7 @@ import { getCookie, setCookie } from "cookies-next";
 import SbLoad from "@/app/shared/loader/sbload";
 import ReactModal from "react-modal";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import "../app.css";
 import EditProj from "../EditProj/page";
 interface SidebarProps {
@@ -18,6 +18,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
+    const { id } = useParams();
     const navigate = useRouter();
     const [menuVisible, setMenuVisible] = useState(false);
     const [projects, setProjects] = useState([]);
@@ -41,8 +42,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const handleButtonClick = () => {
         setIsModalOpen(true);
     };
-
-
 
     useEffect(() => {
         // Fetch projects from the backend
@@ -109,6 +108,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                     <EditProj
                                         key={index}
                                         project={project}
+                                        selected={id === project._id}
                                         remove={() =>
                                             setProjects(
                                                 projects.filter(
