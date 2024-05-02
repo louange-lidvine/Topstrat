@@ -22,7 +22,7 @@ export default function RootLayout({
 
     return (
         <html lang="en">
-            <body className="grid-flow-co h-screen w-screen overflow-hidden">
+            <body className="grid-flow-col w-screen overflow-hidden">
                  <div className="hidden lg:block lg:absolute">
                     <Image src={Background} alt="background" />
                 </div> 
