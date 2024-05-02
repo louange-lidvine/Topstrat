@@ -155,7 +155,7 @@ const page: React.FC = () => {
 
         if (objectIndex === objects.length - 1) {
             // If the last title is reached, navigate to the preview page
-            router.push("/components/Preview");
+            router.push(`/components/Preview2/${id}`);
         } else {
             // Otherwise, proceed to the next title
             setSelectedObject(objects[objectIndex + 1]);

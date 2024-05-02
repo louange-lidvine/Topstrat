@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import ReactModal from "react-modal";
 import SbLoad from "@/app/shared/loader/sbload";
+import Loader from "@/app/shared/loader/page";
 
 function ChooseMethod() {
     const router = useRouter();
@@ -147,7 +148,7 @@ function ChooseMethod() {
                         value={formData.description}
                     />
                     <button type="submit" disabled={isLoading} className="bg-[#0F872F] py-2 px-4 rounded-md">
-                        {isLoading ? <SbLoad /> : "Submit"}
+                        {isLoading ? <Loader /> : "Submit"}
                     </button>
                 </form>
                 <button onClick={handleCloseModal}>Cancel</button>

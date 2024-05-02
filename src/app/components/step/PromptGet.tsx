@@ -162,12 +162,12 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                 
             )}
             <div className="buttons flex space-x-5 mt-10 ">
-                    <button
+                    {/* <button
                         type="submit"
                         className="bg-[#0F872F] py-2 px-4 rounded-md"
                     >
                         Save
-                    </button>
+                    </button> */}
                     <button
                         type="submit"
                         className="bg-[#ED0C0C] py-2 px-4 rounded-md"
