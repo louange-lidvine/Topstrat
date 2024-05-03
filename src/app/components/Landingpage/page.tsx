@@ -23,13 +23,13 @@ function page() {
     };
 
     return (
-        <div className=" border my-4 rounded-md  w-full  lg:mx-2 float-right lg:z-[9999]">
+        <div className=" border border-blue-default lg:full my-4 rounded-md lg:mx-2 float-right lg:z-[9999]">
             <div className="input flex justify-center">
-                <input
+                {/* <input
                     type="text"
                     placeholder="untitled"
                     className="border m-4 lg:py-2 mt-10 p-2 outline-none lg:px-10 text-center rounded-md"
-                />
+                /> */}
             </div>
             <div>
                 <h1 className="text-3xl my-40 font-bold text-center text-blue-default">

@@ -216,7 +216,7 @@ const page: React.FC = () => {
     const router = useRouter();
 
     return (
-        <div className="border my-4 rounded-md w-full lg:mx-2 float-right lg:z-[9999]">
+        <div className="border border-blue-default my-4 rounded-md lg:w-full lg:mx-2 float-right lg:z-[9999]">
             <div className="input flex justify-center">
                 <input
                     type="text"

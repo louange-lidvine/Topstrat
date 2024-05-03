@@ -132,11 +132,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                         </div>
                     </div>
                     <div className="py-10">
-                        <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 w-[288px] py-3 h-12 rounded-sm">
+                        <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 w-[auto] py-3 h-12 rounded-sm">
                             Settings
                         </h2>
                         <h2
-                            className=" font-bold  hover:bg-red-400 px-10 w-[288px] py-3 h-12 rounded-sm"
+                            className=" font-bold  hover:bg-red-400 px-10 w-[auto] py-3 h-12 rounded-sm"
                             onClick={handleButtonClick}
                         >
                             Logout
@@ -206,7 +206,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                             <Link
                                                 href={`/components/step/${project._id}`}
                                             >
-                                                <div className=" group hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm">
+                                                <div className=" group hover:bg-gray-100 hover:bg-opacity-50 w-[auto] px-10 py-3  rounded-sm">
                                                     {project.name}
                                                 </div>
                                             </Link>

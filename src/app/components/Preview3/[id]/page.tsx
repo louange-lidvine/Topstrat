@@ -65,7 +65,7 @@ function Preview() {
     }, []);
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 w-full">
+        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
             {loading ? (
                 <Loader />
             ) : (
@@ -80,7 +80,7 @@ function Preview() {
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <div className="text-blue-default font-bold text-2xl">
+                        <div className="text-blue-default font-bold text-2xl py-5">
                             Logframe
                         </div>
                         <table className="border border-1 w-[90%] m-auto">
@@ -88,25 +88,25 @@ function Preview() {
                             {logframeData && (
     <>
         {logframeData.goal && (
-            <tr className="bg-slate-300">
-                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-2xl">Goal (G)</th>
+            <tr className="bg-slate-300 lg:h-[180px]">
+                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">Goal (G)</th>
                 <td className="border border-1 p-4">{logframeData.goal}</td>
             </tr>
         )}
         {logframeData.purpose && (
-            <tr>
-                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-2xl">Purpose (P)</th>
+            <tr className="lg:h-[180px]">
+                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">Purpose (P)</th>
                 <td className="border border-1 p-4">{logframeData.purpose}</td>
             </tr>
         )}
         {Object.entries(logframeData).map(([category, items], index) => (
             Array.isArray(items) && items.length > 0 && (
                 <tr key={index} className={index % 2 === 0 ? 'bg-slate-300' : ''}>
-                    <td className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-2xl">
+                    <td className="border border-1 p-4 text-blue-default font-bold text-1xl text-center text-xl">
                         {category.charAt(0).toUpperCase() + category.slice(1)} ({category.charAt(0).toUpperCase()})
                     </td>
                     <td className="border border-1 p-4">
-                        <ul>
+                        <ul className="lg:h-[180px]">
                             {items.map((item: any, i: any) => (
                                 <li key={i}>{item}</li>
                             ))}

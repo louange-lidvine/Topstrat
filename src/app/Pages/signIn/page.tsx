@@ -74,9 +74,12 @@ function Page() {
                         String(err?.response?.data?.error) ==
                         "Network error occurred"
                     ) 
-                    return toast.error("An error occurred please try again");
+                    return toast.error("Invalid credentials");
+                    setLoading(false)
                 } else {
-                    return toast.error("An error occured try again later");
+                    setLoading(false)
+                    return toast.error("Invalid credentials");
+                
                 }
             });
     };
@@ -148,7 +151,7 @@ function Page() {
                         >
                             Sign in
                         </button>
-                        <div className="ml-[150px]">
+                        <div className="">
                             {loading && <Loader />}
                         </div>
 

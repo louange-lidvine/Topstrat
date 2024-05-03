@@ -79,7 +79,7 @@ function Preview() {
     }, []);
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8  w-full  ">
+        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
             {loading ? (
                 <Loader />
             ) : (
@@ -94,20 +94,20 @@ function Preview() {
                 </div>
             </div>
                     <div className="flex flex-col gap-3">
-                        <div className="text-blue-default font-bold text-2xl">
+                        <div className="text-blue-default font-bold text-2xl py-5">
                             PESTLE Analysis
                         </div>
                         <div className="grid grid-cols-2  border border-1 w-[90%]  m-auto h-full ">
                             {Object.keys(pestleData || {}).map((category, index) => (
                                 <React.Fragment key={index}>
                                     <div className={`col-span-1 border border-1 ${index % 2 === 0 ? 'bg-slate-300' : ''}`}>
-                                        <div className="p-2 text-blue-default font-bold text-1xl text-center text-2xl">
+                                        <div className="p-4 text-blue-default font-bold text-1xl text-start text-xl">
                                             {category.charAt(0).toUpperCase() + category.slice(1)} ({category.charAt(0).toUpperCase()})
                                         </div>
                                     </div>
                                     <div className={`col-span-1 ${index % 2 === 0 ? 'bg-slate-300' : ''}`}>
                                         <div className="p-4">
-                                            <ul>
+                                            <ul className="lg:h-[100px]">
                                                 {(pestleData[category] || []).map((item:any, i:any) => (
                                                     <li key={i}>{item}</li>
                                                 ))}
@@ -121,12 +121,12 @@ function Preview() {
                 
                 </div>
             )}
-                <div
+                <button
                         className="bg-blue-default text-white font-bold  rounded-md m-auto py-3 px-6 "
                         onClick={() => router.push(`../../components/Preview3/${id}`)}
                     >
-                        <div className="flex  items-center justify-center ">next</div>
-                    </div>
+                        <div className="flex  items-center justify-center "   onClick={() => router.push(`/components/Preview3/${id}`)}>next</div>
+                    </button>
         </div>
     );
 }

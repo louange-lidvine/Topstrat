@@ -83,7 +83,7 @@ function Preview() {
  
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2  float-right p-4 font-medium ">
+        <div className="border border-blue-default my-4 lg:w-fullrounded-md mx-2  float-right p-4 font-medium ">
             <div className="flex flex-col  justify-center items-center gap-4 text-2xl ">
                 <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
                     {projectData && projectData.name}
@@ -293,14 +293,15 @@ function Preview() {
                     )}
                 </div>
                 {/* <Link href="/signup">Sign Up</Link> */}
-                <div
+                <button
                     className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 w-1/2"
                     onClick={() => router.push(`/components/Preview2/${id}`)}
                 >
-                    <div className="flex  items-center justify-center ">
+                    <div className="flex  items-center justify-center "  onClick={() => router.push(`/components/Preview2/${id}`)} >
                         next
+                    
                     </div>
-                </div>
+                </button>
             </div>
         </div>
     );
