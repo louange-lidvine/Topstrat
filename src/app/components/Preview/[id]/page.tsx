@@ -3,26 +3,17 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-
-
 import Loader from "@/app/shared/loader/page";
-
 import { getCookie } from "cookies-next";
 
 function Preview() {
     const { id } = useParams();
-
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const [promptData, setPromptData] = useState<any>();
     const [error, setError] = useState<string | null>(null);
     // const [loading, setLoading] = useState<boolean>(true);
     const [projectData, setProjectData] = useState<any>();
-
-
-  
-    
-   
        useEffect(() => {
            const getProject = async (id: string) => {
                try {
@@ -137,7 +128,7 @@ function Preview() {
                             <p>
                                 {promptData &&
                                     promptData.mission &&
-                                    promptData.mission.response}
+                                    promptData.vision.response}
                             </p>
                         )}
                     </div>
@@ -149,7 +140,7 @@ function Preview() {
                             <p>
                                 {promptData &&
                                     promptData.objectives &&
-                                    promptData.mission.response}
+                                    promptData.objectives.response}
                             </p>
                         )}
                     </div>
@@ -161,7 +152,7 @@ function Preview() {
                             <p>
                                 {promptData &&
                                     promptData.values &&
-                                    promptData.mission.response}
+                                    promptData.values.response}
                             </p>
                         )}
                     </div>
@@ -173,7 +164,7 @@ function Preview() {
                             <p>
                                 {promptData &&
                                     promptData.strategy &&
-                                    promptData.mission.response}
+                                    promptData.strategy.response}
                             </p>
                         )}
                     </div>
@@ -304,7 +295,7 @@ function Preview() {
                 {/* <Link href="/signup">Sign Up</Link> */}
                 <div
                     className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 w-1/2"
-                    onClick={() => router.push("../../components/Preview2")}
+                    onClick={() => router.push(`/components/Preview2/${id}`)}
                 >
                     <div className="flex  items-center justify-center ">
                         next

@@ -9,7 +9,7 @@ import SbLoad from "@/app/shared/loader/sbload";
 import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
-import CryptoJS from "crypto-js"; // Import CryptoJS library
+import CryptoJS from "crypto-js"; 
 import Profile from "../profile/page";
 import EditProj from "../EditProj/page";
 
@@ -50,8 +50,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             setIsLoading(true);
             try {
                 const token = getCookie("token");
+                const id = localStorage.getItem("userId");
                 const response = await axios.get(
-                    "https://topstrat-backend.onrender.com/projects",
+                    `https://topstrat-backend.onrender.com/projects/user/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -88,11 +89,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     return (
         <>
             <div
-                className={`hidden lg:flex flex-col  text-white w-[20vw]  bg-blue-default m-2 rounded-md`}
+                className={`hidden z-[9999] lg:flex flex-col  text-white w-[20vw]  bg-blue-default m-2 rounded-md`}
             >
                 <div className="flex flex-col justify-between gap-40 ">
                     <div className="user-part ">
-                        <Profile pic={gravatarUrl} name="Lauren Spencer" />
+                        <Profile pic={gravatarUrl} />
                     </div>
                     <div className="middle-part flex flex-col gap-3">
                         <hr className="w-64 ml-3" />

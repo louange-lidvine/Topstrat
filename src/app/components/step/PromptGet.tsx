@@ -70,9 +70,43 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
         setSelectedPrompt(prompt);
     };
 
-    const handleBackButtonClick = () => {
-        setSelectedPrompt(null);
-    };
+
+     const refetchData = async () => {
+            const token = getCookie("token");
+            const userId = localStorage.getItem("userId");
+            setLoading(true);
+            try {
+                const response = await axios.post(
+                    `https://topstrat-backend.onrender.com/projects/${projectId}/${title.toLowerCase()}`,
+                    {
+                        query: query,
+                        projectId: projectId,
+                        promptType: title.toLowerCase(),
+                        enhance: true,
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${
+                                JSON.parse(token ?? "").access_token
+                            }`,
+                        },
+                    }
+                );
+                console.log(response);
+                if (title.toLowerCase() === "swot") {
+                    setIsSwot(true);
+                    const responseData = JSON.parse(response.data.response);
+                    setSwotData(responseData);
+                } else {
+                    setPrompt(response.data.response);
+                }
+            } catch (error) {
+                console.error("Error fetching prompts:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
     return (
         <div>
@@ -129,16 +163,16 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                 
             )}
             <div className="buttons flex space-x-5 mt-10 ">
-                    <button
+                    {/* <button
                         type="submit"
                         className="bg-[#0F872F] py-2 px-4 rounded-md"
                     >
                         Save
-                    </button>
+                    </button> */}
                     <button
                         type="submit"
                         className="bg-[#ED0C0C] py-2 px-4 rounded-md"
-                        onClick={handleBackButtonClick}
+                        onClick={refetchData}
                     >
                         Re-generate
                     </button>
