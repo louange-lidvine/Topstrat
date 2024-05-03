@@ -24,17 +24,15 @@
 // export default Profile;
 import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
+import CryptoJS from "crypto-js";
 // import Image, { StaticImageData } from 'next/image';
 
-interface ProfileProps {
-    pic: string;
-}
 
-const Profile: React.FC<ProfileProps> = ({ pic }) => {
-    const [userData, setUserData] = useState<{
-        fname: string;
-        lname: string;
-    } | null>(null);
+const Profile = () => {
+    const [userData, setUserData] = useState<any>()
+    const [gravatarUrl, setGravatarUrl] = useState<string>("");
+  
+
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -55,10 +53,8 @@ const Profile: React.FC<ProfileProps> = ({ pic }) => {
                 );
                 if (response.ok) {
                     const data = await response.json();
-                    setUserData({
-                        fname: data.firstname,
-                        lname: data.lastname,
-                    });
+                  setUserData(data);
+                  console.log(userData)
                 } else {
                     console.error("Failed to fetch user data");
                 }
@@ -69,15 +65,31 @@ const Profile: React.FC<ProfileProps> = ({ pic }) => {
 
         fetchUserData();
     }, []);
+   
+    useEffect(() => {
+      const generateGravatar = () => {
+          const userEmail = userData?.email; // Replace this with the email of the signed-up user
+          const hashedEmail =CryptoJS.SHA256(userEmail);
+          const gravatarUrl = `https://www.gravatar.com/avatar/${hashedEmail}`;
+          setGravatarUrl(gravatarUrl);
+      };
 
+      generateGravatar();
+  }, []);
     return (
         <div className="flex ml-4 my-3">
             {userData ? (
                 <>
-                    <img src={pic} alt="profile" className="profile-pic w-9" />
-                    <h2 className="mt-2 ml-4 font-bold">
-                        {userData.fname} {userData.lname}
-                    </h2>
+                    <img
+                        src={gravatarUrl}
+                        alt="profile"
+                        className="profile-pic w-9"
+                    />
+                    {userData && (
+                        <h2 className="mt-2 ml-4 font-bold">
+                            {userData.firstname} {userData.lastname}
+                        </h2>
+                    )}
                 </>
             ) : (
                 <p>Loading...</p>

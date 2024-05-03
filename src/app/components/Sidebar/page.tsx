@@ -9,7 +9,6 @@ import SbLoad from "@/app/shared/loader/sbload";
 import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
-import CryptoJS from "crypto-js";
 import Profile from "../profile/page";
 import EditProj from "../EditProj/page";
 
@@ -25,12 +24,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [gravatarUrl, setGravatarUrl] = useState<string>("");
+  
 
     const logout = () => {
         setIsLoading(true);
         setCookie("token", undefined);
         toast.success(" See you again 👋");
-        navigate.push("/");
+        navigate.push("../../Pages/signIn/page.tsx");
     };
 
     const toggleMenu = () => {
@@ -43,49 +43,42 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const handleButtonClick = () => {
         setIsModalOpen(true);
     };
+    const fetchProjects = async () => {
+        setIsLoading(true);
+        try {
+            const token = getCookie("token");
+            const id = localStorage.getItem("userId");
+            const response = await axios.get(
+                `https://topstrat-backend.onrender.com/projects/user/${id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            // Set the projects state with the fetched data
+            setProjects(response.data);
+            setIsLoading(false);
+        } catch (error) {
+            console.error("Error fetching projects:", error);
+            setIsLoading(false);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
         // Fetch projects from the backend
-        const fetchProjects = async () => {
-            setIsLoading(true);
-            try {
-                const token = getCookie("token");
-                const id = localStorage.getItem("userId");
-                const response = await axios.get(
-                    `https://topstrat-backend.onrender.com/projects/user/${id}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
-                            }`,
-                        },
-                    }
-                );
-                // Set the projects state with the fetched data
-                setProjects(response.data);
-                setIsLoading(false);
-            } catch (error) {
-                console.error("Error fetching projects:", error);
-                setIsLoading(false);
-            } finally {
-                setIsLoading(false);
-            }
-        };
 
         fetchProjects(); // Fetch projects when the component mounts
     }, []);
 
-    useEffect(() => {
-        // Generate Gravatar URL
-        const generateGravatar = () => {
-            const hashedEmail = CryptoJS.SHA256("your-email@example.com"); // Hash email using SHA-256
-            const gravatarUrl = `https://www.gravatar.com/avatar/${hashedEmail}`; // Construct Gravatar URL
-            setGravatarUrl(gravatarUrl); // Set Gravatar URL
-        };
+   
+  
 
-        generateGravatar(); // Call function to generate Gravatar URL
-    }, []);
     return (
         <>
             <div
@@ -93,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             >
                 <div className="flex flex-col justify-between gap-40 ">
                     <div className="user-part ">
-                        <Profile pic={gravatarUrl} />
+                        <Profile/>
                     </div>
                     <div className="middle-part flex flex-col gap-3">
                         <hr className="w-64 ml-3" />
@@ -107,7 +100,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                     <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
                                         Projects
                                     </h1>
-                                    <ChooseMethod />
+                                    <ChooseMethod
+                                        refetchProject={fetchProjects}
+                                    />
                                 </div>
                             </div>
                             {isLoading ? (
@@ -118,14 +113,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                         key={index}
                                         project={project}
                                         selected={id === project._id}
-                                        remove={() =>
+                                        remove={() => {
                                             setProjects(
                                                 projects.filter(
                                                     (proj) =>
                                                         proj._id === project._id
                                                 )
-                                            )
-                                        }
+                                            );
+                                            fetchProjects();
+                                            navigate.push(
+                                                "/components/LandingPage"
+                                            );
+                                        }}
                                     />
                                 ))
                             )}
@@ -181,7 +180,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 >
                     <div className="projects flex flex-col gap-40">
                         <div className="user-part ">
-                            <Profile pic={gravatarUrl} name="Lauren Spencer" />
+                            <Profile />
                         </div>
                         <div className="middle-part flex flex-col gap-3">
                             <hr className="w-64 ml-3" />
@@ -195,28 +194,33 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                         <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
                                             Projects
                                         </h1>
-                                        <ChooseMethod />
+                                        <ChooseMethod
+                                            refetchProject={fetchProjects}
+                                        />
                                     </div>
                                 </div>
                                 {isLoading ? (
                                     <SbLoad />
                                 ) : (
                                     projects.map((project, index) => (
-                                        <div key={index} className="mt-4 ">
-                                            <Link
-                                                href={`/components/step/${project._id}`}
-                                            >
-                                                <div className=" group hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3  rounded-sm">
-                                                    {project.name}
-                                                </div>
-                                            </Link>
-                                            {/* <Link href={`/components/step/${project._id}`}>
-                                        <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
-                                    </Link>
-                                    <Link href={`/components/step/${project._id}`}>
-                                        <h1 className=" hover:bg-gray-300 hover:bg-opacity-80 w-[288px] px-10 py-3 h-12 rounded-sm">{project.name}</h1>
-                                    </Link> */}
-                                        </div>
+                                        <EditProj
+                                            key={index}
+                                            project={project}
+                                            selected={id === project._id}
+                                            remove={() => {
+                                                setProjects(
+                                                    projects.filter(
+                                                        (proj) =>
+                                                            proj._id ===
+                                                            project._id
+                                                    )
+                                                );
+                                                fetchProjects();
+                                                navigate.push(
+                                                    "../Landingpage"
+                                                );
+                                            }}
+                                        />
                                     ))
                                 )}
                             </div>

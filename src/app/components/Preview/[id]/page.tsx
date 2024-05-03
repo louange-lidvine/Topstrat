@@ -14,76 +14,72 @@ function Preview() {
     const [error, setError] = useState<string | null>(null);
     // const [loading, setLoading] = useState<boolean>(true);
     const [projectData, setProjectData] = useState<any>();
-       useEffect(() => {
-           const getProject = async (id: string) => {
-               try {
-                   const token = getCookie("token");
-                   const response = await axios.get(
-                       ` https://topstrat-backend.onrender.com/projects/${id}`,
-                       {
-                           headers: {
-                               "Content-Type": "application/json",
-                               Authorization: `Bearer ${
-                                   JSON.parse(token ?? "").access_token
-                               }`,
-                           },
-                       }
-                   );
-                   setProjectData(response.data); 
-                   console.log("this is the name and desc"+response.data);
-               } catch (error) {
-                   console.error("Error fetching project data:", error);
-               }
-           };
-           getProject(id as string);
+    useEffect(() => {
+        const getProject = async (id: string) => {
+            try {
+                const token = getCookie("token");
+                const response = await axios.get(
+                    ` https://topstrat-backend.onrender.com/projects/${id}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${
+                                JSON.parse(token ?? "").access_token
+                            }`,
+                        },
+                    }
+                );
+                setProjectData(response.data);
+                console.log("this is the name and desc" + response.data);
+            } catch (error) {
+                console.error("Error fetching project data:", error);
+            }
+        };
+        getProject(id as string);
         //    setLoading(false);
-           setIsLoading(false);
-       }, []);
+        setIsLoading(false);
+    }, []);
 
-     useEffect(() => {
-       const fetchData = async () => {
-           try {
-               const token = getCookie("token");
-               setIsLoading(true);
-               const response = await axios.get(
-                   `https://topstrat-backend.onrender.com/projects/prompts/latest/${id}`,
-                //    {
-                //        projectId: id,
-                //    },
-                   {
-                       headers: {
-                           "Content-Type": "application/json",
-                           Authorization: `Bearer ${
-                               JSON.parse(token ?? "").access_token
-                           }`,
-                       },
-                   }
-               );
-                    console.log(response.data);
-               setIsLoading(false);
-          
-               // Check if response.data exists and update states accordingly
-               if (response.data) {
-                   setPromptData(response.data);
-               } else {
-                   setError("No data received");
-               }
-           } catch (error) {
-               setError("Error fetching data");
-               console.error("Error fetching data:", error);
-               setIsLoading(false);
-               
-           }
-                
-       };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = getCookie("token");
+                setIsLoading(true);
+                const response = await axios.get(
+                    `https://topstrat-backend.onrender.com/projects/prompts/latest/${id}`,
+                    //    {
+                    //        projectId: id,
+                    //    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${
+                                JSON.parse(token ?? "").access_token
+                            }`,
+                        },
+                    }
+                );
+                console.log(response.data);
+                setIsLoading(false);
 
-       fetchData();
-     }, [])
-    
- 
+                // Check if response.data exists and update states accordingly
+                if (response.data) {
+                    setPromptData(response.data);
+                } else {
+                    setError("No data received");
+                }
+            } catch (error) {
+                setError("Error fetching data");
+                console.error("Error fetching data:", error);
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2  float-right p-4 font-medium ">
+        <div className="border border-blue-default my-4 rounded-md mx-2  p-4 font-medium ">
             <div className="flex flex-col  justify-center items-center gap-4 text-2xl ">
                 <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
                     {projectData && projectData.name}
@@ -93,15 +89,18 @@ function Preview() {
                     Strategic Plan {projectData && projectData.name}
                 </div>
             </div>
-            <div>
-                <div className="flex flex-col gap-6">
+            <div className=" w-full">
+                <div className="flex flex-col gap-6 ">
                     <div className="flex flex-col gap-4 ">
                         <h3 className="text-blue-default font-bold text-xl">
                             {" "}
                             Project Overview
                         </h3>
                         {isLoading ? (
-                            <Loader />
+                            <div className="w-full">
+                                {" "}
+                                <Loader />
+                            </div>
                         ) : (
                             <p className="">
                                 {projectData && projectData.description}
@@ -111,7 +110,10 @@ function Preview() {
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold"> Vision</h3>
                         {isLoading ? (
-                            <Loader />
+                            <div className="w-full">
+                                {" "}
+                                <Loader />
+                            </div>
                         ) : (
                             <p>
                                 {promptData &&
@@ -123,7 +125,10 @@ function Preview() {
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold"> Mission</h3>
                         {isLoading ? (
-                            <Loader />
+                            <div className="w-full">
+                                {" "}
+                                <Loader />
+                            </div>
                         ) : (
                             <p>
                                 {promptData &&
@@ -135,7 +140,10 @@ function Preview() {
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold"> Objectives</h3>
                         {isLoading ? (
-                            <Loader />
+                            <div className="w-full">
+                                {" "}
+                                <Loader />
+                            </div>
                         ) : (
                             <p>
                                 {promptData &&
@@ -147,7 +155,10 @@ function Preview() {
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold"> Values</h3>
                         {isLoading ? (
-                            <Loader />
+                            <div className="w-full">
+                                {" "}
+                                <Loader />
+                            </div>
                         ) : (
                             <p>
                                 {promptData &&
@@ -159,7 +170,10 @@ function Preview() {
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold"> Strategy</h3>
                         {isLoading ? (
-                            <Loader />
+                            <div className="w-full">
+                                {" "}
+                                <Loader />
+                            </div>
                         ) : (
                             <p>
                                 {promptData &&
@@ -176,7 +190,10 @@ function Preview() {
                 </h2>
                 <div className="w-[100%] flex justify-center items-center">
                     {isLoading ? (
-                        <Loader />
+                        <div className="w-full">
+                            {" "}
+                            <Loader />
+                        </div>
                     ) : (
                         <table className="border border-collapse w-full overflow-x-auto  ">
                             <tr className="text-blue-default">
