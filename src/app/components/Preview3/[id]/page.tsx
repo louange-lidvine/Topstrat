@@ -52,7 +52,10 @@ function Preview() {
                     }
                 );
                 console.log(JSON.parse(response.data.logframe.response));
-                setLogframeData(JSON.parse(response.data.logframe.response));
+                const {goal,purpose, ...rest} =JSON.parse( response.data.logframe.response);
+                setLogframeData(rest)
+
+                // setLogframeData(JSON.parse(response.data.logframe.response));
             } catch (error) {
                 console.log(error);
             } finally {
@@ -102,7 +105,7 @@ function Preview() {
                                                 </td>
                                                 <td className="border border-1 p-4">
                                                     <ul>
-                                                        {Array.isArray(items)&& items && items.map((item: any, i: any) => (
+                                                        {Array.isArray(items)&& items.length>0 && items.map((item: any, i: any) => (
                                                             <li key={i}>{item}</li>
                                                         ))}
                                                     </ul>
