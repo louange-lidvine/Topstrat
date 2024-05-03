@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import axios from "axios";
-import Loader from "@/app/shared/loader/page";
+import Loader from "../../../shared/loader/page";
 
 function Preview() {
     const router = useRouter();
@@ -88,13 +88,13 @@ function Preview() {
                             {logframeData && (
     <>
         {logframeData.goal && (
-            <tr className="bg-slate-300 lg:h-[180px]">
+            <tr className="bg-slate-300 lg:h-[10vw]">
                 <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">Goal (G)</th>
                 <td className="border border-1 p-4">{logframeData.goal}</td>
             </tr>
         )}
         {logframeData.purpose && (
-            <tr className="lg:h-[180px]">
+            <tr className="lg:h-[10vw]">
                 <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">Purpose (P)</th>
                 <td className="border border-1 p-4">{logframeData.purpose}</td>
             </tr>
@@ -106,7 +106,7 @@ function Preview() {
                         {category.charAt(0).toUpperCase() + category.slice(1)} ({category.charAt(0).toUpperCase()})
                     </td>
                     <td className="border border-1 p-4">
-                        <ul className="lg:h-[180px]">
+                        <ul className="md:h-[50vw]  lg:h-[10vw]">
                             {items.map((item: any, i: any) => (
                                 <li key={i}>{item}</li>
                             ))}

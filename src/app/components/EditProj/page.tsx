@@ -114,6 +114,7 @@ export default function ({
                 setIsHover(false);
                 // rename();
                 setOpenInput(false);
+                setIsPopoverOpen(false);
             }}
         >
             <div

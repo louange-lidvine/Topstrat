@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Background from "../../../../public/assets/bg.png";
 import Image from "next/image";
 import Prompt from "../prompt/page";
 

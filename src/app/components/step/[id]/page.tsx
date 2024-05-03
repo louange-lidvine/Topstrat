@@ -11,6 +11,7 @@ import { FaForward } from "react-icons/fa";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 
+
 const Component1: React.FC = () => (
     <div>
         The mission of a business refers to a concise statement that outlines
@@ -126,6 +127,9 @@ const page: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [projectData, setProjectData] = useState<any>();
     const [finishedObject, setFinishedObject] = useState<string[]>(["mission"]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [projectName, setProjectName] = useState<any>();
 
     const[editiing,setEditing]=useState<boolean>(false);
     const handleObjectClick = (object: ObjectData) => {
@@ -213,16 +217,51 @@ const page: React.FC = () => {
         console.log(finishedObject);
     }, []);
 
+         useEffect(() => {
+             const fetchData = async () => {
+                 try {
+                     const token = getCookie("token");
+                     setIsLoading(true);
+                     const response = await axios.get(
+                         `https://topstrat-backend.onrender.com/projects/${id}`,
+                         //    {
+                         //        projectId: id,
+                         //    },
+                         {
+                             headers: {
+                                 "Content-Type": "application/json",
+                                 Authorization: `Bearer ${
+                                     JSON.parse(token ?? "").access_token
+                                 }`,
+                             },
+                         }
+                     );
+                   
+                     setIsLoading(false);
+
+                     // Check if response.data exists and update states accordingly
+                     if (response.data) {
+                         setProjectName(response.data);
+                     } else {
+                         setError("No data received");
+                     }
+                     
+                 } catch (error) {
+                     setError("Error fetching data");
+                     console.error("Error fetching data:", error);
+                     setIsLoading(false);
+                 }
+             };
+
+             fetchData();
+         }, []);
+
     const router = useRouter();
 
     return (
-        <div className="border border-blue-default my-4 rounded-md lg:w-full lg:mx-2 float-right lg:z-[9999]">
-            <div className="input flex justify-center">
-                <input
-                    type="text"
-                    placeholder="untitled"
-                    className="border m-4 lg:py-2 mt-10 p-2 outline-none lg:px-10 text-center rounded-md"
-                />
+        <div className="border my-4 rounded-md w-full lg:mx-2 float-right lg:z-[9999]">
+            <div className="input flex justify-center items-center text-blue-default font-bold text-2xl">
+              {projectName&&projectName.name}
             </div>
             {loading ? (
                 <div className="flex items-center justify-center ">

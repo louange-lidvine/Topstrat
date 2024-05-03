@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import axios from "axios";
-import Loader from "@/app/shared/loader/page";
+import Loader from "../../../shared/loader/page";
 
 function Preview() {
     const router = useRouter();
@@ -107,7 +107,7 @@ function Preview() {
                                     </div>
                                     <div className={`col-span-1 ${index % 2 === 0 ? 'bg-slate-300' : ''}`}>
                                         <div className="p-4">
-                                            <ul className="lg:h-[100px]">
+                                            <ul className=" md:h-[50vw]  lg:h-[10vw] ">
                                                 {(pestleData[category] || []).map((item:any, i:any) => (
                                                     <li key={i}>{item}</li>
                                                 ))}

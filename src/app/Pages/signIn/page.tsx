@@ -1,14 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import GoogleButton from "@/app/constants/(auth)/googleButton";
-import Background from "../../../../public/assets/bg.png";
-import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
+import GoogleButton from "../../constants/(auth)/googleButton";
+import Background from "/public/assets/bg.png";
+import Graphics from "public/assets/Login-amico (1) 2.png";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Loader from "@/app/shared/loader/page";
+import Loader from "../../shared/loader/page";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { setCookie } from "cookies-next";
