@@ -113,7 +113,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                             {isLoading ? (
                                 <SbLoad />
                             ) : (
-                                projects.map((project, index) => (
+                                projects.map((project:any, index) => (
                                     <EditProj
                                         key={index}
                                         project={project}
@@ -121,7 +121,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                         remove={() =>
                                             setProjects(
                                                 projects.filter(
-                                                    (proj) =>
+                                                    (proj:any) =>
                                                         proj._id === project._id
                                                 )
                                             )
@@ -181,7 +181,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 >
                     <div className="projects flex flex-col gap-40">
                         <div className="user-part ">
-                            <Profile pic={gravatarUrl} name="Lauren Spencer" />
+                            <Profile pic={gravatarUrl}/>
                         </div>
                         <div className="middle-part flex flex-col gap-3">
                             <hr className="w-64 ml-3" />
@@ -201,7 +201,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                 {isLoading ? (
                                     <SbLoad />
                                 ) : (
-                                    projects.map((project, index) => (
+                                    projects.map((project:any, index) => (
                                         <div key={index} className="mt-4 ">
                                             <Link
                                                 href={`/components/step/${project._id}`}
