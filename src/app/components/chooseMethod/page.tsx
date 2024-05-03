@@ -7,7 +7,7 @@ import ReactModal from "react-modal";
 import SbLoad from "@/app/shared/loader/sbload";
 import Loader from "@/app/shared/loader/page";
 
-function ChooseMethod() {
+function ChooseMethod({ refetchProject }: { refetchProject: () => void }) {
     const router = useRouter();
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -63,8 +63,7 @@ function ChooseMethod() {
 
             const projectId = response.data._id;
             console.log(projectId);
-
-            // Redirect the user based on the selected method
+            refetchProject();
             if (formData.method === "quick") {
                 router.push(`/components/Preview/${projectId}`);
             } else if (formData.method === "step") {
@@ -147,7 +146,11 @@ function ChooseMethod() {
                         name="description"
                         value={formData.description}
                     />
-                    <button type="submit" disabled={isLoading} className="bg-[#0F872F] py-2 px-4 rounded-md">
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="bg-[#0F872F] py-2 px-4 rounded-md"
+                    >
                         {isLoading ? <Loader /> : "Submit"}
                     </button>
                 </form>
