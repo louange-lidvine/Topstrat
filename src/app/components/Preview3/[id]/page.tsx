@@ -123,8 +123,15 @@ function Preview() {
                     </div>
                 </div>
             )}
-            <div className="bg-blue-default text-white font-bold rounded-md m-auto py-3 px-6" onClick={() => router.push("../../components/Preview3")}>
-                <div className="flex items-center justify-center">next</div>
+            <div className=" flex justify-center gap-8 mx-auto" onClick={() => router.push("../../components/Preview3")}>
+            <button
+        onClick={() => router.back()}
+        className="py-3 px-6 border-[1px] bg-[#ED0C0C]  text-white rounded-lg"
+      >
+        Back
+      </button>
+                <div className="flex bg-blue-default text-white font-bold rounded-md m-auto py-3 px-6">next</div>
+          
             </div>
         </div>
     );

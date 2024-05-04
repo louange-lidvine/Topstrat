@@ -122,12 +122,22 @@ function Preview() {
                 
                 </div>
             )}
-                <button
+            <div className="flex justify-center gap-8 mx-auto">
+            <button
+        onClick={() => router.back()}
+        className="py-3 px-6 border-[1px] bg-[#ED0C0C]  text-white rounded-lg"
+      >
+        Back
+      </button>
+                 <button
                         className="bg-blue-default text-white font-bold  rounded-md m-auto py-3 px-6 "
                         onClick={() => router.push(`../../components/Preview3/${id}`)}
                     >
                         <div className="flex  items-center justify-center "   onClick={() => redirect(`/components/Preview3/${id}`)}>next</div>
                     </button>
+         
+            </div>
+               
         </div>
     );
 }
