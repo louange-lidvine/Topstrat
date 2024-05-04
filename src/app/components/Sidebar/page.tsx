@@ -5,12 +5,12 @@ import axios from "axios";
 import Link from "next/link";
 import ChooseMethod from "../chooseMethod/page";
 import { getCookie, setCookie } from "cookies-next";
-import SbLoad from "@/app/shared/loader/sbload";
 import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
 import Profile from "../profile/page";
 import EditProj from "../EditProj/page";
+import SbLoad from "../../shared/loader/sbload";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -108,7 +108,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                             {isLoading ? (
                                 <SbLoad />
                             ) : (
-                                projects.map((project, index) => (
+                                projects.map((project:any, index) => (
                                     <EditProj
                                         key={index}
                                         project={project}
@@ -116,7 +116,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                         remove={() => {
                                             setProjects(
                                                 projects.filter(
-                                                    (proj) =>
+                                                    (proj:any) =>
                                                         proj._id === project._id
                                                 )
                                             );
@@ -131,11 +131,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                         </div>
                     </div>
                     <div className="py-10">
-                        <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 w-[288px] py-3 h-12 rounded-sm">
+                        <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 w-[auto] py-3 h-12 rounded-sm">
                             Settings
                         </h2>
                         <h2
-                            className=" font-bold  hover:bg-red-400 px-10 w-[288px] py-3 h-12 rounded-sm"
+                            className=" font-bold  hover:bg-red-400 px-10 w-[auto] py-3 h-12 rounded-sm"
                             onClick={handleButtonClick}
                         >
                             Logout
@@ -202,7 +202,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                 {isLoading ? (
                                     <SbLoad />
                                 ) : (
-                                    projects.map((project, index) => (
+                                    projects.map((project:any, index) => (
                                         <EditProj
                                             key={index}
                                             project={project}
@@ -210,7 +210,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                             remove={() => {
                                                 setProjects(
                                                     projects.filter(
-                                                        (proj) =>
+                                                        (proj:any) =>
                                                             proj._id ===
                                                             project._id
                                                     )

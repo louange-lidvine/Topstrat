@@ -3,6 +3,8 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { setCookie } from "cookies-next";
+import { useGoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
 
 interface GoogleButtonProps {
   onSuccess: (credentialResponse: any) => void;
@@ -18,8 +20,9 @@ const GoogleButton: React.FC<GoogleButtonProps> = ({ onSuccess, onError, buttonT
     <GoogleLogin
   onSuccess={credentialResponse => {
     toast.success('Logged in successfully !')
-    router.push('/components/Landingpage')
+    console.log(credentialResponse);  
     setCookie("token",credentialResponse.credential)
+    router.push('/components/Landingpage')
   }}
   onError={() => {
     console.log('Login Failed');

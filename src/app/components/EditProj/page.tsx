@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+import { FaEllipsisH } from "react-icons/fa";
 
 export default function ({
     project,
@@ -105,8 +106,8 @@ export default function ({
 
     return (
         <div
-            className={`relative hover:bg-gray-300 hover:bg-opacity-80  px-10 py-3  rounded-sm ${
-                selected && "bg-gray-300 bg-opacity-80"
+            className={`relative hover:bg-white hover:bg-opacity-80  px-10 py-3  rounded-sm ${
+                selected && "bg-white bg-opacity-80"
             }`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => {
@@ -117,14 +118,14 @@ export default function ({
             }}
         >
             <div
-                className="  w-[288px] "
+                className="  w-[auto] "
                 onClick={() =>
                     isPopoverOpen === false && handleProjectClick(project._id)
                 }
             >
                 {openInput ? (
                     <input
-                        className="bg-slate-500 text-white w-full"
+                        className="bg-white text-white w-full"
                         type="text"
                         placeholder={project.name}
                         value={newName}
@@ -141,20 +142,20 @@ export default function ({
             </div>
             {isHover && (
                 <div
-                    className="absolute z-index items-center justify-end bg-slate-500 rounded  text-white top-2 translate-y-1/2 right-5"
+                    className="absolute z-index items-center justify-end bg-blue-default rounded  text-white top-2 translate-y-1/2 right-5"
                     onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                 >
-                    ...
+                    <FaEllipsisH/>
                     {isPopoverOpen && (
                         <div
-                            className="popover w-[250px] absolute left-0 text-black bg-[#fff] p-[10px]"
+                            className="popover w-[200px] absolute left-0 text-black bg-[#fff] p-[10px]"
                             style={{
                                 zIndex: "50",
                                 boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
                                 borderRadius: "4px",
                             }}
                         >
-                            <ul className=" flex flex-col gap-3 bg-slate-800">
+                            <ul className=" flex flex-col gap-3">
                                 {/* <li
                                     className=" hover:bg-slate-500 hover:cursor-pointer"
                                     onClick={() => {
@@ -165,7 +166,7 @@ export default function ({
                                     Rename
                                 </li> */}
                                 <li
-                                    className=" hover:bg-slate-500  hover:cursor-pointer"
+                                    className=" hover:bg-gray-100  hover:cursor-pointer p-2"
                                     onClick={() => {
                                         setIsPopoverOpen(false);
                                         handleDelete(project._id); // Pass projectId to handleDelete

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import axios from "axios";
-import Loader from "@/app/shared/loader/page";
+import Loader from "../../../shared/loader/page";
 
 function Preview() {
     const router = useRouter();
@@ -65,7 +65,7 @@ function Preview() {
     }, []);
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 w-full">
+        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
             {loading ? (
                 <Loader />
             ) : (
@@ -80,37 +80,44 @@ function Preview() {
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <div className="text-blue-default font-bold text-2xl">
+                        <div className="text-blue-default font-bold text-2xl py-5">
                             Logframe
                         </div>
                         <table className="border border-1 w-[90%] m-auto">
                             <tbody>
-                                {logframeData && (
-                                    <>
-                                        <tr>
-                                            <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-2xl">Goal</th>
-                                            <td className="border border-1 p-4">{logframeData.goal}</td>
-                                        </tr>
-                                        <tr>
-                                            <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-2xl">Purpose</th>
-                                            <td className="border border-1 p-4">{logframeData.purpose}</td>
-                                        </tr>
-                                        {Object.entries(logframeData).map(([category, items], index) => (
-                                            <tr key={index} className={index % 2 === 0 ? 'bg-slate-300' : ''}>
-                                                <td className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-2xl">
-                                                    {category.charAt(0).toUpperCase() + category.slice(1)} ({category.charAt(0).toUpperCase()})
-                                                </td>
-                                                <td className="border border-1 p-4">
-                                                    <ul>
-                                                        {Array.isArray(items)&& items && items.map((item: any, i: any) => (
-                                                            <li key={i}>{item}</li>
-                                                        ))}
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </>
-                                )}
+                            {logframeData && (
+    <>
+        {logframeData.goal && (
+            <tr className="bg-slate-300 lg:h-[10vw]">
+                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">Goal (G)</th>
+                <td className="border border-1 p-4">{logframeData.goal}</td>
+            </tr>
+        )}
+        {logframeData.purpose && (
+            <tr className="lg:h-[10vw]">
+                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">Purpose (P)</th>
+                <td className="border border-1 p-4">{logframeData.purpose}</td>
+            </tr>
+        )}
+        {Object.entries(logframeData).map(([category, items], index) => (
+            Array.isArray(items) && items.length > 0 && (
+                <tr key={index} className={index % 2 === 0 ? 'bg-slate-300' : ''}>
+                    <td className="border border-1 p-4 text-blue-default font-bold text-1xl text-center text-xl">
+                        {category.charAt(0).toUpperCase() + category.slice(1)} ({category.charAt(0).toUpperCase()})
+                    </td>
+                    <td className="border border-1 p-4">
+                        <ul className="md:h-[50vw]  lg:h-[10vw]">
+                            {items.map((item: any, i: any) => (
+                                <li key={i}>{item}</li>
+                            ))}
+                        </ul>
+                    </td>
+                </tr>
+            )
+        ))}
+    </>
+)}
+
                             </tbody>
                         </table>
                     </div>
@@ -124,4 +131,3 @@ function Preview() {
 }
 
 export default Preview;
-

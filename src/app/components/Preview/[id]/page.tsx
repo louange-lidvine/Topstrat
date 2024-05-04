@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import Loader from "@/app/shared/loader/page";
 import { getCookie } from "cookies-next";
+import Loader from "../../../shared/loader/page"
 
 function Preview() {
     const { id } = useParams();
@@ -310,14 +310,15 @@ function Preview() {
                     )}
                 </div>
                 {/* <Link href="/signup">Sign Up</Link> */}
-                <div
+                <button
                     className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 w-1/2"
                     onClick={() => router.push(`/components/Preview2/${id}`)}
                 >
-                    <div className="flex  items-center justify-center ">
+                    <div className="flex  items-center justify-center "  onClick={() => router.push(`/components/Preview2/${id}`)} >
                         next
+                    
                     </div>
-                </div>
+                </button>
             </div>
         </div>
     );
