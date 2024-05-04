@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import Loader from "../../../shared/loader/page"
+import { redirect } from "next/navigation";
 
 function Preview() {
     const { id } = useParams();
@@ -314,7 +315,7 @@ function Preview() {
                     className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 w-1/2"
                     onClick={() => router.push(`/components/Preview2/${id}`)}
                 >
-                    <div className="flex  items-center justify-center "  onClick={() => router.push(`/components/Preview2/${id}`)} >
+                    <div className="flex  items-center justify-center "  onClick={() => redirect(`/components/Preview2/${id}`)} >
                         next
                     
                     </div>

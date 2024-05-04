@@ -67,6 +67,8 @@ function ChooseMethod({ refetchProject }: { refetchProject: () => void }) {
             if (formData.method === "quick") {
                 router.push(`/components/Preview/${projectId}`);
             } else if (formData.method === "step") {
+
+                
                 router.push(`/components/step/${projectId}`);
             }
         } catch (error) {

@@ -224,11 +224,12 @@ const page: React.FC = () => {
                      setIsLoading(true);
                      const response = await axios.get(
                          `https://topstrat-backend.onrender.com/projects/${id}`,
-                         //    {
+                         //    
                          //        projectId: id,
                          //    },
                          {
                              headers: {
+
                                  "Content-Type": "application/json",
                                  Authorization: `Bearer ${
                                      JSON.parse(token ?? "").access_token
