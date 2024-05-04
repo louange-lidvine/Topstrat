@@ -14,6 +14,11 @@ function Preview() {
     const [error, setError] = useState<string | null>(null);
     // const [loading, setLoading] = useState<boolean>(true);
     const [projectData, setProjectData] = useState<any>();
+
+    const handleNextClick = () => {
+        router.push(`/components/Preview2/${id}`);
+    };
+
     useEffect(() => {
         const getProject = async (id: string) => {
             try {
@@ -311,13 +316,10 @@ function Preview() {
                 </div>
                 {/* <Link href="/signup">Sign Up</Link> */}
                 <button
-                    className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 w-1/2"
-                    onClick={() => router.push(`/components/Preview2/${id}`)}
+                    className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 w-1/2 cursor-pointer"
+                   onClick={handleNextClick}
                 >
-                    <div className="flex  items-center justify-center "  onClick={() => router.push(`/components/Preview2/${id}`)} >
-                        next
-                    
-                    </div>
+                Next
                 </button>
             </div>
         </div>

@@ -71,8 +71,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     };
 
     useEffect(() => {
-        // Fetch projects from the backend
-
         fetchProjects(); // Fetch projects when the component mounts
     }, []);
 
@@ -122,7 +120,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                             );
                                             fetchProjects();
                                             navigate.push(
-                                                "/components/LandingPage"
+                                                "/components/Landingpage"
                                             );
                                         }}
                                     />

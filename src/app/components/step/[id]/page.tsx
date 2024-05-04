@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
@@ -206,7 +207,6 @@ const page: React.FC = () => {
                 );
                 checkResponseFormat(response.data);
                 setProjectData(response.data);
-                // Do something with the response data from the second Axios call
                 console.log(response.data);
             } catch (error) {
                 console.error("Error fetching project data:", error);
@@ -216,6 +216,8 @@ const page: React.FC = () => {
         setLoading(false);
         console.log(finishedObject);
     }, []);
+
+  
 
          useEffect(() => {
              const fetchData = async () => {
@@ -229,6 +231,7 @@ const page: React.FC = () => {
                          //    },
                          {
                              headers: {
+
                                  "Content-Type": "application/json",
                                  Authorization: `Bearer ${
                                      JSON.parse(token ?? "").access_token
@@ -248,7 +251,7 @@ const page: React.FC = () => {
                      
                  } catch (error) {
                      setError("Error fetching data");
-                     console.error("Error fetching data:", error);
+                     console.error("Error fetching data :", error);
                      setIsLoading(false);
                  }
              };
