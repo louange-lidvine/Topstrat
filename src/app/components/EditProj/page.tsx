@@ -1,15 +1,21 @@
+'use client';
 import React, { useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 
+interface Project {
+    name: string;
+    _id: string;
+}
+
 export default function ({
-    project,
+    project = { name: "", _id: "" },
     remove,
     selected,
 }: {
-    project: any;
+    project: Project;
     selected: boolean;
     remove: () => void;
 }) {

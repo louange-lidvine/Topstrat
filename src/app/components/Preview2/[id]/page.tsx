@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import axios from "axios";
+import { redirect } from "next/navigation";
 import Loader from "../../../shared/loader/page";
 
 function Preview() {
@@ -125,7 +126,7 @@ function Preview() {
                         className="bg-blue-default text-white font-bold  rounded-md m-auto py-3 px-6 "
                         onClick={() => router.push(`../../components/Preview3/${id}`)}
                     >
-                        <div className="flex  items-center justify-center "   onClick={() => router.push(`/components/Preview3/${id}`)}>next</div>
+                        <div className="flex  items-center justify-center "   onClick={() => redirect(`/components/Preview3/${id}`)}>next</div>
                     </button>
         </div>
     );

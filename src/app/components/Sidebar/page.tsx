@@ -23,7 +23,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const [projects, setProjects] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [gravatarUrl, setGravatarUrl] = useState<string>("");
   
 
     const logout = () => {

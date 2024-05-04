@@ -226,7 +226,7 @@ const page: React.FC = () => {
                      setIsLoading(true);
                      const response = await axios.get(
                          `https://topstrat-backend.onrender.com/projects/${id}`,
-                         //    {
+                         //    
                          //        projectId: id,
                          //    },
                          {
@@ -317,7 +317,7 @@ const page: React.FC = () => {
             <ReactModal
                 isOpen={isModalOpen}
                 onRequestClose={handleCloseModal}
-                className="p-10 mt-20 bg-white shadow-lg lg:w-full lg:max-w-[600px] mx-auto"
+                className="p-10 mt-20 bg-white shadow-lg lg:w-full lg:max-w-[600px]  lg:ml-[580px]"
             >
                 {selectedObject && (
                     <Step
@@ -348,7 +348,7 @@ const page: React.FC = () => {
             <ReactModal
                 isOpen={isSecModalOpen}
                 onRequestClose={handleCloseModal}
-                className="px-10 py-10 mt-20 bg-white shadow-lg lg:w-full lg:max-w-[900px] mx-auto"
+                className="px-10 py-10 mt-20 bg-white shadow-lg lg:w-full lg:max-w-[60vw] lg:ml-[450px] mx-auto"
             >
                 {selectedObject && (
                     <PromptGet
