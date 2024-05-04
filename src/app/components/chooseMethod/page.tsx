@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import axios from "axios";

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import GoogleButton from "../../constants/(auth)/googleButton";
 import Background from "/public/assets/bg.png";
-import Graphics from "public/assets/Login-amico (1) 2.png";
+import Graphics from "/public/assets/Login-amico (1) 2.png";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
