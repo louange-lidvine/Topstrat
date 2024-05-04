@@ -1,10 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import Loader from "../../../shared/loader/page"
+import Loader from "../../../shared/loader/page";
 import { redirect } from "next/navigation";
 
 function Preview() {
@@ -66,14 +65,15 @@ function Preview() {
                     }
                 );
                 console.log(response.data);
-                setIsLoading(false);
+                console.log(response.data.swot.response);
 
-                // Check if response.data exists and update states accordingly
+                // Check if response.data exists and update states accordingly  
                 if (response.data) {
                     setPromptData(response.data);
                 } else {
                     setError("No data received");
                 }
+                setIsLoading(false);
             } catch (error) {
                 setError("Error fetching data");
                 console.error("Error fetching data:", error);
@@ -272,13 +272,13 @@ function Preview() {
                                         JSON.parse(promptData.swot.response)
                                             .opportunities[0]}
                                 </td>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
+                                {/* <td className="border-2 border-solid border-black p-[6px] text-left px-6">
                                     {promptData &&
                                         promptData.swot &&
                                         promptData.swot.response &&
                                         JSON.parse(promptData.swot.response)
                                             .threats[0]}
-                                </td>
+                                </td> */}
                             </tr>
                             <tr>
                                 <td className="border-2 border-solid border-black p-[6px] text-left px-6">
@@ -294,7 +294,7 @@ function Preview() {
                                         promptData.swot.response &&
                                         JSON.parse(promptData.swot.response)
                                             .threats[1]}
-                                </td>
+                                </td> 
                             </tr>
                             <tr>
                                 <td className="border-2 border-solid border-black p-[6px] text-left px-6">
@@ -304,13 +304,13 @@ function Preview() {
                                         JSON.parse(promptData.swot.response)
                                             .opportunities[2]}
                                 </td>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
+                                 <td className="border-2 border-solid border-black p-[6px] text-left px-6">
                                     {promptData &&
                                         promptData.swot &&
                                         promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
+                                        JSON.parse(promptData?.swot?.response)
                                             .threats[2]}
-                                </td>
+                                </td> 
                             </tr>
                         </table>
                     )}
@@ -318,11 +318,13 @@ function Preview() {
                 {/* <Link href="/signup">Sign Up</Link> */}
                 <button
                     className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 w-1/2 cursor-pointer"
-                   onClick={handleNextClick}
+                    onClick={handleNextClick}
                 >
-                    <div className="flex  items-center justify-center "  onClick={() => redirect(`/components/Preview2/${id}`)} >
+                    <div
+                        className="flex  items-center justify-center cursor-pointer  "
+                        onClick={() => redirect(`/components/Preview2/${id}`)}
+                    >
                         next
-                    
                     </div>
                 </button>
             </div>

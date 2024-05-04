@@ -86,58 +86,83 @@ function Preview() {
             ) : (
                 <div>
                     <div className="flex flex-col  justify-center items-center gap-4 text-2xl ">
-                <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
-                    {projectData && projectData.name}
-                </div>
-                <div className="text-yellow-500 font-bold ">Preview</div>
-                <div className="text-blue-default font-bold  ">
-                    Strategic Plan {projectData && projectData.name}
-                </div>
-            </div>
+                        <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
+                            {projectData && projectData.name}
+                        </div>
+                        <div className="text-yellow-500 font-bold ">
+                            Preview
+                        </div>
+                        <div className="text-blue-default font-bold  ">
+                            Strategic Plan {projectData && projectData.name}
+                        </div>
+                    </div>
                     <div className="flex flex-col gap-3">
                         <div className="text-blue-default font-bold text-2xl py-5">
                             PESTLE Analysis
                         </div>
                         <div className="grid grid-cols-2  border border-1 w-[90%]  m-auto h-full ">
-                            {Object.keys(pestleData || {}).map((category, index) => (
-                                <React.Fragment key={index}>
-                                    <div className={`col-span-1 border border-1 ${index % 2 === 0 ? 'bg-slate-300' : ''}`}>
-                                        <div className="p-4 text-blue-default font-bold text-1xl text-start text-xl">
-                                            {category.charAt(0).toUpperCase() + category.slice(1)} ({category.charAt(0).toUpperCase()})
+                            {Object.keys(pestleData || {}).map(
+                                (category, index) => (
+                                    <React.Fragment key={index}>
+                                        <div
+                                            className={`col-span-1 border border-1 ${
+                                                index % 2 === 0
+                                                    ? "bg-slate-300"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <div className="p-4 text-blue-default font-bold text-1xl text-start text-xl">
+                                                {category
+                                                    .charAt(0)
+                                                    .toUpperCase() +
+                                                    category.slice(1)}{" "}
+                                                (
+                                                {category
+                                                    .charAt(0)
+                                                    .toUpperCase()}
+                                                )
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className={`col-span-1 ${index % 2 === 0 ? 'bg-slate-300' : ''}`}>
-                                        <div className="p-4">
-                                            <ul className=" md:h-[50vw]  lg:h-[10vw] ">
-                                                {(pestleData[category] || []).map((item:any, i:any) => (
-                                                    <li key={i}>{item}</li>
-                                                ))}
-                                            </ul>
+                                        <div
+                                            className={`col-span-1 ${
+                                                index % 2 === 0
+                                                    ? "bg-slate-300"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <div className="p-4">
+                                                <ul className=" md:h-[50vw]  lg:h-[10vw] ">
+                                                    {(
+                                                        pestleData[category] ||
+                                                        []
+                                                    ).map(
+                                                        (item: any, i: any) => (
+                                                            <li key={i}>
+                                                                {item}
+                                                            </li>
+                                                        )
+                                                    )}
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-                                </React.Fragment>
-                            ))}
+                                    </React.Fragment>
+                                )
+                            )}
                         </div>
                     </div>
-                
                 </div>
             )}
-            <div className="flex justify-center gap-8 mx-auto">
             <button
-        onClick={() => router.back()}
-        className="py-3 px-6 border-[1px] bg-[#ED0C0C]  text-white rounded-lg"
-      >
-        Back
-      </button>
-                 <button
-                        className="bg-blue-default text-white font-bold  rounded-md m-auto py-3 px-6 "
-                        onClick={() => router.push(`../../components/Preview3/${id}`)}
-                    >
-                        <div className="flex  items-center justify-center "   onClick={() => redirect(`/components/Preview3/${id}`)}>next</div>
-                    </button>
-         
-            </div>
-               
+                className="bg-blue-default text-white font-bold  rounded-md m-auto py-3 px-6 "
+                onClick={() => router.push(`../../components/Preview3/${id}`)}
+            >
+                <div
+                    className="flex  items-center justify-center cursor-pointer  "
+                    onClick={() => redirect(`/components/Preview3/${id}`)}
+                >
+                    next
+                </div>
+            </button>
         </div>
     );
 }
