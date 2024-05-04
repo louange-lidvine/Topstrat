@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 import Loader from "../../../shared/loader/page";
+import { redirect } from "next/navigation";
 
 function Preview() {
     const router = useRouter();
@@ -85,47 +86,94 @@ function Preview() {
                         </div>
                         <table className="border border-1 w-[90%] m-auto">
                             <tbody>
-                            {logframeData && (
-    <>
-        {logframeData.goal && (
-            <tr className="bg-slate-300 lg:h-[10vw]">
-                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">Goal (G)</th>
-                <td className="border border-1 p-4">{logframeData.goal}</td>
-            </tr>
-        )}
-        {logframeData.purpose && (
-            <tr className="lg:h-[10vw]">
-                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">Purpose (P)</th>
-                <td className="border border-1 p-4">{logframeData.purpose}</td>
-            </tr>
-        )}
-        {Object.entries(logframeData).map(([category, items], index) => (
-            Array.isArray(items) && items.length > 0 && (
-                <tr key={index} className={index % 2 === 0 ? 'bg-slate-300' : ''}>
-                    <td className="border border-1 p-4 text-blue-default font-bold text-1xl text-center text-xl">
-                        {category.charAt(0).toUpperCase() + category.slice(1)} ({category.charAt(0).toUpperCase()})
-                    </td>
-                    <td className="border border-1 p-4">
-                        <ul className="md:h-[50vw]  lg:h-[10vw]">
-                            {items.map((item: any, i: any) => (
-                                <li key={i}>{item}</li>
-                            ))}
-                        </ul>
-                    </td>
-                </tr>
-            )
-        ))}
-    </>
-)}
-
+                                {logframeData && (
+                                    <>
+                                        {logframeData.goal && (
+                                            <tr className="bg-slate-300 lg:h-[15vw]">
+                                                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">
+                                                    Goal (G)
+                                                </th>
+                                                <td className="border border-1 p-4">
+                                                    {logframeData.goal}
+                                                </td>
+                                            </tr>
+                                        )}
+                                        {logframeData.purpose && (
+                                            <tr className="lg:h-[15vw]">
+                                                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">
+                                                    Purpose (P)
+                                                </th>
+                                                <td className="border border-1 p-4">
+                                                    {logframeData.purpose}
+                                                </td>
+                                            </tr>
+                                        )}
+                                        {Object.entries(logframeData).map(
+                                            ([category, items], index) =>
+                                                Array.isArray(items) &&
+                                                items.length > 0 && (
+                                                    <tr
+                                                        key={index}
+                                                        className={
+                                                            index % 2 === 0
+                                                                ? "bg-slate-300"
+                                                                : ""
+                                                        }
+                                                    >
+                                                        <td className="border border-1 p-4 text-blue-default font-bold text-1xl text-center text-xl">
+                                                            {category
+                                                                .charAt(0)
+                                                                .toUpperCase() +
+                                                                category.slice(
+                                                                    1
+                                                                )}{" "}
+                                                            (
+                                                            {category
+                                                                .charAt(0)
+                                                                .toUpperCase()}
+                                                            )
+                                                        </td>
+                                                        <td className="border border-1 p-4">
+                                                            <ul className="md:h-[50vw]  lg:h-[15vw]">
+                                                                {items.map(
+                                                                    (
+                                                                        item: any,
+                                                                        i: any
+                                                                    ) => (
+                                                                        <li
+                                                                            key={
+                                                                                i
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                item
+                                                                            }
+                                                                        </li>
+                                                                    )
+                                                                )}
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                        )}
+                                    </>
+                                )}
                             </tbody>
                         </table>
                     </div>
                 </div>
             )}
-            <div className="bg-blue-default text-white font-bold rounded-md m-auto py-3 px-6" onClick={() => router.push("../../components/Preview3")}>
-                <div className="flex items-center justify-center">next</div>
-            </div>
+            <button
+                className="bg-blue-default text-white font-bold  rounded-md m-auto py-3 px-6 "
+                onClick={() => router.push(`../../components/Final/${id}`)}
+            >
+                <div
+                    className="flex  items-center justify-center cursor-pointer  "
+                    onClick={() => redirect(`/components/Final/${id}`)}
+                >
+                    next
+                </div>
+            </button>
         </div>
     );
 }

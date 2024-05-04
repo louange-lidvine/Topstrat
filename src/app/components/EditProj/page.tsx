@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
@@ -30,11 +30,11 @@ export default function ({
             "mission",
             "vision",
             "swot",
-            "objective",
+            "objectives",
             "values",
             "strategy",
             "logframe",
-            "PESTLE",
+            "pestle",
         ];
 
         // Check if all required fields exist in the response
@@ -151,7 +151,7 @@ export default function ({
                     className="absolute z-index items-center justify-end bg-blue-default rounded  text-white top-2 translate-y-1/2 right-5"
                     onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                 >
-                    <FaEllipsisH/>
+                    <FaEllipsisH />
                     {isPopoverOpen && (
                         <div
                             className="popover w-[200px] absolute left-0 text-black bg-[#fff] p-[10px]"
