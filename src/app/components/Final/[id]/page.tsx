@@ -233,7 +233,7 @@ function Final() {
                             <div className="w-[100%] flex justify-center items-center">
                         {isLoading ? (
                             <div className="w-full">
-                                {/* Loader */}
+                               <Loader />
                             </div>
                         ) : (
                             <table className="border border-collapse w-full overflow-x-auto">
@@ -275,6 +275,11 @@ function Final() {
                 <div>
                     <div className="flex flex-col my-6">
                         <Text style={{ fontSize: "20px", fontWeight: "bold", color: "#0B6C79" }}>PESTLE Analysis</Text>
+                        {isLoading ? (
+                            <div className="w-full">
+                              <Loader/>
+                            </div>
+                        ) : (
                         <div className="grid grid-cols-2 border border-1 w-full overflow-x-auto m-auto h-full">
                             {Object.keys(pestleData || {}).map((category, index) => (
                                 <React.Fragment key={index}>
@@ -303,12 +308,18 @@ function Final() {
                                 </React.Fragment>
                             ))}
                         </div>
+                        )}
                     </div>
                 </div>
                 <div>
                     <div className="flex flex-col  my-6">
                         <Text style={{ fontSize: "20px", fontWeight: "bold", color: "#0B6C79" }}>Logframe</Text>
                         <table className="border border-1 w-full overflow-x-auto m-auto">
+                        {isLoading ? (
+                                <div className="w-full">
+                                    {/* Loader */}
+                                </div>
+                            ) : (
                             <tbody>
                                 {logframeData &&
                                     Object.entries(logframeData).map(([category, items], index) => (
@@ -333,6 +344,7 @@ function Final() {
                                         )
                                     ))}
                             </tbody>
+                            )}
                         </table>
                     </div>
                 </div>

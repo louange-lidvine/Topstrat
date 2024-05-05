@@ -84,6 +84,41 @@ function Preview() {
         fetchData();
     }, []);
 
+    const refetchData = async () => {
+        try {
+            const token = getCookie("token");
+            setIsLoading(true);
+            const response = await axios.get(
+                `https://topstrat-backend.onrender.com/projects/prompts/latest/${id}`,
+                //    {
+                //        projectId: id,
+                //    },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            console.log(response.data);
+            console.log(response.data.swot.response);
+
+            // Check if response.data exists and update states accordingly  
+            if (response.data) {
+                setPromptData(response.data);
+            } else {
+                setError("No data received");
+            }
+            setIsLoading(false);
+        } catch (error) {
+            setError("Error fetching data");
+            console.error("Error fetching data:", error);
+            setIsLoading(false);
+        }
+    };
+
     return (
         <div className="border border-blue-default my-4 rounded-md mx-2  p-4 font-medium ">
             <div className="flex flex-col  justify-center items-center gap-4 text-2xl ">
@@ -316,17 +351,23 @@ function Preview() {
                     )}
                 </div>
                 {/* <Link href="/signup">Sign Up</Link> */}
+                <div className="flex justify-center mx-auto gap-5">
                 <button
-                    className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 w-1/2 cursor-pointer"
-                    onClick={handleNextClick}
+                className="bg-orange-default text-white font-bold  rounded-md m-auto py-3 px-6 "
+            onClick={refetchData}
+            >
+                    Regenerate
+            </button>
+                <button
+                    className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 px-6 cursor-pointer"
+                    onClick={() => router.push(`/components/Preview2/${id}`)}
                 >
-                    <div
-                        className="flex  items-center justify-center cursor-pointer  "
-                        onClick={() => redirect(`/components/Preview2/${id}`)}
-                    >
-                        next
-                    </div>
+                        Next
+            
                 </button>
+             
+                </div>
+             
             </div>
         </div>
     );

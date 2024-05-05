@@ -6,6 +6,7 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import Loader from "../../../shared/loader/page";
 
+
 function Preview() {
     const router = useRouter();
     const { id } = useParams();
@@ -79,10 +80,37 @@ function Preview() {
 
     }, []);
 
+    const refetchData = async () => {
+        const token = getCookie("token");
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                `https://topstrat-backend.onrender.com/projects/projects/generate-analysis/${id}`,
+                {
+                    projectId: id
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            setPestleData(JSON.parse(response.data.pestle.response));
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
             {loading ? (
                 <Loader />
+      
             ) : (
                 <div>
                     <div className="flex flex-col  justify-center items-center gap-4 text-2xl ">
@@ -152,17 +180,29 @@ function Preview() {
                     </div>
                 </div>
             )}
+         
+            <div className="flex justify-center mx-auto gap-5">
             <button
-                className="bg-blue-default text-white font-bold  rounded-md m-auto py-3 px-6 "
-                onClick={() => router.push(`../../components/Preview3/${id}`)}
+                className="bg-[#ED0C0C] text-white font-bold  rounded-md m-auto py-3 px-6 "
+                onClick={() => router.push(`../../components/Preview2/${id}`)}
             >
-                <div
-                    className="flex  items-center justify-center cursor-pointer  "
-                    onClick={() => redirect(`/components/Preview3/${id}`)}
-                >
-                    next
-                </div>
+                    Back
             </button>
+                <button
+                className="bg-orange-default text-white font-bold  rounded-md m-auto py-3 px-6 "
+            onClick={refetchData}
+            >
+                    Regenerate
+            </button>
+                <button
+                    className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 px-6 cursor-pointer"
+                    onClick={() => router.push(`/components/Preview3/${id}`)}
+                >
+                        Next
+            
+                </button>
+             
+                </div>
         </div>
     );
 }
