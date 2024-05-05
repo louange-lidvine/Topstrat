@@ -128,7 +128,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                         </div>
                     </div>
                     <div className="py-10">
-                        <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 w-[auto] py-3 h-12 rounded-sm">
+                        <h2 className=" font-bold  hover:bg-white hover:bg-opacity-20  px-10  w-[auto] py-3 h-12 rounded-sm">
                             Settings
                         </h2>
                         <h2

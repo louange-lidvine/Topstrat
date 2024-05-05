@@ -64,6 +64,30 @@ function Preview() {
         fetchData();
 
     }, []);
+    const refetchData = async () => {
+        const token = getCookie("token");
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                `https://topstrat-backend.onrender.com/projects/projects/generate-analysis/${id}`,
+                {
+                    projectId: id
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+                    },
+                }
+            );
+            console.log(JSON.parse(response.data.logframe.response));
+            setLogframeData(JSON.parse(response.data.logframe.response));
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
@@ -163,17 +187,22 @@ function Preview() {
                     </div>
                 </div>
             )}
+            <div className=" flex justify-center gap-8 mx-auto">
             <button
-                className="bg-blue-default text-white font-bold  rounded-md m-auto py-3 px-6 "
-                onClick={() => router.push(`../../components/Final/${id}`)}
+                className="bg-[#ED0C0C] text-white font-bold  rounded-md m-auto py-3 px-6 "
+                onClick={() => router.push(`../../components/Preview2/${id}`)}
             >
-                <div
-                    className="flex  items-center justify-center cursor-pointer  "
-                    onClick={() => redirect(`/components/Final/${id}`)}
-                >
-                    next
-                </div>
+                    Back
             </button>
+            <button
+                className="bg-orange-default text-white font-bold  rounded-md m-auto py-3 px-6 "
+            onClick={refetchData}
+            >
+                    Regenerate
+            </button>
+                <div className="flex bg-blue-default text-white font-bold rounded-md m-auto py-3 px-6"  onClick={() => router.push(`/components/Final/${id}`)}>next</div>
+          
+            </div>
         </div>
     );
 }

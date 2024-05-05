@@ -112,8 +112,8 @@ export default function ({
 
     return (
         <div
-            className={`relative hover:bg-white hover:bg-opacity-80  px-10 py-3  rounded-sm ${
-                selected && "bg-white bg-opacity-80"
+            className={`relative hover:bg-white hover:bg-opacity-20  px-10 py-3 mt-3  rounded-sm ${
+                selected && "bg-transparent"
             }`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => {
