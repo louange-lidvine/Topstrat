@@ -253,6 +253,17 @@ function Preview() {
                                         JSON.parse(promptData.swot.response)
                                             .strengths[0]}
                                 </td>
+
+                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
+                                    {promptData &&
+                                        promptData.swot &&
+                                        promptData.swot.response &&
+                                        JSON.parse(promptData.swot.response)
+                                            .weaknesses[0]}
+                                </td>
+                            </tr>
+
+                            <tr>
                                 <td className="border-2 border-solid border-black p-[6px] text-left px-6 ">
                                     {" "}
                                     {promptData &&
@@ -260,11 +271,6 @@ function Preview() {
                                         promptData.swot.response &&
                                         JSON.parse(promptData.swot.response)
                                             .strengths[1]}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    Low Space Requirements
                                 </td>
                                 <td className="border-2 border-solid border-black p-[6px] text-left px-6">
                                     {promptData &&
@@ -329,7 +335,7 @@ function Preview() {
                                         promptData.swot.response &&
                                         JSON.parse(promptData.swot.response)
                                             .threats[1]}
-                                </td> 
+                                </td>
                             </tr>
                             <tr>
                                 <td className="border-2 border-solid border-black p-[6px] text-left px-6">
@@ -339,35 +345,34 @@ function Preview() {
                                         JSON.parse(promptData.swot.response)
                                             .opportunities[2]}
                                 </td>
-                                 <td className="border-2 border-solid border-black p-[6px] text-left px-6">
+                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
                                     {promptData &&
                                         promptData.swot &&
                                         promptData.swot.response &&
                                         JSON.parse(promptData?.swot?.response)
                                             .threats[2]}
-                                </td> 
+                                </td>
                             </tr>
                         </table>
                     )}
                 </div>
                 {/* <Link href="/signup">Sign Up</Link> */}
                 <div className="flex justify-center mx-auto gap-5">
-                <button
-                className="bg-orange-default text-white font-bold  rounded-md m-auto py-3 px-6 "
-            onClick={refetchData}
-            >
-                    Regenerate
-            </button>
-                <button
-                    className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 px-6 cursor-pointer"
-                    onClick={() => router.push(`/components/Preview2/${id}`)}
-                >
+                    <button
+                        className="bg-orange-default text-white font-bold  rounded-md m-auto py-3 px-6 "
+                        onClick={refetchData}
+                    >
+                        Regenerate
+                    </button>
+                    <button
+                        className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 px-6 cursor-pointer"
+                        onClick={() =>
+                            router.push(`/components/Preview2/${id}`)
+                        }
+                    >
                         Next
-            
-                </button>
-             
+                    </button>
                 </div>
-             
             </div>
         </div>
     );
