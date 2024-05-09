@@ -8,7 +8,7 @@ import {
     Document,
     Page,
     Text,
-    View,
+    PDFViewer 
 } from "@react-pdf/renderer";
 import Loader from "@/app/shared/loader/page";
 import { useParams } from "next/navigation";
@@ -89,8 +89,9 @@ function Final() {
 
     // PDF document component
     const MyDocument = () => (
-        <Document>
-            <Page>
+        <Document pageMode="fullScreen">
+
+            <Page size="A4" style={{padding:"20px",margin:"auto"}}>
                 <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium">
                     <div className="flex flex-col  justify-center items-center gap-4 text-2xl ">
                         <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
@@ -297,7 +298,7 @@ function Final() {
                                         overflowX: "auto",
                                     }}
                                 >
-                                    <tr style={{ color: "blue" }}>
+                                    <tr style={{ color: "#0B6C79" }}>
                                         <td
                                             style={{
                                                 border: "2px solid black",
@@ -307,7 +308,7 @@ function Final() {
                                                 paddingTop: "3px",
                                             }}
                                         >
-                                            Strengths(S)
+                                          <Text> Strengths(S)</Text> 
                                         </td>
                                         <td
                                             style={{
@@ -317,7 +318,7 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            Weaknesses(W)
+                                          <Text>Weaknesses(W)</Text>  
                                         </td>
                                     </tr>
                                     <tr>
@@ -329,12 +330,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                                  {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
                                                 ).strengths[0]}
+                                            </Text>
+                                          
                                         </td>
                                         <td
                                             style={{
@@ -344,12 +348,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                                       {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
                                                 ).weaknesses[0]}
+                                            </Text>
+                                     
                                         </td>
                                     </tr>
                                     <tr>
@@ -361,12 +368,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                                  {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
                                                 ).strengths[1]}
+                                            </Text>
+                                          
                                         </td>
                                         <td
                                             style={{
@@ -376,12 +386,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                              {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
-                                                ).weaknesses[1]}
+                                                ).weaknesses[1]}   
+                                            </Text>
+                                           
                                         </td>
                                     </tr>
                                     <tr>
@@ -393,12 +406,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                                {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
                                                 ).strengths[2]}
+                                            </Text>
+                                            
                                         </td>
                                         <td
                                             style={{
@@ -408,15 +424,18 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                                   {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
-                                                ).weaknesses[2]}
+                                                ).weaknesses[2]}   
+                                            </Text>
+                                      
                                         </td>
                                     </tr>
-                                    <tr style={{ color: "blue" }}>
+                                    <tr style={{ color: "#0B6C79" }}>
                                         <td
                                             style={{
                                                 border: "2px solid black",
@@ -426,7 +445,7 @@ function Final() {
                                                 paddingTop: "3px",
                                             }}
                                         >
-                                            Opportunities (O)
+                                          <Text>Opportunities (O)</Text>  
                                         </td>
                                         <td
                                             style={{
@@ -436,7 +455,7 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            Threats (T)
+                                        <Text>  Threats (T)</Text>  
                                         </td>
                                     </tr>
                                     <tr>
@@ -448,12 +467,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                                  {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
-                                                ).opportunities[0]}
+                                                ).opportunities[0]}  
+                                            </Text>
+                                        
                                         </td>
                                         <td
                                             style={{
@@ -463,12 +485,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>    
+                                                {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
                                                 ).threats[0]}
+                                                </Text>
+                                        
                                         </td>
                                     </tr>
                                     <tr>
@@ -480,12 +505,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                                {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
                                                 ).opportunities[1]}
+                                                </Text>
+                                            
                                         </td>
                                         <td
                                             style={{
@@ -495,12 +523,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                                  {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
-                                                ).threats[1]}
+                                                ).threats[1]} 
+                                            </Text>
+                                         
                                         </td>
                                     </tr>
                                     <tr>
@@ -512,12 +543,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                                 {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
                                                 ).opportunities[2]}
+                                            </Text>
+                                           
                                         </td>
                                         <td
                                             style={{
@@ -527,12 +561,15 @@ function Final() {
                                                 paddingLeft: "6px",
                                             }}
                                         >
-                                            {promptData &&
+                                            <Text>
+                                                {promptData &&
                                                 promptData.swot &&
                                                 promptData.swot.response &&
                                                 JSON.parse(
                                                     promptData.swot.response
                                                 ).threats[2]}
+                                            </Text>
+                                            
                                         </td>
                                     </tr>
                                 </table>

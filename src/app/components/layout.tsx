@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar/page";
 import Background from "../../../public/assets/bg.png";
 import Image from "next/image";
+import { MantineProvider } from "@mantine/core";
 
 // export const metadata: Metadata = {
 //     title: "Create Next App",
@@ -32,5 +33,6 @@ export default function RootLayout({
                 </div>
             </body>
         </html>
+
     );
 }

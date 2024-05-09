@@ -103,7 +103,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                 </div>
                             </div>
                             {isLoading ? (
-                                <SbLoad />
+                                <div className="m-12"> <SbLoad /></div>
+                               
                             ) : (
                                 projects.map((project:any, index) => (
                                     <EditProj
