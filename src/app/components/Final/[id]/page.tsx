@@ -1,5 +1,5 @@
 
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
@@ -740,15 +740,18 @@ function Final() {
     );
 
     return (
-        <div>
-            <MyDocument />
-            <PDFDownloadLink document={<MyDocument />} fileName="document.pdf">
-                {({ loading }) =>
-                    loading ? "Loading document..." : "Download PDF"
-                }
-            </PDFDownloadLink>
-            <button onClick={regenerateData}>Regenerate</button>
-        </div>
+      <div>
+        <MyDocument />
+
+        {typeof window !== "undefined" && (
+          <PDFDownloadLink document={<MyDocument />} fileName="document.pdf">
+            {({ loading }) =>
+              loading ? "Loading document..." : "Download PDF"
+            }
+          </PDFDownloadLink>
+        )}
+        <button onClick={regenerateData}>Regenerate</button>
+      </div>
     );
 }
 
