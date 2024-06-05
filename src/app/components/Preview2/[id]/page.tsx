@@ -83,12 +83,24 @@ function Preview() {
     };
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
+        <div className="border border-blue-default mt-4 mb-24 lg:mb-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
             {loading ? (
                 <Loader />
             ) : (
                 <div className="w-full">
+                  <div className="flex flex-col justify-center items-center gap-4 text-2xl">
+                <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
+                    {projectData && projectData.name}
+                </div>
+                <div className="text-yellow-500 font-bold">Preview</div>
+                <div className="text-blue-default font-bold">
+                    Strategic Plan {projectData && projectData.name}
+                </div>
+            </div>
                 <div className="flex flex-col gap-3">
+                <div className="text-blue-default font-bold text-2xl py-5">
+                            PESTLE 
+                        </div>
                   <table className="border border-1 m-auto">
                     <thead>
                       <tr className="bg-slate-300">

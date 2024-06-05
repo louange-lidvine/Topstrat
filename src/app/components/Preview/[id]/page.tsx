@@ -98,13 +98,13 @@ function Preview() {
 
     const renderList = (data: string) => {
         return data
-            .split(/\d+\.\s*/)  // Split based on numbers followed by a period and space
-            .filter(item => item.trim() !== '') // Remove any empty items
+            .split(/\d+\.\s*/)  
+            .filter(item => item.trim() !== '')
             .map((item, index) => <li key={index}>{index + 1}. {item.trim()}</li>);
     };
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium">
+        <div className="border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium">
             <div className="flex flex-col justify-center items-center gap-4 text-2xl">
                 <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
                     {projectData && projectData.name}
@@ -114,7 +114,7 @@ function Preview() {
                     Strategic Plan {projectData && projectData.name}
                 </div>
             </div>
-            <div className="w-full">
+            <div className="w-full mt-4">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-4">
                         <h3 className="text-blue-default font-bold text-xl">Project Overview</h3>
@@ -162,7 +162,7 @@ function Preview() {
                             <div className="w-full"><Skeleton /></div>
                         ) : (
                             <ul>{promptData && promptData.strategy && renderList(promptData.strategy.response)}</ul>
-                        )}
+                        )}                                                                                                                             
                     </div>
                 </div>
             </div>
@@ -210,13 +210,13 @@ function Preview() {
                 </div>
                 <div className="flex justify-center mx-auto gap-5">
                     <button
-                        className="bg-orange-default text-white font-bold rounded-md m-auto py-3 px-6"
+                        className="bg-orange-default text-white font-bold rounded-md py-3 px-6"
                         onClick={refetchData}
                     >
                         Regenerate
                     </button>
                     <button
-                        className="bg-blue-default text-white m-auto font-bold rounded-md py-3 px-6 cursor-pointer"
+                        className="bg-blue-default text-white font-bold rounded-md py-3 px-6 cursor-pointer"
                         onClick={handleNextClick}
                     >
                         Next

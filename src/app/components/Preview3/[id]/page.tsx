@@ -87,11 +87,11 @@ function Preview() {
     };
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
+        <div className="border border-blue-default mt-4 lg:mb-4 mb-32 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
             {loading ? (
                 <Loader />
             ) : (
-                <div>
+                <div className="">
                     <div className="flex flex-col justify-center items-center gap-4 text-2xl">
                         <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
                             {projectData && projectData.name}
@@ -105,7 +105,7 @@ function Preview() {
                         <div className="text-blue-default font-bold text-2xl py-5">
                             Logframe
                         </div>
-                        <table className="border border-1 m-auto">
+                        <table className="border border-1 m-auto  overflow-x-scroll">
                             <thead>
                                 <tr className="bg-slate-300">
                                     <th className="border border-1 p-2 text-blue-default font-bold text-center">Results Chain</th>

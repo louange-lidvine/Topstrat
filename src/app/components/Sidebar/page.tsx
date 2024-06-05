@@ -131,7 +131,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
           <ReactModal
             isOpen={isModalOpen}
             onRequestClose={handleCloseModal}
-            className="w-[600px]  p-10 mt-20 bg-white shadow-lg ml-[500px] "
+            className="w-[600px]  p-10 mt-20 bg-white shadow-lg lg:ml-[500px] "
           >
             <h1 className="font-bold text-center">
               Are you sure you want to logout?
