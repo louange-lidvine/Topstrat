@@ -191,12 +191,11 @@ const page: React.FC = () => {
     };
 
     useEffect(() => {
-        const getProject = async (projectId: string) => {
+        const getProject = async (id: string) => {
             try {
                 const token = getCookie("token");
                 const response = await axios.get(
-                   
-                   ` http://157.245.121.185:5000/projects/prompts/latest/${id}`,
+                   `http://157.245.121.185:5000/projects/prompts/latest/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -219,41 +218,40 @@ const page: React.FC = () => {
         console.log(finishedObject);
     }, []);
 
-         useEffect(() => {
-             const fetchData = async () => {
-                 try {
-                     const token = getCookie("token");
-                     setIsLoading(true);              
-                     http: const response = await axios.get(
-                         `https://157.245.121.185:5000/projects/${id}`,
-                         {
-                             headers: {
-                                 "Content-Type": "application/json",
-                                 Authorization: `Bearer ${
-                                     JSON.parse(token ?? "").access_token
-                                 }`,
-                             },
-                         }
-                     );
-                   
-                     setIsLoading(false);
-
-                     // Check if response.data exists and update states accordingly
-                     if (response.data) {
-                         setProjectName(response.data);
-                     } else {
-                         setError("No data received");
+     useEffect(() => {
+         const fetchData = async () => {
+             try {
+                 const token = getCookie("token");
+                 setIsLoading(true);
+                 const response = await axios.get(
+                     `https://157.245.121.185:5000/projects/${id}`,
+                     {
+                         headers: {
+                             "Content-Type": "application/json",
+                             Authorization: `Bearer ${
+                                 JSON.parse(token ?? "").access_token
+                             }`,
+                         },
                      }
-                     
-                 } catch (error) {
-                     setError("Error fetching data");
-                     console.error("Error fetching data:", error);
-                     setIsLoading(false);
-                 }
-             };
+                 );
 
-             fetchData();
-         }, []);
+                 setIsLoading(false);
+
+                 // Check if response.data exists and update states accordingly
+                 if (response.data) {
+                     setProjectName(response.data);
+                 } else {
+                     setError("No data received");
+                 }
+             } catch (error) {
+                 setError("Error fetching data");
+                 console.error("Error fetching data:", error);
+                 setIsLoading(false);
+             }
+         };
+
+         fetchData();
+     }, []);
 
     const router = useRouter();
 
