@@ -561,7 +561,8 @@ const page: React.FC = () => {
             try {
                 const token = getCookie("token");
                 const response = await axios.get(
-                   ` https://topstrat-backend.onrender.com/projects/prompts/latest/${projectId}`,
+                   
+                   ` http://157.245.121.185:5000/projects/prompts/latest/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -588,11 +589,11 @@ const page: React.FC = () => {
              const fetchData = async () => {
                  try {
                      const token = getCookie("token");
-                     setIsLoading(true);
-                     const response = await axios.get(`https://topstrat-backend.onrender.com/projects/${id}`,
+                     setIsLoading(true);              
+                     http: const response = await axios.get(
+                         `https://157.245.121.185:5000/projects/${id}`,
                          {
                              headers: {
-
                                  "Content-Type": "application/json",
                                  Authorization: `Bearer ${
                                      JSON.parse(token ?? "").access_token

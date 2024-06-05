@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import GoogleButton from "../../constants/(auth)/googleButton";
+import GoogleButton from "../../constants/(auth)/googleSignUpButton";
 import Background from "/public/assets/bg.png";
 import Graphics from "/public/assets/Login-amico (1) 2.png";
 import Link from "next/link";
@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { setCookie } from "cookies-next";
 import { jwtDecode } from "jwt-decode";
+import GoogleSignInButton from "@/app/constants/(auth)/googleSignInButton";
 
 function Page() {
     const router = useRouter();
@@ -73,13 +74,12 @@ function Page() {
                     if (
                         String(err?.response?.data?.error) ==
                         "Network error occurred"
-                    ) 
-                    return toast.error("Invalid credentials");
-                    setLoading(false)
+                    )
+                        return toast.error("Invalid credentials");
+                    setLoading(false);
                 } else {
-                    setLoading(false)
+                    setLoading(false);
                     return toast.error("Invalid credentials");
-                
                 }
             });
     };
@@ -121,7 +121,6 @@ function Page() {
                                 required
                             />
                         </div>
-
                         <div className="flex flex-col">
                             <label htmlFor="password" className="mb-1">
                                 Password:
@@ -144,17 +143,13 @@ function Page() {
                                 </button>
                             </div>
                         </div>
-
                         <button
                             type="submit"
                             className="bg-blue-default text-white p-4 rounded hover:bg-[rgba(11, 108, 121, 1.2)]"
                         >
                             Sign in
                         </button>
-                        <div className="">
-                            {loading && <Loader />}
-                        </div>
-
+                        <div className="">{loading && <Loader />}</div>
                         <div className="flex items-center space-x-4">
                             <div className="flex-grow border-t border-gray-400"></div>
                             <span className="text-gray-500">or</span>
@@ -164,8 +159,18 @@ function Page() {
                             <span>Remember me</span>
                             <span>Forgot Password?</span>
                         </div>
-
-                        <GoogleButton
+                        {/* <GoogleButton
+                            onSuccess={(credentialResponse: any) => {
+                                console.log(
+                                    "Google login success:",
+                                    credentialResponse
+                                );
+                            }}
+                            onError={() => {
+                                console.log("Google login failed");
+                            }}
+                        /> */}
+                        <GoogleSignInButton
                             onSuccess={(credentialResponse: any) => {
                                 console.log(
                                     "Google login success:",
@@ -176,7 +181,6 @@ function Page() {
                                 console.log("Google login failed");
                             }}
                         />
-
                         <div className="flex-row">
                             <p>
                                 Don't have an account?{" "}
