@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import Loader from "../../../shared/loader/page";
-import { redirect } from "next/navigation";
+import { Skeleton } from "@mantine/core";
 
 function Preview() {
     const { id } = useParams();
@@ -12,7 +12,6 @@ function Preview() {
     const router = useRouter();
     const [promptData, setPromptData] = useState<any>();
     const [error, setError] = useState<string | null>(null);
-    // const [loading, setLoading] = useState<boolean>(true);
     const [projectData, setProjectData] = useState<any>();
 
     const handleNextClick = () => {
@@ -24,24 +23,20 @@ function Preview() {
             try {
                 const token = getCookie("token");
                 const response = await axios.get(
-                    ` https://topstrat-backend.onrender.com/projects/${id}`,
+                    `http://157.245.121.185:5000/projects/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
-                            }`,
+                            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
                         },
                     }
                 );
                 setProjectData(response.data);
-                console.log("this is the name and desc" + response.data);
             } catch (error) {
                 console.error("Error fetching project data:", error);
             }
         };
         getProject(id as string);
-        //    setLoading(false);
         setIsLoading(false);
     }, []);
 
@@ -51,23 +46,14 @@ function Preview() {
                 const token = getCookie("token");
                 setIsLoading(true);
                 const response = await axios.get(
-                    `https://topstrat-backend.onrender.com/projects/prompts/latest/${id}`,
-                    //    {
-                    //        projectId: id,
-                    //    },
+                    `http://157.245.121.185:5000/projects/prompts/latest/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
-                            }`,
+                            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
                         },
                     }
                 );
-                console.log(response.data);
-                console.log(response.data.swot.response);
-
-                // Check if response.data exists and update states accordingly  
                 if (response.data) {
                     setPromptData(response.data);
                 } else {
@@ -89,23 +75,14 @@ function Preview() {
             const token = getCookie("token");
             setIsLoading(true);
             const response = await axios.get(
-                `https://topstrat-backend.onrender.com/projects/prompts/latest/${id}`,
-                //    {
-                //        projectId: id,
-                //    },
+                `http://157.245.121.185:5000/projects/prompts/latest/${id}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
-                        }`,
+                        Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
                     },
                 }
             );
-            console.log(response.data);
-            console.log(response.data.swot.response);
-
-            // Check if response.data exists and update states accordingly  
             if (response.data) {
                 setPromptData(response.data);
             } else {
@@ -119,256 +96,128 @@ function Preview() {
         }
     };
 
+    const renderList = (data: string) => {
+        return data
+            .split(/\d+\.\s*/)  // Split based on numbers followed by a period and space
+            .filter(item => item.trim() !== '') // Remove any empty items
+            .map((item, index) => <li key={index}>{index + 1}. {item.trim()}</li>);
+    };
+
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2  p-4 font-medium ">
-            <div className="flex flex-col  justify-center items-center gap-4 text-2xl ">
-                <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
+        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium">
+            <div className="flex flex-col justify-center items-center gap-4 text-2xl">
+                <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
                     {projectData && projectData.name}
                 </div>
-                <div className="text-yellow-500 font-bold ">Preview</div>
-                <div className="text-blue-default font-bold  ">
+                <div className="text-yellow-500 font-bold">Preview</div>
+                <div className="text-blue-default font-bold">
                     Strategic Plan {projectData && projectData.name}
                 </div>
             </div>
-            <div className=" w-full">
-                <div className="flex flex-col gap-6 ">
-                    <div className="flex flex-col gap-4 ">
-                        <h3 className="text-blue-default font-bold text-xl">
-                            {" "}
-                            Project Overview
-                        </h3>
+            <div className="w-full">
+                <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-4">
+                        <h3 className="text-blue-default font-bold text-xl">Project Overview</h3>
                         {isLoading ? (
-                            <div className="w-full">
-                                {" "}
-                                <Loader />
-                            </div>
+                            <div className="w-full"><Skeleton /></div>
                         ) : (
-                            <p className="">
-                                {projectData && projectData.description}
-                            </p>
+                            <p>{projectData && projectData.description}</p>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold"> Vision</h3>
+                        <h3 className="text-xl font-bold">Vision</h3>
                         {isLoading ? (
-                            <div className="w-full">
-                                {" "}
-                                <Loader />
-                            </div>
+                            <div className="w-full"><Skeleton height={30} /></div>
                         ) : (
-                            <p>
-                                {promptData &&
-                                    promptData.vision &&
-                                    promptData.mission.response}
-                            </p>
+                            <p>{promptData && promptData.vision && promptData.vision.response}</p>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold"> Mission</h3>
+                        <h3 className="text-xl font-bold">Mission</h3>
                         {isLoading ? (
-                            <div className="w-full">
-                                {" "}
-                                <Loader />
-                            </div>
+                            <div className="w-full"><Skeleton /></div>
                         ) : (
-                            <p>
-                                {promptData &&
-                                    promptData.mission &&
-                                    promptData.vision.response}
-                            </p>
+                            <p>{promptData && promptData.mission && promptData.mission.response}</p>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold"> Objectives</h3>
+                        <h3 className="text-xl font-bold">Objectives</h3>
                         {isLoading ? (
-                            <div className="w-full">
-                                {" "}
-                                <Loader />
-                            </div>
+                            <div className="w-full"><Skeleton /></div>
                         ) : (
-                            <p>
-                                {promptData &&
-                                    promptData.objectives &&
-                                    promptData.objectives.response}
-                            </p>
+                            <ul>{promptData && promptData.objectives && renderList(promptData.objectives.response)}</ul>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold"> Values</h3>
+                        <h3 className="text-xl font-bold">Values</h3>
                         {isLoading ? (
-                            <div className="w-full">
-                                {" "}
-                                <Loader />
-                            </div>
+                            <div className="w-full"><Skeleton /></div>
                         ) : (
-                            <p>
-                                {promptData &&
-                                    promptData.values &&
-                                    promptData.values.response}
-                            </p>
+                            <ul>{promptData && promptData.values && renderList(promptData.values.response)}</ul>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold"> Strategy</h3>
+                        <h3 className="text-xl font-bold">Strategy</h3>
                         {isLoading ? (
-                            <div className="w-full">
-                                {" "}
-                                <Loader />
-                            </div>
+                            <div className="w-full"><Skeleton /></div>
                         ) : (
-                            <p>
-                                {promptData &&
-                                    promptData.strategy &&
-                                    promptData.strategy.response}
-                            </p>
+                            <ul>{promptData && promptData.strategy && renderList(promptData.strategy.response)}</ul>
                         )}
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col gap-4 ">
-                <h2 className="text-xl font-bold text-blue-default">
-                    SWOT ANALYSIS
-                </h2>
+            <div className="flex flex-col gap-4">
+                <h2 className="text-xl font-bold text-blue-default">SWOT ANALYSIS</h2>
                 <div className="w-[100%] flex justify-center items-center">
                     {isLoading ? (
-                        <div className="w-full">
-                            {" "}
-                            <Loader />
-                        </div>
+                        <div className="w-full"><Loader /></div>
                     ) : (
-                        <table className="border border-collapse w-full overflow-x-auto  ">
-                            <tr className="text-blue-default">
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">
-                                    Strengths(S)
-                                </td>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6 ">
-                                    Weaknesses(W)
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6 ">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .strengths[0]}
-                                </td>
-
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .weaknesses[0]}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6 ">
-                                    {" "}
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .strengths[1]}
-                                </td>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .weaknesses[1]}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .strengths[2]}
-                                </td>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .weaknesses[2]}
-                                </td>
-                            </tr>
-                            <tr className="text-blue-default ">
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">
-                                    Opportunities (O)
-                                </td>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    Threats (T)
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .opportunities[0]}
-                                </td>
-                                {/* <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .threats[0]}
-                                </td> */}
-                            </tr>
-                            <tr>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .opportunities[1]}
-                                </td>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .threats[1]}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData.swot.response)
-                                            .opportunities[2]}
-                                </td>
-                                <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                                    {promptData &&
-                                        promptData.swot &&
-                                        promptData.swot.response &&
-                                        JSON.parse(promptData?.swot?.response)
-                                            .threats[2]}
-                                </td>
-                            </tr>
+                        <table className="border border-collapse w-full overflow-x-auto">
+                            <thead>
+                                <tr className="text-blue-default">
+                                    <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">Strengths(S)</td>
+                                    <td className="border-2 border-solid border-black p-[6px] text-left px-6">Weaknesses(W)</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {promptData && promptData.swot && promptData.swot.response && (
+                                    JSON.parse(promptData.swot.response).strengths.map((strength:any, index:number) => (
+                                        <tr key={index}>
+                                            <td className="border-2 border-solid border-black p-[6px] text-left px-6">{strength}</td>
+                                            <td className="border-2 border-solid border-black p-[6px] text-left px-6">
+                                                {JSON.parse(promptData.swot.response).weaknesses[index]}
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                                <tr className="text-blue-default">
+                                    <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">Opportunities (O)</td>
+                                    <td className="border-2 border-solid border-black p-[6px] text-left px-6">Threats (T)</td>
+                                </tr>
+                                {promptData && promptData.swot && promptData.swot.response && (
+                                    JSON.parse(promptData.swot.response).opportunities.map((opportunity:any, index:number) => (
+                                        <tr key={index}>
+                                            <td className="border-2 border-solid border-black p-[6px] text-left px-6">{opportunity}</td>
+                                            <td className="border-2 border-solid border-black p-[6px] text-left px-6">
+                                                {JSON.parse(promptData.swot.response).threats[index]}
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
                         </table>
                     )}
                 </div>
-                {/* <Link href="/signup">Sign Up</Link> */}
                 <div className="flex justify-center mx-auto gap-5">
                     <button
-                        className="bg-orange-default text-white font-bold  rounded-md m-auto py-3 px-6 "
+                        className="bg-orange-default text-white font-bold rounded-md m-auto py-3 px-6"
                         onClick={refetchData}
                     >
                         Regenerate
                     </button>
                     <button
-                        className="bg-blue-default text-white  m-auto font-bold  rounded-md py-3 px-6 cursor-pointer"
-                        onClick={() =>
-                            router.push(`/components/Preview2/${id}`)
-                        }
+                        className="bg-blue-default text-white m-auto font-bold rounded-md py-3 px-6 cursor-pointer"
+                        onClick={handleNextClick}
                     >
                         Next
                     </button>

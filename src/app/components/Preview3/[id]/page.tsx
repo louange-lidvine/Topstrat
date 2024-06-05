@@ -1,10 +1,9 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 import Loader from "../../../shared/loader/page";
-import { redirect } from "next/navigation";
 
 function Preview() {
     const router = useRouter();
@@ -18,7 +17,7 @@ function Preview() {
             try {
                 const token = getCookie("token");
                 const response = await axios.get(
-                    `https://topstrat-backend.onrender.com/projects/${id}`,
+                    `http://157.245.121.185:5000/projects/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -33,7 +32,7 @@ function Preview() {
         };
         getProject(id as string);
         setLoading(false);
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,7 +40,7 @@ function Preview() {
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `https://topstrat-backend.onrender.com/projects/projects/generate-analysis/${id}`,
+                    `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
                     {
                         projectId: id
                     },
@@ -52,7 +51,6 @@ function Preview() {
                         },
                     }
                 );
-                console.log(JSON.parse(response.data.logframe.response));
                 setLogframeData(JSON.parse(response.data.logframe.response));
             } catch (error) {
                 console.log(error);
@@ -62,14 +60,14 @@ function Preview() {
         };
 
         fetchData();
+    }, [id]);
 
-    }, []);
     const refetchData = async () => {
         const token = getCookie("token");
         setLoading(true);
         try {
             const response = await axios.post(
-                `https://topstrat-backend.onrender.com/projects/projects/generate-analysis/${id}`,
+                `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
                 {
                     projectId: id
                 },
@@ -80,7 +78,6 @@ function Preview() {
                     },
                 }
             );
-            console.log(JSON.parse(response.data.logframe.response));
             setLogframeData(JSON.parse(response.data.logframe.response));
         } catch (error) {
             console.log(error);
@@ -108,78 +105,56 @@ function Preview() {
                         <div className="text-blue-default font-bold text-2xl py-5">
                             Logframe
                         </div>
-                        <table className="border border-1 w-[90%] m-auto">
+                        <table className="border border-1 m-auto">
+                            <thead>
+                                <tr className="bg-slate-300">
+                                    <th className="border border-1 p-2 text-blue-default font-bold text-center">Results Chain</th>
+                                    <th className="border border-1 p-2 text-blue-default font-bold text-center">Indicator</th>
+                                    <th className="border border-1 p-2 text-blue-default font-bold text-center">Baseline</th>
+                                    <th className="border border-1 p-2 text-blue-default font-bold text-center">Target</th>
+                                    <th className="border border-1 p-2 text-blue-default font-bold text-center">Timeline</th>
+                                    <th className="border border-1 p-2 text-blue-default font-bold text-center">Assumptions</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 {logframeData && (
                                     <>
-                                        {logframeData.goal && (
-                                            <tr className="bg-slate-300 lg:h-[15vw]">
-                                                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">
-                                                    Goal (G)
-                                                </th>
-                                                <td className="border border-1 p-4">
-                                                    {logframeData.goal}
-                                                </td>
+                                        <tr>
+                                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">Goal</td>
+                                                <td className="border border-1 p-2">{logframeData.goal.indicators.join(", ")}</td>
+                                                <td className="border border-1 p-2">{logframeData.goal.mov.join(", ")}</td>
+                                                <td className="border border-1 p-2">{logframeData.goal.description}</td>
+                                                <td className="border border-1 p-2">{logframeData.goal.description}</td>
+                                                <td className="border border-1 p-2">{logframeData.goal.assump.join(", ")}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">Outcome</td>
+                                                <td className="border border-1 p-2">{logframeData.outcome.indicators.join(", ")}</td>
+                                                <td className="border border-1 p-2">{logframeData.outcome.mov.join(", ")}</td>
+                                                <td className="border border-1 p-2">{logframeData.outcome.description}</td>
+                                                <td className="border border-1 p-2">{logframeData.outcome.description}</td>
+                                                <td className="border border-1 p-2">{logframeData.outcome.assump.join(", ")}</td>
+                                        </tr>
+                                        {logframeData.outputs.map((output:any, index:any) => (
+                                            <tr key={index} >
+                                                <td className="border border-1 p-2 text-center font-bold  bg-slate-300">Output {index + 1}</td>
+                                                <td className="border border-1 p-2">{output.indicators.join(", ")}</td>
+                                                <td className="border border-1 p-2">{output.mov.join(", ")}</td>
+                                                <td className="border border-1 p-2">{output.description}</td>
+                                                <td className="border border-1 p-2">{output.description}</td>
+                                                <td className="border border-1 p-2">{output.assump.join(", ")}</td>
                                             </tr>
-                                        )}
-                                        {logframeData.purpose && (
-                                            <tr className="lg:h-[15vw]">
-                                                <th className="border border-1 p-2 text-blue-default font-bold text-1xl text-center text-xl">
-                                                    Purpose (P)
-                                                </th>
-                                                <td className="border border-1 p-4">
-                                                    {logframeData.purpose}
-                                                </td>
+                                        ))}
+                                        {logframeData.activities.map((activity:any, index:any) => (
+                                            <tr key={index}>
+                                                <td className="border border-1 p-2 text-center font-bold  bg-slate-300">Activity {index + 1}</td>
+                                                <td className="border border-1 p-2">{activity.indicators.join(", ")}</td>
+                                                <td className="border border-1 p-2">{activity.mov.join(", ")}</td>
+                                                <td className="border border-1 p-2">{activity.description}</td>
+                                                <td className="border border-1 p-2">{activity.description}</td>
+                                                <td className="border border-1 p-2">{activity.assump.join(", ")}</td>
                                             </tr>
-                                        )}
-                                        {Object.entries(logframeData).map(
-                                            ([category, items], index) =>
-                                                Array.isArray(items) &&
-                                                items.length > 0 && (
-                                                    <tr
-                                                        key={index}
-                                                        className={
-                                                            index % 2 === 0
-                                                                ? "bg-slate-300"
-                                                                : ""
-                                                        }
-                                                    >
-                                                        <td className="border border-1 p-4 text-blue-default font-bold text-1xl text-center text-xl">
-                                                            {category
-                                                                .charAt(0)
-                                                                .toUpperCase() +
-                                                                category.slice(
-                                                                    1
-                                                                )}{" "}
-                                                            (
-                                                            {category
-                                                                .charAt(0)
-                                                                .toUpperCase()}
-                                                            )
-                                                        </td>
-                                                        <td className="border border-1 p-4">
-                                                            <ul className="md:h-[50vw]  lg:h-[15vw]">
-                                                                {items.map(
-                                                                    (
-                                                                        item: any,
-                                                                        i: any
-                                                                    ) => (
-                                                                        <li
-                                                                            key={
-                                                                                i
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                item
-                                                                            }
-                                                                        </li>
-                                                                    )
-                                                                )}
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                        )}
+                                        ))}
                                     </>
                                 )}
                             </tbody>
@@ -187,21 +162,25 @@ function Preview() {
                     </div>
                 </div>
             )}
-            <div className=" flex justify-center gap-8 mx-auto">
-            <button
-                className="bg-[#ED0C0C] text-white font-bold  rounded-md m-auto py-3 px-6 "
-                onClick={() => router.push(`../../components/Preview2/${id}`)}
-            >
+            <div className="flex justify-center gap-8 mx-auto">
+                <button
+                    className="bg-[#ED0C0C] text-white font-bold rounded-md m-auto py-3 px-6"
+                    onClick={() => router.push(`../../components/Preview2/${id}`)}
+                >
                     Back
-            </button>
-            <button
-                className="bg-orange-default text-white font-bold  rounded-md m-auto py-3 px-6 "
-            onClick={refetchData}
-            >
+                </button>
+                <button
+                    className="bg-orange-default text-white font-bold rounded-md m-auto py-3 px-6"
+                    onClick={refetchData}
+                >
                     Regenerate
-            </button>
-                <div className="flex bg-blue-default text-white font-bold rounded-md m-auto py-3 px-6"  onClick={() => router.push(`/components/Final/${id}`)}>next</div>
-          
+                </button>
+                <div
+                    className="flex bg-blue-default text-white font-bold rounded-md m-auto py-3 px-6 cursor-pointer"
+                    onClick={() => router.push(`/components/Final/${id}`)}
+                >
+                    Next
+                </div>
             </div>
         </div>
     );

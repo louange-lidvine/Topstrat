@@ -50,7 +50,7 @@ function ChooseMethod({ refetchProject }: { refetchProject: () => void }) {
             const token = getCookie("token");
 
             const response = await axios.post(
-                "https://topstrat-backend.onrender.com/projects/create",
+                "http://157.245.121.185:5000/projects/create",
                 { ...formData, autoGenerate: formData.method === "quick" },
                 {
                     headers: {
@@ -84,7 +84,7 @@ function ChooseMethod({ refetchProject }: { refetchProject: () => void }) {
     return (
         <div className="absolute">
             <FaPlus
-                className="mt-4"
+                className="mt-4 lg:ml-10"
                 onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                 style={{ cursor: "pointer" }}
             />
@@ -98,7 +98,7 @@ function ChooseMethod({ refetchProject }: { refetchProject: () => void }) {
                         borderRadius: "4px",
                     }}
                 >
-                    <label className="text-center my-[10px] block">
+                    <label className="text-center my-1 font-bold block">
                         Choose method
                     </label>
                     <div className="mb-[10px]">

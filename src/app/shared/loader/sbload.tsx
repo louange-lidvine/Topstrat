@@ -3,7 +3,7 @@ import { ColorRing } from 'react-loader-spinner';
 
 const SbLoad: React.FC = () => {
   return (
-    <div className="flex justify-center items-center bg-opacity-50 m-20">
+    <div className="flex justify-center items-center bg-opacity-50 m-[-10px]">
       <ColorRing
         visible={true}
         height={40}

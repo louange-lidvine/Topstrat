@@ -11,7 +11,8 @@ import { useRouter } from "next/navigation";
 import Loader from "@/app/shared/loader/page";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-
+import SbLoad from "@/app/shared/loader/sbload";
+import notifications from "@mantine/notifications"
 
 function Page() {
     const router = useRouter();
@@ -42,7 +43,7 @@ function Page() {
         setLoading(true);
         try {
             const response = await axios.post(
-                "https://topstrat-backend.onrender.com/auth/signup",
+                "http://157.245.121.185:5000/auth/signup",
                 formData,
                 {
                     headers: {
@@ -97,7 +98,7 @@ function Page() {
                                 name="firstname"
                                 value={formData.firstname}
                                 onChange={handleChange}
-                                className="border border-black p-3 rounded-md placeholder-transparent bg-opacity-0"
+                                className="border border-black p-3 rounded-md outline-none placeholder-transparent bg-opacity-0"
                                 required
                             />
                         </div>
@@ -112,7 +113,7 @@ function Page() {
                                 name="lastname"
                                 value={formData.lastname}
                                 onChange={handleChange}
-                                className="border border-black p-3 rounded-md placeholder-transparent bg-opacity-0"
+                                className="border border-black outline-none p-3 rounded-md placeholder-transparent bg-opacity-0"
                                 required
                             />
                         </div>
@@ -127,7 +128,7 @@ function Page() {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="border p-3 border-black rounded-md placeholder-transparent bg-opacity-0"
+                                className="border p-3 border-black outline-none rounded-md placeholder-transparent bg-opacity-0"
                                 required
                             />
                         </div>
@@ -136,7 +137,7 @@ function Page() {
                             <label htmlFor="password" className="mb-1">
                                 Password:
                             </label>
-                            <div className="flex space-between border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black">
+                            <div className="flex space-between border p-3 outline-none rounded-md placeholder-transparent bg-opacity-0 border-black">
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     id="password"
@@ -154,19 +155,23 @@ function Page() {
                                 </button>
                             </div>
                         </div>
-
                         <button
-                            type="submit"
-                            className="bg-blue-default text-white p-4 rounded hover:bg-[rgba(11, 108, 121, 1.2)]"
-                        >
-                            Sign Up
-                        </button>
-
-                        <div className="ml-[150px]">
-                            {loading && <Loader />}
-                        </div>
-
-                        <div className="flex items-center space-x-4">
+                           type="submit"
+                           className={`bg-blue-default text-white  py-4 px-10 rounded-lg ${
+                           loading ? " cursor-not-allowed" : ""
+                            }`}
+                           disabled={loading}
+                           >
+                         {loading ? (
+                         <div className="w-full flex items-center justify-center">
+                         <SbLoad />
+                         </div>
+                         ) : (
+                         "Login"
+                         )}
+                      </button>
+                    
+                            <div className="flex items-center space-x-4">
                             <div className="flex-grow border-t border-gray-400"></div>
                             <span className="text-gray-500">or</span>
                             <div className="flex-grow border-t border-gray-400"></div>

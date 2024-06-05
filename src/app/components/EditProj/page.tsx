@@ -50,7 +50,7 @@ export default function ({
         try {
             const token = getCookie("token");
             const response = await axios.get(
-                `https://topstrat-backend.onrender.com/projects/prompts/latest/${projectId}`,
+                `http://157.245.121.185:5000/projects/prompts/latest/${projectId}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export default function ({
         try {
             const token = getCookie("token");
             await axios.delete(
-                `https://topstrat-backend.onrender.com/projects/${projectId}`,
+                `http://157.245.121.185:5000/projects/${projectId}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export default function ({
     // const rename = async () => {
     //     axios
     //         .put(
-    //             `https://topstrat-backend.onrender.com/projects/${project.id}`,
+    //             `http://157.245.121.185:5000/projects/${project.id}`,
     //             {
     //                 name: newName,
     //             }
