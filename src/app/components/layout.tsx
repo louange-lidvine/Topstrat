@@ -22,6 +22,7 @@ export default function RootLayout({
     };
 
     return (
+        <MantineProvider>
         <html lang="en">
             <body className="grid-flow-col h-screen w-screen overflow-hidden">
              {/* <div className="hidden lg:block lg:absolute">
@@ -33,6 +34,7 @@ export default function RootLayout({
                 </div>
             </body>
         </html>
+        </MantineProvider>
 
     );
 }

@@ -44,7 +44,7 @@ function Page() {
         setLoading(true);
         try {
             const response = await axios.post(
-                "https://topstrat-backend.onrender.com/auth/signup",
+                "http://157.245.121.185:5000/auth/signup",
                 formData,
                 {
                     headers: {

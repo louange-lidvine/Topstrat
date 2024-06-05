@@ -13,7 +13,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { setCookie } from "cookies-next";
 import SbLoad from "@/app/shared/loader/sbload";
 import { jwtDecode } from "jwt-decode";
-import notifications from "@mantine/notifications"
 
 function Page() {
     const router = useRouter();
@@ -36,7 +35,7 @@ function Page() {
         e.preventDefault();
         setLoading(true);
         axios
-            .post("https://topstrat-backend.onrender.com/auth/signin", formData)
+            .post("http://157.245.121.185:5000/auth/signin", formData)
             .then((res) => {
                 setLoading(false);
                 console.log(res.data);
