@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deployment": "NODE_ENV=development npm install -f && npm run build && npm start -- -p 4000"
+    "deployment": "NODE_ENV=development npm install -f --no-save && npm run build && npm start -- -p 4000"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
