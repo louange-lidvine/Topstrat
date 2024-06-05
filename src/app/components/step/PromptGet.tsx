@@ -43,7 +43,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `http://157.245.121.185:5000/projects/${projectId}/${title.toLowerCase()}`,
+                    `157.245.121.185:5000/projects/${projectId}/${title.toLowerCase()}`,
                     {
                         query: query,
                         projectId: projectId,
@@ -98,7 +98,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `http://157.245.121.185:5000/projects/${projectId}/${title.toLowerCase()}`,
+                    `https://157.245.121.185:5000/projects/${projectId}/${title.toLowerCase()}`,
                     {
                         query: query,
                         projectId: projectId,

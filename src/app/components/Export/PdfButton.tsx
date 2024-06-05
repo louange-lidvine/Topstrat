@@ -1,4 +1,9 @@
+<<<<<<< HEAD
+
+
+=======
 "use client";
+>>>>>>> 1b3c4c3330ac51aa74f9c30c778e7ed2385fe776
 import React from "react";
 import Final from "../Final/[id]/page";
 import { PDFDownloadLink } from "@react-pdf/renderer";

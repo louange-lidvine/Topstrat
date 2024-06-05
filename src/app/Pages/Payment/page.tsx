@@ -165,17 +165,17 @@ function Payment() {
                                 />
                             </div>
                         </div>
-                        <div className="text-white bg-blue-default font-bold rounded-md px-14 py-2 ">
+                        <div className="text-white bg-blue-default font-bold rounded-md -x-4 py-2 ">
                             Pay now
                         </div>
                     </div>
                 </div>
-                <div className="bg-blue-default text-white font-bold px-6 py-2 absolute right-2 bottom-2 rounded-md">
-                    {/* Your content goes here */}
+                {/* <div className="bg-blue-default text-white font-bold px-6 py-2 absolute right-2 bottom-2 rounded-md">
+                    
                     <Link href="../../components/step">
                         Continue
                     </Link>
-                </div>
+                </div> */}
             </div>
         </div>
     );
