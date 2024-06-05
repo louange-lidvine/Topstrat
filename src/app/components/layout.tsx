@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar/page";
 import Background from "../../../public/assets/bg.png";
 import Image from "next/image";
+import { MantineProvider } from "@mantine/core";
 
 // export const metadata: Metadata = {
 //     title: "Create Next App",
@@ -21,6 +22,7 @@ export default function RootLayout({
     };
 
     return (
+        <MantineProvider>
         <html lang="en">
             <body className="grid-flow-col h-screen w-screen overflow-hidden">
              {/* <div className="hidden lg:block lg:absolute">
@@ -32,5 +34,7 @@ export default function RootLayout({
                 </div>
             </body>
         </html>
+        </MantineProvider>
+
     );
 }
