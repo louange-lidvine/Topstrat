@@ -140,7 +140,7 @@ const page: React.FC = () => {
     };
     const handleChange = (event: {
         target: { value: React.SetStateAction<string | undefined> };
-    }) => {
+    }) => {                                                            
         setPrompt(event.target.value);
     };
     const handleCloseModal = () => {
