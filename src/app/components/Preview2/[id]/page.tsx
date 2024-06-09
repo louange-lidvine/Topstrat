@@ -101,7 +101,8 @@ function Preview() {
                 <div className="text-blue-default font-bold text-2xl py-5">
                             PESTLE 
                         </div>
-                  <table className="border border-1 m-auto">
+                        <div className="overflow-x-auto">   
+                          <table className="border border-1 m-auto ">
                     <thead>
                       <tr className="bg-slate-300">
                         <th className="border border-1 p-2 text-blue-default font-bold text-center">   
@@ -192,7 +193,8 @@ function Preview() {
                         </>
                       )}
                     </tbody>
-                  </table>
+                  </table></div>
+               
                 </div>
               </div>
             )}

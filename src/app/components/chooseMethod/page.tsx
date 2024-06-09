@@ -8,7 +8,7 @@ import ReactModal from "react-modal";
 import SbLoad from "@/app/shared/loader/sbload";
 import Loader from "@/app/shared/loader/page";
 
-function ChooseMethod({ refetchProject }: { refetchProject: () => void }) {
+function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => void ,closeSidebar: () => void}) {
     const router = useRouter();
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +24,7 @@ function ChooseMethod({ refetchProject }: { refetchProject: () => void }) {
     };
 
     const handleRadioChange = async (value: string) => {
+        closeSidebar();  // Close the sidebar
         setIsPopoverOpen(false);
         setIsModalOpen(true);
         setFormData((prevState) => ({
@@ -126,7 +127,7 @@ function ChooseMethod({ refetchProject }: { refetchProject: () => void }) {
             <ReactModal
                 isOpen={isModalOpen}
                 onRequestClose={handleCloseModal}
-                className="w-[600px]  p-10 mt-20 bg-white shadow-lg ml-[500px] "
+                className="w-[600px]  p-10 mt-20 bg-white shadow-lg lg:ml-[500px] "
             >
                 <form
                     className="flex flex-col justify-center items-center gap-5"
@@ -154,7 +155,7 @@ function ChooseMethod({ refetchProject }: { refetchProject: () => void }) {
                         disabled={isLoading}
                         className="bg-[#0F872F] py-2 px-4 rounded-md"
                     >
-                        {isLoading ? <Loader /> : "Submit"}
+                        {isLoading ? <SbLoad /> : "Submit"}
                     </button>
                 </form>
                 <button onClick={handleCloseModal}>Cancel</button>

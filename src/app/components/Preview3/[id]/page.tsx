@@ -105,7 +105,8 @@ function Preview() {
                         <div className="text-blue-default font-bold text-2xl py-5">
                             Logframe
                         </div>
-                        <table className="border border-1 m-auto  overflow-x-scroll">
+                        <div className="overflow-x-auto">
+                            <table className="border border-1 m-auto  overflow-x-scroll">
                             <thead>
                                 <tr className="bg-slate-300">
                                     <th className="border border-1 p-2 text-blue-default font-bold text-center">Results Chain</th>
@@ -158,7 +159,9 @@ function Preview() {
                                     </>
                                 )}
                             </tbody>
-                        </table>
+                        </table> 
+                        </div>
+                       
                     </div>
                 </div>
             )}
