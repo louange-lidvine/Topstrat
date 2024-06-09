@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { setCookie } from "cookies-next";
 import axios from "axios";
+import { redirect } from "next/navigation";
 
 interface GoogleButtonProps {
     onSuccess: (credentialResponse: any) => void;
@@ -25,15 +26,11 @@ const GoogleSignInButton: React.FC<GoogleButtonProps> = ({
             const response = await axios.get(
                 `http://157.245.121.185:5000/auth/login_with_google?token=${credentialResponse.credential}`
             );
-
-            // Store the access token in a cookie or local storage
-            setCookie("token", response.data.token);
+            console.log(response);
+            setCookie("token", response.data.access_token);
             console.log(response.data.token);
-             toast.success("logged in successfully");
-            // Redirect to the desired page
-            router.push("/components/Landingpage");
-
-            // Call the onSuccess callback if needed
+            toast.success("logged in successfully");
+            // router.push("/Pages/Payment");
             onSuccess(credentialResponse);
         } catch (error) {
             console.error("Error during Google login:", error);
