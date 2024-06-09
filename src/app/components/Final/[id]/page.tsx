@@ -7,83 +7,89 @@ import Loader from "@/app/shared/loader/page";
 import { useParams } from "next/navigation";
 
 function Final() {
-  const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [promptData, setPromptData] = useState<any>();
-  const [projectData, setProjectData] = useState<any>();
-  const [pestleData, setPestleData] = useState<any>();
-  const [logframeData, setLogframeData] = useState<any>();
-  const [error, setError] = useState<string | null>(null);
+    const { id } = useParams();
+    const [isLoading, setIsLoading] = useState(false);
+    const [promptData, setPromptData] = useState<any>();
+    const [projectData, setProjectData] = useState<any>();
+    const [pestleData, setPestleData] = useState<any>();
+    const [logframeData, setLogframeData] = useState<any>();
+    const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
-    try {
-      const token = getCookie("token");
-      setIsLoading(true);
+    const fetchData = async () => {
+        try {
+            const token = getCookie("token");
+            setIsLoading(true);
 
-      // Fetch prompt data
-      const promptResponse = await axios.get(
-        `http://157.245.121.185:5000/projects/prompts/latest/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
-          },
+            // Fetch prompt data
+            const promptResponse = await axios.get(
+                `http://157.245.121.185:5000/projects/prompts/latest/${id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            setPromptData(promptResponse.data);
+
+            // Fetch project data
+            const projectResponse = await axios.get(
+                `http://157.245.121.185:5000/projects/${id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            setProjectData(projectResponse.data);
+
+            // Fetch pestle and logframe data
+            const dataResponse = await axios.post(
+                `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                { projectId: id },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            setPestleData(JSON.parse(dataResponse.data.pestle.response));
+            setLogframeData(JSON.parse(dataResponse.data.logframe.response));
+
+            setIsLoading(false);
+        } catch (error) {
+            setError("Error fetching data");
+            console.error("Error fetching data:", error);
+            setIsLoading(false);
         }
-      );
-      setPromptData(promptResponse.data);
+    };
 
-      // Fetch project data
-      const projectResponse = await axios.get(
-        `http://157.245.121.185:5000/projects/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
-          },
-        }
-      );
-      setProjectData(projectResponse.data);
+    useEffect(() => {
+        fetchData();
+    }, []);
 
-      // Fetch pestle and logframe data
-      const dataResponse = await axios.post(
-        `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
-        { projectId: id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
-          },
-        }
-      );
-      setPestleData(JSON.parse(dataResponse.data.pestle.response));
-      setLogframeData(JSON.parse(dataResponse.data.logframe.response));
+    const regenerateData = () => {
+        fetchData();
+    };
 
-      setIsLoading(false);
-    } catch (error) {
-      setError("Error fetching data");
-      console.error("Error fetching data:", error);
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const regenerateData = () => {
-    fetchData();
-  };
-
-  const renderList = (data: string) => {
-    return data
-      .split(/\d+\.\s*/)
-      .filter((item) => item.trim() !== "")
-      .map((item, index) => (
-        <li key={index}>
-          {index + 1}. {item.trim()}
-        </li>
-      ));
-  };
+    const renderList = (data: string) => {
+        return data
+            .split(/\d+\.\s*/)
+            .filter((item) => item.trim() !== "")
+            .map((item, index) => (
+                <li key={index}>
+                    {index + 1}. {item.trim()}
+                </li>
+            ));
+    };
 
   // PDF document component
   const MyDocument = () => (

@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import GoogleButton from "@/app/constants/(auth)/googleButton";
+import GoogleSignUpButton from "@/app/constants/(auth)/googleSignUpButton";
 import Background from "../../../../public/assets/bg.png";
 import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
 import Link from "next/link";
@@ -15,27 +15,26 @@ import SbLoad from "@/app/shared/loader/sbload";
 import notifications from "@mantine/notifications"
 
 function Page() {
-  
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-  
+
     const togglePasswordVisibility = () => {
-      setShowPassword(prevState => !prevState);
+        setShowPassword((prevState) => !prevState);
     };
 
     const [formData, setFormData] = useState({
         firstname: "",
         lastname: "",
-        email:"",
-        password: ""
+        email: "",
+        password: "",
     });
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
-          ...prevState,
-          [name]: value,
+            ...prevState,
+            [name]: value,
         }));
     };
 
@@ -140,7 +139,7 @@ function Page() {
                             </label>
                             <div className="flex space-between border p-3 outline-none rounded-md placeholder-transparent bg-opacity-0 border-black">
                                 <input
-                                    type={showPassword ? 'text' : 'password'}
+                                    type={showPassword ? "text" : "password"}
                                     id="password"
                                     name="password"
                                     value={formData.password}
@@ -178,15 +177,27 @@ function Page() {
                             <div className="flex-grow border-t border-gray-400"></div>
                         </div>
 
-                        <GoogleButton
-                            onSuccess={function (credentialResponse: any): void {
+                        {/* <GoogleButton
+                            onSuccess={function (
+                                credentialResponse: any
+                            ): void {
                                 throw new Error("Function not implemented.");
-                            } } 
+                            }}
                             onError={function (): void {
                                 throw new Error("Function not implemented.");
-                            } }  
+                            }}
+                        /> */}
+                        <GoogleSignUpButton
+                            onSuccess={(credentialResponse: any) => {
+                                console.log(
+                                    "Google sign success:",
+                                    credentialResponse
+                                );
+                            }}
+                            onError={() => {
+                                console.log("Google login failed");
+                            }}
                         />
-
                         <div className="flex-row">
                             <p>
                                 Already have an account?{" "}

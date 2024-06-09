@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import GoogleButton from "../../constants/(auth)/googleButton";
+import GoogleButton from "../../constants/(auth)/googleSignUpButton";
 import Background from "/public/assets/bg.png";
 import Graphics from "/public/assets/Login-amico (1) 2.png";
 import Link from "next/link";
@@ -13,6 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { setCookie } from "cookies-next";
 import SbLoad from "@/app/shared/loader/sbload";
 import { jwtDecode } from "jwt-decode";
+import GoogleSignInButton from "@/app/constants/(auth)/googleSignInButton";
 
 function Page() {
     const router = useRouter();
@@ -72,13 +73,12 @@ function Page() {
                     if (
                         String(err?.response?.data?.error) ==
                         "Network error occurred"
-                    ) 
-                    return toast.error("Invalid credentials");
-                    setLoading(false)
+                    )
+                        return toast.error("Invalid credentials");
+                    setLoading(false);
                 } else {
-                    setLoading(false)
+                    setLoading(false);
                     return toast.error("Invalid credentials");
-                
                 }
             });
     };
@@ -119,7 +119,6 @@ function Page() {
                                 required
                             />
                         </div>
-
                         <div className="flex flex-col">
                             <label htmlFor="password" className="mb-1">
                                 Password:
@@ -168,8 +167,8 @@ function Page() {
                             <span>Remember me</span>
                             <span>Forgot Password?</span>
                         </div>
-
-                        <GoogleButton
+                   
+                        <GoogleSignInButton
                             onSuccess={(credentialResponse: any) => {
                                 console.log(
                                     "Google login success:",
@@ -180,7 +179,6 @@ function Page() {
                                 console.log("Google login failed");
                             }}
                         />
-
                         <div className="flex-row">
                             <p>
                                 Don't have an account?{" "}
