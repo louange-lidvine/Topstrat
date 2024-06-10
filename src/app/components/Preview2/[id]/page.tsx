@@ -131,121 +131,229 @@ function Preview() {
 
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 h-full w-full ">
+        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 w-full ">
             {loading ? (
                 <Loader />
             ) : (
-                <div className="w-full h-full">
-                    <div className="flex flex-col gap-3 h-full">
-                        <table
-                            className="border border-1 m-auto"
-                            style={{
-                                width: "100%",
-                                maxWidth: "800px",
-                                height: "100%",
-                            }}
-                        >
-                            {/* <table
-                            className="border border-1 m-auto"
-                            // style={{ width: "100%", maxWidth: "800px",height: "100%" }}
-                        > */}
-                            <thead>
-                                <tr className="bg-slate-300">
-                                    <th className="border border-1 p-2 text-blue-default font-bold text-center"></th>
-                                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                                        Influence on organization
-                                    </th>
-                                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                                        Impact on organization
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {editablePestleData && (
-                                    <>
-                                        {[
-                                            "political",
-                                            "economic",
-                                            "social",
-                                            "technological",
-                                            "legal",
-                                            "environmental",
-                                        ].map((category) => (
-                                            <tr key={category}>
-                                                <td className="border border-1 p-2 text-center font-bold bg-slate-300">
-                                                    {category
-                                                        .charAt(0)
-                                                        .toUpperCase() +
-                                                        category.slice(1)}
-                                                </td>
-                                                <td
-                                                    className="border border-1 p-2"
-                                                    style={{
-                                                        wordWrap: "break-word",
-                                                    }}
-                                                >
-                                                    <input
-                                                        type="text"
-                                                        value={
-                                                            editablePestleData[
-                                                                category
-                                                            ]?.inf || ""
-                                                        }
-                                                        onChange={(e) =>
-                                                            handleInputChange(
-                                                                category,
-                                                                "inf",
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                        className="w-full border-none px-2 h-full" // Adjust size as needed
-                                                        style={{
-                                                            // height: "100px",
-                                                            fontSize: "16px",
-                                                        }} // Increase height and font size
-                                                    />
-                                                </td>
-                                                <td
-                                                    className="border border-1 p-2"
-                                                    style={{
-                                                        wordWrap: "break-word",
-                                                    }}
-                                                >
-                                                    <input
-                                                        type="text"
-                                                        value={
-                                                            editablePestleData[
-                                                                category
-                                                            ]?.imp || ""
-                                                        }
-                                                        onChange={(e) =>
-                                                            handleInputChange(
-                                                                category,
-                                                                "imp",
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                        className="w-full border-none p-2 h-full"
-                                                        style={{
-                                                            // height: "100px",
-                                                            fontSize: "16px",
-                                                        }}
-                                                    />
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </>
-                                )}
-                            </tbody>
-                        </table>
+                // <div className="w-full h-full">
+                //     <div className="flex flex-col gap-3 h-full">
+                //         <table
+                //             className="border border-1 m-auto"
+                //             style={{
+                //                 width: "100%",
+                //                 maxWidth: "800px",
+                //                 height: "100%",
+                //             }}
+                //         >
+                //             {/* <table
+                //             className="border border-1 m-auto"
+                //             // style={{ width: "100%", maxWidth: "800px",height: "100%" }}
+                //         > */}
+                //             <thead>
+                //                 <tr className="bg-slate-300">
+                //                     <th className="border border-1 p-2 text-blue-default font-bold text-center"></th>
+                //                     <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                //                         Influence on organization
+                //                     </th>
+                //                     <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                //                         Impact on organization
+                //                     </th>
+                //                 </tr>
+                //             </thead>
+                //             <tbody>
+                //                 {editablePestleData && (
+                //                     <>
+                //                         {[
+                //                             "political",
+                //                             "economic",
+                //                             "social",
+                //                             "technological",
+                //                             "legal",
+                //                             "environmental",
+                //                         ].map((category) => (
+                //                             <tr key={category}>
+                //                                 <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                //                                     {category
+                //                                         .charAt(0)
+                //                                         .toUpperCase() +
+                //                                         category.slice(1)}
+                //                                 </td>
+                //                                 <td
+                //                                     className="border border-1 p-2"
+                //                                     style={{
+                //                                         wordWrap: "break-word",
+                //                                     }}
+                //                                 >
+                //                                     <input
+                //                                         type="text"
+                //                                         value={
+                //                                             editablePestleData[
+                //                                                 category
+                //                                             ]?.inf || ""
+                //                                         }
+                //                                         onChange={(e) =>
+                //                                             handleInputChange(
+                //                                                 category,
+                //                                                 "inf",
+                //                                                 e.target.value
+                //                                             )
+                //                                         }
+                //                                         className="w-full border-none px-2 h-full" // Adjust size as needed
+                //                                         style={{
+                //                                             // height: "100px",
+                //                                             fontSize: "16px",
+                //                                         }} // Increase height and font size
+                //                                     />
+                //                                 </td>
+                //                                 <td
+                //                                     className="border border-1 p-2"
+                //                                     style={{
+                //                                         wordWrap: "break-word",
+                //                                     }}
+                //                                 >
+                //                                     <input
+                //                                         type="text"
+                //                                         value={
+                //                                             editablePestleData[
+                //                                                 category
+                //                                             ]?.imp || ""
+                //                                         }
+                //                                         onChange={(e) =>
+                //                                             handleInputChange(
+                //                                                 category,
+                //                                                 "imp",
+                //                                                 e.target.value
+                //                                             )
+                //                                         }
+                //                                         className="w-full border-none p-2 h-full"
+                //                                         style={{
+                //                                             // height: "100px",
+                //                                             fontSize: "16px",
+                //                                         }}
+                //                                     />
+                //                                 </td>
+                //                             </tr>
+                //                         ))}
+                //                     </>
+                //                 )}
+                //             </tbody>
+                //         </table>
+                //     </div>
+                // </div>
+                <div className="w-full">
+                           <div className="flex flex-col justify-center items-center gap-4 text-2xl">
+                        <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
+                            {projectData && projectData.name}
+                        </div>
+                        <div className="text-yellow-500 font-bold">Preview</div>
+                        <div className="text-blue-default font-bold">
+                            Strategic Plan {projectData && projectData.name}
+                        </div>
                     </div>
+                <div className="flex flex-col gap-3">
+                <div className="text-blue-default font-bold text-2xl py-5">
+                            PESTLE Analysis
+                        </div>
+                  <table className="border border-1 m-auto">
+                    <thead>
+                      <tr className="bg-slate-300">
+                        <th className="border border-1 p-2 text-blue-default font-bold text-center">   
+                        </th>
+                        <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                          Influence on organization
+                        </th>
+                        <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                          Impact on organization
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pestleData && (
+                        <>
+                          <tr>
+                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                              Political
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.political.inf}
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.political.imp}
+                            </td>
+                      
+                          </tr>
+                          <tr>
+                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                              Economic
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.economic.inf}
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.economic.imp}
+                            </td>
+                      
+                          </tr>
+                          <tr>
+                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                              Social
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.social.inf}
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.social.imp}
+                            </td>
+                      
+                          </tr>
+                          <tr>
+                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                              Technological
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.technological.inf}
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.technological.imp}
+                            </td>
+                      
+                          </tr>
+                          <tr>
+                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                              Legal
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.legal.inf}
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.legal.imp}
+                            </td>
+                      
+                          </tr>
+                          <tr>
+                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                              Environmental
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.environmental.inf}
+                            </td>
+                            <td className="border border-1 p-2">
+                              {pestleData.environmental.imp}
+                            </td>
+                      
+                          </tr>
+                        </>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
+              </div>
             )}
-            <div className="flex justify-center mx-auto gap-5">
+          <div className="flex justify-center gap-8 mx-auto">
                 <button
                     className="bg-[#ED0C0C] text-white font-bold rounded-md m-auto py-3 px-6"
                     onClick={() =>
-                        router.push(`../../components/Preview/${id}`)
+                        router.push(`../../components/Preview2/${id}`)
                     }
                 >
                     Back
@@ -256,18 +364,12 @@ function Preview() {
                 >
                     Regenerate
                 </button>
-                <button
-                    className="bg-green-default text-white font-bold rounded-md m-auto py-3 px-6"
-                    onClick={saveChanges}
-                >
-                    Save
-                </button>
-                <button
-                    className="bg-blue-default text-white m-auto font-bold rounded-md py-3 px-6 cursor-pointer"
-                    onClick={() => router.push(`/components/Preview3/${id}`)}
+                <div
+                    className="flex bg-blue-default text-white font-bold rounded-md m-auto py-3 px-6 cursor-pointer"
+                    onClick={() => router.push(`/components/Final/${id}`)}
                 >
                     Next
-                </button>
+                </div>
             </div>
         </div>
     );

@@ -663,122 +663,122 @@ function Final() {
                   <div className="w-full"></div>
                 ) : (
                   <div className="w-full">
-                    <div className="flex flex-col gap-3">
-                      <table className="border border-1 m-auto">
-                        <thead>
-                          <tr className="bg-slate-300">
-                            <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                              Results Chain
-                            </th>
-                            <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                              Project Summary
-                            </th>
-                            <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                              Indicators
-                            </th>
-                            <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                              Means of Verification
-                            </th>
-                            <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                              Assumptions/Risks
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {logframeData && (
-                            <>
-                              <tr>
-                                <td className="border border-1 p-2 text-center font-bold bg-slate-300">
-                                  Goal
-                                </td>
-                                <td className="border border-1 p-2">
-                                  {logframeData.goal.description}
-                                </td>
-                                <td className="border border-1 p-2">
-                                  {logframeData.goal.indicators.join(", ")}
-                                </td>
-                                <td className="border border-1 p-2">
-                                  {logframeData.goal.mov.join(", ")}
-                                </td>
-                                <td className="border border-1 p-2">
-                                  {logframeData.goal.assump.join(", ")}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="border border-1 p-2 text-center font-bold bg-slate-300">
-                                  Outcome
-                                </td>
-                                <td className="border border-1 p-2">
-                                  {logframeData.outcome.description}
-                                </td>
-                                <td className="border border-1 p-2">
-                                  {logframeData.outcome.indicators.join(", ")}
-                                </td>
-                                <td className="border border-1 p-2">
-                                  {logframeData.outcome.mov.join(", ")}
-                                </td>
-                                <td className="border border-1 p-2">
-                                  {logframeData.outcome.assump.join(", ")}
-                                </td>
-                              </tr>
-                              {logframeData.outputs.map(
-                                (output: any, index: any) => (
-                                  <tr
-                                    key={index}
-                                    className={
-                                      index % 2 === 0 ? "bg-slate-100" : ""
-                                    }
-                                  >
-                                    <td className="border border-1 p-2 text-center font-bold">
-                                      Output {index + 1}
-                                    </td>
-                                    <td className="border border-1 p-2">
-                                      {output.description}
-                                    </td>
-                                    <td className="border border-1 p-2">
-                                      {output.indicators.join(", ")}
-                                    </td>
-                                    <td className="border border-1 p-2">
-                                      {output.mov.join(", ")}
-                                    </td>
-                                    <td className="border border-1 p-2">
-                                      {output.assump.join(", ")}
-                                    </td>
-                                  </tr>
-                                )
-                              )}
-                              {logframeData.activities.map(
-                                (activity: any, index: any) => (
-                                  <tr
-                                    key={index}
-                                    className={
-                                      index % 2 === 0 ? "bg-slate-100" : ""
-                                    }
-                                  >
-                                    <td className="border border-1 p-2 text-center font-bold">
-                                      Activity {index + 1}
-                                    </td>
-                                    <td className="border border-1 p-2">
-                                      {activity.description}
-                                    </td>
-                                    <td className="border border-1 p-2">
-                                      {activity.indicators.join(", ")}
-                                    </td>
-                                    <td className="border border-1 p-2">
-                                      {activity.mov.join(", ")}
-                                    </td>
-                                    <td className="border border-1 p-2">
-                                      {activity.assump.join(", ")}
-                                    </td>
-                                  </tr>
-                                )
-                              )}
-                            </>
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
+                  <div className="flex flex-col gap-3">
+                    <table className="border border-1 m-auto">
+                      <thead>
+                        <tr className="bg-slate-300">
+                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                            Results Chain
+                          </th>
+                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                            Project Summary
+                          </th>
+                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                            Indicators
+                          </th>
+                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                            Means of Verification
+                          </th>
+                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                            Assumptions/Risks
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {logframeData && (
+                          <>
+                            <tr>
+                              <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                                Goal
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.goal.description}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.goal.indicators.join(", ")}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.goal.mov.join(", ")}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.goal.assump.join(", ")}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                                Outcome
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.outcome.description}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.outcome.indicators.join(", ")}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.outcome.mov.join(", ")}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.outcome.assump.join(", ")}
+                              </td>
+                            </tr>
+                            {logframeData.outputs.map(
+                              (output: any, index: any) => (
+                                <tr
+                                  key={index}
+                                  className={
+                                    index % 2 === 0 ? "bg-slate-100" : ""
+                                  }
+                                >
+                                  <td className="border border-1 p-2 text-center font-bold">
+                                    Output {index + 1}
+                                  </td>
+                                  <td className="border border-1 p-2">
+                                    {output.description}
+                                  </td>
+                                  <td className="border border-1 p-2">
+                                    {output.indicators.join(", ")}
+                                  </td>
+                                  <td className="border border-1 p-2">
+                                    {output.mov.join(", ")}
+                                  </td>
+                                  <td className="border border-1 p-2">
+                                    {output.assump.join(", ")}
+                                  </td>
+                                </tr>
+                              )
+                            )}
+                            {logframeData.activities.map(
+                              (activity: any, index: any) => (
+                                <tr
+                                  key={index}
+                                  className={
+                                    index % 2 === 0 ? "bg-slate-100" : ""
+                                  }
+                                >
+                                  <td className="border border-1 p-2 text-center font-bold">
+                                    Activity {index + 1}
+                                  </td>
+                                  <td className="border border-1 p-2">
+                                    {activity.description}
+                                  </td>
+                                  <td className="border border-1 p-2">
+                                    {activity.indicators.join(", ")}
+                                  </td>
+                                  <td className="border border-1 p-2">
+                                    {activity.mov.join(", ")}
+                                  </td>
+                                  <td className="border border-1 p-2">
+                                    {activity.assump.join(", ")}
+                                  </td>
+                                </tr>
+                              )
+                            )}
+                          </>
+                        )}
+                      </tbody>
+                    </table>
                   </div>
+                </div>
                 )}
               </table> 
           </div>
