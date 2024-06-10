@@ -24,6 +24,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const closeSidebar = () => {
+    setMenuVisible(false);
+};
+
   const logout = () => {
     setIsLoading(true);
     setCookie("token", undefined);
@@ -39,7 +43,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     setIsModalOpen(false);
   };
   const handleButtonClick = () => {
+    setMenuVisible(!menuVisible)
     setIsModalOpen(true);
+  };
+  const handleButtonClick2 = () => {
+    setMenuVisible(!menuVisible)
   };
   const fetchProjects = async () => {
     setIsLoading(true);
@@ -65,7 +73,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
     fetchProjects(); // Fetch projects when the component mounts
   }, []);
@@ -91,7 +98,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                   <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
                     Projects
                   </h1>
-                  <ChooseMethod refetchProject={fetchProjects} />
+                  <ChooseMethod refetchProject={fetchProjects} closeSidebar={closeSidebar} />
                 </div>
               </div>
               {isLoading ? (
@@ -109,8 +116,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                       setProjects(
                         projects.filter((proj: any) => proj._id === project._id)
                       );
+                
                       fetchProjects();
                       navigate.push("/components/Landingpage");
+                      handleButtonClick2()
                     }}
                   />
                 ))
@@ -131,7 +140,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
           <ReactModal
             isOpen={isModalOpen}
             onRequestClose={handleCloseModal}
-            className="w-[600px]  p-10 mt-20 bg-white shadow-lg ml-[500px] "
+            className="w-[600px] z-[9999]  p-10 mt-20 bg-white shadow-lg lg:ml-[500px] "
           >
             <h1 className="font-bold text-center">
               Are you sure you want to logout?
@@ -170,7 +179,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
               <Profile />
             </div>
             <div className="middle-part flex flex-col gap-3">
-              <hr className="w-64 ml-3" />
+              <hr className="max-w-[40vw]" />
 
               <div className="projects">
                 <div className="title grid grid-cols-2 space-x-16 ">
@@ -181,7 +190,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
                       Projects
                     </h1>
-                    <ChooseMethod refetchProject={fetchProjects} />
+                    <ChooseMethod refetchProject={fetchProjects} closeSidebar={closeSidebar} />
                   </div>
                 </div>
                 {isLoading ? (
@@ -208,7 +217,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             </div>
 
             <div className="flex flex-col">
-              <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 py-3 h-12 rounded-sm">
+              <h2 className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 py-3 h-12 rounded-sm" onClick={handleButtonClick2}>
                 Settings
               </h2>
               <h2
