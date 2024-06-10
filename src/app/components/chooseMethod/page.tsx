@@ -7,6 +7,8 @@ import { getCookie } from "cookies-next";
 import ReactModal from "react-modal";
 import SbLoad from "@/app/shared/loader/sbload";
 import Loader from "@/app/shared/loader/page";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => void ,closeSidebar: () => void}) {
     const router = useRouter();
@@ -67,13 +69,15 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
             console.log(projectId);
             refetchProject();
             if (formData.method === "quick") {
+                toast.success("Successfully created project")
                 router.push(`/components/Preview/${projectId}`);
             } else if (formData.method === "step") {
 
-                
+                toast.success("Successfully created project")
                 router.push(`/components/step/${projectId}`);
             }
-        } catch (error) {
+        } catch (error:any) {
+            toast.error(error)
             console.error("Error creating project:", error);
             router.push("/Pages/signup");
         } finally {
@@ -127,17 +131,17 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
             <ReactModal
                 isOpen={isModalOpen}
                 onRequestClose={handleCloseModal}
-                className="w-[600px]  p-10 mt-20 bg-white shadow-lg lg:ml-[500px] "
+                className="lg:w-[600px]  p-10 mt-20 bg-white shadow-lg lg:ml-[500px] "
             >
                 <form
-                    className="flex flex-col justify-center items-center gap-5"
+                    className="flex flex-col lg:justify-center lg:items-center gap-5"
                     onSubmit={handleSubmit}
                 >
                     <h2>Enter project information</h2>
                     <input
                         type="text"
                         placeholder="Enter name"
-                        className=" w-[400px] border  lg:py-2  p-2 outline-none  text-start rounded-md"
+                        className="lg:w-[400px] border  lg:py-2  p-2 outline-none  text-start rounded-md"
                         name="name"
                         onChange={handleChange}
                         value={formData.name}
@@ -146,7 +150,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
                         placeholder="Enter description"
                         rows={4}
                         onChange={handleChange}
-                        className=" w-[400px] border lg:py-2  p-2 outline-none  text-start rounded-md"
+                        className=" lg:w-[400px] border lg:py-2  p-2 outline-none  text-start rounded-md"
                         name="description"
                         value={formData.description}
                     />
@@ -160,6 +164,15 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
                 </form>
                 <button onClick={handleCloseModal}>Cancel</button>
             </ReactModal>
+            <ToastContainer
+                        position="top-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop
+                        closeOnClick
+                        rtl
+                        pauseOnFocusLoss
+                    />
         </div>
     );
 }

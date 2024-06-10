@@ -658,7 +658,8 @@ function Final() {
                 Logframe
               </Text>
               </div>
-              <table className="border border-1 w-full overflow-x-auto m-auto">
+              <div className="overflow-x-auto">
+    <table className="border border-1 w-full overflow-x-auto m-auto">
                 {isLoading ? (
                   <div className="w-full"></div>
                 ) : (
@@ -781,6 +782,8 @@ function Final() {
                 </div>
                 )}
               </table> 
+              </div>
+          
           </div>
         </div>
       </Page>
