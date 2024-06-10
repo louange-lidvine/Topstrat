@@ -82,29 +82,29 @@ function Preview() {
   };
   
 
-    const saveChanges = async () => {
-        const token = getCookie("token");
-        setLoading(true);
-        try {
-            await axios.put(
-                `http://157.245.121.185:5000/projects/${id}/update-analysis`,
-                { pestleData: editablePestleData },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
-                        }`,
-                    },
-                }
-            );
-            setPestleData(editablePestleData); // Update displayed data with edited data
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-  };
+//     const saveChanges = async () => {
+//         const token = getCookie("token");
+//         setLoading(true);
+//         try {
+//             await axios.put(
+//                 `http://157.245.121.185:5000/projects/${id}/update-analysis`,
+//                 { pestleData: editablePestleData },
+//                 {
+//                     headers: {
+//                         "Content-Type": "application/json",
+//                         Authorization: `Bearer ${
+//                             JSON.parse(token ?? "").access_token
+//                         }`,
+//                     },
+//                 }
+//             );
+//             setPestleData(editablePestleData); // Update displayed data with edited data
+//         } catch (error) {
+//             console.log(error);
+//         } finally {
+//             setLoading(false);
+//         }
+//   };
   const refetchData = async () => {
       const token = getCookie("token");
       setLoading(true);
@@ -258,7 +258,7 @@ function Preview() {
                 </button>
                 <button
                     className="bg-green-default text-white font-bold rounded-md m-auto py-3 px-6"
-                    onClick={saveChanges}
+                    // onClick={saveChanges}
                 >
                     Save
                 </button>
