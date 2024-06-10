@@ -7,13 +7,14 @@ import Graphics from "/public/assets/Login-amico (1) 2.png";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { FaEye, FaEyeSlash,FaCheckCircle } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaCheckCircle } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { setCookie } from "cookies-next";
 import SbLoad from "@/app/shared/loader/sbload";
 import { jwtDecode } from "jwt-decode";
 import GoogleSignInButton from "@/app/constants/(auth)/googleSignInButton";
+import { redirect } from "next/navigation";
 
 function Page() {
     const router = useRouter();
@@ -55,7 +56,7 @@ function Page() {
                 console.log(decoded);
                 if (decoded.role == "admin") {
                     router.push("/components/Dashboard");
-                 // toast.success("Admin Logged in successfully");
+                    // toast.success("Admin Logged in successfully");
                 } else if (decoded.role == "user") {
                     router.push("/components/Landingpage");
                     setLoading(false);
@@ -142,22 +143,22 @@ function Page() {
                             </div>
                         </div>
 
-            <button
-              type="submit"
-              className={`bg-blue-default text-white  py-4 px-10 rounded-lg ${
-                loading ? " cursor-not-allowed" : ""
-              }`}
-              disabled={loading}
-            >
-              {loading ? (
-                <div className="w-full flex items-center justify-center">
-                  <SbLoad />
-                </div>
-              ) : (
-                "Login"
-              )}
-            </button>
-                    
+                        <button
+                            type="submit"
+                            className={`bg-blue-default text-white  py-4 px-10 rounded-lg ${
+                                loading ? " cursor-not-allowed" : ""
+                            }`}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <div className="w-full flex items-center justify-center">
+                                    <SbLoad />
+                                </div>
+                            ) : (
+                                "Login"
+                            )}
+                        </button>
+
                         <div className="flex items-center space-x-4">
                             <div className="flex-grow border-t border-gray-400"></div>
                             <span className="text-gray-500">or</span>
@@ -167,13 +168,16 @@ function Page() {
                             <span>Remember me</span>
                             <span>Forgot Password?</span>
                         </div>
-                   
+
                         <GoogleSignInButton
                             onSuccess={(credentialResponse: any) => {
                                 console.log(
-                                    "Google login success:",
+                                    "Google login success: fsdsdfasdfasd",
                                     credentialResponse
                                 );
+                                router.refresh();
+                                router.push("/components/Landingpage");
+                                console.log("Made router push");
                             }}
                             onError={() => {
                                 console.log("Google login failed");
