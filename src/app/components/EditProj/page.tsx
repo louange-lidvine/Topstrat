@@ -112,7 +112,7 @@ export default function ({
 
     return (
         <div
-            className={`relative hover:bg-white hover:bg-opacity-20  px-10 py-3 mt-3  rounded-sm ${
+            className={`relative w-[20vw] hover:bg-white hover:bg-opacity-20 px-10 py-3 mt-3  rounded-sm ${
                 selected && "bg-transparent"
             }`}
             onMouseEnter={() => setIsHover(true)}
@@ -131,7 +131,7 @@ export default function ({
             >
                 {openInput ? (
                     <input
-                        className="bg-white text-white w-full"
+                        className="bg-white text-white w-auto"
                         type="text"
                         placeholder={project.name}
                         value={newName}
@@ -148,7 +148,7 @@ export default function ({
             </div>
             {isHover && (
                 <div
-                    className="absolute z-index items-center justify-end bg-blue-default rounded  text-white top-2 translate-y-1/2 right-5"
+                    className="absolute z-index items-center justify-end rounded  text-white top-2 translate-y-1/2 right-5"
                     onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                 >
                     <FaEllipsisH />
@@ -175,10 +175,19 @@ export default function ({
                                     className=" hover:bg-gray-100  hover:cursor-pointer p-2"
                                     onClick={() => {
                                         setIsPopoverOpen(false);
-                                        handleDelete(project._id); // Pass projectId to handleDelete
+                                        handleDelete(project._id); 
                                     }}
                                 >
                                     Delete
+                                </li>
+                                <li
+                                    className=" hover:bg-gray-100  hover:cursor-pointer p-2"
+                                    onClick={() => {
+                                        setIsPopoverOpen(false);
+                                       
+                                    }}
+                                >
+                                    Edit
                                 </li>
                             </ul>
                         </div>

@@ -131,7 +131,7 @@ function Page() {
                                     name="password"
                                     value={formData.password}
                                     onChange={handleChange}
-                                    className="w-full bg-transparent outline-none"
+                                    className="w-full bg- outline-none"
                                     required
                                 />
                                 <button

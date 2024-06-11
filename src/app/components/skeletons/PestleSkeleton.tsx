@@ -4,7 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 const PestleSkeleton = () => {
     return (
-        <div className="border border-collapse w-full overflow-x-auto">
+        <div className="border border-collapse w-auto overflow-x-auto">
             <table className="w-full border border-1 m-auto">
                 <thead>
                     <tr className="bg-slate-300">

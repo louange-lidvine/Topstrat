@@ -5,6 +5,10 @@ import { getCookie } from "cookies-next";
 import { PDFDownloadLink, Document, Page, Text } from "@react-pdf/renderer";
 import Loader from "@/app/shared/loader/page";
 import { useParams } from "next/navigation";
+import SwotSkeleton from "../../skeletons/SwotSkeleton";
+import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
+import PestleSkeleton from "../../skeletons/PestleSkeleton";
+import Skeleton from "react-loading-skeleton";
 
 function Final() {
     const { id } = useParams();
@@ -120,7 +124,7 @@ function Final() {
                 {isLoading ? (
                   <div className="w-full">
                     {" "}
-                    <Loader />
+                    <Skeleton width="full" height={30}/>
                   </div>
                 ) : (
                   <p className="">
@@ -145,7 +149,7 @@ function Final() {
                 {isLoading ? (
                   <div className="w-full">
                     {" "}
-                    <Loader />
+                    <Skeleton width="full" height={30}/>
                   </div>
                 ) : (
                   <p>
@@ -173,7 +177,7 @@ function Final() {
                 {isLoading ? (
                   <div className="w-full">
                     {" "}
-                    <Loader />
+                    <Skeleton width="full" height={30}/>
                   </div>
                 ) : (
                   <p>
@@ -201,7 +205,7 @@ function Final() {
                 {isLoading ? (
                   <div className="w-full">
                     {" "}
-                    <Loader />
+                    <Skeleton width="full" height={80}/>
                   </div>
                 ) : (
                   <div>
@@ -227,7 +231,7 @@ function Final() {
                 {isLoading ? (
                   <div className="w-full">
                     {" "}
-                    <Loader />
+                    <Skeleton width="full" height={80}/>
                   </div>
                 ) : (
                   <div>
@@ -252,7 +256,7 @@ function Final() {
                 {isLoading ? (
                   <div className="w-full">
                     {" "}
-                    <Loader />
+                    <Skeleton width="full" height={80}/>
                   </div>
                 ) : (
                   <div>
@@ -265,7 +269,16 @@ function Final() {
             </div>
           </div>
           <div className="flex flex-col gap-6 mt-5 ">
-            <h2 className="text-xl font-bold text-blue-default">
+        
+            <div className="w-[100%] flex justify-center items-center">
+              {isLoading ? (
+                <div className="w-full">
+                  <Skeleton width={100} height={30}/>
+                  <SwotSkeleton/>
+                </div>
+              ) : (
+                <div>
+                      <h2 className="text-xl font-bold text-blue-default">
               <Text
                 style={{
                   fontSize: "20px",
@@ -276,13 +289,7 @@ function Final() {
                 SWOT ANALYSIS
               </Text>
             </h2>
-            <div className="w-[100%] flex justify-center items-center">
-              {isLoading ? (
-                <div className="w-full">
-                  <Loader />
-                </div>
-              ) : (
-                <table
+                   <table
                   style={{
                     borderCollapse: "collapse",
                     width: "100%",
@@ -527,7 +534,9 @@ function Final() {
                       </Text>
                     </td>
                   </tr>
-                </table>
+                </table>  
+                </div>
+             
               )}
             </div>
           </div>
@@ -545,7 +554,7 @@ function Final() {
               </div>
               {isLoading ? (
                 <div className="w-full">
-                  <Loader />
+                  <PestleSkeleton/>
                 </div>
               ) : (
                 <div className="w-full">
@@ -661,7 +670,9 @@ function Final() {
               <div className="overflow-x-auto">
     <table className="border border-1 w-full overflow-x-auto m-auto">
                 {isLoading ? (
-                  <div className="w-full"></div>
+                  <div className="w-full">
+                    <LogFrameSkeleton/>
+                  </div>
                 ) : (
                   <div className="w-full">
                   <div className="flex flex-col gap-3">
