@@ -80,14 +80,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   return (
     <>
       <div
-        className={`hidden z-[9999] lg:flex flex-col  text-white min-w-[20vw]  bg-blue-default m-2 rounded-md`}
+        className={`hidden z-[9999] lg:flex flex-col  text-white w-[20vw]  bg-blue-default m-2 rounded-md`}
       >
         <div className="flex flex-col justify-between gap-40 ">
           <div className="user-part ">
             <Profile />
           </div>
           <div className="middle-part flex flex-col gap-3 w-64">
-            <hr className="ml-2 w-[19vw]" />
+            <hr className=" ml-3 w-[16vw]" />
 
             <div className="projects">
               <div className="title grid grid-cols-2 space-x-16 ">
@@ -95,14 +95,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                   className="title grid grid-cols-2 space-x-40
         "
                 >
-                  <h1 className=" ml-10 text-xl font-bold flex-[0.8]">
+                  <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">
                     Projects
                   </h1>
                   <ChooseMethod refetchProject={fetchProjects} closeSidebar={closeSidebar} />
                 </div>
               </div>
               {isLoading ? (
-                <div className="mt-6">
+                <div className="m-12">
                   {" "}
                   <SbLoad />
                 </div>
@@ -126,8 +126,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
               )}
             </div>
           </div>
-          <div className="lg:mt-[-90px]">
-            <h2 className=" font-bold  hover:bg-white hover:bg-opacity-20  px-10  w-[auto] py-3  rounded-sm">
+          <div className="py-10">
+            <h2 className=" font-bold  hover:bg-white hover:bg-opacity-20  px-10  w-[auto] py-3 h-12 rounded-sm">
               Settings
             </h2>
             <h2
