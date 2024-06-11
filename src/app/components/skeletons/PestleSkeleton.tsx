@@ -9,13 +9,13 @@ const PestleSkeleton = () => {
                 <thead>
                     <tr className="bg-slate-300">
                         <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                            <Skeleton width={50} height={20} />
+                            <Skeleton width="100%" height={40} />
                         </th>
                         <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                            <Skeleton width={200} height={20} />
+                            <Skeleton width="100%" height={40} />
                         </th>
                         <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                            <Skeleton width={200} height={20} />
+                            <Skeleton width="100%" height={40} />
                         </th>
                     </tr>
                 </thead>
@@ -23,13 +23,13 @@ const PestleSkeleton = () => {
                     {[1, 2, 3, 4, 5, 6].map((_, index) => (
                         <tr key={index}>
                             <td className="border border-1 p-2 text-center font-bold bg-slate-300">
-                                <Skeleton width={100} height={20} />
+                                <Skeleton width="100%" height={40} />
                             </td>
                             <td className="border border-1 p-2">
-                                <Skeleton width="100%" height={20} />
+                                <Skeleton width="100%" height={40} />
                             </td>
                             <td className="border border-1 p-2">
-                                <Skeleton width="100%" height={20} />
+                                <Skeleton width="100%" height={40} />
                             </td>
                         </tr>
                     ))}
