@@ -124,7 +124,7 @@ function Page() {
                             <label htmlFor="password" className="mb-1">
                                 Password:
                             </label>
-                            <div className="flex space-between border p-3 rounded-md placeholder-transparent bg-opacity-0 border-black">
+                            <div className="flex space-between border p-3 rounded-md bg-transparent bg-opacity-0 border-black">
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     id="password"

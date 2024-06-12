@@ -1,3 +1,5 @@
+
+
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -12,6 +14,7 @@ function Preview() {
     const [projectData, setProjectData] = useState<any>();
     const [pestleData, setPestleData] = useState<any>(null);
     const [editablePestleData, setEditablePestleData] = useState<any>(null);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const getProject = async (id: string) => {
@@ -67,11 +70,33 @@ function Preview() {
         fetchData();
     }, [id]);
 
-    const handleInputChange = (
-        category: string,
-        field: string,
-        value: string
-    ) => {
+    const refetchData = async () => {
+        const token = getCookie("token");
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                { projectId: id },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            const data = JSON.parse(response.data.pestle.response);
+            setPestleData(data);
+            setEditablePestleData(data);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleCellChange = (category: string, field: string, value: string) => {
         setEditablePestleData((prevData: any) => ({
             ...prevData,
             [category]: {
@@ -79,76 +104,51 @@ function Preview() {
                 [field]: value,
             },
         }));
-  };
-  
+        setIsEditing(true);
+    };
 
-//     const saveChanges = async () => {
-//         const token = getCookie("token");
-//         setLoading(true);
-//         try {
-//             await axios.put(
-//                 `http://157.245.121.185:5000/projects/${id}/update-analysis`,
-//                 { pestleData: editablePestleData },
-//                 {
-//                     headers: {
-//                         "Content-Type": "application/json",
-//                         Authorization: `Bearer ${
-//                             JSON.parse(token ?? "").access_token
-//                         }`,
-//                     },
-//                 }
-//             );
-//             setPestleData(editablePestleData); // Update displayed data with edited data
-//         } catch (error) {
-//             console.log(error);
-//         } finally {
-//             setLoading(false);
-//         }
-//   };
-  const refetchData = async () => {
-      const token = getCookie("token");
-      setLoading(true);
-      try {
-          const response = await axios.post(
-              `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
-              { projectId: id },
-              {
-                  headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${
-                          JSON.parse(token ?? "").access_token
-                      }`,
-                  },
-              }
-          );
-          setPestleData(JSON.parse(response.data.pestle.response));
-      } catch (error) {
-          console.log(error);
-      } finally {
-          setLoading(false);
-      }
-  };
-
+    const saveData = async () => {
+        const token = getCookie("token");
+        try {
+            await axios.put(
+                `http://157.245.121.185:5000/projects/${id}/update-analysis`,
+                { pestle: editablePestleData },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            setPestleData(editablePestleData); // Update the main data with the new data
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Error saving data:", error);
+        }
+    };
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 h-full w-full ">
+        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 w-full">
             {loading ? (
                 <Loader />
             ) : (
-                <div className="w-full h-full">
-                    <div className="flex flex-col gap-3 h-full">
-                        <table
-                            className="border border-1 m-auto"
-                            style={{
-                                width: "100%",
-                                maxWidth: "800px",
-                                height: "100%",
-                            }}
-                        >
-                            {/* <table
-                            className="border border-1 m-auto"
-                            // style={{ width: "100%", maxWidth: "800px",height: "100%" }}
-                        > */}
+                <div className="w-full">
+                    <div className="flex flex-col justify-center items-center gap-4 text-2xl">
+                        <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
+                            {projectData && projectData.name}
+                        </div>
+                        <div className="text-yellow-500 font-bold">Preview</div>
+                        <div className="text-blue-default font-bold">
+                            Strategic Plan {projectData && projectData.name}
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <div className="text-blue-default font-bold text-2xl py-5">
+                            PESTLE Analysis
+                        </div>
+                        <table className="border border-1 m-auto">
                             <thead>
                                 <tr className="bg-slate-300">
                                     <th className="border border-1 p-2 text-blue-default font-bold text-center"></th>
@@ -163,74 +163,32 @@ function Preview() {
                             <tbody>
                                 {editablePestleData && (
                                     <>
-                                        {[
-                                            "political",
-                                            "economic",
-                                            "social",
-                                            "technological",
-                                            "legal",
-                                            "environmental",
-                                        ].map((category) => (
+                                        {["political", "economic", "social", "technological", "legal", "environmental"].map((category) => (
                                             <tr key={category}>
                                                 <td className="border border-1 p-2 text-center font-bold bg-slate-300">
-                                                    {category
-                                                        .charAt(0)
-                                                        .toUpperCase() +
-                                                        category.slice(1)}
+                                                    {category.charAt(0).toUpperCase() + category.slice(1)}
                                                 </td>
                                                 <td
                                                     className="border border-1 p-2"
-                                                    style={{
-                                                        wordWrap: "break-word",
-                                                    }}
+                                                    contentEditable
+                                                    suppressContentEditableWarning
+                                                    onBlur={(e) =>
+                                                        handleCellChange(category, "inf", e.currentTarget.textContent || "")
+                                                    }
+                                                    style={{ minWidth: "200px" }}
                                                 >
-                                                    <input
-                                                        type="text"
-                                                        value={
-                                                            editablePestleData[
-                                                                category
-                                                            ]?.inf || ""
-                                                        }
-                                                        onChange={(e) =>
-                                                            handleInputChange(
-                                                                category,
-                                                                "inf",
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                        className="w-full border-none px-2 h-full" // Adjust size as needed
-                                                        style={{
-                                                            // height: "100px",
-                                                            fontSize: "16px",
-                                                        }} // Increase height and font size
-                                                    />
+                                                    {editablePestleData[category].inf}
                                                 </td>
                                                 <td
                                                     className="border border-1 p-2"
-                                                    style={{
-                                                        wordWrap: "break-word",
-                                                    }}
+                                                    contentEditable
+                                                    suppressContentEditableWarning
+                                                    onBlur={(e) =>
+                                                        handleCellChange(category, "imp", e.currentTarget.textContent || "")
+                                                    }
+                                                    style={{ minWidth: "200px" }}
                                                 >
-                                                    <input
-                                                        type="text"
-                                                        value={
-                                                            editablePestleData[
-                                                                category
-                                                            ]?.imp || ""
-                                                        }
-                                                        onChange={(e) =>
-                                                            handleInputChange(
-                                                                category,
-                                                                "imp",
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                        className="w-full border-none p-2 h-full"
-                                                        style={{
-                                                            // height: "100px",
-                                                            fontSize: "16px",
-                                                        }}
-                                                    />
+                                                    {editablePestleData[category].imp}
                                                 </td>
                                             </tr>
                                         ))}
@@ -241,12 +199,10 @@ function Preview() {
                     </div>
                 </div>
             )}
-            <div className="flex justify-center mx-auto gap-5">
+            <div className="flex justify-center gap-8 mx-auto">
                 <button
                     className="bg-[#ED0C0C] text-white font-bold rounded-md m-auto py-3 px-6"
-                    onClick={() =>
-                        router.push(`../../components/Preview/${id}`)
-                    }
+                    onClick={() => router.push(`../../components/Preview2/${id}`)}
                 >
                     Back
                 </button>
@@ -257,20 +213,22 @@ function Preview() {
                     Regenerate
                 </button>
                 <button
-                    className="bg-green-default text-white font-bold rounded-md m-auto py-3 px-6"
-                    // onClick={saveChanges}
+                    className="bg-green-500 text-white font-bold rounded-md m-auto py-3 px-6"
+                    onClick={saveData}
+                    disabled={!isEditing}
                 >
                     Save
                 </button>
-                <button
-                    className="bg-blue-default text-white m-auto font-bold rounded-md py-3 px-6 cursor-pointer"
+                <div
+                    className="flex bg-blue-default text-white font-bold rounded-md m-auto py-3 px-6 cursor-pointer"
                     onClick={() => router.push(`/components/Preview3/${id}`)}
                 >
                     Next
-                </button>
+                </div>
             </div>
         </div>
     );
 }
 
 export default Preview;
+

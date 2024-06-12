@@ -31,7 +31,7 @@ function Page() {
                     </div>
                 </div>
                 <div className="flex space-x-4 items-center">
-                    <Link href="/signin" className="hover:text-gray-300 font-bold">
+                    <Link href="/signIn" className="hover:text-gray-300 font-bold">
                         Sign In
                     </Link>
                     <div className="bg-blue-default text-white  font-bold p-3 rounded-md">
