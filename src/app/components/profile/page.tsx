@@ -2,7 +2,6 @@
 import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
 import CryptoJS from "crypto-js";
-import Skeleton from "react-loading-skeleton";
 // import Image, { StaticImageData } from 'next/image';
 
 const Profile = () => {
@@ -61,7 +60,7 @@ const Profile = () => {
           )}
         </>
       ) : (
-        <Skeleton width={230} height={30}/>
+        <p>Loading...</p>
       )}
     </div>
   );
