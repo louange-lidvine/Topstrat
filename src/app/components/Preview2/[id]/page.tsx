@@ -391,6 +391,7 @@ import { getCookie } from "cookies-next";
 import axios from "axios";
 import Loader from "../../../shared/loader/page";
 
+
 function Preview() {
     const router = useRouter();
     const { id } = useParams();
@@ -516,7 +517,9 @@ function Preview() {
     return (
         <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 w-full">
             {loading ? (
+
                 <Loader />
+
             ) : (
                 <div className="w-full">
                     <div className="flex flex-col justify-center items-center gap-4 text-2xl">

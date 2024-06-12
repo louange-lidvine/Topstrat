@@ -171,6 +171,7 @@ function Preview() {
                 <div className="w-[100%] flex justify-center items-center">
                     {isLoading ? (
                         <div className="w-full"><Loader /></div>
+
                     ) : (
                         // <table className="border border-collapse w-full overflow-x-auto">
                         //     <thead>

@@ -6,6 +6,7 @@ import { PDFDownloadLink, Document, Page, Text } from "@react-pdf/renderer";
 import Loader from "@/app/shared/loader/page";
 import { useParams } from "next/navigation";
 
+
 function Final() {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(false);
@@ -279,7 +280,9 @@ function Final() {
             <div className="w-[100%] flex justify-center items-center">
               {isLoading ? (
                 <div className="w-full">
+
                   <Loader />
+
                 </div>
               ) : (
                 <table
@@ -542,7 +545,9 @@ function Final() {
               >
                 PESTLE Analysis
               </Text>
-              </div>
+
+
+             </div>
               {isLoading ? (
                 <div className="w-full">
                   <Loader />
@@ -660,7 +665,7 @@ function Final() {
               </div>
               <table className="border border-1 w-full overflow-x-auto m-auto">
                 {isLoading ? (
-                  <div className="w-full"></div>
+
                 ) : (
                   <div className="w-full">
                   <div className="flex flex-col gap-3">

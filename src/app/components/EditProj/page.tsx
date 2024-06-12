@@ -99,7 +99,7 @@ export default function ({
     //         .put(
     //             `http://157.245.121.185:5000/projects/${project.id}`,
     //             {
-    //                 name: newName,
+    //                 name: newNames,
     //             }
     //         )
     //         .then((res) => {
