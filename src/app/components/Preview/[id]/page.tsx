@@ -6,7 +6,7 @@ import { getCookie } from "cookies-next";
 import Loader from "../../../shared/loader/page";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-// import SwotSkeleton from "../../skeletons/SwotSkeleton";
+import SwotSkeleton from "../../skeletons/SwotSkeleton";
 
 function Preview() {
     const { id } = useParams();
@@ -224,7 +224,7 @@ function Preview() {
                     {isLoading ? (
                         <div className="w-full">
                            <Skeleton width={100} height={20} />
-                        {/* <SwotSkeleton/> */}
+                        <SwotSkeleton/>
                         </div>
                     ) : (
                     
@@ -232,7 +232,7 @@ function Preview() {
                         <div className="w-[100%] flex justify-center items-center">
                           {isLoading ? (
                             <div className="w-full">
-                              <Loader />
+                              <SwotSkeleton/>
                             </div>
                           ) : (
                             <div>

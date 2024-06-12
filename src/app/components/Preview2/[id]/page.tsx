@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import axios from "axios";
-// import PestleSkeleton from "../../skeletons/PestleSkeleton";
+import PestleSkeleton from "../../skeletons/PestleSkeleton";
 import Skeleton from "react-loading-skeleton";
 
 function Preview() {
@@ -153,8 +153,8 @@ function Preview() {
                 </div>
             </div>
             {loading ? (
-                // <PestleSkeleton />
-                <div></div>
+                <PestleSkeleton />
+           
             ) : (
                 <div className="flex flex-col gap-3">
                     <div className="text-blue-default font-bold text-2xl py-5">
