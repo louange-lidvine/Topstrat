@@ -6,6 +6,15 @@ import { getCookie } from "cookies-next";
 import Loader from "../../../shared/loader/page";
 import { Skeleton } from "@mantine/core";
 
+const accessStringKey = (data: any[]) => {
+  data.forEach(item => {
+    for (const key in item) {
+        if (item.hasOwnProperty(key)) {
+            console.log(item[key]);
+        }
+    }
+});
+}
 function Preview() {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +25,7 @@ function Preview() {
 
     const handleNextClick = () => {
         router.push(`/components/Preview2/${id}`);
-    };
+  };
 
     useEffect(() => {
         const getProject = async (id: string) => {
@@ -83,9 +92,9 @@ function Preview() {
                     },
                 }
             );
+            console.log("reponse data --> ",response.data);
             if (response.data) {
               setPromptData(response.data);
-              console.log("reponse data --> ",response.data);
             } else {
                 setError("No data received");
             }
@@ -130,7 +139,7 @@ function Preview() {
                         {isLoading ? (
                             <div className="w-full"><Skeleton height={30} /></div>
                         ) : (
-                            <p>{promptData && promptData.vision && promptData.vision.response}</p>
+                            <p>{promptData && promptData.vision && promptData.vision[0]}</p>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
@@ -138,7 +147,7 @@ function Preview() {
                         {isLoading ? (
                             <div className="w-full"><Skeleton /></div>
                         ) : (
-                            <p>{promptData && promptData.mission && promptData.mission.response}</p>
+                            <p>{promptData && promptData.mission && promptData.mission[0]}</p>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
@@ -173,40 +182,7 @@ function Preview() {
                     {isLoading ? (
                         <div className="w-full"><Loader /></div>
                     ) : (
-                        // <table className="border border-collapse w-full overflow-x-auto">
-                        //     <thead>
-                        //         <tr className="text-blue-default">
-                        //             <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">Strengths(S)</td>
-                        //             <td className="border-2 border-solid border-black p-[6px] text-left px-6">Weaknesses(W)</td>
-                        //         </tr>
-                        //     </thead>
-                        //     {/* <tbody>
-                        //         {promptData && promptData.swot && promptData.swot.response && (
-                        //             JSON.parse(promptData.swot.response).strengths.map((strength:any, index:number) => (
-                        //                 <tr key={index}>
-                        //                     <td className="border-2 border-solid border-black p-[6px] text-left px-6">{strength}</td>
-                        //                     <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                        //                         {JSON.parse(promptData.swot.response).weaknesses[index]}
-                        //                     </td>
-                        //                 </tr>
-                        //             ))
-                        //         )}
-                        //         <tr className="text-blue-default">
-                        //             <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">Opportunities (O)</td>
-                        //             <td className="border-2 border-solid border-black p-[6px] text-left px-6">Threats (T)</td>
-                        //         </tr>
-                        //         {promptData && promptData.swot && promptData.swot.response && (
-                        //             JSON.parse(promptData.swot.response).opportunities.map((opportunity:any, index:number) => (
-                        //                 <tr key={index}>
-                        //                     <td className="border-2 border-solid border-black p-[6px] text-left px-6">{opportunity}</td>
-                        //                     <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                        //                         {JSON.parse(promptData.swot.response).threats[index]}
-                        //                     </td>
-                        //                 </tr>
-                        //             ))
-                        //         )}
-                        //     </tbody> */}
-                        // </table>
+
                         <div className="flex flex-col gap-6 mt-5 ">
                         <h2 className="text-xl font-bold text-blue-default">
                             SWOT ANALYSIS
