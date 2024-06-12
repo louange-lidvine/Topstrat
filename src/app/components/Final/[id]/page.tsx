@@ -5,9 +5,9 @@ import { getCookie } from "cookies-next";
 import { PDFDownloadLink, Document, Page, Text } from "@react-pdf/renderer";
 import Loader from "@/app/shared/loader/page";
 import { useParams } from "next/navigation";
-import SwotSkeleton from "../../skeletons/SwotSkeleton";
-import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
-import PestleSkeleton from "../../skeletons/PestleSkeleton";
+// import SwotSkeleton from "../../skeletons/SwotSkeleton";
+// import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
+// import PestleSkeleton from "../../skeletons/PestleSkeleton";
 import Skeleton from "react-loading-skeleton";
 
 function Final() {
@@ -267,7 +267,7 @@ function Final() {
               {isLoading ? (
                 <div className="w-full">
                   <Skeleton width={100} height={30} />
-                  <SwotSkeleton />
+                  {/* <SwotSkeleton /> */}
                 </div>
               ) : (
                 <div>
@@ -549,7 +549,7 @@ function Final() {
             </div>
             {isLoading ? (
               <div className="w-full">
-                <PestleSkeleton />
+                {/* <PestleSkeleton /> */}
               </div>
             ) : (
               <div className="w-full">
@@ -659,7 +659,7 @@ function Final() {
               <table className="border border-1 w-full overflow-x-auto m-auto">
                 {isLoading ? (
                   <div className="w-full">
-                    <LogFrameSkeleton />
+                    {/* <LogFrameSkeleton /> */}
                   </div>
                 ) : (
                   <div className="w-full">

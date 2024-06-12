@@ -343,7 +343,7 @@ import { getCookie } from "cookies-next";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
+// import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
 
 function Preview() {
   const router = useRouter();
@@ -451,7 +451,7 @@ function Preview() {
             <div className="text-blue-default font-bold text-2xl py-5">
               <Skeleton width={100} height={30} />
             </div>
-            <LogFrameSkeleton/>
+            {/* <LogFrameSkeleton/> */}
           </div>
         </div>
       ) : (
