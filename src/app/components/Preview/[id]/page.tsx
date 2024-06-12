@@ -4,7 +4,9 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import Loader from "../../../shared/loader/page";
-import { Skeleton } from "@mantine/core";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import SwotSkeleton from "../../skeletons/SwotSkeleton";
 
 function Preview() {
     const { id } = useParams();
@@ -170,43 +172,12 @@ function Preview() {
                 <h2 className="text-xl font-bold text-blue-default">SWOT ANALYSIS</h2>
                 <div className="w-[100%] flex justify-center items-center">
                     {isLoading ? (
-                        <div className="w-full"><Loader /></div>
-
+                        <div className="w-full">
+                           <Skeleton width={100} height={20} />
+                        <SwotSkeleton/>
+                        </div>
                     ) : (
-                        // <table className="border border-collapse w-full overflow-x-auto">
-                        //     <thead>
-                        //         <tr className="text-blue-default">
-                        //             <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">Strengths(S)</td>
-                        //             <td className="border-2 border-solid border-black p-[6px] text-left px-6">Weaknesses(W)</td>
-                        //         </tr>
-                        //     </thead>
-                        //     {/* <tbody>
-                        //         {promptData && promptData.swot && promptData.swot.response && (
-                        //             JSON.parse(promptData.swot.response).strengths.map((strength:any, index:number) => (
-                        //                 <tr key={index}>
-                        //                     <td className="border-2 border-solid border-black p-[6px] text-left px-6">{strength}</td>
-                        //                     <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                        //                         {JSON.parse(promptData.swot.response).weaknesses[index]}
-                        //                     </td>
-                        //                 </tr>
-                        //             ))
-                        //         )}
-                        //         <tr className="text-blue-default">
-                        //             <td className="border-2 border-solid border-black p-[6px] text-left px-6 py-3">Opportunities (O)</td>
-                        //             <td className="border-2 border-solid border-black p-[6px] text-left px-6">Threats (T)</td>
-                        //         </tr>
-                        //         {promptData && promptData.swot && promptData.swot.response && (
-                        //             JSON.parse(promptData.swot.response).opportunities.map((opportunity:any, index:number) => (
-                        //                 <tr key={index}>
-                        //                     <td className="border-2 border-solid border-black p-[6px] text-left px-6">{opportunity}</td>
-                        //                     <td className="border-2 border-solid border-black p-[6px] text-left px-6">
-                        //                         {JSON.parse(promptData.swot.response).threats[index]}
-                        //                     </td>
-                        //                 </tr>
-                        //             ))
-                        //         )}
-                        //     </tbody> */}
-                        // </table>
+                    
                         <div className="flex flex-col gap-6 mt-5 ">
                         <h2 className="text-xl font-bold text-blue-default">
                             SWOT ANALYSIS
@@ -214,7 +185,7 @@ function Preview() {
                         <div className="w-[100%] flex justify-center items-center">
                           {isLoading ? (
                             <div className="w-full">
-                              <Loader />
+                              <SwotSkeleton/>
                             </div>
                           ) : (
                             <table
