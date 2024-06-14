@@ -4,17 +4,10 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import Loader from "../../../shared/loader/page";
-import { Skeleton } from "@mantine/core";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+// import SwotSkeleton from "../../skeletons/TableSkeleton";
 
-const accessStringKey = (data: any[]) => {
-  data.forEach(item => {
-    for (const key in item) {
-        if (item.hasOwnProperty(key)) {
-            console.log(item[key]);
-        }
-    }
-});
-}
 function Preview() {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +18,7 @@ function Preview() {
 
     const handleNextClick = () => {
         router.push(`/components/Preview2/${id}`);
-  };
+    };
 
     useEffect(() => {
         const getProject = async (id: string) => {
@@ -36,7 +29,9 @@ function Preview() {
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+                            Authorization: `Bearer ${
+                                JSON.parse(token ?? "").access_token
+                            }`,
                         },
                     }
                 );
@@ -59,7 +54,9 @@ function Preview() {
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+                            Authorization: `Bearer ${
+                                JSON.parse(token ?? "").access_token
+                            }`,
                         },
                     }
                 );
@@ -88,13 +85,14 @@ function Preview() {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
                     },
                 }
             );
-            console.log("reponse data --> ",response.data);
             if (response.data) {
-              setPromptData(response.data);
+                setPromptData(response.data);
             } else {
                 setError("No data received");
             }
@@ -108,9 +106,13 @@ function Preview() {
 
     const renderList = (data: string) => {
         return data
-            .split(/\d+\.\s*/)  
-            .filter(item => item.trim() !== '')
-            .map((item, index) => <li key={index}>{index + 1}. {item.trim()}</li>);
+            .split(/\d+\.\s*/)
+            .filter((item) => item.trim() !== "")
+            .map((item, index) => (
+                <li key={index}>
+                    {index + 1}. {item.trim()}
+                </li>
+            ));
     };
 
     return (
@@ -127,9 +129,13 @@ function Preview() {
             <div className="w-full mt-4">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-4">
-                        <h3 className="text-blue-default font-bold text-xl">Project Overview</h3>
+                        <h3 className="text-blue-default font-bold text-xl">
+                            Project Overview
+                        </h3>
                         {isLoading ? (
-                            <div className="w-full"><Skeleton /></div>
+                            <div className="w-full">
+                                <Skeleton />
+                            </div>
                         ) : (
                             <p>{projectData && projectData.description}</p>
                         )}
@@ -137,311 +143,345 @@ function Preview() {
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold">Vision</h3>
                         {isLoading ? (
-                            <div className="w-full"><Skeleton height={30} /></div>
+                            <div className="w-full">
+                                <Skeleton height={30} />
+                            </div>
                         ) : (
-                            <p>{promptData && promptData.vision && promptData.vision[0]}</p>
+                            <p>
+                                {promptData &&
+                                    promptData.vision &&
+                                    promptData.vision.response}
+                            </p>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold">Mission</h3>
                         {isLoading ? (
-                            <div className="w-full"><Skeleton /></div>
+                            <div className="w-full">
+                                <Skeleton />
+                            </div>
                         ) : (
-                            <p>{promptData && promptData.mission && promptData.mission[0]}</p>
+                            <p>
+                                {promptData &&
+                                    promptData.mission &&
+                                    promptData.mission.response}
+                            </p>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold">Objectives</h3>
                         {isLoading ? (
-                            <div className="w-full"><Skeleton /></div>
+                            <div className="w-full">
+                                <Skeleton />
+                            </div>
                         ) : (
-                            <ul>{promptData && promptData.objectives && renderList(promptData.objectives.response)}</ul>
+                            <ul>
+                                {promptData &&
+                                    promptData.objectives &&
+                                    renderList(promptData.objectives.response)}
+                            </ul>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold">Values</h3>
                         {isLoading ? (
-                            <div className="w-full"><Skeleton /></div>
+                            <div className="w-full">
+                                <Skeleton />
+                            </div>
                         ) : (
-                            <ul>{promptData && promptData.values && renderList(promptData.values.response)}</ul>
+                            <ul>
+                                {promptData &&
+                                    promptData.values &&
+                                    renderList(promptData.values.response)}
+                            </ul>
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold">Strategy</h3>
                         {isLoading ? (
-                            <div className="w-full"><Skeleton /></div>
+                            <div className="w-full">
+                                <Skeleton />
+                            </div>
                         ) : (
-                            <ul>{promptData && promptData.strategy && renderList(promptData.strategy.response)}</ul>
-                        )}                                                                                                                             
+                            <ul>
+                                {promptData &&
+                                    promptData.strategy &&
+                                    renderList(promptData.strategy.response)}
+                            </ul>
+                        )}
                     </div>
                 </div>
             </div>
             <div className="flex flex-col gap-4">
-                <h2 className="text-xl font-bold text-blue-default">SWOT ANALYSIS</h2>
+                <h2 className="text-xl font-bold text-blue-default">
+                    SWOT ANALYSIS
+                </h2>
                 <div className="w-[100%] flex justify-center items-center">
                     {isLoading ? (
-                        <div className="w-full"><Loader /></div>
-                    ) : (
-
-                        <div className="flex flex-col gap-6 mt-5 ">
-                        <h2 className="text-xl font-bold text-blue-default">
-                            SWOT ANALYSIS
-                        </h2>
-                        <div className="w-[100%] flex justify-center items-center">
-                          {isLoading ? (
-                            <div className="w-full">
-                              <Loader />
-                            </div>
-                          ) : (
-                            <table
-                              style={{
-                                borderCollapse: "collapse",
-                                width: "100%",
-                                overflowX: "auto",
-                              }}
-                            >
-                              <tr style={{ color: "#0B6C79" }}>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                    paddingTop: "3px",
-                                  }}
-                                >
-                              Strengths(S)
-                                </td>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             Weaknesses(W)
-                                </td>
-                              </tr>
-                              <tr>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).strengths[0]}
-                          
-                                </td>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).weaknesses[0]}
-                          
-                                </td>
-                              </tr>
-                              <tr>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).strengths[1]}
-                          
-                                </td>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).weaknesses[1]}
-                          
-                                </td>
-                              </tr>
-                              <tr>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).strengths[2]}
-                          
-                                </td>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).weaknesses[2]}
-                          
-                                </td>
-                              </tr>
-                              <tr style={{ color: "#0B6C79" }}>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                    paddingTop: "3px",
-                                  }}
-                                >
-                             Opportunities (O)
-                                </td>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                              Threats (T)
-                                </td>
-                              </tr>
-                              <tr>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).opportunities[0]}
-                          
-                                </td>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).threats[0]}
-                          
-                                </td>
-                              </tr>
-                              <tr>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).opportunities[1]}
-                          
-                                </td>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).threats[1]}
-                          
-                                </td>
-                              </tr>
-                              <tr>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                             
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).opportunities[2]}
-                          
-                                </td>
-                                <td
-                                  style={{
-                                    border: "2px solid black",
-                                    padding: "6px",
-                                    textAlign: "left",
-                                    paddingLeft: "6px",
-                                  }}
-                                >
-                     
-                                    {promptData &&
-                                      promptData.swot &&
-                                      promptData.swot.response &&
-                                      JSON.parse(promptData.swot.response).threats[2]}
-                          
-                                </td>
-                              </tr>
-                            </table>
-                          )}
+                        <div className="w-full">
+                            <Skeleton width={100} height={20} />
+                            {/* <SwotSkeleton /> */}
                         </div>
-                      </div>
+                    ) : (
+                        <div className="flex flex-col gap-6 mt-5 ">
+                            <h2 className="text-xl font-bold text-blue-default">
+                                SWOT ANALYSIS
+                            </h2>
+                            <div className="w-[100%] flex justify-center items-center">
+                                {isLoading ? (
+                                    <div className="w-full">
+                                        {/* <SwotSkeleton /> */}
+                                    </div>
+                                ) : (
+                                    <table
+                                        style={{
+                                            borderCollapse: "collapse",
+                                            width: "100%",
+                                            overflowX: "auto",
+                                        }}
+                                    >
+                                        <tr style={{ color: "#0B6C79" }}>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                    paddingTop: "3px",
+                                                }}
+                                            >
+                                                Strengths(S)
+                                            </td>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                Weaknesses(W)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).strengths[0]}
+                                            </td>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).weaknesses[0]}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).strengths[1]}
+                                            </td>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).weaknesses[1]}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).strengths[2]}
+                                            </td>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).weaknesses[2]}
+                                            </td>
+                                        </tr>
+                                        <tr style={{ color: "#0B6C79" }}>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                    paddingTop: "3px",
+                                                }}
+                                            >
+                                                Opportunities (O)
+                                            </td>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                Threats (T)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).opportunities[0]}
+                                            </td>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).threats[0]}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).opportunities[1]}
+                                            </td>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).threats[1]}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).opportunities[2]}
+                                            </td>
+                                            <td
+                                                style={{
+                                                    border: "2px solid black",
+                                                    padding: "6px",
+                                                    textAlign: "left",
+                                                    paddingLeft: "6px",
+                                                }}
+                                            >
+                                                {promptData &&
+                                                    promptData.swot &&
+                                                    promptData.swot.response &&
+                                                    JSON.parse(
+                                                        promptData.swot.response
+                                                    ).threats[2]}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                )}
+                            </div>
+                        </div>
                     )}
                 </div>
                 <div className="flex justify-center mx-auto gap-5">

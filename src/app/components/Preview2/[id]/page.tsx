@@ -1,5 +1,3 @@
-
-
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -15,6 +13,7 @@ function Preview() {
     const [pestleData, setPestleData] = useState<any>(null);
     const [editablePestleData, setEditablePestleData] = useState<any>(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [promptId, setPromptId] = useState<string | null>(null);
 
     useEffect(() => {
         const getProject = async (id: string) => {
@@ -26,7 +25,7 @@ function Preview() {
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
+                                JSON.parse(token ?? "").accessoken
                             }`,
                         },
                     }
@@ -60,6 +59,7 @@ function Preview() {
                 const data = JSON.parse(response.data.pestle.response);
                 setPestleData(data);
                 setEditablePestleData(data);
+                setPromptId(response.data.pestle._id); // Extracting and setting the prompt ID
             } catch (error) {
                 console.log(error);
             } finally {
@@ -89,6 +89,9 @@ function Preview() {
             const data = JSON.parse(response.data.pestle.response);
             setPestleData(data);
             setEditablePestleData(data);
+            setPromptId(response.data.pestle._id);
+            console.log("updated successfully");
+            // Extracting and setting the prompt ID
         } catch (error) {
             console.log(error);
         } finally {
@@ -96,7 +99,11 @@ function Preview() {
         }
     };
 
-    const handleCellChange = (category: string, field: string, value: string) => {
+    const handleCellChange = (
+        category: string,
+        field: string,
+        value: string
+    ) => {
         setEditablePestleData((prevData: any) => ({
             ...prevData,
             [category]: {
@@ -109,10 +116,25 @@ function Preview() {
 
     const saveData = async () => {
         const token = getCookie("token");
+        if (!promptId) {
+            console.error("Prompt ID is not available");
+            return;
+        }
+
+        // Map the response to the expected format
+        const response = {
+            political: editablePestleData.political,
+            economic: editablePestleData.economic,
+            social: editablePestleData.social,
+            technological: editablePestleData.technological,
+            legal: editablePestleData.legal,
+            environmental: editablePestleData.environmental,
+        };
+
         try {
             await axios.put(
-                `http://157.245.121.185:5000/projects/${id}/update-analysis`,
-                { pestle: editablePestleData },
+                `http://157.245.121.185:5000/projects/${id}/prompts/${promptId}`,
+                { response }, // Use the mapped response object
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -163,32 +185,66 @@ function Preview() {
                             <tbody>
                                 {editablePestleData && (
                                     <>
-                                        {["political", "economic", "social", "technological", "legal", "environmental"].map((category) => (
+                                        {[
+                                            "political",
+                                            "economic",
+                                            "social",
+                                            "technological",
+                                            "legal",
+                                            "environmental",
+                                        ].map((category) => (
                                             <tr key={category}>
                                                 <td className="border border-1 p-2 text-center font-bold bg-slate-300">
-                                                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                                                    {category
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        category.slice(1)}
                                                 </td>
                                                 <td
                                                     className="border border-1 p-2"
                                                     contentEditable
                                                     suppressContentEditableWarning
                                                     onBlur={(e) =>
-                                                        handleCellChange(category, "inf", e.currentTarget.textContent || "")
+                                                        handleCellChange(
+                                                            category,
+                                                            "inf",
+                                                            e.currentTarget
+                                                                .textContent ||
+                                                                ""
+                                                        )
                                                     }
-                                                    style={{ minWidth: "200px" }}
+                                                    style={{
+                                                        minWidth: "200px",
+                                                    }}
                                                 >
-                                                    {editablePestleData[category].inf}
+                                                    {
+                                                        editablePestleData[
+                                                            category
+                                                        ].inf
+                                                    }
                                                 </td>
                                                 <td
                                                     className="border border-1 p-2"
                                                     contentEditable
                                                     suppressContentEditableWarning
                                                     onBlur={(e) =>
-                                                        handleCellChange(category, "imp", e.currentTarget.textContent || "")
+                                                        handleCellChange(
+                                                            category,
+                                                            "imp",
+                                                            e.currentTarget
+                                                                .textContent ||
+                                                                ""
+                                                        )
                                                     }
-                                                    style={{ minWidth: "200px" }}
+                                                    style={{
+                                                        minWidth: "200px",
+                                                    }}
                                                 >
-                                                    {editablePestleData[category].imp}
+                                                    {
+                                                        editablePestleData[
+                                                            category
+                                                        ].imp
+                                                    }
                                                 </td>
                                             </tr>
                                         ))}
@@ -202,7 +258,9 @@ function Preview() {
             <div className="flex justify-center gap-8 mx-auto">
                 <button
                     className="bg-[#ED0C0C] text-white font-bold rounded-md m-auto py-3 px-6"
-                    onClick={() => router.push(`../../components/Preview2/${id}`)}
+                    onClick={() =>
+                        router.push(`../../components/Preview2/${id}`)
+                    }
                 >
                     Back
                 </button>
@@ -231,4 +289,3 @@ function Preview() {
 }
 
 export default Preview;
-

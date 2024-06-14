@@ -1,184 +1,288 @@
- "use client";
-import React, { ChangeEvent, useState } from "react";
-import DateInput from "../DateInput";
-import Airtel from "../../../../public/assets/Airtel 1.png"
-import Momo from "../../../../public/assets/momo 1.png"
-import Paypal from "../../../../public/assets/paypal 1.png"
-import Credit from "../../../../public/assets/credit 1.png"
-import Image from "next/image";
-import Background from "../../../../public/assets/bg.png";
-import Link from "next/link";
-function Payment() {
+"use client";
+import React, { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
+import axios from "axios";
+import Loader from "../../shared/loader/page";
+function Preview() {
+    const router = useRouter();
+    const { id } = useParams();
+    const [loading, setLoading] = useState(false);
+    const [projectData, setProjectData] = useState<any>();
+    const [pestleData, setPestleData] = useState<any>(null);
+    const [editablePestleData, setEditablePestleData] = useState<any>(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [promptId, setPromptId] = useState<string | null>(null);
 
-    const [selectedDate, setSelectedDate] = useState<string>("");
+    useEffect(() => {
+        const getProject = async (id: string) => {
+            try {
+                const token = getCookie("token");
+                const response = await axios.get(
+                    `http://157.245.121.185:5000/projects/${id}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${
+                                JSON.parse(token ?? "").access_token
+                            }`,
+                        },
+                    }
+                );
+                setProjectData(response.data);
+            } catch (error) {
+                console.error("Error fetching project data:", error);
+            }
+        };
+        getProject(id as string);
+        setLoading(false);
+    }, [id]);
 
-    // Function to handle date change
-    const handleDateChange = (date: string) => {
-        // Update the state with the selected date
-        setSelectedDate(date);
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = getCookie("token");
+            setLoading(true);
+            try {
+                const response = await axios.post(
+                    `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                    { projectId: id },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${
+                                JSON.parse(token ?? "").access_token
+                            }`,
+                        },
+                    }
+                );
+                const data = JSON.parse(response.data.pestle.response);
+                setPestleData(data);
+                setEditablePestleData(data);
+                setPromptId(response.data.pestle._id);
+                console.log("updted")// Extracting and setting the prompt ID
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        // Extract the month and day from the selected date
-        const parsedDate = new Date(date);
-        const month = parsedDate.getMonth() + 1; // Months are zero-indexed
-        const day = parsedDate.getDate();
+        fetchData();
+    }, [id]);
 
-        // Display the selected date (month and day) without the year
-        alert(`Selected Date: ${month}-${day}`);
+    const refetchData = async () => {
+        const token = getCookie("token");
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                { projectId: id },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            const data = JSON.parse(response.data.pestle.response);
+            setPestleData(data);
+            setEditablePestleData(data);
+            setPromptId(response.data.pestle._id); // Extracting and setting the prompt ID
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleCellChange = (
+        category: string,
+        field: string,
+        value: string
+    ) => {
+        setEditablePestleData((prevData: any) => ({
+            ...prevData,
+            [category]: {
+                ...prevData[category],
+                [field]: value,
+            },
+        }));
+        setIsEditing(true);
+    };
+
+    const saveData = async () => {
+        const token = getCookie("token");
+        if (!promptId) {
+            console.error("Prompt ID is not available");
+            return;
+        }
+
+        const response = {
+            political: editablePestleData.political,
+            economic: editablePestleData.economic,
+            social: editablePestleData.social,
+            technological: editablePestleData.technological,
+            legal: editablePestleData.legal,
+            environmental: editablePestleData.environmental,
+        };
+
+        try {
+            await axios.put(
+                `http://157.245.121.185:5000/projects/${id}/prompts/${promptId}`,
+                { response }, // Use the mapped response object
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                }
+            );
+            setPestleData(editablePestleData); // Update the main data with the new data
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Error saving data:", error);
+        }
     };
 
     return (
-        <div>
-            <Image
-                src={Background}
-                className="w-full h-full fixed left-0 top-0 -z-10"
-                alt="background-img"
-            />
-            <div className="flex flex-col justify-center items-center p-32 gap-8">
-                <h1 className="font-bold text-3xl">
-                    <span>Thank you for choosing </span>
-                    <span className="text-blue-default ">TopStrat Pro</span>
-                </h1>
-                <div className="flex w-full flex-col lg:flex-row  items-center justify-center  ">
-                    {" "}
-                    {/* ... (other components) ... */}
-                    <div className="border border-gray-400  flex flex-col gap-6 w-full  lg:w-[40%] items-center ">
-                        <div className="bg-blue-default text-white w-full text-center">
-                            <h3>Total amount to pay</h3>
-                            <p>$27.5</p>{" "}
+        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 w-full">
+            {loading ? (
+                <Loader />
+            ) : (
+                <div className="w-full">
+                    <div className="flex flex-col justify-center items-center gap-4 text-2xl">
+                        <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
+                            {projectData && projectData.name}
                         </div>
-                        <p className="text-black">How would you like to pay?</p>
-                        <div className="w-[60%] p-2">
-                            {" "}
-                            {/* ... Other radio button options ... */}
-                            <div className=" border border-gray-700 rounded-md text-black flex justify-between px-3 py-2">
-                                <div className="flex gap-2 items-center">
-                                    <input type="radio" id="card1" name=""/>
-                                    Credit card
-                                </div>
-                                <span>
-                                    <Image
-                                        src={Airtel}
-                                        alt="graphics-image"
-                                        width={40}
-                                        height={40}
-                                    />
-                                </span>
-                            </div>
-                            <div className=" border border-gray-700 rounded-md text-black flex justify-between px-3 py-4">
-                                <div className="flex gap-2 items-center">
-                                    <input type="radio" id="card2" />
-                                    Credit card
-                                </div>
-                                <span>
-                                    {" "}
-                                    <Image
-                                        src={Momo}
-                                        alt="graphics-image"
-                                        width={40}
-                                        height={40}
-                                    />
-                                </span>
-                            </div>
-                            <div className=" border border-gray-700 rounded-md text-black flex justify-between px-3 py-2">
-                                <div className="flex gap-2 items-center">
-                                    <input type="radio" id="card3" />
-                                    Credit card
-                                </div>
-                                <span>
-                                    <Image
-                                        src={Paypal}
-                                        alt="graphics-image"
-                                        width={40}
-                                        height={40}
-                                    />
-                                </span>
-                            </div>
-                            <div className=" border border-gray-700 rounded-md text-black flex justify-between px-3 py-2">
-                                <div className="flex gap-2 items-center">
-                                    <input type="radio" id="card4" />
-                                    Credit card
-                                </div>
-                                <span>
-                                    <Image
-                                        src={Credit}
-                                        alt="graphics-image"
-                                        width={40}
-                                        height={40}
-                                    />
-                                </span>
-                            </div>
+                        <div className="text-yellow-500 font-bold">Preview</div>
+                        <div className="text-blue-default font-bold">
+                            Strategic Plan {projectData && projectData.name}
                         </div>
-                       
-                        <div className="bg-gray-300  w-full  text-center py-5">
-                           <Link href='/Pages/ChoosePayment'>
-                            Back to subscription Packages
-                        </Link>
-                        </div>
-                      
-                        
                     </div>
-                    <div className="flex flex-col  px-48 gap-5 border  border-gray-400 rounded-md items-center justify-center  lg: w-[30%] py-20  lg:px-16 ">
-                        <h2 className="font-bold">Your payment details</h2>
-                        <div>
-                            <label>Name on card</label>
-                            <div>
-                                <input
-                                    type="text"
-                                    id="card-name"
-                                    className="p-5 border border-gray-400 rounded-md py-2 "
-                                />
-                            </div>
+                    <div className="flex flex-col gap-3">
+                        <div className="text-blue-default font-bold text-2xl py-5">
+                            PESTLE Analysis
                         </div>
-                        <div>
-                            <label> card number</label>
-                            <div>
-                                <input
-                                    type="number"
-                                    id="card-num"
-                                    placeholder="xxxx xxxx xxxx"
-                                    className="p-5 border border-gray-400 rounded-md py-2 "
-                                />
-                            </div>
-                        </div>
-                        <div className="flex flex-col justify-center items-center">
-                            <label>card number:</label>
-                            <div className="flex gap-5">
-                                <DateInput
-                                    value={selectedDate}
-                                    onDateChange={handleDateChange}
-                                />
-                                <input
-                                    type="number"
-                                    id="yearInput"
-                                    name="yearInput"
-                                    placeholder="2024"
-                                    min="1900"
-                                    max="2100"
-                                    pattern="\d{4}"
-                                    className="border border-gray-400 rounded-md py-2"
-                                ></input>
-                                <input
-                                    type="number"
-                                    id="cvv"
-                                    placeholder="CVV"
-                                    className="w-[20%] border border-gray-400 rounded-md py-2"
-                                />
-                            </div>
-                        </div>
-                        <div className="text-white bg-blue-default font-bold rounded-md -x-4 py-2 ">
-                            Pay now
-                        </div>
+                        <table className="border border-1 m-auto">
+                            <thead>
+                                <tr className="bg-slate-300">
+                                    <th className="border border-1 p-2 text-blue-default font-bold text-center"></th>
+                                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                                        Influence on organization
+                                    </th>
+                                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                                        Impact on organization
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {editablePestleData && (
+                                    <>
+                                        {[
+                                            "political",
+                                            "economic",
+                                            "social",
+                                            "technological",
+                                            "legal",
+                                            "environmental",
+                                        ].map((category) => (
+                                            <tr key={category}>
+                                                <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                                                    {category
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        category.slice(1)}
+                                                </td>
+                                                <td
+                                                    className="border border-1 p-2"
+                                                    contentEditable
+                                                    suppressContentEditableWarning
+                                                    onBlur={(e) =>
+                                                        handleCellChange(
+                                                            category,
+                                                            "inf",
+                                                            e.currentTarget
+                                                                .textContent ||
+                                                                ""
+                                                        )
+                                                    }
+                                                    style={{
+                                                        minWidth: "200px",
+                                                    }}
+                                                >
+                                                    {
+                                                        editablePestleData[
+                                                            category
+                                                        ].inf
+                                                    }
+                                                </td>
+                                                <td
+                                                    className="border border-1 p-2"
+                                                    contentEditable
+                                                    suppressContentEditableWarning
+                                                    onBlur={(e) =>
+                                                        handleCellChange(
+                                                            category,
+                                                            "imp",
+                                                            e.currentTarget
+                                                                .textContent ||
+                                                                ""
+                                                        )
+                                                    }
+                                                    style={{
+                                                        minWidth: "200px",
+                                                    }}
+                                                >
+                                                    {
+                                                        editablePestleData[
+                                                            category
+                                                        ].imp
+                                                    }
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                {/* <div className="bg-blue-default text-white font-bold px-6 py-2 absolute right-2 bottom-2 rounded-md">
-                    
-                    <Link href="../../components/step">
-                        Continue
-                    </Link>
-                </div> */}
+            )}
+            <div className="flex justify-center gap-8 mx-auto">
+                <button
+                    className="bg-[#ED0C0C] text-white font-bold rounded-md m-auto py-3 px-6"
+                    onClick={() =>
+                        router.push(`../../components/Preview2/${id}`)
+                    }
+                >
+                    Back
+                </button>
+                <button
+                    className="bg-orange-default text-white font-bold rounded-md m-auto py-3 px-6"
+                    onClick={refetchData}
+                >
+                    Regenerate
+                </button>
+                <button
+                    className="bg-green-500 text-white font-bold rounded-md m-auto py-3 px-6"
+                    onClick={saveData}
+                    disabled={!isEditing}
+                >
+                    Save
+                </button>
+                <div
+                    className="flex bg-blue-default text-white font-bold rounded-md m-auto py-3 px-6 cursor-pointer"
+                    onClick={() => router.push(`/components/Preview3/${id}`)}
+                >
+                    Next
+                </div>
             </div>
         </div>
     );
 }
 
-export default Payment;
+export default Preview;
