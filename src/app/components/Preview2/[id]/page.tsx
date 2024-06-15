@@ -135,6 +135,15 @@ function Preview() {
            
             ) : (
                 <div className="flex flex-col gap-3">
+                <div className="flex flex-col justify-center items-center gap-4 text-xl">
+                <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
+                    {projectData && projectData.name}
+                </div>
+                <div className="text-yellow-500 font-bold">Preview</div>
+                <div className="text-blue-default font-bold">
+                    Strategic Plan {projectData && projectData.name}
+                </div>
+            </div>
                     <div className="text-blue-default font-bold text-2xl py-5">
                         PESTLE Analysis
                     </div>
@@ -193,7 +202,7 @@ function Preview() {
             <div className="flex justify-center gap-8 mx-auto">
                 <button
                     className="bg-[#ED0C0C] text-white font-bold rounded-md m-auto py-3 px-6"
-                    onClick={() => router.push(`../../components/Preview2/${id}`)}
+                    onClick={() => router.push(`../../components/Preview/${id}`)}
                 >
                     Back
                 </button>

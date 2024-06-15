@@ -107,7 +107,7 @@ function Preview() {
 
     return (
         <div className="border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium">
-            <div className="flex flex-col justify-center items-center gap-4 text-2xl">
+            <div className="flex flex-col justify-center items-center gap-4 text-xl">
                 <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
                     {projectData && projectData.name}
                 </div>
