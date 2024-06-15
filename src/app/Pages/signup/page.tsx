@@ -12,7 +12,7 @@ import Loader from "@/app/shared/loader/page";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import SbLoad from "@/app/shared/loader/sbload";
-import notifications from "@mantine/notifications"
+import notifications from "@mantine/notifications";
 
 function Page() {
     const router = useRouter();
@@ -156,22 +156,22 @@ function Page() {
                             </div>
                         </div>
                         <button
-                           type="submit"
-                           className={`bg-blue-default text-white  py-4 px-10 rounded-lg ${
-                           loading ? " cursor-not-allowed" : ""
+                            type="submit"
+                            className={`bg-blue-default text-white  py-4 px-10 rounded-lg ${
+                                loading ? " cursor-not-allowed" : ""
                             }`}
-                           disabled={loading}
-                           >
-                         {loading ? (
-                         <div className="w-full flex items-center justify-center">
-                         <SbLoad />
-                         </div>
-                         ) : (
-                         "Login"
-                         )}
-                      </button>
-                    
-                            <div className="flex items-center space-x-4">
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <div className="w-full flex items-center justify-center">
+                                    <SbLoad />
+                                </div>
+                            ) : (
+                                "Login"
+                            )}
+                        </button>
+
+                        <div className="flex items-center space-x-4">
                             <div className="flex-grow border-t border-gray-400"></div>
                             <span className="text-gray-500">or</span>
                             <div className="flex-grow border-t border-gray-400"></div>

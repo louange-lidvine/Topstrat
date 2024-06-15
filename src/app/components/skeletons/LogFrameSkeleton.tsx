@@ -3,8 +3,8 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 function LogFrameSkeleton() {
-  const rows = 5;  // Number of rows in the table skeleton
-  const columns = 5;  // Number of columns in the table skeleton
+  const rows = 5;  
+  const columns = 5;  
 
   return (
     <div className="overflow-x-auto">

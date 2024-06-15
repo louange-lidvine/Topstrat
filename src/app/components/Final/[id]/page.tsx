@@ -9,6 +9,8 @@ import SwotSkeleton from "../../skeletons/SwotSkeleton";
 import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
 import PestleSkeleton from "../../skeletons/PestleSkeleton";
 import Skeleton from "react-loading-skeleton";
+import ExportPage from "../../Export/page";
+
 
 function Final() {
     const { id } = useParams();
@@ -19,10 +21,12 @@ function Final() {
     const [logframeData, setLogframeData] = useState<any>();
     const [error, setError] = useState<string | null>(null);
 
+
     const fetchData = async () => {
         try {
             const token = getCookie("token");
             setIsLoading(true);
+
 
             // Fetch prompt data
             const promptResponse = await axios.get(
@@ -38,6 +42,7 @@ function Final() {
             );
             setPromptData(promptResponse.data);
 
+
             // Fetch project data
             const projectResponse = await axios.get(
                 `http://157.245.121.185:5000/projects/${id}`,
@@ -51,6 +56,7 @@ function Final() {
                 }
             );
             setProjectData(projectResponse.data);
+
 
             // Fetch pestle and logframe data
             const dataResponse = await axios.post(
@@ -68,6 +74,7 @@ function Final() {
             setPestleData(JSON.parse(dataResponse.data.pestle.response));
             setLogframeData(JSON.parse(dataResponse.data.logframe.response));
 
+
             setIsLoading(false);
         } catch (error) {
             setError("Error fetching data");
@@ -76,13 +83,16 @@ function Final() {
         }
     };
 
+
     useEffect(() => {
         fetchData();
     }, []);
 
+
     const regenerateData = () => {
         fetchData();
     };
+
 
     const renderList = (data: string) => {
         return data
@@ -95,12 +105,13 @@ function Final() {
             ));
     };
 
+
   // PDF document component
   const MyDocument = () => (
     <Document pageMode="fullScreen">
       <Page size="A4" style={{ margin: "auto" }}>
         <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium">
-          <div className="flex flex-col  justify-center items-center gap-4 text-2xl ">
+          <div className="flex flex-col  justify-center items-center gap-4 text-xl ">
             <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
               {" "}
               <Text>{projectData && projectData.name}</Text>
@@ -117,23 +128,38 @@ function Final() {
             <div className="flex flex-col gap-6 ">
               <div className="flex flex-col gap-4 ">
                 {" "}
-                <h3 className="text-blue-default font-bold text-xl">
+             
+                {isLoading ? (
+               <div className="w-full">
+                   <Skeleton width={80} />
+                <Skeleton />
+                </div>
+                ) : (
+                  <div>
+                       <h3 className="text-blue-default font-bold text-xl">
                   {" "}
                   <Text> Project Overview </Text>
                 </h3>
-                {isLoading ? (
-                  <div className="w-full">
-                    {" "}
-                    <Loader />
-                  </div>
-                ) : (
-                  <p className="">
+                       <p className="">
                     <Text> {projectData && projectData.description}</Text>
                   </p>
+                  </div>
+             
                 )}
               </div>
               <div className="flex flex-col gap-3">
-                <h3 className="text-xl font-bold">
+       
+                {isLoading ? (
+                  <div className="w-full">
+                    {" "}
+                    <div className="w-full">  
+                      <Skeleton width={80} />
+                      <Skeleton  height={30} />
+                      </div>
+                  </div>
+                ) : (
+                  <div>
+                             <h3 className="text-xl font-bold">
                   {" "}
                   <Text
                     style={{
@@ -146,23 +172,30 @@ function Final() {
                     Vision
                   </Text>
                 </h3>
-                {isLoading ? (
-                  <div className="w-full">
-                    {" "}
-                    <Loader />
-                  </div>
-                ) : (
-                  <p>
+                             <p>
                     <Text>
                       {promptData &&
                         promptData.vision &&
-                        promptData.mission.response}
+                        promptData.vision.response}
                     </Text>
                   </p>
+                  </div>
+         
                 )}
               </div>
               <div className="flex flex-col gap-3">
-                <h3 className="text-xl font-bold">
+             
+                {isLoading ? (
+                  <div className="w-full">
+                    {" "}
+                    <div className="w-full">
+                      <Skeleton width={80} />
+                      <Skeleton  height={30} />
+                      </div>
+                  </div>
+                ) : (
+                  <div>
+                      <h3 className="text-xl font-bold">
                   {" "}
                   <Text
                     style={{
@@ -174,23 +207,27 @@ function Final() {
                     Mission
                   </Text>{" "}
                 </h3>
-                {isLoading ? (
-                  <div className="w-full">
-                    {" "}
-                    <Loader />
-                  </div>
-                ) : (
-                  <p>
+                        <p>
                     <Text>
                       {promptData &&
                         promptData.mission &&
-                        promptData.vision.response}
+                        promptData.mission.response}
                     </Text>
-                  </p>
+                  </p>  
+                  </div>
+           
                 )}
               </div>
               <div className="flex flex-col gap-3">
-                <h3 className="text-xl font-bold">
+               
+                {isLoading ? (
+                <div className="w-full">
+                <Skeleton width={80} />
+                <Skeleton  height={80} />
+                </div>
+                ) : (
+                  <div>
+                     <h3 className="text-xl font-bold">
                   {" "}
                   <Text
                     style={{
@@ -202,13 +239,6 @@ function Final() {
                     Objectives
                   </Text>{" "}
                 </h3>
-                {isLoading ? (
-                  <div className="w-full">
-                    {" "}
-                    <Loader />
-                  </div>
-                ) : (
-                  <div>
                     {promptData && promptData.objectives && (
                       <ul>{renderList(promptData.objectives.response)}</ul>
                     )}
@@ -216,7 +246,15 @@ function Final() {
                 )}
               </div>
               <div className="flex flex-col gap-3">
-                <h3 className="text-xl font-bold">
+           
+                {isLoading ? (
+                   <div className="w-full">
+                   <Skeleton width={80} />
+                   <Skeleton  height={80} />
+                   </div>
+                ) : (
+                  <div>
+                        <h3 className="text-xl font-bold">
                   {" "}
                   <Text
                     style={{
@@ -228,13 +266,6 @@ function Final() {
                     Values
                   </Text>
                 </h3>
-                {isLoading ? (
-                  <div className="w-full">
-                    {" "}
-                    <Loader />
-                  </div>
-                ) : (
-                  <div>
                     {promptData && promptData.values && (
                       <ul>{renderList(promptData.values.response)}</ul>
                     )}
@@ -242,7 +273,15 @@ function Final() {
                 )}
               </div>
               <div className="flex flex-col gap-3">
-                <h3 className="text-xl font-bold">
+               
+                {isLoading ? (
+                <div className="w-full">
+                <Skeleton width={80} />
+                <Skeleton  height={80} />
+                </div>
+                ) : (
+                  <div>
+                    <h3 className="text-xl font-bold">
                   <Text
                     style={{
                       fontSize: "20px",
@@ -253,13 +292,6 @@ function Final() {
                     Strategy
                   </Text>{" "}
                 </h3>
-                {isLoading ? (
-                  <div className="w-full">
-                    {" "}
-                    <Loader />
-                  </div>
-                ) : (
-                  <div>
                     {promptData && promptData.strategy && (
                       <ul>{renderList(promptData.strategy.response)}</ul>
                     )}
@@ -272,7 +304,7 @@ function Final() {
             <div className="w-[100%] flex justify-center items-center">
               {isLoading ? (
                 <div className="w-full">
-                  <Skeleton width={100} height={30} />
+                  <Skeleton  width={100} />
                   <SwotSkeleton />
                 </div>
               ) : (
@@ -543,7 +575,16 @@ function Final() {
           </div>
           <div>
             <div className="flex flex-col my-6">
-              <Text
+           
+            </div>
+            {isLoading ? (
+              <div className="w-full">
+                 <Skeleton  width={100} />
+                <PestleSkeleton />
+              </div>
+            ) : (
+              <div className="w-full">
+                  <Text
                 style={{
                   fontSize: "20px",
                   fontWeight: "bold",
@@ -552,18 +593,11 @@ function Final() {
               >
                 PESTLE Analysis
               </Text>
-            </div>
-            {isLoading ? (
-              <div className="w-full">
-                <PestleSkeleton />
-              </div>
-            ) : (
-              <div className="w-full">
                 <div className="flex flex-col gap-3">
                   <table className="border border-1 m-auto">
                     <thead>
                       <tr className="bg-slate-300">
-                        <th className="border border-1 p-2 text-blue-default font-bold text-center">   
+                        <th className="border border-1 p-2 text-blue-default font-bold text-center">  
                         </th>
                         <th className="border border-1 p-2 text-blue-default font-bold text-center">
                           Influence on organization
@@ -586,7 +620,7 @@ function Final() {
                             <td className="border border-1 p-2">
                               {pestleData.political.imp}
                             </td>
-                      
+                     
                           </tr>
                           <tr>
                             <td className="border border-1 p-2 text-center font-bold bg-slate-300">
@@ -598,7 +632,7 @@ function Final() {
                             <td className="border border-1 p-2">
                               {pestleData.economic.imp}
                             </td>
-                      
+                     
                           </tr>
                           <tr>
                             <td className="border border-1 p-2 text-center font-bold bg-slate-300">
@@ -610,7 +644,7 @@ function Final() {
                             <td className="border border-1 p-2">
                               {pestleData.social.imp}
                             </td>
-                      
+                     
                           </tr>
                           <tr>
                             <td className="border border-1 p-2 text-center font-bold bg-slate-300">
@@ -622,7 +656,7 @@ function Final() {
                             <td className="border border-1 p-2">
                               {pestleData.technological.imp}
                             </td>
-                      
+                     
                           </tr>
                           <tr>
                             <td className="border border-1 p-2 text-center font-bold bg-slate-300">
@@ -634,7 +668,7 @@ function Final() {
                             <td className="border border-1 p-2">
                               {pestleData.legal.imp}
                             </td>
-                      
+                     
                           </tr>
                           <tr>
                             <td className="border border-1 p-2 text-center font-bold bg-slate-300">
@@ -646,7 +680,7 @@ function Final() {
                             <td className="border border-1 p-2">
                               {pestleData.environmental.imp}
                             </td>
-                      
+                     
                           </tr>
                         </>
                       )}
@@ -657,8 +691,17 @@ function Final() {
               )}
           </div>
           <div>
-            <div className="flex flex-col my-6">
-              <Text
+         
+             
+                {isLoading ? (
+                  <div className="w-full">
+                     <Skeleton  width={100} />
+                    <LogFrameSkeleton />
+                  </div>
+                ) : (
+                  <div className="w-full">
+                    <p className="mt-5">      
+                           <Text
                 style={{
                   fontSize: "20px",
                   fontWeight: "bold",
@@ -666,17 +709,10 @@ function Final() {
                 }}
               >
                 Logframe
-              </Text>
-              </div>
-              <table className="border border-1 w-full overflow-x-auto m-auto">
-                {isLoading ? (
-                  <div className="w-full">
-                    <LogFrameSkeleton />
-                  </div>
-                ) : (
-                  <div className="w-full">
+              </Text></p>
+             
                   <div className="flex flex-col gap-3">
-                    <table className="border border-1 m-auto">
+                    <table className="border border-1 mx-auto my-6">
                       <thead>
                         <tr className="bg-slate-300">
                           <th className="border border-1 p-2 text-blue-default font-bold text-center">
@@ -792,24 +828,32 @@ function Final() {
                   </div>
                 </div>
                 )}
-              </table> 
+          </div>
+          <div className="flex justify-center gap-8 my-5">
+            <button className="bg-blue-default text-white font-bold rounded-md py-3 px-6">
+            {typeof window !== "undefined" && (
+        <PDFDownloadLink document={<ExportPage projectData={projectData} promptData={promptData} pestleData={pestleData} logframeData={logframeData} isLoading={false}/>} fileName="document.pdf">
+          {({ loading }) => (loading ? "Loading document..." : "Download PDF")}
+        </PDFDownloadLink>
+      )}
+            </button>
+        
+      <button onClick={regenerateData} className="bg-orange-default text-white font-bold rounded-md py-3 px-6">Regenerate</button>
           </div>
         </div>
       </Page>
     </Document>
   );
 
+
   return (
     <div>
       <MyDocument />
-      {typeof window !== "undefined" && (
-        <PDFDownloadLink document={<MyDocument />} fileName="document.pdf">
-          {({ loading }) => (loading ? "Loading document..." : "Download PDF")}
-        </PDFDownloadLink>
-      )}
-      <button onClick={regenerateData}>Regenerate</button>
     </div>
   );
 }
 
+
 export default Final;
+
+
