@@ -324,33 +324,33 @@ function Preview() {
                             </table>
                         </div>
                     </div>
-                    <div className="flex justify-center gap-8 mx-auto">
+                    <div className="flex justify-center gap-8 my-5">
                 <button
-                    className="bg-[#ED0C0C] text-white font-bold rounded-md m-auto py-3 px-6"
+                    className="bg-[#ED0C0C] text-white font-bold rounded-md  py-3 px-6"
                     onClick={() => router.push(`../../components/Preview2/${id}`)}
                 >
                     Back
                 </button>
                 <button
-                    className="bg-orange-default text-white font-bold rounded-md m-auto py-3 px-6"
+                    className="bg-orange-default text-white font-bold rounded-md py-3 px-6"
                     onClick={refetchData}
                 >
                     Regenerate
                 </button>
                 <button
-                    className="bg-green-500 text-white font-bold rounded-md m-auto py-3 px-6"
+                    className="bg-green-500 text-white font-bold rounded-md  py-3 px-6"
                     // onClick={saveData}
                     // disabled={!isEditing}
                 >
                     Save
                 </button>
                 <div
-                    className="flex bg-blue-default text-white font-bold rounded-md m-auto py-3 px-6 cursor-pointer"
+                    className="flex bg-blue-default text-white font-bold rounded-md py-3 px-6 cursor-pointer"
                     onClick={() => router.push(`/components/Final/${id}`)}
                 >
                     Next
                 </div>
-            </div>
+                    </div>
                 </div>
             )}
         </div>

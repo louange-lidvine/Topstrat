@@ -29,7 +29,9 @@ function Preview() {
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+                            Authorization: `Bearer ${
+                                JSON.parse(token ?? "").access_token
+                            }`,
                         },
                     }
                 );
@@ -52,7 +54,9 @@ function Preview() {
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+                            Authorization: `Bearer ${
+                                JSON.parse(token ?? "").access_token
+                            }`,
                         },
                     }
                 );
@@ -81,7 +85,9 @@ function Preview() {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
                     },
                 }
             );
@@ -100,9 +106,13 @@ function Preview() {
 
     const renderList = (data: string) => {
         return data
-            .split(/\d+\.\s*/)  
-            .filter(item => item.trim() !== '')
-            .map((item, index) => <li key={index}>{index + 1}. {item.trim()}</li>);
+            .split(/\d+\.\s*/)
+            .filter((item) => item.trim() !== "")
+            .map((item, index) => (
+                <li key={index}>
+                    {index + 1}. {item.trim()}
+                </li>
+            ));
     };
 
     return (
@@ -119,57 +129,120 @@ function Preview() {
             <div className="w-full mt-4">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-4">
-                        <h3 className="text-blue-default font-bold text-xl">Project Overview</h3>
+                    
                         {isLoading ? (
-                            <div className="w-full"><Skeleton /></div>
+                            <div className="w-full">
+                                <Skeleton  width={100}/>
+                                <Skeleton />
+                            </div>
                         ) : (
-                            <p>{projectData && projectData.description}</p>
+                          <div>
+                               <h3 className="text-blue-default font-bold text-xl">
+                          Project Overview
+                      </h3>
+                            <p>{projectData && projectData.description}</p> 
+                          </div>
+                      
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold">Vision</h3>
+                 
                         {isLoading ? (
-                            <div className="w-full"><Skeleton height={30} /></div>
+                            <div className="w-full">
+                                <Skeleton  width={100}/>
+                                <Skeleton height={30} />
+                            </div>
                         ) : (
-                            <p>{promptData && promptData.vision && promptData.vision.response}</p>
+                          <div>
+                                   <h3 className="text-xl font-bold text-blue-default">Vision</h3>
+                                   <p>
+                                {promptData &&
+                                    promptData.vision &&
+                                    promptData.vision.response}
+                            </p>
+                          </div>
+                  
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold">Mission</h3>
+                   
                         {isLoading ? (
-                            <div className="w-full"><Skeleton /></div>
+                            <div className="w-full">
+                                          <Skeleton  width={100}/>
+                                <Skeleton />
+                            </div>
                         ) : (
-                            <p>{promptData && promptData.mission && promptData.mission.response}</p>
+                          <div>
+                                 <h3 className="text-xl font-bold text-blue-default">Mission</h3>
+                                 <p>
+                                {promptData &&
+                                    promptData.mission &&
+                                    promptData.mission.response}
+                            </p>
+                          </div>
+                       
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold">Objectives</h3>
+                       
                         {isLoading ? (
-                            <div className="w-full"><Skeleton /></div>
+                            <div className="w-full">
+                                          <Skeleton  width={100}/>
+                                <Skeleton />
+                            </div>
                         ) : (
-                            <ul>{promptData && promptData.objectives && renderList(promptData.objectives.response)}</ul>
+                          <div>
+                             <h3 className="text-xl font-bold text-blue-default">Objectives</h3>
+
+                            <ul>
+                                {promptData &&
+                                    promptData.objectives &&
+                                    renderList(promptData.objectives.response)}
+                            </ul></div>
+                          
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold">Values</h3>
+                      
                         {isLoading ? (
-                            <div className="w-full"><Skeleton /></div>
+                            <div className="w-full">
+                                          <Skeleton  width={100}/>
+                                <Skeleton />
+                            </div>
                         ) : (
-                            <ul>{promptData && promptData.values && renderList(promptData.values.response)}</ul>
+                          <div>
+                              <h3 className="text-xl font-bold text-blue-default">Values</h3>
+                              <ul>
+                                {promptData &&
+                                    promptData.values &&
+                                    renderList(promptData.values.response)}
+                            </ul>
+                          </div>
+                       
                         )}
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold">Strategy</h3>
+                      
                         {isLoading ? (
-                            <div className="w-full"><Skeleton /></div>
+                            <div className="w-full">
+                                <Skeleton  width={100}/>
+                                <Skeleton />
+                            </div>
                         ) : (
-                            <ul>{promptData && promptData.strategy && renderList(promptData.strategy.response)}</ul>
-                        )}                                                                                                                             
+                          <div>
+                              <h3 className="text-xl font-bold text-blue-default">Strategy</h3>
+                              <ul>
+                                {promptData &&
+                                    promptData.strategy &&
+                                    renderList(promptData.strategy.response)}
+                            </ul>
+                          </div>
+                  
+                        )}
                     </div>
                 </div>
             </div>
             <div className="flex flex-col gap-4">
-                <h2 className="text-xl font-bold text-blue-default">SWOT ANALYSIS</h2>
                 <div className="w-[100%] flex justify-center items-center">
                     {isLoading ? (
                         <div className="w-full">
@@ -179,7 +252,7 @@ function Preview() {
                     ) : (
                     
                         <div className="flex flex-col gap-6 mt-5 ">
-                        <h2 className="text-xl font-bold text-blue-default">
+                        <h2 className="text-xl font-bold  text-blue-default">
                             SWOT ANALYSIS
                         </h2>
                         <div className="w-[100%] flex justify-center items-center">

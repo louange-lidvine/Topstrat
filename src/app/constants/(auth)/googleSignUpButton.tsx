@@ -27,12 +27,11 @@ const GoogleSignUpButton: React.FC<GoogleButtonProps> = ({
             );
 
             // Store the access token in a cookie or local storage
-            setCookie("token", response.data.token);
-            console.log(response.data.token);
+            setCookie("token", response.data);
+            console.log(response.data);
             toast.success("Signed up successfully");
             router.push("/pages/Payment");
             onSuccess(credentialResponse);
-            router.push("../../Pages/signIn/page.tsx");
         } catch (error) {
             console.error("Error during Google login:", error);
             toast.error("Failed to signup!");
