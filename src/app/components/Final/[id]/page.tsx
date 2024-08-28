@@ -10,6 +10,7 @@ import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
 import PestleSkeleton from "../../skeletons/PestleSkeleton";
 import Skeleton from "react-loading-skeleton";
 import ExportPage from "../../Export/page";
+import { baseURL } from "@/app/constants";
 
 
 function Final() {
@@ -30,7 +31,7 @@ function Final() {
 
             // Fetch prompt data
             const promptResponse = await axios.get(
-                `http://157.245.121.185:5000/projects/prompts/latest/${id}`,
+                `${baseURL}/projects/prompts/latest/${id}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -45,7 +46,7 @@ function Final() {
 
             // Fetch project data
             const projectResponse = await axios.get(
-                `http://157.245.121.185:5000/projects/${id}`,
+                `projects/${id}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -60,7 +61,7 @@ function Final() {
 
             // Fetch pestle and logframe data
             const dataResponse = await axios.post(
-                `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                `projects/projects/generate-analysis/${id}`,
                 { projectId: id },
                 {
                     headers: {

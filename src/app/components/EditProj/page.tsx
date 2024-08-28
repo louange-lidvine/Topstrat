@@ -4,6 +4,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
+import { baseURL } from "@/app/constants";
 
 interface Project {
     name: string;
@@ -50,7 +51,7 @@ export default function ({
         try {
             const token = getCookie("token");
             const response = await axios.get(
-                `http://157.245.121.185:5000/projects/prompts/latest/${projectId}`,
+                `/projects/prompts/latest/${projectId}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -75,17 +76,14 @@ export default function ({
     const handleDelete = async (projectId: string) => {
         try {
             const token = getCookie("token");
-            await axios.delete(
-                `http://157.245.121.185:5000/projects/${projectId}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
-                        }`,
-                    },
-                }
-            );
+            await axios.delete(`${baseURL}/projects/${projectId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${
+                        JSON.parse(token ?? "").access_token
+                    }`,
+                },
+            });
             console.log("Delete API called");
             remove();
         } catch (error) {

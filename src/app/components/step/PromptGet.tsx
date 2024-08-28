@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import { getCookie } from "cookies-next";
-import Loader from "@/app/shared/loader/page";
+import Loader from "@/app/shared/loader/page"; 
+import { baseURL } from "../../constants/index";
 
 interface PromptGetProps {
     title: string;
@@ -43,7 +44,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `157.245.121.185:5000/projects/${projectId}/${title.toLowerCase()}`,
+                    `${baseURL}/${projectId}/${title.toLowerCase()}`,
                     {
                         query: query,
                         projectId: projectId,
@@ -98,7 +99,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `https://157.245.121.185:5000/projects/${projectId}/${title.toLowerCase()}`,
+                    `projects/${projectId}/${title.toLowerCase()}`,
                     {
                         query: query,
                         projectId: projectId,

@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 import Loader from "../../shared/loader/page";
+import { baseURL, ApiURL } from "../../../app/constants/index"; 
 function Preview() {
     const router = useRouter();
     const { id } = useParams();
@@ -18,17 +19,14 @@ function Preview() {
         const getProject = async (id: string) => {
             try {
                 const token = getCookie("token");
-                const response = await axios.get(
-                    `http://157.245.121.185:5000/projects/${id}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
-                            }`,
-                        },
-                    }
-                );
+                const response = await axios.get(`${baseURL}/projects/${id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                });
                 setProjectData(response.data);
             } catch (error) {
                 console.error("Error fetching project data:", error);
@@ -44,7 +42,7 @@ function Preview() {
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                    `${baseURL}/projects/projects/generate-analysis/${id}`,
                     { projectId: id },
                     {
                         headers: {

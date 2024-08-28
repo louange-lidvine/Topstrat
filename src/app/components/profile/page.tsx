@@ -2,6 +2,7 @@
 import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
 import CryptoJS from "crypto-js";
+import { baseURL } from "@/app/constants";
 // import Image, { StaticImageData } from 'next/image';
 
 const Profile = () => {
@@ -14,15 +15,12 @@ const Profile = () => {
       const token = getCookie("token");
       try {
         // Assuming you have an API endpoint to fetch user data by ID
-        const response = await fetch(
-          `http://157.245.121.185:5000/users/${userId}`,
-          {
+        const response = await fetch(`${baseURL}/users/${userId}`, {
             headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
             },
-          }
-        );
+        });
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
