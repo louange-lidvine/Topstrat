@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import ReactModal from "react-modal";
 import SbLoad from "@/app/shared/loader/sbload";
-import Loader from "@/app/shared/loader/page";
+import { ApiURL } from "@/app/constants";
 
 function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => void ,closeSidebar: () => void}) {
     const router = useRouter();
@@ -16,7 +16,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
     const [formData, setFormData] = useState({
         name: "",
         description: "",
-        method: "", // Add method field
+        method: "", 
     });
 
     const handleCloseModal = () => {
@@ -24,7 +24,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
     };
 
     const handleRadioChange = async (value: string) => {
-        closeSidebar();  // Close the sidebar
+        closeSidebar();  
         setIsPopoverOpen(false);
         setIsModalOpen(true);
         setFormData((prevState) => ({
