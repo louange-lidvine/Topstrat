@@ -1,11 +1,9 @@
-// GoogleSignInButton component
 import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { setCookie } from "cookies-next";
-import axios from "axios";
-import { redirect } from "next/navigation";
+import { baseURL,ApiURL } from "../index"; // Adjust the path accordingly
 
 interface GoogleButtonProps {
     onSuccess: (credentialResponse: any) => void;
@@ -22,15 +20,14 @@ const GoogleSignInButton: React.FC<GoogleButtonProps> = ({
 
     const handleSuccess = async (credentialResponse: any) => {
         try {
-            // Call your API endpoint with the token as a query parameter
-            const response = await axios.get(
-                `http://157.245.121.185:5000/auth/login_with_google?token=${credentialResponse.credential}`
+            // Use ApiURL for API request with the token as a query parameter
+            const response = await ApiURL.get(
+                `${baseURL}/auth/login_with_google?token=${credentialResponse.credential}`
             );
             console.log(response);
             setCookie("token", response.data);
             console.log(response.data);
-            toast.success("logged in successfully");
-            // router.push("/Pages/Payment");
+            toast.success("Logged in successfully");
             onSuccess(credentialResponse);
         } catch (error) {
             console.error("Error during Google login:", error);

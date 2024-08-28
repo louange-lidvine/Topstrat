@@ -300,6 +300,7 @@ import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import PestleSkeleton from "../../skeletons/PestleSkeleton";
+import { baseURL } from "@/app/constants";
 
 function Preview() {
     const router = useRouter();
@@ -317,17 +318,14 @@ function Preview() {
             try {
                 const token = getCookie("token");
                 setProjectLoading(true);
-                const response = await axios.get(
-                    `http://157.245.121.185:5000/projects/${id}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
-                            }`,
-                        },
-                    }
-                );
+                const response = await axios.get(`${baseURL}/projects/${id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                });
                 setProjectData(response.data);
             } catch (error) {
                 console.error("Error fetching project data:", error);

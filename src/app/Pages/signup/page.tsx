@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import SbLoad from "@/app/shared/loader/sbload";
 import notifications from "@mantine/notifications";
+import { baseURL, ApiURL } from "../../constants/index"; 
 
 function Page() {
     const router = useRouter();
@@ -43,7 +44,7 @@ function Page() {
         setLoading(true);
         try {
             const response = await axios.post(
-                "http://157.245.121.185:5000/auth/signup",
+                `${baseURL}/auth/signup`,
                 formData,
                 {
                     headers: {

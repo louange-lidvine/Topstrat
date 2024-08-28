@@ -7,6 +7,7 @@ import { getCookie } from "cookies-next";
 import ReactModal from "react-modal";
 import SbLoad from "@/app/shared/loader/sbload";
 import Loader from "@/app/shared/loader/page";
+import { baseURL } from "@/app/constants";
 
 function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => void ,closeSidebar: () => void}) {
     const router = useRouter();
@@ -51,7 +52,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
             const token = getCookie("token");
 
             const response = await axios.post(
-                "http://157.245.121.185:5000/projects/create",
+                "${baseURL}/projects/create",
                 { ...formData, autoGenerate: formData.method === "quick" },
                 {
                     headers: {
