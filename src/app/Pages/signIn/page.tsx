@@ -55,7 +55,7 @@ function Page() {
                 const decoded = jwtDecode(token) as { role: string };
                 console.log(decoded);
                 if (decoded.role == "admin") {
-                    router.push("/components/LandiangPage");
+                    router.push("/components/Landingpage");
                     // toast.success("Admin Logged in successfully");
                 } else if (decoded.role == "user") {
                     router.push("/components/Landingpage");

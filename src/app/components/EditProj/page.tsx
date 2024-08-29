@@ -51,7 +51,7 @@ export default function ({
         try {
             const token = getCookie("token");
             const response = await axios.get(
-                `/projects/prompts/latest/${projectId}`,
+                `${baseURL}/projects/prompts/latest/${projectId}`,
                 {
                     headers: {
                         "Content-Type": "application/json",

@@ -342,7 +342,7 @@ function Preview() {
             setPestleLoading(true);
             try {
                 const response = await axios.post(
-                    `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                    `${baseURL}/projects/projects/generate-analysis/${id}`,
                     { projectId: id },
                     {
                         headers: {
@@ -372,7 +372,7 @@ function Preview() {
         setPestleLoading(true);
         try {
             const response = await axios.post(
-                `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                `${baseURL}/projects/projects/generate-analysis/${id}`,
                 { projectId: id },
                 {
                     headers: {
@@ -429,7 +429,7 @@ function Preview() {
 
         try {
             await axios.put(
-                `http://157.245.121.185:5000/projects/${id}/prompts/${promptId}`,
+                `${baseURL}/projects/${id}/prompts/${promptId}`,
                 { response }, // Use the mapped response object
                 {
                     headers: {

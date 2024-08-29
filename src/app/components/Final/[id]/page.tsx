@@ -46,7 +46,7 @@ function Final() {
 
             // Fetch project data
             const projectResponse = await axios.get(
-                `projects/${id}`,
+                `${baseURL}/projects/${id}`,
                 {
                     headers: {
                         "Content-Type": "application/json",

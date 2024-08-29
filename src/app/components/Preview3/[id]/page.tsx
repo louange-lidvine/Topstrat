@@ -43,7 +43,7 @@ function Preview() {
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                    `${baseURL}/projects/projects/generate-analysis/${id}`,
                     {
                         projectId: id,
                     },
@@ -72,7 +72,7 @@ function Preview() {
         setLoading(true);
         try {
             const response = await axios.post(
-                `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                `${baseURL}/projects/projects/generate-analysis/${id}`,
                 {
                     projectId: id,
                 },

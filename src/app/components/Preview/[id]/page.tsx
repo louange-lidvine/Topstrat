@@ -48,7 +48,7 @@ function Preview() {
                 const token = getCookie("token");
                 setIsLoading(true);
                 const response = await axios.get(
-                    `http://157.245.121.185:5000/projects/prompts/latest/${id}`,
+                    `${baseURL}/projects/prompts/latest/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -79,7 +79,7 @@ function Preview() {
             const token = getCookie("token");
             setIsLoading(true);
             const response = await axios.get(
-                `http://157.245.121.185:5000/projects/prompts/latest/${id}`,
+                `${baseURL}/projects/prompts/latest/${id}`,
                 {
                     headers: {
                         "Content-Type": "application/json",

@@ -566,183 +566,459 @@ interface MyDocumentProps {
   logframeData: LogframeData | null;
   isLoading: boolean;
 }
+const MyDocument: React.FC<MyDocumentProps> = ({
+    projectData,
+    promptData,
+    pestleData,
+    logframeData,
+    isLoading,
+}) => {
+    const renderList = (data: any) => {
+        return data
+            ?.split(/\d+\.\s*/)
+            .filter((item: any) => item.trim() !== "")
+            .map((item: any, index: any) => (
+                <Text key={index}>
+                    {index + 1}. {item.trim()}
+                </Text>
+            ));
+    };
 
-const MyDocument: React.FC<MyDocumentProps> = ({ projectData, promptData, pestleData, logframeData, isLoading }) => {
-  const renderList = (data:any) => {
-    return data
-        .split(/\d+\.\s*/)
-        .filter((item:any) => item.trim() !== "")
-        .map((item:any, index:any) => (
-            <Text key={index}>
-                {index + 1}. {item.trim()}
-            </Text>
-        ));
-};
+    return (
+        <Document>
+            <Page size="A4" style={styles.page}>
+                <View style={styles.section}>
+                    {/* Project Name */}
+                    <Text style={styles.header}>
+                        {projectData?.name || <Skeleton width={100} />}
+                    </Text>
+                    <Text style={styles.subHeader}>Preview</Text>
+                    <Text style={styles.subHeader}>
+                        Strategic Plan{" "}
+                        {projectData?.name || <Skeleton width={100} />}
+                    </Text>
 
-  return (
-      <Document>
-        <Page size="A4" style={styles.page}>
-          <View style={styles.section}>
-            <Text style={styles.header}>
-              {projectData ? projectData.name : <Skeleton width={100} />}
-            </Text>
-            <Text style={styles.subHeader}>Preview</Text>
-            <Text style={styles.subHeader}>
-              Strategic Plan {projectData ? projectData.name : <Skeleton width={100} />}
-            </Text>
-            <View>
-              <Text style={styles.subHeader}>Project Overview</Text>
-              <Text style={styles.text}>
-                {projectData ? projectData.description : <Skeleton count={3} />}
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.subHeader}>Vision</Text>
-              <Text style={styles.text}>
-                {promptData ? promptData.vision.response : <Skeleton count={2} />}
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.subHeader}>Mission</Text>
-              <Text style={styles.text}>
-                {promptData ? promptData.mission.response : <Skeleton count={2} />}
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.subHeader}>Objectives</Text>
-              <Text style={styles.text}>
-                {promptData ? renderList(promptData.objectives.response) : <Skeleton count={2} />}
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.subHeader}>Values</Text>
-              <Text style={styles.text}>
-                {promptData ? renderList(promptData.values.response) : <Skeleton count={2} />}
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.subHeader}>Strategy</Text>
-              <Text style={styles.text}>
-                {promptData ? renderList(promptData.strategy.response) : <Skeleton count={2} />}
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.subHeader}>SWOT Analysis</Text>
-              <View style={styles.swotTable}>
-                <View style={[styles.swotTableRow, styles.tableHeader]}>
-                  <Text style={[styles.swotTableCol, styles.tableHeaderCell]}>
-                    Strengths (S)
-                  </Text>
-                  <Text style={[styles.swotTableCol, styles.tableHeaderCell]}>
-                    Weaknesses (W)
-                  </Text>
+                    {/* Project Overview */}
+                    <View>
+                        <Text style={styles.subHeader}>Project Overview</Text>
+                        <Text style={styles.text}>
+                            {projectData?.description || <Skeleton count={3} />}
+                        </Text>
+                    </View>
+
+                    {/* Vision */}
+                    <View>
+                        <Text style={styles.subHeader}>Vision</Text>
+                        <Text style={styles.text}>
+                            {promptData?.vision?.response || (
+                                <Skeleton count={2} />
+                            )}
+                        </Text>
+                    </View>
+
+                    {/* Mission */}
+                    <View>
+                        <Text style={styles.subHeader}>Mission</Text>
+                        <Text style={styles.text}>
+                            {promptData?.mission?.response || (
+                                <Skeleton count={2} />
+                            )}
+                        </Text>
+                    </View>
+
+                    {/* Objectives */}
+                    <View>
+                        <Text style={styles.subHeader}>Objectives</Text>
+                        <Text style={styles.text}>
+                            {promptData?.objectives?.response ? (
+                                renderList(promptData.objectives.response)
+                            ) : (
+                                <Skeleton count={2} />
+                            )}
+                        </Text>
+                    </View>
+
+                    {/* Values */}
+                    <View>
+                        <Text style={styles.subHeader}>Values</Text>
+                        <Text style={styles.text}>
+                            {promptData?.values?.response ? (
+                                renderList(promptData.values.response)
+                            ) : (
+                                <Skeleton count={2} />
+                            )}
+                        </Text>
+                    </View>
+
+                    {/* Strategy */}
+                    <View>
+                        <Text style={styles.subHeader}>Strategy</Text>
+                        <Text style={styles.text}>
+                            {promptData?.strategy?.response ? (
+                                renderList(promptData.strategy.response)
+                            ) : (
+                                <Skeleton count={2} />
+                            )}
+                        </Text>
+                    </View>
+
+                    {/* SWOT Analysis */}
+                    <View>
+                        <Text style={styles.subHeader}>SWOT Analysis</Text>
+                        <View style={styles.swotTable}>
+                            <View
+                                style={[
+                                    styles.swotTableRow,
+                                    styles.tableHeader,
+                                ]}
+                            >
+                                <Text
+                                    style={[
+                                        styles.swotTableCol,
+                                        styles.tableHeaderCell,
+                                    ]}
+                                >
+                                    Strengths (S)
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.swotTableCol,
+                                        styles.tableHeaderCell,
+                                    ]}
+                                >
+                                    Weaknesses (W)
+                                </Text>
+                            </View>
+                            {promptData?.swot?.response &&
+                                JSON.parse(
+                                    promptData.swot.response
+                                ).strengths.map((strength: any, index: any) => (
+                                    <View
+                                        style={styles.swotTableRow}
+                                        key={index}
+                                    >
+                                        <Text style={styles.swotTableCol}>
+                                            {strength}
+                                        </Text>
+                                        <Text style={styles.swotTableCol}>
+                                            {
+                                                JSON.parse(
+                                                    promptData.swot.response
+                                                ).weaknesses[index]
+                                            }
+                                        </Text>
+                                    </View>
+                                ))}
+                        </View>
+                    </View>
+
+                    {/* PESTLE Analysis */}
+                    <View>
+                        <Text style={styles.subHeader}>PESTLE Analysis</Text>
+                        <View style={styles.table}>
+                            <View style={[styles.tableRow, styles.tableHeader]}>
+                                <Text
+                                    style={[
+                                        styles.tableCol,
+                                        styles.tableHeaderCell,
+                                    ]}
+                                >
+                                    Category
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.tableCol,
+                                        styles.tableHeaderCell,
+                                    ]}
+                                >
+                                    Influence on Organization
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.tableCol,
+                                        styles.tableHeaderCell,
+                                    ]}
+                                >
+                                    Impact on Organization
+                                </Text>
+                            </View>
+                            {pestleData && (
+                                <>
+                                    <View style={styles.tableRow}>
+                                        <Text
+                                            style={[
+                                                styles.tableCol,
+                                                styles.tableHeaderCell,
+                                            ]}
+                                        >
+                                            Political
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.political?.inf}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.political?.imp}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text
+                                            style={[
+                                                styles.tableCol,
+                                                styles.tableHeaderCell,
+                                            ]}
+                                        >
+                                            Economic
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.economic?.inf}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.economic?.imp}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text
+                                            style={[
+                                                styles.tableCol,
+                                                styles.tableHeaderCell,
+                                            ]}
+                                        >
+                                            Social
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.social?.inf}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.social?.imp}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text
+                                            style={[
+                                                styles.tableCol,
+                                                styles.tableHeaderCell,
+                                            ]}
+                                        >
+                                            Technological
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.technological?.inf}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.technological?.imp}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text
+                                            style={[
+                                                styles.tableCol,
+                                                styles.tableHeaderCell,
+                                            ]}
+                                        >
+                                            Legal
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.legal?.inf}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.legal?.imp}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text
+                                            style={[
+                                                styles.tableCol,
+                                                styles.tableHeaderCell,
+                                            ]}
+                                        >
+                                            Environmental
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.environmental?.inf}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {pestleData.environmental?.imp}
+                                        </Text>
+                                    </View>
+                                </>
+                            )}
+                        </View>
+                    </View>
+
+                    {/* Logframe */}
+                    <View>
+                        <Text style={styles.subHeader}>Logframe</Text>
+                        <View style={styles.table}>
+                            <View style={[styles.tableRow, styles.tableHeader]}>
+                                <Text
+                                    style={[
+                                        styles.tableCol,
+                                        styles.tableHeaderCell,
+                                    ]}
+                                >
+                                    Results Chain
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.tableCol,
+                                        styles.tableHeaderCell,
+                                    ]}
+                                >
+                                    Project Summary
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.tableCol,
+                                        styles.tableHeaderCell,
+                                    ]}
+                                >
+                                    Indicators
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.tableCol,
+                                        styles.tableHeaderCell,
+                                    ]}
+                                >
+                                    Means of Verification
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.tableCol,
+                                        styles.tableHeaderCell,
+                                    ]}
+                                >
+                                    Assumptions
+                                </Text>
+                            </View>
+                            {logframeData && (
+                                <>
+                                    <View style={styles.tableRow}>
+                                        <Text
+                                            style={[
+                                                styles.tableCol,
+                                                styles.tableHeaderCell,
+                                            ]}
+                                        >
+                                            Goal
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {logframeData.goal?.description}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {logframeData.goal?.indicators?.join(
+                                                ", "
+                                            )}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {logframeData.goal?.mov?.join(", ")}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {logframeData.goal?.assump?.join(
+                                                ", "
+                                            )}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text
+                                            style={[
+                                                styles.tableCol,
+                                                styles.tableHeaderCell,
+                                            ]}
+                                        >
+                                            Outcome
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {logframeData.outcome?.description}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {logframeData.outcome?.indicators?.join(
+                                                ", "
+                                            )}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {logframeData.outcome?.mov?.join(
+                                                ", "
+                                            )}
+                                        </Text>
+                                        <Text style={styles.tableCol}>
+                                            {logframeData.outcome?.assump?.join(
+                                                ", "
+                                            )}
+                                        </Text>
+                                    </View>
+                                    {logframeData.outputs?.map(
+                                        (output, index) => (
+                                            <View
+                                                style={styles.tableRow}
+                                                key={index}
+                                            >
+                                                <Text
+                                                    style={[
+                                                        styles.tableCol,
+                                                        styles.tableHeaderCell,
+                                                    ]}
+                                                >
+                                                    Output {index + 1}
+                                                </Text>
+                                                <Text style={styles.tableCol}>
+                                                    {output.description}
+                                                </Text>
+                                                <Text style={styles.tableCol}>
+                                                    {output.indicators?.join(
+                                                        ", "
+                                                    )}
+                                                </Text>
+                                                <Text style={styles.tableCol}>
+                                                    {output.mov?.join(", ")}
+                                                </Text>
+                                                <Text style={styles.tableCol}>
+                                                    {output.assump?.join(", ")}
+                                                </Text>
+                                            </View>
+                                        )
+                                    )}
+                                    {logframeData.activities?.map(
+                                        (activity, index) => (
+                                            <View
+                                                style={styles.tableRow}
+                                                key={index}
+                                            >
+                                                <Text
+                                                    style={[
+                                                        styles.tableCol,
+                                                        styles.tableHeaderCell,
+                                                    ]}
+                                                >
+                                                    Activity {index + 1}
+                                                </Text>
+                                                <Text style={styles.tableCol}>
+                                                    {activity.description}
+                                                </Text>
+                                                <Text style={styles.tableCol}>
+                                                    {activity.indicators?.join(
+                                                        ", "
+                                                    )}
+                                                </Text>
+                                                <Text style={styles.tableCol}>
+                                                    {activity.mov?.join(", ")}
+                                                </Text>
+                                                <Text style={styles.tableCol}>
+                                                    {activity.assump?.join(
+                                                        ", "
+                                                    )}
+                                                </Text>
+                                            </View>
+                                        )
+                                    )}
+                                </>
+                            )}
+                        </View>
+                    </View>
                 </View>
-                {promptData && promptData.swot && promptData.swot.response && (
-                  JSON.parse(promptData.swot.response).strengths.map((strength:any, index:any) => (
-                    <View style={styles.swotTableRow} key={index}>
-                      <Text style={styles.swotTableCol}>{strength}</Text>
-                      <Text style={styles.swotTableCol}>{JSON.parse(promptData.swot.response).weaknesses[index]}</Text>
-                    </View>
-                  ))
-                )}
-              </View>
-            </View>
-            <View>
-              <Text style={styles.subHeader}>PESTLE Analysis</Text>
-              <View style={styles.table}>
-                <View style={[styles.tableRow, styles.tableHeader]}>
-                  <Text style={[styles.tableCol, styles.tableHeaderCell]}>Category</Text>
-                  <Text style={[styles.tableCol, styles.tableHeaderCell]}>Influence on Organization</Text>
-                  <Text style={[styles.tableCol, styles.tableHeaderCell]}>Impact on Organization</Text>
-                </View>
-                {pestleData && (
-                  <>
-                    <View style={styles.tableRow}>
-                      <Text style={[styles.tableCol, styles.tableHeaderCell]}>Political</Text>
-                      <Text style={styles.tableCol}>{pestleData.political.inf}</Text>
-                      <Text style={styles.tableCol}>{pestleData.political.imp}</Text>
-                    </View>
-                    <View style={styles.tableRow}>
-                      <Text style={[styles.tableCol, styles.tableHeaderCell]}>Economic</Text>
-                      <Text style={styles.tableCol}>{pestleData.economic.inf}</Text>
-                      <Text style={styles.tableCol}>{pestleData.economic.imp}</Text>
-                    </View>
-                    <View style={styles.tableRow}>
-                      <Text style={[styles.tableCol, styles.tableHeaderCell]}>Social</Text>
-                      <Text style={styles.tableCol}>{pestleData.social.inf}</Text>
-                      <Text style={styles.tableCol}>{pestleData.social.imp}</Text>
-                    </View>
-                    <View style={styles.tableRow}>
-                      <Text style={[styles.tableCol, styles.tableHeaderCell]}>Technological</Text>
-                      <Text style={styles.tableCol}>{pestleData.technological.inf}</Text>
-                      <Text style={styles.tableCol}>{pestleData.technological.imp}</Text>
-                    </View>
-                    <View style={styles.tableRow}>
-                      <Text style={[styles.tableCol, styles.tableHeaderCell]}>Legal</Text>
-                      <Text style={styles.tableCol}>{pestleData.legal.inf}</Text>
-                      <Text style={styles.tableCol}>{pestleData.legal.imp}</Text>
-                    </View>
-                    <View style={styles.tableRow}>
-                      <Text style={[styles.tableCol, styles.tableHeaderCell]}>Environmental</Text>
-                      <Text style={styles.tableCol}>{pestleData.environmental.inf}</Text>
-                      <Text style={styles.tableCol}>{pestleData.environmental.imp}</Text>
-                    </View>
-                  </>
-                )}
-              </View>
-            </View>
-            <View>
-              <Text style={styles.subHeader}>Logframe</Text>
-              <View style={styles.table}>
-                <View style={[styles.tableRow, styles.tableHeader]}>
-                  <Text style={[styles.tableCol, styles.tableHeaderCell]}>Results Chain</Text>
-                  <Text style={[styles.tableCol, styles.tableHeaderCell]}>Project Summary</Text>
-                  <Text style={[styles.tableCol, styles.tableHeaderCell]}>Indicators</Text>
-                  <Text style={[styles.tableCol, styles.tableHeaderCell]}>Means of Verification</Text>
-                  <Text style={[styles.tableCol, styles.tableHeaderCell]}>Assumptions</Text>
-                </View>
-                {logframeData && (
-                  <>
-                    <View style={styles.tableRow}>
-                      <Text style={[styles.tableCol, styles.tableHeaderCell]}>Goal</Text>
-                      <Text style={styles.tableCol}>{logframeData.goal.description}</Text>
-                      <Text style={styles.tableCol}>{logframeData.goal.indicators.join(", ")}</Text>
-                      <Text style={styles.tableCol}>{logframeData.goal.mov.join(", ")}</Text>
-                      <Text style={styles.tableCol}>{logframeData.goal.assump.join(", ")}</Text>
-                    </View>
-                    <View style={styles.tableRow}>
-                      <Text style={[styles.tableCol, styles.tableHeaderCell]}>Outcome</Text>
-                      <Text style={styles.tableCol}>{logframeData.outcome.description}</Text>
-                      <Text style={styles.tableCol}>{logframeData.outcome.indicators.join(", ")}</Text>
-                      <Text style={styles.tableCol}>{logframeData.outcome.mov.join(", ")}</Text>
-                      <Text style={styles.tableCol}>{logframeData.outcome.assump.join(", ")}</Text>
-                    </View>
-                    {logframeData.outputs.map((output, index) => (
-                      <View style={styles.tableRow} key={index}>
-                        <Text style={[styles.tableCol, styles.tableHeaderCell]}>Output {index + 1}</Text>
-                        <Text style={styles.tableCol}>{output.description}</Text>
-                        <Text style={styles.tableCol}>{output.indicators.join(", ")}</Text>
-                        <Text style={styles.tableCol}>{output.mov.join(", ")}</Text>
-                        <Text style={styles.tableCol}>{output.assump.join(", ")}</Text>
-                      </View>
-                    ))}
-                    {logframeData.activities.map((activity, index) => (
-                      <View style={styles.tableRow} key={index}>
-                        <Text style={[styles.tableCol, styles.tableHeaderCell]}>Activity {index + 1}</Text>
-                        <Text style={styles.tableCol}>{activity.description}</Text>
-                        <Text style={styles.tableCol}>{activity.indicators.join(", ")}</Text>
-                        <Text style={styles.tableCol}>{activity.mov.join(", ")}</Text>
-                        <Text style={styles.tableCol}>{activity.assump.join(", ")}</Text>
-                      </View>
-                    ))}
-                  </>
-                )}
-              </View>
-            </View>
-          </View>
-        </Page>
-      </Document>
-  );
+            </Page>
+        </Document>
+    );
 };
 
 export default MyDocument;

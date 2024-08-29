@@ -52,7 +52,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
             const token = getCookie("token");
 
             const response = await axios.post(
-                "${baseURL}/projects/create",
+                `${baseURL}/projects/create`,
                 { ...formData, autoGenerate: formData.method === "quick" },
                 {
                     headers: {

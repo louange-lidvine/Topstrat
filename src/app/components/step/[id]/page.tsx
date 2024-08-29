@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { FaArrowRight } from "react-icons/fa";
 import ReactModal from "react-modal";
-import Step from "../card";
+import Step from "../../skeletons/card";
 import PromptGet from "../PromptGet";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -196,7 +196,7 @@ const page: React.FC = () => {
             try {
                 const token = getCookie("token");
                 const response = await axios.get(
-                    `baseURL/projects/prompts/latest/${id}`,
+                    `${baseURL}/projects/prompts/latest/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
