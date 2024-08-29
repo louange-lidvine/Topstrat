@@ -46,7 +46,7 @@ function Final() {
 
             // Fetch project data
             const projectResponse = await axios.get(
-                `projects/${id}`,
+                `${baseURL}/projects/${id}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ function Final() {
 
             // Fetch pestle and logframe data
             const dataResponse = await axios.post(
-                `projects/projects/generate-analysis/${id}`,
+                `${baseURL}/projects/projects/generate-analysis/${id}`,
                 { projectId: id },
                 {
                     headers: {
@@ -73,7 +73,8 @@ function Final() {
                 }
             );
             setPestleData(JSON.parse(dataResponse.data.pestle.response));
-            setLogframeData(JSON.parse(dataResponse.data.logframe.response));
+           const data = JSON.parse(dataResponse.data.logframe.response);
+           setLogframeData(data.results_chain); 
 
 
             setIsLoading(false);
@@ -700,134 +701,57 @@ function Final() {
                     <LogFrameSkeleton />
                   </div>
                 ) : (
-                  <div className="w-full">
-                    <p className="mt-5">      
-                           <Text
-                style={{
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                  color: "#0B6C79",
-                }}
-              >
-                Logframe
-              </Text></p>
-             
-                  <div className="flex flex-col gap-3">
-                    <table className="border border-1 mx-auto my-6">
-                      <thead>
-                        <tr className="bg-slate-300">
-                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                            Results Chain
-                          </th>
-                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                            Project Summary
-                          </th>
-                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                            Indicators
-                          </th>
-                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                            Means of Verification
-                          </th>
-                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                            Assumptions/Risks
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {logframeData && (
-                          <>
-                            <tr>
-                              <td className="border border-1 p-2 text-center font-bold bg-slate-300">
-                                Goal
-                              </td>
-                              <td className="border border-1 p-2">
-                                {logframeData.goal.description}
-                              </td>
-                              <td className="border border-1 p-2">
-                                {logframeData.goal.indicators.join(", ")}
-                              </td>
-                              <td className="border border-1 p-2">
-                                {logframeData.goal.mov.join(", ")}
-                              </td>
-                              <td className="border border-1 p-2">
-                                {logframeData.goal.assump.join(", ")}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="border border-1 p-2 text-center font-bold bg-slate-300">
-                                Outcome
-                              </td>
-                              <td className="border border-1 p-2">
-                                {logframeData.outcome.description}
-                              </td>
-                              <td className="border border-1 p-2">
-                                {logframeData.outcome.indicators.join(", ")}
-                              </td>
-                              <td className="border border-1 p-2">
-                                {logframeData.outcome.mov.join(", ")}
-                              </td>
-                              <td className="border border-1 p-2">
-                                {logframeData.outcome.assump.join(", ")}
-                              </td>
-                            </tr>
-                            {logframeData.outputs.map(
-                              (output: any, index: any) => (
-                                <tr
-                                  key={index}
-                                  className={
-                                    index % 2 === 0 ? "bg-slate-100" : ""
-                                  }
-                                >
-                                  <td className="border border-1 p-2 text-center font-bold">
-                                    Output {index + 1}
-                                  </td>
-                                  <td className="border border-1 p-2">
-                                    {output.description}
-                                  </td>
-                                  <td className="border border-1 p-2">
-                                    {output.indicators.join(", ")}
-                                  </td>
-                                  <td className="border border-1 p-2">
-                                    {output.mov.join(", ")}
-                                  </td>
-                                  <td className="border border-1 p-2">
-                                    {output.assump.join(", ")}
-                                  </td>
-                                </tr>
-                              )
-                            )}
-                            {logframeData.activities.map(
-                              (activity: any, index: any) => (
-                                <tr
-                                  key={index}
-                                  className={
-                                    index % 2 === 0 ? "bg-slate-100" : ""
-                                  }
-                                >
-                                  <td className="border border-1 p-2 text-center font-bold">
-                                    Activity {index + 1}
-                                  </td>
-                                  <td className="border border-1 p-2">
-                                    {activity.description}
-                                  </td>
-                                  <td className="border border-1 p-2">
-                                    {activity.indicators.join(", ")}
-                                  </td>
-                                  <td className="border border-1 p-2">
-                                    {activity.mov.join(", ")}
-                                  </td>
-                                  <td className="border border-1 p-2">
-                                    {activity.assump.join(", ")}
-                                  </td>
-                                </tr>
-                              )
-                            )}
-                          </>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                 <div className="w-full">
+          <div className="flex flex-col gap-3">
+            <div className="text-blue-default font-bold text-2xl py-5">
+              Logframe
+            </div>
+            <div className="overflow-x-auto">
+              <table className="border border-1 m-auto">
+                <thead>
+                  <tr className="bg-slate-300">
+                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                      Results Chain
+                    </th>
+                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                      Indicator
+                    </th>
+                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                      Baseline
+                    </th>
+                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                      Target
+                    </th>
+                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                      Timeline
+                    </th>
+                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                      Assumptions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {logframeData &&
+                    logframeData.map((item: any, index: number) => (
+                      <tr
+                        key={index}
+                        className={index % 2 === 0 ? "bg-slate-100" : ""}
+                      >
+                        <td className="border border-1 p-2 text-center font-bold">
+                          {item.category}
+                        </td>
+                        <td className="border border-1 p-2">{item.indicator}</td>
+                        <td className="border border-1 p-2">{item.baseline}</td>
+                        <td className="border border-1 p-2">{item.target}</td>
+                        <td className="border border-1 p-2">{item.timeline}</td>
+                        <td className="border border-1 p-2">{item.assumptions}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
                 )}
           </div>
           <div className="flex justify-center gap-8 my-5">

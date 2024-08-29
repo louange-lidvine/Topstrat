@@ -44,7 +44,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `${baseURL}/${projectId}/${title.toLowerCase()}`,
+                      `${baseURL}/projects/${projectId}/${title.toLowerCase()}`,
                     {
                         query: query,
                         projectId: projectId,
@@ -73,8 +73,8 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                    } 
                    else if (title.toLowerCase() === "logframe") {
                     setIsLogframe(true);
-                    const responseData = JSON.parse(response.data.response);
-                    setLogframeData(responseData);   
+                   const data = JSON.parse(response.data.logframe.response);
+                   setLogframeData(data.results_chain); 
                 } else {
                     setPrompt(response.data.response);
                 }
@@ -99,7 +99,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `projects/${projectId}/${title.toLowerCase()}`,
+                    `${baseURL}/projects/${projectId}/${title.toLowerCase()}`,
                     {
                         query: query,
                         projectId: projectId,

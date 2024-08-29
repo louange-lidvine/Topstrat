@@ -57,7 +57,7 @@ function Preview() {
                 setPestleData(data);
                 setEditablePestleData(data);
                 setPromptId(response.data.pestle._id);
-                console.log("updted")// Extracting and setting the prompt ID
+                console.log("updated")
             } catch (error) {
                 console.log(error);
             } finally {
@@ -73,7 +73,7 @@ function Preview() {
         setLoading(true);
         try {
             const response = await axios.post(
-                `http://157.245.121.185:5000/projects/projects/generate-analysis/${id}`,
+                `${baseURL}/projects/projects/generate-analysis/${id}`,
                 { projectId: id },
                 {
                     headers: {
@@ -87,7 +87,7 @@ function Preview() {
             const data = JSON.parse(response.data.pestle.response);
             setPestleData(data);
             setEditablePestleData(data);
-            setPromptId(response.data.pestle._id); // Extracting and setting the prompt ID
+            setPromptId(response.data.pestle._id); 
         } catch (error) {
             console.log(error);
         } finally {
@@ -128,7 +128,7 @@ function Preview() {
 
         try {
             await axios.put(
-                `http://157.245.121.185:5000/projects/${id}/prompts/${promptId}`,
+                `${baseURL}/projects/${id}/prompts/${promptId}`,
                 { response }, // Use the mapped response object
                 {
                     headers: {
