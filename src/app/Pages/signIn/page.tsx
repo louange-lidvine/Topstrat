@@ -15,7 +15,7 @@ import SbLoad from "@/app/shared/loader/sbload";
 import { jwtDecode } from "jwt-decode";
 import GoogleSignInButton from "@/app/constants/(auth)/googleSignInButton";
 import { redirect } from "next/navigation";
-
+import { baseURL, ApiURL } from "../../constants/index"; 
 function Page() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
@@ -37,7 +37,7 @@ function Page() {
         e.preventDefault();
         setLoading(true);
         axios
-            .post("http://157.245.121.185:5000/auth/signin", formData)
+            .post(`${baseURL}/auth/signin`, formData)
             .then((res) => {
                 setLoading(false);
                 console.log(res.data);
@@ -55,7 +55,7 @@ function Page() {
                 const decoded = jwtDecode(token) as { role: string };
                 console.log(decoded);
                 if (decoded.role == "admin") {
-                    router.push("/components/Dashboard");
+                    router.push("/components/LandiangPage");
                     // toast.success("Admin Logged in successfully");
                 } else if (decoded.role == "user") {
                     router.push("/components/Landingpage");

@@ -11,6 +11,7 @@ import { useParams, useRouter } from "next/navigation";
 import Profile from "../profile/page";
 import EditProj from "../EditProj/page";
 import SbLoad from "../../shared/loader/sbload";
+import { baseURL } from "@/app/constants";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -57,17 +58,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         try {
             const token = getCookie("token");
             const id = localStorage.getItem("userId");
-            const response = await axios.get(
-                `http://157.245.121.185:5000/projects/user/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
-                        }`,
-                    },
-                }
-            );
+            const response = await axios.get(`${baseURL}/projects/user/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${
+                        JSON.parse(token ?? "").access_token
+                    }`,
+                },
+            });
             // Limiting to a maximum of 3 projects
             const limitedProjects = response.data.slice(0, 3);
             // Set the projects state with the fetched data

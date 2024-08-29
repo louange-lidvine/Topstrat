@@ -7,6 +7,7 @@ import Loader from "../../../shared/loader/page";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import SwotSkeleton from "../../skeletons/SwotSkeleton";
+import { baseURL } from "@/app/constants";
 
 function Preview() {
     const { id } = useParams();
@@ -24,17 +25,14 @@ function Preview() {
         const getProject = async (id: string) => {
             try {
                 const token = getCookie("token");
-                const response = await axios.get(
-                    `http://157.245.121.185:5000/projects/${id}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
-                            }`,
-                        },
-                    }
-                );
+                const response = await axios.get(`${baseURL}/projects/${id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${
+                            JSON.parse(token ?? "").access_token
+                        }`,
+                    },
+                });
                 setProjectData(response.data);
             } catch (error) {
                 console.error("Error fetching project data:", error);

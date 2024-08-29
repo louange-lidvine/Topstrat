@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { setCookie } from "cookies-next";
 import axios from "axios";
-
+import { baseURL } from "../index";
 interface GoogleButtonProps {
     onSuccess: (credentialResponse: any) => void;
     onError: () => void;
@@ -23,7 +23,7 @@ const GoogleSignUpButton: React.FC<GoogleButtonProps> = ({
         try {
             // Call your API endpoint with the token as a query parameter
             const response = await axios.get(
-                `http://157.245.121.185:5000/auth/register_with_google?token=${credentialResponse.credential}`
+                `${baseURL}/auth/register_with_google?token=${credentialResponse.credential}`
             );
 
             // Store the access token in a cookie or local storage

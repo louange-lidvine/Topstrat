@@ -11,6 +11,7 @@ import { FaForward } from "react-icons/fa";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 import { redirect } from "next/navigation";
+import { baseURL }from "@/app/constants";
 
 
 const Component1: React.FC = () => (
@@ -195,7 +196,7 @@ const page: React.FC = () => {
             try {
                 const token = getCookie("token");
                 const response = await axios.get(
-                   `http://157.245.121.185:5000/projects/prompts/latest/${id}`,
+                    `baseURL/projects/prompts/latest/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -223,17 +224,14 @@ const page: React.FC = () => {
              try {
                  const token = getCookie("token");
                  setIsLoading(true);
-                 const response = await axios.get(
-                     `https://157.245.121.185:5000/projects/${id}`,
-                     {
-                         headers: {
-                             "Content-Type": "application/json",
-                             Authorization: `Bearer ${
-                                 JSON.parse(token ?? "").access_token
-                             }`,
-                         },
-                     }
-                 );
+                 const response = await axios.get(`${baseURL}/projects/${id}`, {
+                     headers: {
+                         "Content-Type": "application/json",
+                         Authorization: `Bearer ${
+                             JSON.parse(token ?? "").access_token
+                         }`,
+                     },
+                 });
 
                  setIsLoading(false);
 
