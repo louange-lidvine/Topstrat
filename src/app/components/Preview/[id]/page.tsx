@@ -29,7 +29,7 @@ function Preview() {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                           token
                         }`,
                     },
                 });
@@ -53,7 +53,7 @@ function Preview() {
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
+                               token
                             }`,
                         },
                     }
@@ -84,7 +84,7 @@ function Preview() {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                           token
                         }`,
                     },
                 }

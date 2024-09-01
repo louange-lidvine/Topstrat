@@ -1,4 +1,3 @@
-// GoogleSignInButton component
 import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
@@ -6,6 +5,7 @@ import { toast } from "react-toastify";
 import { setCookie } from "cookies-next";
 import axios from "axios";
 import { baseURL } from "../index";
+
 interface GoogleButtonProps {
     onSuccess: (credentialResponse: any) => void;
     onError: () => void;
@@ -15,7 +15,7 @@ interface GoogleButtonProps {
 const GoogleSignUpButton: React.FC<GoogleButtonProps> = ({
     onSuccess,
     onError,
-    buttonText = "Sign In With Google",
+    buttonText = "Sign Up With Google",
 }) => {
     const router = useRouter();
 
@@ -25,14 +25,19 @@ const GoogleSignUpButton: React.FC<GoogleButtonProps> = ({
                 `${baseURL}/auth/register_with_google?token=${credentialResponse.credential}`
             );
 
-            setCookie("token", response.data);
+            setCookie("token", response.data.token);
             console.log(response.data);
             toast.success("Signed up successfully");
             router.push("/pages/Payment");
             onSuccess(credentialResponse);
-        } catch (error) {
-            console.error("Error during Google login:", error);
-            toast.error("Failed to signup!");
+        } catch (error: any) {
+            console.error("Error during Google signup:", error);
+            if (error.response && error.response.data && error.response.data.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("An unexpected error occurred during Google signup.");
+            }
+
             onError();
         }
     };
@@ -43,11 +48,12 @@ const GoogleSignUpButton: React.FC<GoogleButtonProps> = ({
                 onSuccess={handleSuccess}
                 onError={() => {
                     console.log("Google auth failed");
-                    toast.error("Failed to signed up!");
+                    toast.error("Failed to sign up with Google!");
                     onError();
                 }}
             />
         </GoogleOAuthProvider>
     );
 };
+
 export default GoogleSignUpButton;

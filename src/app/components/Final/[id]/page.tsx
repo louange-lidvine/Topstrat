@@ -29,14 +29,14 @@ function Final() {
             setIsLoading(true);
 
 
-            // Fetch prompt data
+        
             const promptResponse = await axios.get(
                 `${baseURL}/projects/prompts/latest/${id}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                           token
                         }`,
                     },
                 }
@@ -44,14 +44,14 @@ function Final() {
             setPromptData(promptResponse.data);
 
 
-            // Fetch project data
+
             const projectResponse = await axios.get(
                 `${baseURL}/projects/${id}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                           token
                         }`,
                     },
                 }
@@ -67,7 +67,7 @@ function Final() {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                          token
                         }`,
                     },
                 }

@@ -55,7 +55,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
+                                token
                             }`,
                         },
                     }
@@ -110,7 +110,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
+                                token
                             }`,
                         },
                     }

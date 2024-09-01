@@ -16,13 +16,12 @@ const Profile = () => {
         const response = await fetch(`${baseURL}/users/${userId}`, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+                Authorization: `Bearer ${token}`,
             },
         });
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
-          console.log(userData);
         } else {
           console.error("Failed to fetch user data");
         }
@@ -32,7 +31,7 @@ const Profile = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [userData]);
 
   useEffect(() => {
     const generateGravatar = () => {

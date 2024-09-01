@@ -23,7 +23,7 @@ function Preview() {
         const response = await axios.get(`${baseURL}/projects/${id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
         console.log(response.data);
@@ -49,7 +49,7 @@ function Preview() {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -78,7 +78,7 @@ function Preview() {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

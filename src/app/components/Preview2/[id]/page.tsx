@@ -28,7 +28,7 @@ function Preview() {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                          token
                         }`,
                     },
                 });
@@ -54,7 +54,7 @@ function Preview() {
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
+                              token
                             }`,
                         },
                     }
@@ -62,7 +62,7 @@ function Preview() {
                 const data = JSON.parse(response.data.pestle.response);
                 setPestleData(data);
                 setEditablePestleData(data);
-                setPromptId(response.data.pestle._id); // Extracting and setting the prompt ID
+                setPromptId(response.data.pestle._id); 
             } catch (error) {
                 console.log(error);
             } finally {
@@ -84,7 +84,7 @@ function Preview() {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                          token
                         }`,
                     },
                 }
@@ -141,7 +141,7 @@ function Preview() {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                          token
                         }`,
                     },
                 }

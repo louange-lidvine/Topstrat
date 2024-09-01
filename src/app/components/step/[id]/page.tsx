@@ -201,7 +201,7 @@ const page: React.FC = () => {
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
+                              token
                             }`,
                         },
                     }
@@ -227,7 +227,7 @@ const page: React.FC = () => {
                      headers: {
                          "Content-Type": "application/json",
                          Authorization: `Bearer ${
-                             JSON.parse(token ?? "").access_token
+                           token
                          }`,
                      },
                  });

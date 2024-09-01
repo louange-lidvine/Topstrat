@@ -61,9 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             const response = await axios.get(`${baseURL}/projects/user/${id}`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${
-                        JSON.parse(token ?? "").access_token
-                    }`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
             const limitedProjects = response.data.slice(0, 3);

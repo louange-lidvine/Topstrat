@@ -59,7 +59,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                          token
                         }`,
                     },
                 }
