@@ -66,7 +66,6 @@ export default function ({
             } else {
                 navigate.push(`/components/step/${projectId}`);
             }
-            // Do something with the response data from the second Axios call
             console.log(response.data);
         } catch (error) {
             console.error("Error fetching project data:", error);
