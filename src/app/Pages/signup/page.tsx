@@ -12,8 +12,7 @@ import Loader from "@/app/shared/loader/page";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import SbLoad from "@/app/shared/loader/sbload";
-import notifications from "@mantine/notifications";
-import { baseURL, ApiURL } from "../../constants/index"; 
+import { baseURL } from "../../constants/index"; 
 
 function Page() {
     const router = useRouter();
@@ -38,32 +37,48 @@ function Page() {
             [name]: value,
         }));
     };
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const response = await axios.post(
-                `${baseURL}/auth/signup`,
-                formData,
-                {
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-            console.log(response.data);
-            toast.success("Created account successfully");
-            router.push("/Pages/signIn");
-        } catch (error) {
-            console.error("Error:", error);
-            toast.error("Failed to create account, please try again");
-            router.push("/Pages/signup");
-        } finally {
-            setLoading(false);
+    try {
+        const response = await axios.post(
+            `${baseURL}/auth/signup`,
+            formData,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        console.log(response.data);
+        toast.success("Created account successfully");
+        router.push("/Pages/signIn");
+    } catch (error: any) {
+        console.error("Error:", error);
+
+   
+        if (error.response && error.response.data) {
+            const msg =
+                error.response.data.message || error.response.data.error;
+
+            if (msg) {
+                toast.error(msg); 
+            } else {
+                toast.error("Failed to create account, please try again.");
+            }
+        } else {
+            toast.error("Failed to create account, please try again.");
         }
-    };
+
+        router.push("/Pages/signup");
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     return (
         <div className="min-h-screen flex items-center px-16 lg:px-32">
@@ -168,7 +183,7 @@ function Page() {
                                     <SbLoad />
                                 </div>
                             ) : (
-                                "Login"
+                                "Sign Up"
                             )}
                         </button>
 

@@ -51,12 +51,12 @@ export default function ({
         try {
             const token = getCookie("token");
             const response = await axios.get(
-                `/projects/prompts/latest/${projectId}`,
+                `${baseURL}/projects/prompts/latest/${projectId}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                         token
                         }`,
                     },
                 }
@@ -66,7 +66,6 @@ export default function ({
             } else {
                 navigate.push(`/components/step/${projectId}`);
             }
-            // Do something with the response data from the second Axios call
             console.log(response.data);
         } catch (error) {
             console.error("Error fetching project data:", error);
@@ -80,7 +79,7 @@ export default function ({
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${
-                        JSON.parse(token ?? "").access_token
+                       token
                     }`,
                 },
             });

@@ -61,14 +61,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             const response = await axios.get(`${baseURL}/projects/user/${id}`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${
-                        JSON.parse(token ?? "").access_token
-                    }`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
-            // Limiting to a maximum of 3 projects
             const limitedProjects = response.data.slice(0, 3);
-            // Set the projects state with the fetched data
             setProjects(limitedProjects);
             setIsLoading(false);
         } catch (error) {
@@ -80,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     };
 
     useEffect(() => {
-        fetchProjects(); // Fetch projects when the component mounts
+        fetchProjects(); 
     }, []);
 
     return (
@@ -137,7 +133,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                         </div>
                     </div>
                     <div className="py-10 fixed bottom-0">
-                        <h2 className=" font-bold  hover:bg-white hover:bg-opacity-20  px-10   py-3 h-12 rounded-sm">
+                        <h2 className=" font-bold   hover:bg-white hover:bg-opacity-20  px-10   py-3 h-12 rounded-sm">
                             Settings
                         </h2>
                         <h2
@@ -189,7 +185,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                             <Profile />
                         </div>
                         <div className="middle-part flex flex-col gap-3">
-                            <hr className="max-w-[40vw]" />
+                            <hr className="lg:max-w-[40vw]" />
 
                             <div className="projects">
                                 <div className="title grid grid-cols-2 space-x-16 ">
@@ -230,13 +226,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
 
                         <div className="flex flex-col fixed bottom-0">
                             <h2
-                                className=" font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 py-3 h-12 rounded-sm"
+                                className="font-bold  hover:bg-gray-300 px-10 hover:bg-opacity-80 py-3 h-12 rounded-sm"
                                 onClick={handleButtonClick2}
                             >
                                 Settings
                             </h2>
                             <h2
-                                className=" font-bold  hover:bg-red-400 px-10  py-3 h-12 rounded-sm"
+                                className="font-bold  hover:bg-red-400 px-10  py-3 h-12 rounded-sm"
                                 onClick={handleButtonClick}
                             >
                                 Logout

@@ -4,11 +4,10 @@ import { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
-// Function to check if the token has expired
 const isTokenExpired = (token: string) => {
     const decoded = jwtDecode(token) as { exp: number };
-    const expirationTime = decoded.exp * 1000; // Convert expiration time to milliseconds
-    const currentTime = Date.now(); // Current time in milliseconds
+    const expirationTime = decoded.exp * 1000; 
+    const currentTime = Date.now(); 
     return currentTime > expirationTime;
 };
 
@@ -50,9 +49,7 @@ export default function middleware(
         }
     }
 
-    // Check if the token is expired
     if (token && isTokenExpired(token)) {
-        // Redirect the user to the sign-in page if the token is expired
         return NextResponse.redirect(new URL("/Pages/signIn", req.url));
     }
 

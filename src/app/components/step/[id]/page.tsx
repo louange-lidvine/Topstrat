@@ -161,7 +161,7 @@ const page: React.FC = () => {
 
         if (objectIndex === objects.length - 1) {
             // If the last title is reached, navigate to the preview page
-            router.push(`/components/Preview/${id}`);
+            router.push(`${baseURL}/components/Preview/${id}`);
         } else {
             // Otherwise, proceed to the next title
             setSelectedObject(objects[objectIndex + 1]);
@@ -196,19 +196,18 @@ const page: React.FC = () => {
             try {
                 const token = getCookie("token");
                 const response = await axios.get(
-                    `baseURL/projects/prompts/latest/${id}`,
+                    `${baseURL}/projects/prompts/latest/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
+                              token
                             }`,
                         },
                     }
                 );
                 checkResponseFormat(response.data);
                 setProjectData(response.data);
-                // Do something with the response data from the second Axios call
                 console.log(response.data);
             } catch (error) {
                 console.error("Error fetching project data:", error);
@@ -228,14 +227,13 @@ const page: React.FC = () => {
                      headers: {
                          "Content-Type": "application/json",
                          Authorization: `Bearer ${
-                             JSON.parse(token ?? "").access_token
+                           token
                          }`,
                      },
                  });
 
                  setIsLoading(false);
 
-                 // Check if response.data exists and update states accordingly
                  if (response.data) {
                      setProjectName(response.data);
                  } else {
