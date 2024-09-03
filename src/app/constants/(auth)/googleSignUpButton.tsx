@@ -1,6 +1,6 @@
 import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { setCookie } from "cookies-next";
 import axios from "axios";
@@ -28,7 +28,7 @@ const GoogleSignUpButton: React.FC<GoogleButtonProps> = ({
             setCookie("token", response.data.token);
             console.log(response.data);
             toast.success("Signed up successfully");
-            router.push("/pages/Payment");
+            router.push('https://topstrat-payment-portal.vercel.app/');
             onSuccess(credentialResponse);
         } catch (error: any) {
             console.error("Error during Google signup:", error);

@@ -22,79 +22,112 @@ function Final() {
     const [logframeData, setLogframeData] = useState<any>();
     const [error, setError] = useState<string | null>(null);
 
+useEffect(() => {
+ 
+  const fetchData = async () => {
+    try {
+      const token = getCookie("token");
+      setIsLoading(true);
 
-    const fetchData = async () => {
-        try {
-            const token = getCookie("token");
-            setIsLoading(true);
-
-
-        
-            const promptResponse = await axios.get(
-                `${baseURL}/projects/prompts/latest/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                           token
-                        }`,
-                    },
-                }
-            );
-            setPromptData(promptResponse.data);
-
-
-
-            const projectResponse = await axios.get(
-                `${baseURL}/projects/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                           token
-                        }`,
-                    },
-                }
-            );
-            setProjectData(projectResponse.data);
-
-
-            // Fetch pestle and logframe data
-            const dataResponse = await axios.post(
-                `${baseURL}/projects/projects/generate-analysis/${id}`,
-                { projectId: id },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                          token
-                        }`,
-                    },
-                }
-            );
-            setPestleData(JSON.parse(dataResponse.data.pestle.response));
-           const data = JSON.parse(dataResponse.data.logframe.response);
-           setLogframeData(data.results_chain); 
-
-
-            setIsLoading(false);
-        } catch (error) {
-            setError("Error fetching data");
-            console.error("Error fetching data:", error);
-            setIsLoading(false);
+      const promptResponse = await axios.get(
+        `${baseURL}/projects/prompts/latest/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-    };
+      );
+      setPromptData(promptResponse.data);
 
+      const projectResponse = await axios.get(
+        `${baseURL}/projects/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setProjectData(projectResponse.data);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+      const response = await axios.post(
+        `${baseURL}/projects/projects/generate-analysis/${id}`,
+        { projectId: id },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
+      setPestleData(JSON.parse(response.data.pestle.response));
 
-    const regenerateData = () => {
-        fetchData();
-    };
+      const logframeData = JSON.parse(response.data.logframe.response);
+      setLogframeData(logframeData.logframe);
 
+      setIsLoading(false);
+    } catch (error) {
+      setError("Error fetching data");
+      console.error("Error fetching data:", error);
+      setIsLoading(false);
+    }
+  };
+
+  fetchData();
+}, [id]);
+
+const regenerateData = async () => {
+  try {
+    const token = getCookie("token");
+    setIsLoading(true);
+
+    const promptResponse = await axios.get(
+      `${baseURL}/projects/prompts/latest/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setPromptData(promptResponse.data);
+
+    const projectResponse = await axios.get(
+      `${baseURL}/projects/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setProjectData(projectResponse.data);
+
+    const response = await axios.post(
+      `${baseURL}/projects/projects/generate-analysis/${id}`,
+      { projectId: id },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setPestleData(JSON.parse(response.data.pestle.response));
+
+    const logframeData = JSON.parse(response.data.logframe.response);
+    setLogframeData(logframeData.logframe);
+
+    setIsLoading(false);
+  } catch (error) {
+    setError("Error fetching data");
+    console.error("Error fetching data:", error);
+    setIsLoading(false);
+  }
+};
 
     const renderList = (data: string) => {
         return data
@@ -108,7 +141,6 @@ function Final() {
     };
 
 
-  // PDF document component
   const MyDocument = () => (
     <Document pageMode="fullScreen">
       <Page size="A4" style={{ margin: "auto" }}>
@@ -702,7 +734,7 @@ function Final() {
                   </div>
                 ) : (
                  <div className="w-full">
-          <div className="flex flex-col gap-3">
+       <div className="flex flex-col gap-3">
             <div className="text-blue-default font-bold text-2xl py-5">
               Logframe
             </div>
@@ -738,13 +770,13 @@ function Final() {
                         className={index % 2 === 0 ? "bg-slate-100" : ""}
                       >
                         <td className="border border-1 p-2 text-center font-bold">
-                          {item.category}
+                          {item["Results chain"]}
                         </td>
-                        <td className="border border-1 p-2">{item.indicator}</td>
-                        <td className="border border-1 p-2">{item.baseline}</td>
-                        <td className="border border-1 p-2">{item.target}</td>
-                        <td className="border border-1 p-2">{item.timeline}</td>
-                        <td className="border border-1 p-2">{item.assumptions}</td>
+                        <td className="border border-1 p-2">{item.Indicator}</td>
+                        <td className="border border-1 p-2">{item.Baseline}</td>
+                        <td className="border border-1 p-2">{item.Target}</td>
+                        <td className="border border-1 p-2">{item.Timeline}</td>
+                        <td className="border border-1 p-2">{item.Assumptions}</td>
                       </tr>
                     ))}
                 </tbody>

@@ -7,7 +7,7 @@ import Graphics from "../../../../public/assets/Login-amico (1) 2.png";
 import Link from "next/link";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Loader from "@/app/shared/loader/page";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -55,7 +55,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
         console.log(response.data);
         toast.success("Created account successfully");
-        router.push("/Pages/signIn");
+     router.push('https://topstrat-payment-portal.vercel.app/');
     } catch (error: any) {
         console.error("Error:", error);
 
@@ -192,17 +192,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                             <span className="text-gray-500">or</span>
                             <div className="flex-grow border-t border-gray-400"></div>
                         </div>
-
-                        {/* <GoogleButton
-                            onSuccess={function (
-                                credentialResponse: any
-                            ): void {
-                                throw new Error("Function not implemented.");
-                            }}
-                            onError={function (): void {
-                                throw new Error("Function not implemented.");
-                            }}
-                        /> */}
                         <GoogleSignUpButton
                             onSuccess={(credentialResponse: any) => {
                                 console.log(
