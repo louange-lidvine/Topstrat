@@ -172,7 +172,7 @@ export default function ({
                                     className=" hover:bg-gray-100  hover:cursor-pointer p-2"
                                     onClick={() => {
                                         setIsPopoverOpen(false);
-                                        handleDelete(project._id); // Pass projectId to handleDelete
+                                        handleDelete(project._id); 
                                     }}
                                 >
                                     Delete

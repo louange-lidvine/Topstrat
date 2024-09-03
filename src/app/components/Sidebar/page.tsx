@@ -6,7 +6,7 @@ import Link from "next/link";
 import ChooseMethod from "../chooseMethod/page";
 import { getCookie, setCookie } from "cookies-next";
 import ReactModal from "react-modal";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
 import Profile from "../profile/page";
 import EditProj from "../EditProj/page";
@@ -181,7 +181,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     }`}
                 >
                     <div className="projects flex flex-col gap-40">
-                        <div className="user-part ">
+                        <div className="user-part">
                             <Profile />
                         </div>
                         <div className="middle-part flex flex-col gap-3">
@@ -238,9 +238,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                 Logout
                             </h2>
                         </div>
+                
                     </div>
                 </div>
+              
             </div>
+                 <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     );
 };

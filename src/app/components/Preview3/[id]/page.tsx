@@ -14,7 +14,7 @@ function Preview() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [projectData, setProjectData] = useState<any>();
-  const [logframeData, setLogframeData] = useState<any>();
+  const [logframeData, setLogframeData] = useState<any>([]);
 
   useEffect(() => {
     const getProject = async (id: string) => {
@@ -55,9 +55,9 @@ function Preview() {
         );
 
         const data = JSON.parse(response.data.logframe.response);
-        setLogframeData(data.results_chain); 
+        setLogframeData(data.logframe); 
       } catch (error) {
-        console.log(error);
+        console.log("Error fetching logframe data:", error);
       } finally {
         setLoading(false);
       }
@@ -83,9 +83,9 @@ function Preview() {
         }
       );
       const data = JSON.parse(response.data.logframe.response);
-      setLogframeData(data.results_chain);
+      setLogframeData(data.logframe);
     } catch (error) {
-      console.log(error);
+      console.log("Error refetching logframe data:", error);
     } finally {
       setLoading(false);
     }
@@ -96,7 +96,7 @@ function Preview() {
   };
 
   return (
-    <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
+    <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8">
       {loading ? (
         <div>
           <div className="flex flex-col justify-center items-center gap-4 text-2xl">
@@ -162,13 +162,13 @@ function Preview() {
                         className={index % 2 === 0 ? "bg-slate-100" : ""}
                       >
                         <td className="border border-1 p-2 text-center font-bold">
-                          {item.category}
+                          {item["Results chain"]}
                         </td>
-                        <td className="border border-1 p-2">{item.indicator}</td>
-                        <td className="border border-1 p-2">{item.baseline}</td>
-                        <td className="border border-1 p-2">{item.target}</td>
-                        <td className="border border-1 p-2">{item.timeline}</td>
-                        <td className="border border-1 p-2">{item.assumptions}</td>
+                        <td className="border border-1 p-2">{item.Indicator}</td>
+                        <td className="border border-1 p-2">{item.Baseline}</td>
+                        <td className="border border-1 p-2">{item.Target}</td>
+                        <td className="border border-1 p-2">{item.Timeline}</td>
+                        <td className="border border-1 p-2">{item.Assumptions}</td>
                       </tr>
                     ))}
                 </tbody>
@@ -177,7 +177,7 @@ function Preview() {
           </div>
           <div className="flex justify-center gap-8 my-5">
             <button
-              className="bg-[#ED0C0C] text-white font-bold rounded-md  py-3 px-6"
+              className="bg-[#ED0C0C] text-white font-bold rounded-md py-3 px-6"
               onClick={() => router.push(`../../components/Preview2/${id}`)}
             >
               Back
@@ -189,7 +189,7 @@ function Preview() {
               Regenerate
             </button>
             <button
-              className="bg-green-500 text-white font-bold rounded-md  py-3 px-6"
+              className="bg-green-500 text-white font-bold rounded-md py-3 px-6"
               onClick={handleSave}
             >
               Save

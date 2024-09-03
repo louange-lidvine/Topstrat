@@ -31,7 +31,7 @@ const Profile = () => {
     };
 
     fetchUserData();
-  }, [userData]);
+  }, []);
 
   useEffect(() => {
     const generateGravatar = () => {
