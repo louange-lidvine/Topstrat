@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   logframeHeader: {
     flexDirection: 'row',
-    backgroundColor: '#3b5998', // Custom header background color
+    backgroundColor: '#3b5998', 
     paddingVertical: 12,
   },
   logframeRow: {
@@ -260,7 +260,7 @@ const MyDocument: React.FC<MyDocumentProps> = ({ projectData, promptData, pestle
               <View style={[styles.tableRow, styles.tableHeader]}>
                 <Text style={styles.tableCol}>Category</Text>
                 <Text style={styles.tableCol}>Influence on Organization</Text>
-                <Text style={styles.tableCol}>Impact on Organization</Text>
+                <Text style={styles.tableCol}>Impact of Organization's activities'</Text>
               </View>
               {pestleData && (
                 <>
