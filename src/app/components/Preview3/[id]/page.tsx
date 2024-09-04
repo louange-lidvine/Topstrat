@@ -41,11 +41,8 @@ function Preview() {
       const token = getCookie("token");
       setLoading(true);
       try {
-        const response = await axios.post(
-          `${baseURL}/projects/projects/generate-analysis/${id}`,
-          {
-            projectId: id,
-          },
+        const response = await axios.get(
+          `${baseURL}/projects/prompts/latest/${id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -90,6 +87,8 @@ function Preview() {
       setLoading(false);
     }
   };
+
+  
 
   const handleSave = async () => {
     console.log("Changes saved:", logframeData);

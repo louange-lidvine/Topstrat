@@ -82,7 +82,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     return (
         <>
             <div
-                className={`hidden z-[9999] lg:flex flex-col  text-white max-w-[20vw]  bg-blue-default m-2 rounded-md`}
+                className={`hidden lg:flex flex-col  text-white max-w-[20vw]  bg-blue-default m-2 rounded-md`}
             >
                 <div className="flex flex-col justify-between gap-40 ">
                     <div className="user-part ">

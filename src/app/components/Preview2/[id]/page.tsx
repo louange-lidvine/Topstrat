@@ -47,9 +47,8 @@ function Preview() {
             const token = getCookie("token");
             setPestleLoading(true);
             try {
-                const response = await axios.post(
-                    `${baseURL}/projects/projects/generate-analysis/${id}`,
-                    { projectId: id },
+                const response = await axios.get(
+                    `${baseURL}/projects/prompts/latest/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
