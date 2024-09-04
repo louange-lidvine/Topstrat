@@ -51,9 +51,8 @@ useEffect(() => {
       );
       setProjectData(projectResponse.data);
 
-      const response = await axios.post(
-        `${baseURL}/projects/projects/generate-analysis/${id}`,
-        { projectId: id },
+      const response = await axios.get(
+        `${baseURL}/projects/prompts/latest/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -129,16 +128,21 @@ const regenerateData = async () => {
   }
 };
 
-    const renderList = (data: string) => {
-        return data
-            .split(/\d+\.\s*/)
-            .filter((item) => item.trim() !== "")
-            .map((item, index) => (
-                <li key={index}>
-                    {index + 1}. {item.trim()}
-                </li>
-            ));
-    };
+const renderList = (data: string) => {
+  return (
+    <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
+      {data
+        .split(/\d+\.\s*/)
+        .filter((item) => item.trim() !== "")
+        .map((item, index) => (
+          <li key={index} style={{ marginBottom: "8px", fontSize: "16px", color: "#333" }}>
+            {item.trim()}
+          </li>
+        ))}
+    </ul>
+  );
+};
+
 
 
   const MyDocument = () => (
