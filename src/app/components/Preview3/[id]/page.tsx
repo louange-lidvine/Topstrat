@@ -158,16 +158,15 @@ function Preview() {
 <tbody>
   {logframeData &&
     logframeData.map((item: any, index: number) => {
-      let resultChainLabel = ""; // Default to empty
-      let description = ""; // For description
-      let indicators = ""; // For indicators
-      let baseline = ""; // For baseline
-      let target = ""; // For target
-      let timeline = ""; // For timeline
-      let assumptions = ""; // For assumptions
-      let inputs = ""; // For inputs (related to activities)
+      let resultChainLabel = ""; 
+      let description = ""; 
+      let indicators = ""; 
+      let baseline = "";
+      let target = ""; 
+      let timeline = ""; 
+      let assumptions = ""; 
+      let inputs = ""; 
 
-      // Handling for impact, outcome, output
       if (item.impact) {
         resultChainLabel = "Impact";
         description = item.impact.description;
@@ -194,7 +193,6 @@ function Preview() {
         assumptions = item.output.assumptions || "";
       }
 
-      // Return row for results chain items (Impact, Outcome, Output)
       return (
         <tr key={index} className={index % 2 === 0 ? "bg-slate-100" : ""}>
           <td className="border border-1 p-2 text-center font-bold">{resultChainLabel}</td>

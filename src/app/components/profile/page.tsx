@@ -47,11 +47,15 @@ const Profile = () => {
     <div className="flex ml-4 my-3">
       {userData ? (
         <>
-          <img src={gravatarUrl} alt="profile" className="profile-pic w-9" />
+          <img src={gravatarUrl} alt="profile" className="profile-pic w-10 h-10" />
           {userData && (
-            <h2 className="mt-2 ml-4 font-bold">
+            <div className="ml-4">
+              <h2 className=" font-bold">
               {userData.firstname} {userData.lastname}
             </h2>
+            <h1>{userData.subscription} plan</h1> 
+            </div>
+           
           )}
         </>
       ) : (
