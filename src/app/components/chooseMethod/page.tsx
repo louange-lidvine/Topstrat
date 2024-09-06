@@ -8,6 +8,7 @@ import ReactModal from "react-modal";
 import SbLoad from "@/app/shared/loader/sbload";
 import Loader from "@/app/shared/loader/page";
 import { baseURL } from "@/app/constants";
+import { toast } from "react-toastify";
 
 function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => void ,closeSidebar: () => void}) {
     const router = useRouter();
@@ -17,7 +18,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
     const [formData, setFormData] = useState({
         name: "",
         description: "",
-        method: "", // Add method field
+        method: "", 
     });
 
     const handleCloseModal = () => {
@@ -25,7 +26,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
     };
 
     const handleRadioChange = async (value: string) => {
-        closeSidebar();  // Close the sidebar
+        closeSidebar();  
         setIsPopoverOpen(false);
         setIsModalOpen(true);
         setFormData((prevState) => ({
@@ -74,9 +75,9 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
                 
                 router.push(`/components/step/${projectId}`);
             }
-        } catch (error) {
+        } catch (error:any) {
             console.error("Error creating project:", error);
-            router.push("/Pages/signup");
+             toast.error("An error occured" + error)
         } finally {
             setIsLoading(false);
             setIsModalOpen(false);

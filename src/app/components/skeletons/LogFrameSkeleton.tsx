@@ -3,14 +3,17 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 function LogFrameSkeleton() {
-  const rows = 5;  
-  const columns = 5;  
+  const rows = 6;  
+  const columns = 6;  
 
   return (
     <div className="overflow-x-auto">
       <table className="border border-1 m-auto w-full">
         <thead>
           <tr className="bg-slate-300">
+            <th className="border border-1 p-2 text-blue-default font-bold text-center">
+              <Skeleton width={150} height={40} />
+            </th>
             <th className="border border-1 p-2 text-blue-default font-bold text-center">
               <Skeleton width={150} height={40} />
             </th>

@@ -44,12 +44,10 @@ function Page() {
                 const token = res.data.access_token;
                 console.log(token);
                 setCookie("token", JSON.stringify(token));
-                // Decode the token to extract user information
                 const decodedToken: any = jwtDecode(token);
                 console.log("Decoded token:", decodedToken);
 
-                // Store the user's ID in localStorage
-                const userId = decodedToken.userId || decodedToken.sub; // Modify this based on the actual key
+                const userId = decodedToken.userId || decodedToken.sub; 
                 console.log("User ID:", userId);
                 localStorage.setItem("userId", userId);
                 const decoded = jwtDecode(token) as { role: string };

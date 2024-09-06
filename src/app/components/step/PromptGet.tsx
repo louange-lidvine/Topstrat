@@ -44,7 +44,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `${baseURL}/${projectId}/${title.toLowerCase()}`,
+                    `${projectId}/${title.toLowerCase()}`,
                     {
                         query: query,
                         projectId: projectId,
@@ -156,17 +156,27 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                                 <td className="px-4 border border-gray-300">
                                     <h3 className="font-bold">Strengths</h3>
                                     <ul className="list-disc list-inside">
-                                        {swotData?.strengths && swotData.strengths.map((strength, index) => (
-                                            <li key={index}>{strength}</li>
-                                        ))}
+                                        {swotData?.strengths &&
+                                            swotData.strengths.map(
+                                                (strength, index) => (
+                                                    <li key={index}>
+                                                        {strength}
+                                                    </li>
+                                                )
+                                            )}
                                     </ul>
                                 </td>
                                 <td className="px-4 border border-gray-300">
                                     <h3 className="font-bold">Economic</h3>
                                     <ul className="list-disc list-inside">
-                                        {swotData?.Economic && swotData.Economic.map((weakness, index) => (
-                                            <li key={index}>{weakness}</li>
-                                        ))}
+                                        {swotData?.Economic &&
+                                            swotData.Economic.map(
+                                                (weakness, index) => (
+                                                    <li key={index}>
+                                                        {weakness}
+                                                    </li>
+                                                )
+                                            )}
                                     </ul>
                                 </td>
                             </tr>
@@ -174,75 +184,67 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                                 <td className="px-4 border border-gray-300">
                                     <h3 className="font-bold">Opportunities</h3>
                                     <ul className="list-disc list-inside">
-                                        {swotData?.opportunities && swotData.opportunities.map((opportunity, index) => (
-                                            <li key={index}>{opportunity}</li>
-                                        ))}
+                                        {swotData?.opportunities &&
+                                            swotData.opportunities.map(
+                                                (opportunity, index) => (
+                                                    <li key={index}>
+                                                        {opportunity}
+                                                    </li>
+                                                )
+                                            )}
                                     </ul>
                                 </td>
                                 <td className="px-4 border border-gray-300">
                                     <h3 className="font-bold">Threats</h3>
                                     <ul className="list-disc list-inside">
-                                        {swotData?.threats && swotData.threats.map((threat, index) => (
-                                            <li key={index}>{threat}</li>
-                                        ))}
+                                        {swotData?.threats &&
+                                            swotData.threats.map(
+                                                (threat, index) => (
+                                                    <li key={index}>
+                                                        {threat}
+                                                    </li>
+                                                )
+                                            )}
                                     </ul>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            ):isPestle? (
+            ) : isPestle ? (
                 <div className="grid grid-cols-2  border border-1 w-[90%]  m-auto h-full ">
-                {Object.keys(pestleData || {}).map(
-                    (category, index) => (
+                    {Object.keys(pestleData || {}).map((category, index) => (
                         <React.Fragment key={index}>
                             <div
                                 className={`col-span-1 border border-1 ${
-                                    index % 2 === 0
-                                        ? "bg-slate-300"
-                                        : ""
+                                    index % 2 === 0 ? "bg-slate-300" : ""
                                 }`}
                             >
                                 <div className="p-4 text-blue-default font-bold text-1xl text-start text-xl">
-                                    {category
-                                        .charAt(0)
-                                        .toUpperCase() +
+                                    {category.charAt(0).toUpperCase() +
                                         category.slice(1)}{" "}
-                                    (
-                                    {category
-                                        .charAt(0)
-                                        .toUpperCase()}
-                                    )
+                                    ({category.charAt(0).toUpperCase()})
                                 </div>
                             </div>
                             <div
                                 className={`col-span-1 ${
-                                    index % 2 === 0
-                                        ? "bg-slate-300"
-                                        : ""
+                                    index % 2 === 0 ? "bg-slate-300" : ""
                                 }`}
                             >
                                 <div className="p-4">
                                     <ul className="">
-                                        {(
-                                            pestleData[category] ||
-                                            []
-                                        ).map(
+                                        {(pestleData[category] || []).map(
                                             (item: any, i: any) => (
-                                                <li key={i}>
-                                                    {item}
-                                                </li>
+                                                <li key={i}>{item}</li>
                                             )
                                         )}
                                     </ul>
                                 </div>
                             </div>
                         </React.Fragment>
-                    )
-                )}
-            </div>
-                
-            ): isLogframe?(
+                    ))}
+                </div>
+            ) : isLogframe ? (
                 <div>
                     <table className="border border-1 w-[90%] m-auto ">
                         <tbody>
@@ -254,7 +256,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                                                 Goal (G)
                                             </th>
                                             <td className="border border-1 p-4">
-                                                {logframeData.goal}
+                                                {logframeData.indicator}
                                             </td>
                                         </tr>
                                     )}
@@ -264,7 +266,7 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                                                 Purpose (P)
                                             </th>
                                             <td className="border border-1 p-4">
-                                                {logframeData.purpose}
+                                                {logframeData.baseline}
                                             </td>
                                         </tr>
                                     )}
@@ -300,14 +302,8 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                                                                     item: any,
                                                                     i: any
                                                                 ) => (
-                                                                    <li
-                                                                        key={
-                                                                            i
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            item
-                                                                        }
+                                                                    <li key={i}>
+                                                                        {item}
                                                                     </li>
                                                                 )
                                                             )}
@@ -320,32 +316,32 @@ const PromptGet: React.FC<PromptGetProps> = ({ title, projectId, query,handelNex
                             )}
                         </tbody>
                     </table>
-            </div>    
-            ):(
-                <p>{prompt}</p> 
+                </div>
+            ) : (
+                <p>{prompt}</p>
             )}
             <div className="buttons flex space-x-5 mt-10 ">
-                    {/* <button
+                {/* <button
                         type="submit"
                         className="bg-[#0F872F] py-2 px-4 rounded-md"
                     >
                         Save
                     </button> */}
-                    <button
-                        type="submit"
-                        className="bg-[#ED0C0C] py-2 px-4 rounded-md"
-                        onClick={refetchData}
-                    >
-                        Re-generate
-                    </button>
-                    <button
-                        type="submit"
-                        className="bg-[#0F872F] py-2 px-4 rounded-md"
-                        onClick={()=>handelNext(title)}
-                    >
-                        Next
-                    </button>
-                </div>
+                <button
+                    type="submit"
+                    className="bg-[#ED0C0C] py-2 px-4 rounded-md"
+                    onClick={refetchData}
+                >
+                    Re-generate
+                </button>
+                <button
+                    type="submit"
+                    className="bg-[#0F872F] py-2 px-4 rounded-md"
+                    onClick={() => handelNext(title)}
+                >
+                    Next
+                </button>
+            </div>
         </div>
     );
 };

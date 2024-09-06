@@ -21,12 +21,10 @@ const GoogleSignUpButton: React.FC<GoogleButtonProps> = ({
 
     const handleSuccess = async (credentialResponse: any) => {
         try {
-            // Call your API endpoint with the token as a query parameter
             const response = await axios.get(
                 `${baseURL}/auth/register_with_google?token=${credentialResponse.credential}`
             );
 
-            // Store the access token in a cookie or local storage
             setCookie("token", response.data);
             console.log(response.data);
             toast.success("Signed up successfully");

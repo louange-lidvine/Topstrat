@@ -3,7 +3,6 @@ import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
 import CryptoJS from "crypto-js";
 import { baseURL } from "@/app/constants";
-// import Image, { StaticImageData } from 'next/image';
 
 const Profile = () => {
   const [userData, setUserData] = useState<any>();
@@ -14,7 +13,6 @@ const Profile = () => {
       const userId = localStorage.getItem("userId");
       const token = getCookie("token");
       try {
-        // Assuming you have an API endpoint to fetch user data by ID
         const response = await fetch(`${baseURL}/users/${userId}`, {
             headers: {
                 "Content-Type": "application/json",
@@ -38,7 +36,7 @@ const Profile = () => {
 
   useEffect(() => {
     const generateGravatar = () => {
-      const userEmail = userData?.email; // Replace this with the email of the signed-up user
+      const userEmail = userData?.email; 
       const hashedEmail = CryptoJS.SHA256(userEmail);
       const gravatarUrl = `https://www.gravatar.com/avatar/${hashedEmail}`;
       setGravatarUrl(gravatarUrl);

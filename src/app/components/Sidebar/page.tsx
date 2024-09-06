@@ -66,9 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     }`,
                 },
             });
-            // Limiting to a maximum of 3 projects
             const limitedProjects = response.data.slice(0, 3);
-            // Set the projects state with the fetched data
             setProjects(limitedProjects);
             setIsLoading(false);
         } catch (error) {
@@ -80,7 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     };
 
     useEffect(() => {
-        fetchProjects(); // Fetch projects when the component mounts
+        fetchProjects(); 
     }, []);
 
     return (

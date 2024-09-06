@@ -44,7 +44,6 @@ function Page() {
             </nav>
 
             <div className="flex flex-col  md:flex-row w-[100%] justify-between p-9">
-                {/* Your content goes here */}
                 <Image
                     src={Office}
                     alt="Office"

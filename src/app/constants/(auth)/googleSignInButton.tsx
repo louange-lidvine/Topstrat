@@ -20,7 +20,6 @@ const GoogleSignInButton: React.FC<GoogleButtonProps> = ({
 
     const handleSuccess = async (credentialResponse: any) => {
         try {
-            // Use ApiURL for API request with the token as a query parameter
             const response = await ApiURL.get(
                 `${baseURL}/auth/login_with_google?token=${credentialResponse.credential}`
             );

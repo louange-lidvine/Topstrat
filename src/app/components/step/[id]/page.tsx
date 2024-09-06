@@ -161,7 +161,7 @@ const page: React.FC = () => {
 
         if (objectIndex === objects.length - 1) {
             // If the last title is reached, navigate to the preview page
-            router.push(`/components/Preview/${id}`);
+            router.push(`${baseURL}/components/Preview/${id}`);
         } else {
             // Otherwise, proceed to the next title
             setSelectedObject(objects[objectIndex + 1]);
@@ -208,7 +208,6 @@ const page: React.FC = () => {
                 );
                 checkResponseFormat(response.data);
                 setProjectData(response.data);
-                // Do something with the response data from the second Axios call
                 console.log(response.data);
             } catch (error) {
                 console.error("Error fetching project data:", error);
@@ -235,7 +234,6 @@ const page: React.FC = () => {
 
                  setIsLoading(false);
 
-                 // Check if response.data exists and update states accordingly
                  if (response.data) {
                      setProjectName(response.data);
                  } else {
