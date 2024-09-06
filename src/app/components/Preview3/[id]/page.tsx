@@ -6,7 +6,6 @@ import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
-import { Loader } from "@mantine/core";
 import { baseURL } from "@/app/constants";
 
 function Preview() {
@@ -15,6 +14,7 @@ function Preview() {
   const [loading, setLoading] = useState(false);
   const [projectData, setProjectData] = useState<any>();
   const [logframeData, setLogframeData] = useState<any>([]);
+  const [Data, setData] = useState<any>([]);
 
   useEffect(() => {
     const getProject = async (id: string) => {
@@ -26,7 +26,6 @@ function Preview() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
         setProjectData(response.data);
       } catch (error) {
         console.error("Error fetching project data:", error);
@@ -50,9 +49,11 @@ function Preview() {
             },
           }
         );
-
         const data = JSON.parse(response.data.logframe.response);
-        setLogframeData(data.logframe); 
+        setLogframeData(data.results_chain);
+        setData(data)
+        console.log(data)
+        console.log(data.results_chain);
       } catch (error) {
         console.log("Error fetching logframe data:", error);
       } finally {
@@ -80,15 +81,15 @@ function Preview() {
         }
       );
       const data = JSON.parse(response.data.logframe.response);
-      setLogframeData(data.logframe);
+      setLogframeData(data.results_chain);
+      setData(data)
+      console.log(data)
     } catch (error) {
       console.log("Error refetching logframe data:", error);
     } finally {
       setLoading(false);
     }
   };
-
-  
 
   const handleSave = async () => {
     console.log("Changes saved:", logframeData);
@@ -129,11 +130,12 @@ function Preview() {
             <div className="text-blue-default font-bold text-2xl py-5">
               Logframe
             </div>
+            <h1>Goal : {Data.goal}</h1>
             <div className="overflow-x-auto">
               <table className="border border-1 m-auto">
                 <thead>
                   <tr className="bg-slate-300">
-                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                    <th className="border border-1 p-2  text-blue-default font-bold text-center" colSpan={2}>
                       Results Chain
                     </th>
                     <th className="border border-1 p-2 text-blue-default font-bold text-center">
@@ -153,24 +155,95 @@ function Preview() {
                     </th>
                   </tr>
                 </thead>
-                <tbody>
-                  {logframeData &&
-                    logframeData.map((item: any, index: number) => (
-                      <tr
-                        key={index}
-                        className={index % 2 === 0 ? "bg-slate-100" : ""}
-                      >
-                        <td className="border border-1 p-2 text-center font-bold">
-                          {item["Results chain"]}
-                        </td>
-                        <td className="border border-1 p-2">{item.Indicator}</td>
-                        <td className="border border-1 p-2">{item.Baseline}</td>
-                        <td className="border border-1 p-2">{item.Target}</td>
-                        <td className="border border-1 p-2">{item.Timeline}</td>
-                        <td className="border border-1 p-2">{item.Assumptions}</td>
-                      </tr>
-                    ))}
-                </tbody>
+<tbody>
+  {logframeData &&
+    logframeData.map((item: any, index: number) => {
+      let resultChainLabel = ""; // Default to empty
+      let description = ""; // For description
+      let indicators = ""; // For indicators
+      let baseline = ""; // For baseline
+      let target = ""; // For target
+      let timeline = ""; // For timeline
+      let assumptions = ""; // For assumptions
+      let inputs = ""; // For inputs (related to activities)
+
+      // Handling for impact, outcome, output
+      if (item.impact) {
+        resultChainLabel = "Impact";
+        description = item.impact.description;
+        indicators = item.impact.indicators[0]?.indicator || "";
+        baseline = item.impact.indicators[0]?.baseline || "";
+        target = item.impact.indicators[0]?.target || "";
+        timeline = item.impact.timeline || "";
+        assumptions = item.impact.assumptions || "";
+      } else if (item.outcome) {
+        resultChainLabel = "Outcome";
+        description = item.outcome.description;
+        indicators = item.outcome.indicators[0]?.indicator || "";
+        baseline = item.outcome.indicators[0]?.baseline || "";
+        target = item.outcome.indicators[0]?.target || "";
+        timeline = item.outcome.timeline || "";
+        assumptions = item.outcome.assumptions || "";
+      } else if (item.output) {
+        resultChainLabel = "Output";
+        description = item.output.description;
+        indicators = item.output.indicators[0]?.indicator || "";
+        baseline = item.output.indicators[0]?.baseline || "";
+        target = item.output.indicators[0]?.target || "";
+        timeline = item.output.timeline || "";
+        assumptions = item.output.assumptions || "";
+      }
+
+      // Return row for results chain items (Impact, Outcome, Output)
+      return (
+        <tr key={index} className={index % 2 === 0 ? "bg-slate-100" : ""}>
+          <td className="border border-1 p-2 text-center font-bold">{resultChainLabel}</td>
+          <td className="border border-1 p-2 text-center">{description}</td>
+          <td className="border border-1 p-2">{indicators}</td>
+          <td className="border border-1 p-2">{baseline}</td>
+          <td className="border border-1 p-2">{target}</td>
+          <td className="border border-1 p-2">{timeline}</td>
+          <td className="border border-1 p-2">{assumptions}</td>
+        </tr>
+      );
+    })}
+
+  {Data.activities &&
+    Data.activities.map((activity: any, index: number) => (
+    <>
+        
+        <tr key={`activity-${index}`} className={index % 2 === 0 ? "bg-slate-100" : ""}>
+          <td className="border border-1 p-2 text-center font-bold">Activities</td>
+          <td className="border border-1 p-2 text-center">{activity.description}</td>
+          <td className="border border-1 p-2">{activity.indicators[0]?.indicator || ""}</td>
+          <td className="border border-1 p-2">{activity.indicators[0]?.baseline || ""}</td>
+          <td className="border border-1 p-2">{activity.indicators[0]?.target || ""}</td>
+          <td className="border border-1 p-2">{activity.timeline}</td>
+          <td className="border border-1 p-2">{activity.assumptions}</td> 
+        </tr>
+        
+{activity.inputs && (
+  <tr className="bg-slate-50">
+    <td className="border border-1 p-2 text-center font-bold">Input</td>
+    <td className="border border-1 p-2 text-center">
+      {activity.inputs.join(", ")}
+    </td>
+    <td className="border border-1 p-2"></td>
+    <td className="border border-1 p-2"></td>
+    <td className="border border-1 p-2"></td>
+    <td className="border border-1 p-2"></td>
+    <td className="border border-1 p-2"></td>
+  </tr>
+)}
+
+
+      </>
+     
+    ))}
+</tbody>
+
+
+
               </table>
             </div>
           </div>
