@@ -23,9 +23,13 @@ const GoogleSignInButton: React.FC<GoogleButtonProps> = ({
             const response = await ApiURL.get(
                 `${baseURL}/auth/login_with_google?token=${credentialResponse.credential}`
             );
-            console.log(response);
-            setCookie("token", response.data);
-            console.log(response.data);
+            // console.log(response);
+            setCookie("token", response.data.access_token);
+
+            const userId = response.data.userInfo._id;
+            localStorage.setItem("userId", userId);
+            
+            console.log("dataaaa"+JSON.stringify(response))
             toast.success("Logged in successfully");
             onSuccess(credentialResponse);
         } catch (error) {

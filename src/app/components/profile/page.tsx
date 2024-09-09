@@ -16,13 +16,12 @@ const Profile = () => {
         const response = await fetch(`${baseURL}/users/${userId}`, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${JSON.parse(token ?? "").access_token}`,
+                Authorization: `Bearer ${token}`,
             },
         });
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
-          console.log(userData);
         } else {
           console.error("Failed to fetch user data");
         }
@@ -48,11 +47,15 @@ const Profile = () => {
     <div className="flex ml-4 my-3">
       {userData ? (
         <>
-          <img src={gravatarUrl} alt="profile" className="profile-pic w-9" />
+          <img src={gravatarUrl} alt="profile" className="profile-pic w-10 h-10" />
           {userData && (
-            <h2 className="mt-2 ml-4 font-bold">
+            <div className="ml-4">
+              <h2 className=" font-bold">
               {userData.firstname} {userData.lastname}
             </h2>
+            <h1>{userData.subscription} plan</h1> 
+            </div>
+           
           )}
         </>
       ) : (

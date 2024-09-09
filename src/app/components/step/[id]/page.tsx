@@ -160,10 +160,8 @@ const page: React.FC = () => {
         );
 
         if (objectIndex === objects.length - 1) {
-            // If the last title is reached, navigate to the preview page
-            router.push(`${baseURL}/components/Preview/${id}`);
+            router.push(`/components/Preview/${id}`);
         } else {
-            // Otherwise, proceed to the next title
             setSelectedObject(objects[objectIndex + 1]);
             setIsModalOpen(true);
             setIsSecModalOpen(false);
@@ -181,7 +179,6 @@ const page: React.FC = () => {
             "PESTLE",
         ];
 
-        // Check if all required fields exist in the response
         for (const field of requiredFields) {
             if (response[field] !== null) {
                 console.log(field);
@@ -201,7 +198,7 @@ const page: React.FC = () => {
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${
-                                JSON.parse(token ?? "").access_token
+                              token
                             }`,
                         },
                     }
@@ -227,7 +224,7 @@ const page: React.FC = () => {
                      headers: {
                          "Content-Type": "application/json",
                          Authorization: `Bearer ${
-                             JSON.parse(token ?? "").access_token
+                           token
                          }`,
                      },
                  });
@@ -253,7 +250,7 @@ const page: React.FC = () => {
 
     return (
         <div className="border my-4 rounded-md w-full lg:mx-2 float-right lg:z-[9999]">
-            <div className="input flex justify-center items-center text-blue-default font-bold text-2xl">
+            <div className="input flex justify-center pt-4 items-center text-blue-default font-bold text-2xl">
               {projectName&&projectName.name}
             </div>
             {loading ? (
@@ -307,7 +304,7 @@ const page: React.FC = () => {
             <ReactModal
                 isOpen={isModalOpen}
                 onRequestClose={handleCloseModal}
-                className="p-10 mt-20 bg-white shadow-lg lg:w-full lg:max-w-[600px] mx-auto"
+                className="p-10  mt-20 bg-white shadow-lg lg:w-full lg:max-w-[800px] mx-auto"
             >
                 {selectedObject && (
                     <Step
@@ -338,10 +335,10 @@ const page: React.FC = () => {
             <ReactModal
                 isOpen={isSecModalOpen}
                 onRequestClose={handleCloseModal}
-                className="px-10 py-10 mt-20 bg-white shadow-lg lg:w-full lg:max-w-[900px] mx-auto"
+                className="px-10 py-10 mt-20 bg-white shadow-lg lg:w-full lg:max-w-[800px] mx-auto"
             
             >
-                <div className="overflow-y-auto max-h-[80vh]">
+                <div className="overflow-y-auto max-h-[70vh]">
                      {selectedObject && (
                     <PromptGet
                         title={selectedObject.name}

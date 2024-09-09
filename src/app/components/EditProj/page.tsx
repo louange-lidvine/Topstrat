@@ -56,7 +56,7 @@ export default function ({
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
+                         token
                         }`,
                     },
                 }
@@ -66,7 +66,6 @@ export default function ({
             } else {
                 navigate.push(`/components/step/${projectId}`);
             }
-            // Do something with the response data from the second Axios call
             console.log(response.data);
         } catch (error) {
             console.error("Error fetching project data:", error);
@@ -80,7 +79,7 @@ export default function ({
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${
-                        JSON.parse(token ?? "").access_token
+                       token
                     }`,
                 },
             });
@@ -173,7 +172,7 @@ export default function ({
                                     className=" hover:bg-gray-100  hover:cursor-pointer p-2"
                                     onClick={() => {
                                         setIsPopoverOpen(false);
-                                        handleDelete(project._id); // Pass projectId to handleDelete
+                                        handleDelete(project._id); 
                                     }}
                                 >
                                     Delete

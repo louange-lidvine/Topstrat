@@ -1,152 +1,199 @@
-import React from 'react';
-import { Page, Text, View, Document, StyleSheet, PDFViewer } from '@react-pdf/renderer';
-import Skeleton from 'react-loading-skeleton';
+import React from "react";
+import {
+    Page,
+    Text,
+    View,
+    Document,
+    StyleSheet,
+    Font,
+} from "@react-pdf/renderer";
+import Skeleton from "react-loading-skeleton";
 
-// Define styles
 const styles = StyleSheet.create({
-  page: {
-    padding: 20,
-    fontSize: 12,
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-  },
-  header: {
-    fontSize: 24,
-    textAlign: 'center',
-    margin: 10,
-  },
-  subHeader: {
-    fontSize: 18,
-    margin: 10,
-    color: '#0B6C79',
-  },
-  text: {
-    margin: 10,
-  },
-  bold: {
-    fontWeight: 'bold',
-  },
-  table: {
-    // display: "table",
-    width: "auto",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: '#0B6C79',
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
-  },
-  tableRow: {
-    flexDirection: "row",
-  },
-  tableCol: {
-    width: "33.33%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: '#0B6C79',
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
-    padding: 5,
-  },
-  tableCell: {
-    margin: "auto",
-    marginTop: 5,
-    fontSize: 10,
-  },
-  tableHeader: {
-    backgroundColor: '#E4E4E4',
-    fontWeight: 'bold',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tableHeaderCell: {
-    textAlign: 'center',
-    margin: 'auto',
-    marginTop: 5,
-    fontSize: 10,
-  },
-  swotTable: {
-    // display: "table",
-    width: "auto",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: '#0B6C79',
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
-  },
-  swotTableRow: {
-    flexDirection: "row",
-  },
-  swotTableCol: {
-    width: "50%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: '#0B6C79',
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
-    padding: 5,
-  },
+    page: {
+        padding: 30,
+        fontSize: 12,
+        fontFamily: "Helvetica",
+        lineHeight: 1.6,
+    },
+    section: {
+        marginBottom: 20,
+        paddingBottom: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
+    },
+    header: {
+        fontSize: 28,
+        textAlign: "center",
+        marginBottom: 30,
+        fontWeight: "bold",
+        color: "#003366",
+    },
+    subHeader: {
+        fontSize: 22,
+        marginVertical: 12,
+        color: "#00509e",
+        fontWeight: "bold",
+    },
+    text: {
+        marginVertical: 10,
+        lineHeight: 1.8,
+    },
+    table: {
+        width: "100%",
+        marginVertical: 12,
+    },
+    tableRow: {
+        flexDirection: "row",
+        borderBottomColor: "#ddd",
+        borderBottomWidth: 1,
+        width: "500px",
+    },
+    tableCol: {
+        width: "50%",
+        padding: 10,
+        textAlign: "justify",
+    },
+    tableCell: {
+        fontSize: 11,
+        color: "#333",
+    },
+    tableHeader: {
+        backgroundColor: "#f0f0f0",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    listContainer: {
+        paddingLeft: 30,
+        marginVertical: 10,
+    },
+    listItem: {
+        marginBottom: 10,
+        fontSize: 14,
+        paddingVertical: 3,
+        color: "#333",
+        lineHeight: 1.8,
+    },
+    swotTable: {
+        width: "100%",
+        marginVertical: 12,
+    },
+    swotTableRow: {
+        flexDirection: "row",
+        borderBottomColor: "#ddd",
+        borderBottomWidth: 1,
+    },
+    swotTableCol: {
+        width: "50%",
+        padding: 10,
+        textAlign: "center",
+    },
+    tableCellHeader: {
+        fontWeight: "bold",
+    },
+    logframeTable: {
+        borderWidth: 2,
+        borderColor: "#cccccc",
+        borderRadius: 10,
+        marginVertical: 15,
+        overflow: "hidden",
+        backgroundColor: "#f4f4f4",
+    },
+    logframeHeader: {
+        flexDirection: "row",
+        backgroundColor: "#3b5998",
+        paddingVertical: 12,
+    },
+    logframeRow: {
+        flexDirection: "row",
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: "#dddddd",
+    },
+    logframeRowEven: {
+        backgroundColor: "#e8f0fe",
+    },
+    logframeRowOdd: {
+        backgroundColor: "#ffffff",
+    },
+    logframeCell: {
+        flex: 1,
+        padding: 10,
+        textAlign: "center",
+        borderRightWidth: 1,
+        borderRightColor: "#dddddd",
+        fontSize: 15,
+    },
+    logframeCellHeader: {
+        fontWeight: "bold",
+        color: "#ffffff",
+        textAlign: "center",
+        fontSize: 16,
+    },
+    logframeCellBold: {
+        fontWeight: "bold",
+    },
 });
 
 interface ProjectData {
-  name: string;
-  description: string;
+    name: string;
+    description: string;
 }
 
 interface PromptData {
-  vision: { response: string };
-  mission: { response: string };
-  objectives: { response: string[] };
-  values: { response: string[] };
-  strategy: { response: string[] };
-  swot: { response: string };
+    vision: { response: string };
+    mission: { response: string };
+    objectives: { response: string[] };
+    values: { response: string[] };
+    strategy: { response: string[] };
+    swot: { response: string };
 }
 
 interface PestleData {
-  political: { inf: string; imp: string };
-  economic: { inf: string; imp: string };
-  social: { inf: string; imp: string };
-  technological: { inf: string; imp: string };
-  legal: { inf: string; imp: string };
-  environmental: { inf: string; imp: string };
+    political: { inf: string; imp: string };
+    economic: { inf: string; imp: string };
+    social: { inf: string; imp: string };
+    technological: { inf: string; imp: string };
+    legal: { inf: string; imp: string };
+    environmental: { inf: string; imp: string };
 }
 
 interface LogframeData {
-  map(arg0: (item: any, index: any) => React.JSX.Element): unknown;
-  goal: {
-    description: string;
-    indicators: string[];
-    mov: string[];
-    assump: string[];
-  };
-  outcome: {
-    description: string;
-    indicators: string[];
-    mov: string[];
-    assump: string[];
-  };
-  outputs: {
-    description: string;
-    indicators: string[];
-    mov: string[];
-    assump: string[];
-  }[];
-  activities: {
-    description: string;
-    indicators: string[];
-    mov: string[];
-    assump: string[];
-  }[];
+    impact?: {
+        description: string;
+        indicators: { indicator: string; baseline: string; target: string }[];
+        timeline: string;
+        assumptions: string;
+    };
+    outcome?: {
+        description: string;
+        indicators: { indicator: string; baseline: string; target: string }[];
+        timeline: string;
+        assumptions: string;
+    };
+    output?: {
+        description: string;
+        indicators: { indicator: string; baseline: string; target: string }[];
+        timeline: string;
+        assumptions: string;
+    };
+    activities?: {
+        description: string;
+        indicators: { indicator: string; baseline: string; target: string }[];
+        timeline: string;
+        assumptions: string;
+        inputs: string[];
+    }[];
 }
 
 interface MyDocumentProps {
-  projectData: ProjectData | null;
-  promptData: PromptData | null;
-  pestleData: PestleData | null;
-  logframeData: LogframeData | null;
-  isLoading: boolean;
+    projectData: ProjectData | null;
+    promptData: PromptData | null;
+    pestleData: PestleData | null;
+    logframeData: LogframeData[] | null;
+    isLoading: boolean;
 }
+
 const MyDocument: React.FC<MyDocumentProps> = ({
     projectData,
     promptData,
@@ -155,95 +202,92 @@ const MyDocument: React.FC<MyDocumentProps> = ({
     isLoading,
 }) => {
     const renderList = (data: any) => {
-        return data
-            ?.split(/\d+\.\s*/)
-            .filter((item: any) => item.trim() !== "")
-            .map((item: any, index: any) => (
-                <Text key={index}>
-                    {index + 1}. {item.trim()}
-                </Text>
-            ));
+        return (
+            <View style={styles.listContainer}>
+                {data
+                    .split(/(?<=\d\.\s)/) // Split based on the numbering pattern, keeping the delimiter
+                    .filter((item: string) => item.trim() !== "")
+                    .map((item: string, index: number) => (
+                        <Text key={index} style={styles.listItem}>
+                            {item.trim()}
+                        </Text>
+                    ))}
+            </View>
+        );
     };
 
     return (
         <Document>
             <Page size="A4" style={styles.page}>
                 <View style={styles.section}>
-                    {/* Project Name */}
                     <Text style={styles.header}>
-                        {projectData?.name || <Skeleton width={100} />}
-                    </Text>
-                    <Text style={styles.subHeader}>Preview</Text>
-                    <Text style={styles.subHeader}>
                         Strategic Plan{" "}
-                        {projectData?.name || <Skeleton width={100} />}
+                        {projectData ? (
+                            projectData.name
+                        ) : (
+                            <Skeleton width={150} />
+                        )}
                     </Text>
-
-                    {/* Project Overview */}
                     <View>
                         <Text style={styles.subHeader}>Project Overview</Text>
                         <Text style={styles.text}>
-                            {projectData?.description || <Skeleton count={3} />}
+                            {projectData ? (
+                                projectData.description
+                            ) : (
+                                <Skeleton count={3} />
+                            )}
                         </Text>
                     </View>
-
-                    {/* Vision */}
                     <View>
                         <Text style={styles.subHeader}>Vision</Text>
                         <Text style={styles.text}>
-                            {promptData?.vision?.response || (
+                            {promptData ? (
+                                promptData.vision.response
+                            ) : (
                                 <Skeleton count={2} />
                             )}
                         </Text>
                     </View>
-
-                    {/* Mission */}
                     <View>
                         <Text style={styles.subHeader}>Mission</Text>
                         <Text style={styles.text}>
-                            {promptData?.mission?.response || (
+                            {promptData ? (
+                                promptData.mission.response
+                            ) : (
                                 <Skeleton count={2} />
                             )}
                         </Text>
                     </View>
-
-                    {/* Objectives */}
                     <View>
                         <Text style={styles.subHeader}>Objectives</Text>
                         <Text style={styles.text}>
-                            {promptData?.objectives?.response ? (
+                            {promptData ? (
                                 renderList(promptData.objectives.response)
                             ) : (
                                 <Skeleton count={2} />
                             )}
                         </Text>
                     </View>
-
-                    {/* Values */}
                     <View>
                         <Text style={styles.subHeader}>Values</Text>
                         <Text style={styles.text}>
-                            {promptData?.values?.response ? (
+                            {promptData ? (
                                 renderList(promptData.values.response)
                             ) : (
                                 <Skeleton count={2} />
                             )}
                         </Text>
                     </View>
-
-                    {/* Strategy */}
                     <View>
                         <Text style={styles.subHeader}>Strategy</Text>
                         <Text style={styles.text}>
-                            {promptData?.strategy?.response ? (
+                            {promptData ? (
                                 renderList(promptData.strategy.response)
                             ) : (
                                 <Skeleton count={2} />
                             )}
                         </Text>
                     </View>
-
-                    {/* SWOT Analysis */}
                     <View>
                         <Text style={styles.subHeader}>SWOT Analysis</Text>
                         <View style={styles.swotTable}>
@@ -253,24 +297,16 @@ const MyDocument: React.FC<MyDocumentProps> = ({
                                     styles.tableHeader,
                                 ]}
                             >
-                                <Text
-                                    style={[
-                                        styles.swotTableCol,
-                                        styles.tableHeaderCell,
-                                    ]}
-                                >
+                                <Text style={styles.swotTableCol}>
                                     Strengths (S)
                                 </Text>
-                                <Text
-                                    style={[
-                                        styles.swotTableCol,
-                                        styles.tableHeaderCell,
-                                    ]}
-                                >
+                                <Text style={styles.swotTableCol}>
                                     Weaknesses (W)
                                 </Text>
                             </View>
-                            {promptData?.swot?.response &&
+                            {promptData &&
+                                promptData.swot &&
+                                promptData.swot.response &&
                                 JSON.parse(
                                     promptData.swot.response
                                 ).strengths.map((strength: any, index: any) => (
@@ -291,134 +327,115 @@ const MyDocument: React.FC<MyDocumentProps> = ({
                                     </View>
                                 ))}
                         </View>
+                        <View style={[styles.swotTableRow, styles.tableHeader]}>
+                            <Text style={styles.swotTableCol}>
+                                Opportunities (O)
+                            </Text>
+                            <Text style={styles.swotTableCol}>Threats (T)</Text>
+                        </View>
+                        {promptData &&
+                            promptData.swot &&
+                            promptData.swot.response &&
+                            JSON.parse(
+                                promptData.swot.response
+                            ).opportunities.map(
+                                (opportunity: any, index: any) => (
+                                    <View
+                                        style={styles.swotTableRow}
+                                        key={index}
+                                    >
+                                        <Text style={styles.swotTableCol}>
+                                            {opportunity}
+                                        </Text>
+                                        <Text style={styles.swotTableCol}>
+                                            {
+                                                JSON.parse(
+                                                    promptData.swot.response
+                                                ).threats[index]
+                                            }
+                                        </Text>
+                                    </View>
+                                )
+                            )}
                     </View>
-
-                    {/* PESTLE Analysis */}
                     <View>
                         <Text style={styles.subHeader}>PESTLE Analysis</Text>
                         <View style={styles.table}>
                             <View style={[styles.tableRow, styles.tableHeader]}>
-                                <Text
-                                    style={[
-                                        styles.tableCol,
-                                        styles.tableHeaderCell,
-                                    ]}
-                                >
-                                    Category
-                                </Text>
-                                <Text
-                                    style={[
-                                        styles.tableCol,
-                                        styles.tableHeaderCell,
-                                    ]}
-                                >
+                                <Text style={styles.tableCol}>Category</Text>
+                                <Text style={styles.tableCol}>
                                     Influence on Organization
                                 </Text>
-                                <Text
-                                    style={[
-                                        styles.tableCol,
-                                        styles.tableHeaderCell,
-                                    ]}
-                                >
-                                    Impact on Organization
+                                <Text style={styles.tableCol}>
+                                    Impact of Organization's activities'
                                 </Text>
                             </View>
                             {pestleData && (
                                 <>
                                     <View style={styles.tableRow}>
-                                        <Text
-                                            style={[
-                                                styles.tableCol,
-                                                styles.tableHeaderCell,
-                                            ]}
-                                        >
+                                        <Text style={styles.tableCol}>
                                             Political
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.political?.inf}
+                                            {pestleData.political.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.political?.imp}
+                                            {pestleData.political.imp}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
-                                        <Text
-                                            style={[
-                                                styles.tableCol,
-                                                styles.tableHeaderCell,
-                                            ]}
-                                        >
+                                        <Text style={styles.tableCol}>
                                             Economic
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.economic?.inf}
+                                            {pestleData.economic.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.economic?.imp}
+                                            {pestleData.economic.imp}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
-                                        <Text
-                                            style={[
-                                                styles.tableCol,
-                                                styles.tableHeaderCell,
-                                            ]}
-                                        >
+                                        <Text style={styles.tableCol}>
                                             Social
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.social?.inf}
+                                            {pestleData.social.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.social?.imp}
+                                            {pestleData.social.imp}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
-                                        <Text
-                                            style={[
-                                                styles.tableCol,
-                                                styles.tableHeaderCell,
-                                            ]}
-                                        >
+                                        <Text style={styles.tableCol}>
                                             Technological
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.technological?.inf}
+                                            {pestleData.technological.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.technological?.imp}
+                                            {pestleData.technological.imp}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
-                                        <Text
-                                            style={[
-                                                styles.tableCol,
-                                                styles.tableHeaderCell,
-                                            ]}
-                                        >
+                                        <Text style={styles.tableCol}>
                                             Legal
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.legal?.inf}
+                                            {pestleData.legal.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.legal?.imp}
+                                            {pestleData.legal.imp}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
-                                        <Text
-                                            style={[
-                                                styles.tableCol,
-                                                styles.tableHeaderCell,
-                                            ]}
-                                        >
+                                        <Text style={styles.tableCol}>
                                             Environmental
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.environmental?.inf}
+                                            {pestleData.environmental.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.environmental?.imp}
+                                            {pestleData.environmental.imp}
                                         </Text>
                                     </View>
                                 </>
@@ -426,176 +443,221 @@ const MyDocument: React.FC<MyDocumentProps> = ({
                         </View>
                     </View>
 
-                    {/* Logframe */}
-                    <View>
-                        <Text style={styles.subHeader}>Logframe</Text>
-                        <View style={styles.table}>
-                            <View style={[styles.tableRow, styles.tableHeader]}>
-                                <Text
-                                    style={[
-                                        styles.tableCol,
-                                        styles.tableHeaderCell,
-                                    ]}
-                                >
-                                    Results Chain
-                                </Text>
-                                <Text
-                                    style={[
-                                        styles.tableCol,
-                                        styles.tableHeaderCell,
-                                    ]}
-                                >
-                                    Project Summary
-                                </Text>
-                                <Text
-                                    style={[
-                                        styles.tableCol,
-                                        styles.tableHeaderCell,
-                                    ]}
-                                >
-                                    Indicators
-                                </Text>
-                                <Text
-                                    style={[
-                                        styles.tableCol,
-                                        styles.tableHeaderCell,
-                                    ]}
-                                >
-                                    Means of Verification
-                                </Text>
-                                <Text
-                                    style={[
-                                        styles.tableCol,
-                                        styles.tableHeaderCell,
-                                    ]}
-                                >
-                                    Assumptions
-                                </Text>
+                    {logframeData && logframeData.length > 0 && (
+                        <View style={styles.logframeTable}>
+                            <View style={styles.logframeHeader}>
+                                {[
+                                    "Result Chain",
+                                    "Description",
+                                    "Indicators",
+                                    "Baseline",
+                                    "Target",
+                                    "Timeline",
+                                    "Assumptions",
+                                ].map((header, index) => (
+                                    <Text
+                                        key={index}
+                                        style={styles.logframeCellHeader}
+                                    >
+                                        {header}
+                                    </Text>
+                                ))}
                             </View>
-                            {logframeData && (
-                                <>
-                                    <View style={styles.tableRow}>
+
+                            {logframeData.map((item, index) => {
+                                let resultChainLabel = "",
+                                    description = "",
+                                    indicators = "",
+                                    baseline = "",
+                                    target = "",
+                                    timeline = "",
+                                    assumptions = "";
+
+                                if (item.impact) {
+                                    resultChainLabel = "Impact";
+                                    description = item.impact.description;
+                                    indicators =
+                                        item.impact.indicators[0]?.indicator ||
+                                        "";
+                                    baseline =
+                                        item.impact.indicators[0]?.baseline ||
+                                        "";
+                                    target =
+                                        item.impact.indicators[0]?.target || "";
+                                    timeline = item.impact.timeline || "";
+                                    assumptions = item.impact.assumptions || "";
+                                } else if (item.outcome) {
+                                    resultChainLabel = "Outcome";
+                                    description = item.outcome.description;
+                                    indicators =
+                                        item.outcome.indicators[0]?.indicator ||
+                                        "";
+                                    baseline =
+                                        item.outcome.indicators[0]?.baseline ||
+                                        "";
+                                    target =
+                                        item.outcome.indicators[0]?.target ||
+                                        "";
+                                    timeline = item.outcome.timeline || "";
+                                    assumptions =
+                                        item.outcome.assumptions || "";
+                                } else if (item.output) {
+                                    resultChainLabel = "Output";
+                                    description = item.output.description;
+                                    indicators =
+                                        item.output.indicators[0]?.indicator ||
+                                        "";
+                                    baseline =
+                                        item.output.indicators[0]?.baseline ||
+                                        "";
+                                    target =
+                                        item.output.indicators[0]?.target || "";
+                                    timeline = item.output.timeline || "";
+                                    assumptions = item.output.assumptions || "";
+                                }
+
+                                return (
+                                    <View
+                                        key={index}
+                                        style={[
+                                            styles.logframeRow,
+                                            index % 2 === 0
+                                                ? styles.logframeRowEven
+                                                : styles.logframeRowOdd,
+                                        ]}
+                                    >
                                         <Text
                                             style={[
-                                                styles.tableCol,
-                                                styles.tableHeaderCell,
+                                                styles.logframeCell,
+                                                styles.logframeCellBold,
                                             ]}
                                         >
-                                            Goal
+                                            {resultChainLabel}
                                         </Text>
-                                        <Text style={styles.tableCol}>
-                                            {logframeData.goal?.description}
+                                        <Text style={styles.logframeCell}>
+                                            {description}
                                         </Text>
-                                        <Text style={styles.tableCol}>
-                                            {logframeData.goal?.indicators?.join(
-                                                ", "
-                                            )}
+                                        <Text style={styles.logframeCell}>
+                                            {indicators}
                                         </Text>
-                                        <Text style={styles.tableCol}>
-                                            {logframeData.goal?.mov?.join(", ")}
+                                        <Text style={styles.logframeCell}>
+                                            {baseline}
                                         </Text>
-                                        <Text style={styles.tableCol}>
-                                            {logframeData.goal?.assump?.join(
-                                                ", "
-                                            )}
+                                        <Text style={styles.logframeCell}>
+                                            {target}
+                                        </Text>
+                                        <Text style={styles.logframeCell}>
+                                            {timeline}
+                                        </Text>
+                                        <Text style={styles.logframeCell}>
+                                            {assumptions}
                                         </Text>
                                     </View>
-                                    <View style={styles.tableRow}>
-                                        <Text
-                                            style={[
-                                                styles.tableCol,
-                                                styles.tableHeaderCell,
-                                            ]}
+                                );
+                            })}
+
+                            {/* Activities */}
+                            {logframeData.map((item, index) =>
+                                item.activities?.map(
+                                    (activity, activityIndex) => (
+                                        <React.Fragment
+                                            key={`activity-${activityIndex}`}
                                         >
-                                            Outcome
-                                        </Text>
-                                        <Text style={styles.tableCol}>
-                                            {logframeData.outcome?.description}
-                                        </Text>
-                                        <Text style={styles.tableCol}>
-                                            {logframeData.outcome?.indicators?.join(
-                                                ", "
-                                            )}
-                                        </Text>
-                                        <Text style={styles.tableCol}>
-                                            {logframeData.outcome?.mov?.join(
-                                                ", "
-                                            )}
-                                        </Text>
-                                        <Text style={styles.tableCol}>
-                                            {logframeData.outcome?.assump?.join(
-                                                ", "
-                                            )}
-                                        </Text>
-                                    </View>
-                                    {logframeData.outputs?.map(
-                                        (output, index) => (
                                             <View
-                                                style={styles.tableRow}
-                                                key={index}
+                                                style={[
+                                                    styles.logframeRow,
+                                                    activityIndex % 2 === 0
+                                                        ? styles.logframeRowEven
+                                                        : styles.logframeRowOdd,
+                                                ]}
                                             >
                                                 <Text
                                                     style={[
-                                                        styles.tableCol,
-                                                        styles.tableHeaderCell,
+                                                        styles.logframeCell,
+                                                        styles.logframeCellBold,
                                                     ]}
                                                 >
-                                                    Output {index + 1}
+                                                    Activities
                                                 </Text>
-                                                <Text style={styles.tableCol}>
-                                                    {output.description}
-                                                </Text>
-                                                <Text style={styles.tableCol}>
-                                                    {output.indicators?.join(
-                                                        ", "
-                                                    )}
-                                                </Text>
-                                                <Text style={styles.tableCol}>
-                                                    {output.mov?.join(", ")}
-                                                </Text>
-                                                <Text style={styles.tableCol}>
-                                                    {output.assump?.join(", ")}
-                                                </Text>
-                                            </View>
-                                        )
-                                    )}
-                                    {logframeData.activities?.map(
-                                        (activity, index) => (
-                                            <View
-                                                style={styles.tableRow}
-                                                key={index}
-                                            >
                                                 <Text
-                                                    style={[
-                                                        styles.tableCol,
-                                                        styles.tableHeaderCell,
-                                                    ]}
+                                                    style={styles.logframeCell}
                                                 >
-                                                    Activity {index + 1}
-                                                </Text>
-                                                <Text style={styles.tableCol}>
                                                     {activity.description}
                                                 </Text>
-                                                <Text style={styles.tableCol}>
-                                                    {activity.indicators?.join(
-                                                        ", "
-                                                    )}
+                                                <Text
+                                                    style={styles.logframeCell}
+                                                >
+                                                    {activity.indicators[0]
+                                                        ?.indicator || ""}
                                                 </Text>
-                                                <Text style={styles.tableCol}>
-                                                    {activity.mov?.join(", ")}
+                                                <Text
+                                                    style={styles.logframeCell}
+                                                >
+                                                    {activity.indicators[0]
+                                                        ?.baseline || ""}
                                                 </Text>
-                                                <Text style={styles.tableCol}>
-                                                    {activity.assump?.join(
-                                                        ", "
-                                                    )}
+                                                <Text
+                                                    style={styles.logframeCell}
+                                                >
+                                                    {activity.indicators[0]
+                                                        ?.target || ""}
+                                                </Text>
+                                                <Text
+                                                    style={styles.logframeCell}
+                                                >
+                                                    {activity.timeline}
+                                                </Text>
+                                                <Text
+                                                    style={styles.logframeCell}
+                                                >
+                                                    {activity.assumptions}
                                                 </Text>
                                             </View>
-                                        )
-                                    )}
-                                </>
+
+                                            {/* Inputs */}
+                                            {activity.inputs && (
+                                                <View
+                                                    style={[
+                                                        styles.logframeRow,
+                                                        styles.logframeRowOdd,
+                                                    ]}
+                                                >
+                                                    <Text
+                                                        style={[
+                                                            styles.logframeCell,
+                                                            styles.logframeCellBold,
+                                                        ]}
+                                                    >
+                                                        Input
+                                                    </Text>
+                                                    <Text
+                                                        style={
+                                                            styles.logframeCell
+                                                        }
+                                                    >
+                                                        {activity.inputs.join(
+                                                            ", "
+                                                        )}
+                                                    </Text>
+                                                    {/* Empty cells */}
+                                                    {Array(5)
+                                                        .fill("")
+                                                        .map((_, idx) => (
+                                                            <Text
+                                                                key={idx}
+                                                                style={
+                                                                    styles.logframeCell
+                                                                }
+                                                            ></Text>
+                                                        ))}
+                                                </View>
+                                            )}
+                                        </React.Fragment>
+                                    )
+                                )
                             )}
                         </View>
-                    </View>
+                    )}
                 </View>
             </Page>
         </Document>

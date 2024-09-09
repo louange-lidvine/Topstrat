@@ -19,96 +19,136 @@ function Final() {
     const [promptData, setPromptData] = useState<any>();
     const [projectData, setProjectData] = useState<any>();
     const [pestleData, setPestleData] = useState<any>();
-    const [logframeData, setLogframeData] = useState<any>();
+    const [logframeData, setLogframeData] = useState<any>([]);
+    const [Data, setData] = useState<any>([]);
     const [error, setError] = useState<string | null>(null);
 
+useEffect(() => {
+ 
+  const fetchData = async () => {
+    try {
+      const token = getCookie("token");
+      setIsLoading(true);
 
-    const fetchData = async () => {
-        try {
-            const token = getCookie("token");
-            setIsLoading(true);
-
-
-            // Fetch prompt data
-            const promptResponse = await axios.get(
-                `${baseURL}/projects/prompts/latest/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
-                        }`,
-                    },
-                }
-            );
-            setPromptData(promptResponse.data);
-
-
-            // Fetch project data
-            const projectResponse = await axios.get(
-                `${baseURL}/projects/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
-                        }`,
-                    },
-                }
-            );
-            setProjectData(projectResponse.data);
-
-
-            // Fetch pestle and logframe data
-            const dataResponse = await axios.post(
-                `${baseURL}/projects/projects/generate-analysis/${id}`,
-                { projectId: id },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                            JSON.parse(token ?? "").access_token
-                        }`,
-                    },
-                }
-            );
-            setPestleData(JSON.parse(dataResponse.data.pestle.response));
-           const data = JSON.parse(dataResponse.data.logframe.response);
-           setLogframeData(data.results_chain); 
-
-
-            setIsLoading(false);
-        } catch (error) {
-            setError("Error fetching data");
-            console.error("Error fetching data:", error);
-            setIsLoading(false);
+      const promptResponse = await axios.get(
+        `${baseURL}/projects/prompts/latest/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-    };
+      );
+      setPromptData(promptResponse.data);
+
+      const projectResponse = await axios.get(
+        `${baseURL}/projects/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setProjectData(projectResponse.data);
+
+      const response = await axios.get(
+        `${baseURL}/projects/prompts/latest/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setPestleData(JSON.parse(response.data.pestle.response));
+
+      const logframeData = JSON.parse(response.data.logframe.response);
+        setData(logframeData)
+        setLogframeData(logframeData.results_chain);
+  
+
+      setIsLoading(false);
+    } catch (error) {
+      setError("Error fetching data");
+      console.error("Error fetching data:", error);
+      setIsLoading(false);
+    }
+  };
+
+  fetchData();
+}, [id]);
+
+const regenerateData = async () => {
+  try {
+    const token = getCookie("token");
+    setIsLoading(true);
+
+    const promptResponse = await axios.get(
+      `${baseURL}/projects/projects/generate-analysis/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setPromptData(promptResponse.data);
+
+    const projectResponse = await axios.get(
+      `${baseURL}/projects/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setProjectData(projectResponse.data);
+
+    const response = await axios.post(
+      `${baseURL}/projects/projects/generate-analysis/${id}`,
+      { projectId: id },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setPestleData(JSON.parse(response.data.pestle.response));
+
+    const logframeData = JSON.parse(response.data.logframe.response);
+      setLogframeData(logframeData.results_chain);
+        setData(logframeData)
+
+    setIsLoading(false);
+  } catch (error) {
+    setError("Error fetching data");
+    console.error("Error fetching data:", error);
+    setIsLoading(false);
+  }
+};
+
+const renderList = (data: string) => {
+  return (
+    <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
+      {data
+        .split(/\d+\.\s*/)
+        .filter((item) => item.trim() !== "")
+        .map((item, index) => (
+          <li key={index} style={{ marginBottom: "8px", fontSize: "16px", color: "#333" }}>
+            {item.trim()}
+          </li>
+        ))}
+    </ul>
+  );
+};
 
 
-    useEffect(() => {
-        fetchData();
-    }, []);
 
-
-    const regenerateData = () => {
-        fetchData();
-    };
-
-
-    const renderList = (data: string) => {
-        return data
-            .split(/\d+\.\s*/)
-            .filter((item) => item.trim() !== "")
-            .map((item, index) => (
-                <li key={index}>
-                    {index + 1}. {item.trim()}
-                </li>
-            ));
-    };
-
-
-  // PDF document component
   const MyDocument = () => (
     <Document pageMode="fullScreen">
       <Page size="A4" style={{ margin: "auto" }}>
@@ -605,7 +645,7 @@ function Final() {
                           Influence on organization
                         </th>
                         <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                          Impact on organization
+                          Impact of organization's activities
                         </th>
                       </tr>
                     </thead>
@@ -702,15 +742,16 @@ function Final() {
                   </div>
                 ) : (
                  <div className="w-full">
-          <div className="flex flex-col gap-3">
+       <div className="flex flex-col gap-3">
             <div className="text-blue-default font-bold text-2xl py-5">
               Logframe
             </div>
+            <h1>Goal : {Data.goal}</h1>
             <div className="overflow-x-auto">
-              <table className="border border-1 m-auto">
+            <table className="border border-1 m-auto">
                 <thead>
                   <tr className="bg-slate-300">
-                    <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                    <th className="border border-1 p-2  text-blue-default font-bold text-center" colSpan={2}>
                       Results Chain
                     </th>
                     <th className="border border-1 p-2 text-blue-default font-bold text-center">
@@ -730,24 +771,94 @@ function Final() {
                     </th>
                   </tr>
                 </thead>
-                <tbody>
-                  {logframeData &&
-                    logframeData.map((item: any, index: number) => (
-                      <tr
-                        key={index}
-                        className={index % 2 === 0 ? "bg-slate-100" : ""}
-                      >
-                        <td className="border border-1 p-2 text-center font-bold">
-                          {item.category}
-                        </td>
-                        <td className="border border-1 p-2">{item.indicator}</td>
-                        <td className="border border-1 p-2">{item.baseline}</td>
-                        <td className="border border-1 p-2">{item.target}</td>
-                        <td className="border border-1 p-2">{item.timeline}</td>
-                        <td className="border border-1 p-2">{item.assumptions}</td>
-                      </tr>
-                    ))}
-                </tbody>
+<tbody>
+  {logframeData &&
+    logframeData.map((item: any, index: number) => {
+      let resultChainLabel = ""; 
+      let description = ""; 
+      let indicators = ""; 
+      let baseline = "";
+      let target = ""; 
+      let timeline = ""; 
+      let assumptions = "";
+      let inputs = ""; 
+
+   
+      if (item.impact) {
+        resultChainLabel = "Impact";
+        description = item.impact.description;
+        indicators = item.impact.indicators[0]?.indicator || "";
+        baseline = item.impact.indicators[0]?.baseline || "";
+        target = item.impact.indicators[0]?.target || "";
+        timeline = item.impact.timeline || "";
+        assumptions = item.impact.assumptions || "";
+      } else if (item.outcome) {
+        resultChainLabel = "Outcome";
+        description = item.outcome.description;
+        indicators = item.outcome.indicators[0]?.indicator || "";
+        baseline = item.outcome.indicators[0]?.baseline || "";
+        target = item.outcome.indicators[0]?.target || "";
+        timeline = item.outcome.timeline || "";
+        assumptions = item.outcome.assumptions || "";
+      } else if (item.output) {
+        resultChainLabel = "Output";
+        description = item.output.description;
+        indicators = item.output.indicators[0]?.indicator || "";
+        baseline = item.output.indicators[0]?.baseline || "";
+        target = item.output.indicators[0]?.target || "";
+        timeline = item.output.timeline || "";
+        assumptions = item.output.assumptions || "";
+      }
+
+      return (
+        <tr key={index} className={index % 2 === 0 ? "bg-slate-100" : ""}>
+          <td className="border border-1 p-2 text-center font-bold">{resultChainLabel}</td>
+          <td className="border border-1 p-2 text-center">{description}</td>
+          <td className="border border-1 p-2">{indicators}</td>
+          <td className="border border-1 p-2">{baseline}</td>
+          <td className="border border-1 p-2">{target}</td>
+          <td className="border border-1 p-2">{timeline}</td>
+          <td className="border border-1 p-2">{assumptions}</td>
+        </tr>
+      );
+    })}
+
+  {Data.activities &&
+    Data.activities.map((activity: any, index: number) => (
+    <>
+        
+        <tr key={`activity-${index}`} className={index % 2 === 0 ? "bg-slate-100" : ""}>
+          <td className="border border-1 p-2 text-center font-bold">Activities</td>
+          <td className="border border-1 p-2 text-center">{activity.description}</td>
+          <td className="border border-1 p-2">{activity.indicators[0]?.indicator || ""}</td>
+          <td className="border border-1 p-2">{activity.indicators[0]?.baseline || ""}</td>
+          <td className="border border-1 p-2">{activity.indicators[0]?.target || ""}</td>
+          <td className="border border-1 p-2">{activity.timeline}</td>
+          <td className="border border-1 p-2">{activity.assumptions}</td> 
+        </tr>
+        
+{activity.inputs && (
+  <tr className="bg-slate-50">
+    <td className="border border-1 p-2 text-center font-bold">Input</td>
+    <td className="border border-1 p-2 text-center">
+      {activity.inputs.join(", ")}
+    </td>
+    <td className="border border-1 p-2"></td>
+    <td className="border border-1 p-2"></td>
+    <td className="border border-1 p-2"></td>
+    <td className="border border-1 p-2"></td>
+    <td className="border border-1 p-2"></td>
+  </tr>
+)}
+
+
+      </>
+     
+    ))}
+</tbody>
+
+
+
               </table>
             </div>
           </div>

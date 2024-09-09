@@ -17,7 +17,7 @@ import GoogleSignInButton from "@/app/constants/(auth)/googleSignInButton";
 import { redirect } from "next/navigation";
 import { baseURL, ApiURL } from "../../constants/index"; 
 function Page() {
-    const router = useRouter();
+  const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -33,54 +33,52 @@ function Page() {
         setShowPassword((prev) => !prev);
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setLoading(true);
-        axios
-            .post(`${baseURL}/auth/signin`, formData)
-            .then((res) => {
-                setLoading(false);
-                console.log(res.data);
-                const token = res.data.access_token;
-                console.log(token);
-                setCookie("token", JSON.stringify(token));
-                const decodedToken: any = jwtDecode(token);
-                console.log("Decoded token:", decodedToken);
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
 
-                const userId = decodedToken.userId || decodedToken.sub; 
-                console.log("User ID:", userId);
-                localStorage.setItem("userId", userId);
-                const decoded = jwtDecode(token) as { role: string };
-                console.log(decoded);
-                if (decoded.role == "admin") {
-                    router.push("/components/Landingpage");
-                    // toast.success("Admin Logged in successfully");
-                } else if (decoded.role == "user") {
-                    router.push("/components/Landingpage");
-                    setLoading(false);
-                    toast.success("User Logged in successfully");
-                    router.push("/components/Landingpage");
-                } else {
-                    toast.error("Role Not valid!");
-                }
-                setCookie("token", res?.data);
-                setLoading(false);
-            })
-            .catch((err: any) => {
-                console.log("Error occured: ", err.message);
-                if (err?.response?.data?.success) {
-                    if (
-                        String(err?.response?.data?.error) ==
-                        "Network error occurred"
-                    )
-                        return toast.error("Invalid credentials");
-                    setLoading(false);
-                } else {
-                    setLoading(false);
-                    return toast.error("Invalid credentials");
-                }
-            });
-    };
+    try {
+        const response = await axios.post(`${baseURL}/auth/signin`, formData);
+        setLoading(false);
+        console.log(response.data);
+
+        const token = response.data.access_token;
+        const userInfo = response.data.userInfo;
+
+        setCookie("token", token);
+        localStorage.setItem("userId", userInfo._id);
+
+        const decoded = jwtDecode(token) as { role: string };
+
+        if (decoded.role === "admin") {
+            router.push("/components/LandiangPage");
+            toast.success("Admin Logged in successfully");
+        } else if (decoded.role === "user") {
+            router.push("/components/Landingpage");
+            toast.success("User Logged in successfully");
+        } else {
+            toast.error("Role Not valid!");
+        }
+
+    } catch (err: any) {
+        setLoading(false);
+        console.error("Error occurred:", err);
+
+        if (err.response && err.response.data) {
+     
+            const msg = err.response.data.message || err.response.data.error;
+            if (msg) {
+                toast.error(msg); 
+            } else {
+                toast.error("An error occurred on the server."); 
+            }
+        } else {
+            toast.error("An unexpected error occurred."); 
+        }
+    }
+};
+
+
 
     return (
         <div className="min-h-screen flex items-center px-10 md:px-16 lg:px-32">
