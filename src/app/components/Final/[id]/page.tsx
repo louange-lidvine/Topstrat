@@ -66,7 +66,9 @@ useEffect(() => {
 
       const logframeData = JSON.parse(response.data.logframe.response);
         setData(logframeData)
-        setLogframeData(logframeData.results_chain);
+        setLogframeData(logframeData);
+        setIsLoading(false)
+        return logframeData
   
 
       setIsLoading(false);
@@ -121,10 +123,10 @@ const regenerateData = async () => {
     setPestleData(JSON.parse(response.data.pestle.response));
 
     const logframeData = JSON.parse(response.data.logframe.response);
-      setLogframeData(logframeData.results_chain);
+      setLogframeData(logframeData);
         setData(logframeData)
+        return logframeData
 
-    setIsLoading(false);
   } catch (error) {
     setError("Error fetching data");
     console.error("Error fetching data:", error);
@@ -746,7 +748,7 @@ const renderList = (data: string) => {
             <div className="text-blue-default font-bold text-2xl py-5">
               Logframe
             </div>
-            <h1>Goal : {Data.goal}</h1>
+            <h1>Goal : {logframeData?.goal?.description}</h1>
             <div className="overflow-x-auto">
             <table className="border border-1 m-auto">
                 <thead>
@@ -772,89 +774,113 @@ const renderList = (data: string) => {
                   </tr>
                 </thead>
 <tbody>
-  {logframeData &&
-    logframeData.map((item: any, index: number) => {
-      let resultChainLabel = ""; 
-      let description = ""; 
-      let indicators = ""; 
-      let baseline = "";
-      let target = ""; 
-      let timeline = ""; 
-      let assumptions = "";
-      let inputs = ""; 
-
-   
-      if (item.impact) {
-        resultChainLabel = "Impact";
-        description = item.impact.description;
-        indicators = item.impact.indicators[0]?.indicator || "";
-        baseline = item.impact.indicators[0]?.baseline || "";
-        target = item.impact.indicators[0]?.target || "";
-        timeline = item.impact.timeline || "";
-        assumptions = item.impact.assumptions || "";
-      } else if (item.outcome) {
-        resultChainLabel = "Outcome";
-        description = item.outcome.description;
-        indicators = item.outcome.indicators[0]?.indicator || "";
-        baseline = item.outcome.indicators[0]?.baseline || "";
-        target = item.outcome.indicators[0]?.target || "";
-        timeline = item.outcome.timeline || "";
-        assumptions = item.outcome.assumptions || "";
-      } else if (item.output) {
-        resultChainLabel = "Output";
-        description = item.output.description;
-        indicators = item.output.indicators[0]?.indicator || "";
-        baseline = item.output.indicators[0]?.baseline || "";
-        target = item.output.indicators[0]?.target || "";
-        timeline = item.output.timeline || "";
-        assumptions = item.output.assumptions || "";
-      }
-
-      return (
-        <tr key={index} className={index % 2 === 0 ? "bg-slate-100" : ""}>
-          <td className="border border-1 p-2 text-center font-bold">{resultChainLabel}</td>
-          <td className="border border-1 p-2 text-center">{description}</td>
-          <td className="border border-1 p-2">{indicators}</td>
-          <td className="border border-1 p-2">{baseline}</td>
-          <td className="border border-1 p-2">{target}</td>
-          <td className="border border-1 p-2">{timeline}</td>
-          <td className="border border-1 p-2">{assumptions}</td>
-        </tr>
-      );
-    })}
-
-  {Data.activities &&
-    Data.activities.map((activity: any, index: number) => (
+  {logframeData && logframeData.goal && (
     <>
-        
-        <tr key={`activity-${index}`} className={index % 2 === 0 ? "bg-slate-100" : ""}>
-          <td className="border border-1 p-2 text-center font-bold">Activities</td>
-          <td className="border border-1 p-2 text-center">{activity.description}</td>
-          <td className="border border-1 p-2">{activity.indicators[0]?.indicator || ""}</td>
-          <td className="border border-1 p-2">{activity.indicators[0]?.baseline || ""}</td>
-          <td className="border border-1 p-2">{activity.indicators[0]?.target || ""}</td>
-          <td className="border border-1 p-2">{activity.timeline}</td>
-          <td className="border border-1 p-2">{activity.assumptions}</td> 
-        </tr>
-        
-{activity.inputs && (
-  <tr className="bg-slate-50">
-    <td className="border border-1 p-2 text-center font-bold">Input</td>
-    <td className="border border-1 p-2 text-center">
-      {activity.inputs.join(", ")}
-    </td>
-    <td className="border border-1 p-2"></td>
-    <td className="border border-1 p-2"></td>
-    <td className="border border-1 p-2"></td>
-    <td className="border border-1 p-2"></td>
-    <td className="border border-1 p-2"></td>
-  </tr>
-)}
+      {/* Impact Level */}
+      <tr className="bg-slate-100">
+        <td className="border border-1 p-2 text-center font-bold">Impact</td>
+        <td className="border border-1 p-2 text-center">{logframeData.goal.impact?.description || "-"}</td>
+        <td className="border border-1 p-2">
+          {logframeData.goal.impact?.indicators &&
+            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
+              const indicator = logframeData.goal.impact.indicators[key];
+              return (
+                <div key={idx}>
+                  <p>{key}:</p> {indicator.indicator || "-"}, 
+                </div>
+              );
+            })}
+        </td>
+        <td className="border border-1 p-2">
+          {logframeData.goal.impact?.indicators &&
+            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
+              const indicator = logframeData.goal.impact.indicators[key];
+              return (
+                <div key={idx}>
+                  <p>Baseline:</p> {indicator.baseline || "-"}, 
+                </div>
+              );
+            })}
+        </td>
+        <td className="border border-1 p-2">
+          {logframeData.goal.impact?.indicators &&
+            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
+              const indicator = logframeData.goal.impact.indicators[key];
+              return (
+                <div key={idx}>
+                  <p>Target:</p> {indicator.target || "-"}
+                </div>
+              );
+            })}
+        </td>
+        <td className="border border-1 p-2">{logframeData.goal.impact?.timeline || "-"}</td>
+        <td className="border border-1 p-2">{logframeData.goal.impact?.assumptions || "-"}</td>
+      </tr>
 
+      {/* Outcome Level */}
+      {logframeData.goal.impact?.outcomes?.map((outcomeItem:any, outcomeIndex:any) => (
+        <React.Fragment key={`outcome-${outcomeIndex}`}>
+          <tr className={outcomeIndex % 2 === 0 ? "bg-slate-100" : "-"}>
+            <td className="border border-1 p-2 text-center font-bold">Outcome</td>
+            <td className="border border-1 p-2 text-center">{outcomeItem.description || "-"}</td>
+            <td className="border border-1 p-2">{outcomeItem.indicator || "-"}</td>
+            <td className="border border-1 p-2">{outcomeItem.baseline || "-"}</td>
+            <td className="border border-1 p-2">{outcomeItem.target || "-"}</td>
+            <td className="border border-1 p-2">{outcomeItem.timeline || "-"}</td>
+            <td className="border border-1 p-2">{outcomeItem.assumptions || "-"}</td>
+          </tr>
 
-      </>
-     
-    ))}
+          {/* Output Level */}
+          {outcomeItem.outputs?.map((outputItem:any, outputIndex:any) => (
+            <React.Fragment key={`output-${outputIndex}`}>
+              <tr className={outputIndex % 2 === 0 ? "bg-slate-100" : "-"}>
+                <td className="border border-1 p-2 text-center font-bold">Output</td>
+                <td className="border border-1 p-2 text-center">{outputItem.description || "-"}</td>
+                <td className="border border-1 p-2">{outputItem.indicator || "-"}</td>
+                <td className="border border-1 p-2">{outputItem.baseline || "-"}</td>
+                <td className="border border-1 p-2">{outputItem.target || "-"}</td>
+                <td className="border border-1 p-2">{outputItem.timeline || "-"}</td>
+                <td className="border border-1 p-2">{outputItem.assumptions || "-"}</td>
+              </tr>
+
+              {/* Activity Level */}
+              {outputItem.activities?.map((activityItem:any, activityIndex:any) => (
+                <React.Fragment key={`activity-${activityIndex}`}>
+                  <tr className={activityIndex % 2 === 0 ? "bg-slate-100" : "-"}>
+                    <td className="border border-1 p-2 text-center font-bold">Activity</td>
+                    <td className="border border-1 p-2 text-center">{activityItem.description || "-"}</td>
+                    <td className="border border-1 p-2">{activityItem.indicator || "-"}</td>
+                    <td className="border border-1 p-2">{activityItem.baseline || "-"}</td>
+                    <td className="border border-1 p-2">{activityItem.target || "-"}</td>
+                    <td className="border border-1 p-2">{activityItem.timeline || "-"}</td>
+                    <td className="border border-1 p-2">{activityItem.assumptions || "-"}</td>
+                  </tr>
+
+                  {/* Inputs Level */}
+                  {activityItem.inputs && (
+                    <tr className="bg-slate-100">
+                      <td className="border border-1 p-2 text-center font-bold">Input</td>
+                      <td className="border border-1 p-2 text-center">
+                        {activityItem.inputs.join(", ")}
+                      </td>
+                      <td className="border border-1 p-2">-</td>
+                      <td className="border border-1 p-2">-</td>
+                      <td className="border border-1 p-2">-</td>
+                      <td className="border border-1 p-2">-</td>
+                      <td className="border border-1 p-2">Funding is 
+secured, and all 
+necessary 
+resources are available</td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              ))}
+            </React.Fragment>
+          ))}
+        </React.Fragment>
+      ))}
+    </>
+  )}
 </tbody>
 
 
