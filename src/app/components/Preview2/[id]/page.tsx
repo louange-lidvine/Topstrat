@@ -198,7 +198,7 @@ function Preview() {
                                             Influence on organization
                                         </th>
                                         <th className="border border-1 p-2 text-blue-default font-bold text-center">
-                                            Impact of organization's activities'
+                                            Impact of organization's activities
                                         </th>
                                     </tr>
                                 </thead>

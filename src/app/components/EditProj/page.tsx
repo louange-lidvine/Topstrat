@@ -140,6 +140,7 @@ export default function ({
                         {project.name.length > 20
                             ? project.name.slice(20) + "..."
                             : project.name}
+                            
                     </p>
                 )}
             </div>
