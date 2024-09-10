@@ -179,7 +179,7 @@ function Preview() {
               const indicator = logframeData.goal.impact.indicators[key];
               return (
                 <div key={idx}>
-                  <p>Baseline:</p> {indicator.baseline  || "-"}, 
+                  <p>Baseline:</p> {indicator.baseline  || ""}, 
                 </div>
               );
             })}
@@ -219,7 +219,7 @@ function Preview() {
                 <td className="border border-1 p-2 text-center font-bold">Output</td>
                 <td className="border border-1 p-2 text-center">{outputItem.description || "-"}</td>
                 <td className="border border-1 p-2">{outputItem.indicator || "-"}</td>
-                <td className="border border-1 p-2">{outputItem.baseline || "-"}</td>
+                <td className="border border-1 p-2">{outputItem.baseline || "0"}</td>
                 <td className="border border-1 p-2">{outputItem.target || "-"}</td>
                 <td className="border border-1 p-2">{outputItem.timeline || "-"}</td>
                 <td className="border border-1 p-2">{outputItem.assumptions || "-"}</td>
@@ -245,9 +245,9 @@ function Preview() {
                       <td className="border border-1 p-2 text-center">
                         {activityItem.inputs.join(", ")}
                       </td>
-                      <td className="border border-1 p-2">-</td>
-                      <td className="border border-1 p-2">-</td>
-                      <td className="border border-1 p-2">-</td>
+                      <td className="border border-1 p-2">(To be determined)</td>
+                      <td className="border border-1 p-2">(To be determined)</td>
+                      <td className="border border-1 p-2">(To be determined)</td>
                       <td className="border border-1 p-2">-</td>
                       <td className="border border-1 p-2">Funding is 
 secured, and all 
