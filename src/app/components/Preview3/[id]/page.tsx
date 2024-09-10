@@ -7,6 +7,8 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
 import { baseURL } from "@/app/constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Preview() {
   const router = useRouter();
@@ -16,24 +18,24 @@ function Preview() {
   const [logframeData, setLogframeData] = useState<any>({});
   const [Data, setData] = useState<any>([]);
 
-  useEffect(() => {
-    const getProject = async (id: string) => {
-      try {
-        const token = getCookie("token");
-        const response = await axios.get(`${baseURL}/projects/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setProjectData(response.data);
-      } catch (error) {
-        console.error("Error fetching project data:", error);
-      }
-    };
-    getProject(id as string);
-    setLoading(false);
-  }, [id]);
+    useEffect(() => {
+        const getProject = async (id: string) => {
+            try {
+                const token = getCookie("token");
+                const response = await axios.get(`${baseURL}/projects/${id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setProjectData(response.data);
+            } catch (error) {
+                console.error("Error fetching project data:", error);
+            }
+        };
+        getProject(id as string);
+        setLoading(false);
+    }, [id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,8 +64,8 @@ function Preview() {
       }
     };
 
-    fetchData();
-  }, [id]);
+        fetchData();
+    }, [id]);
 
   const refetchData = async () => {
     const token = getCookie("token");
@@ -91,9 +93,38 @@ function Preview() {
     }
   };
 
-  const handleSave = async () => {
-    console.log("Changes saved:", logframeData);
-  };
+    const handleSave = async () => {
+        const token = getCookie("token");
+        try {
+            const result = await axios.put(
+                `${baseURL}/projects/prompts/${id}`,
+                {
+                    response: JSON.stringify({
+                        results_chain: editableLogframeData,
+                    }),
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            console.log("Response from the API:", result.data);
+            setLogframeData(editableLogframeData);
+            setIsEditing(false);
+
+            // Display success toast message
+            toast.success("Data saved successfully!");
+        } catch (error: any) {
+            console.error(
+                "Error saving data:",
+                error.response ? error.response.data : error.message
+            );
+            toast.error("Failed to save data. Please try again.");
+        }
+    };
 
   return (
     <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8">

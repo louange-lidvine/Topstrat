@@ -7,6 +7,8 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import PestleSkeleton from "../../skeletons/PestleSkeleton";
 import { baseURL } from "@/app/constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Preview() {
     const router = useRouter();
@@ -18,7 +20,6 @@ function Preview() {
     const [editablePestleData, setEditablePestleData] = useState<any>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [promptId, setPromptId] = useState<string | null>(null);
-
     useEffect(() => {
         const getProject = async (id: string) => {
             try {
@@ -27,9 +28,7 @@ function Preview() {
                 const response = await axios.get(`${baseURL}/projects/${id}`, {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                          token
-                        }`,
+                        Authorization: `Bearer ${token}`,
                     },
                 });
                 setProjectData(response.data);
@@ -41,7 +40,6 @@ function Preview() {
         };
         getProject(id as string);
     }, [id]);
-
     useEffect(() => {
         const fetchData = async () => {
             const token = getCookie("token");
@@ -52,18 +50,16 @@ function Preview() {
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${
-                              token
-                            }`,
+                            Authorization: `Bearer ${token}`,
                         },
                     }
                 );
                 const data = JSON.parse(response.data.pestle.response);
                 setPestleData(data);
                 setEditablePestleData(data);
-                setPromptId(response.data.pestle._id); 
+                setPromptId(response.data.swot._id);
             } catch (error) {
-                console.log(error);
+                console.error("Error fetching PESTLE data:", error);
             } finally {
                 setPestleLoading(false);
             }
@@ -71,6 +67,49 @@ function Preview() {
 
         fetchData();
     }, [id]);
+   const saveData = async () => {
+       const token = getCookie("token");
+       if (!promptId) {
+           console.error("Prompt ID is not available");
+           return;
+       }
+       if (!editablePestleData) {
+           console.error("Editable PESTLE data is missing");
+           toast.error("No data to save. Please try again.");
+           return;
+       }
+       const response = {
+           political: editablePestleData.political || {},
+           economic: editablePestleData.economic || {},
+           social: editablePestleData.social || {},
+           technological: editablePestleData.technological || {},
+           legal: editablePestleData.legal || {},
+           environmental: editablePestleData.environmental || {},
+       };
+       try {
+           const result = await axios.put(
+               `${baseURL}/projects/prompts/${promptId}`,
+               { response: JSON.stringify(response), },
+               {
+                   headers: {
+                       "Content-Type": "application/json",
+                       Authorization: `Bearer ${token}`,
+                   },
+               }
+           );
+           console.log("Response from the API:", result.data);
+           setPestleData(editablePestleData);
+           setIsEditing(false);
+           toast.success("Data saved successfully!");
+       } catch (error: any) {
+           console.error(
+               "Error saving data:",
+               error.response ? error.response.data : error.message
+           );
+           toast.error("Failed to save data. Please try again.");
+       }
+   };
+
 
     const refetchData = async () => {
         const token = getCookie("token");
@@ -82,9 +121,7 @@ function Preview() {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                          token
-                        }`,
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             );
@@ -94,7 +131,7 @@ function Preview() {
             setPromptId(response.data.pestle._id);
             console.log("updated successfully");
         } catch (error) {
-            console.log(error);
+            console.error("Error refetching data:", error);
         } finally {
             setPestleLoading(false);
         }
@@ -113,43 +150,6 @@ function Preview() {
             },
         }));
         setIsEditing(true);
-    };
-
-    const saveData = async () => {
-        const token = getCookie("token");
-        if (!promptId) {
-            console.error("Prompt ID is not available");
-            return;
-        }
-
-        // Map the response to the expected format
-        const response = {
-            political: editablePestleData.political,
-            economic: editablePestleData.economic,
-            social: editablePestleData.social,
-            technological: editablePestleData.technological,
-            legal: editablePestleData.legal,
-            environmental: editablePestleData.environmental,
-        };
-
-        try {
-            await axios.put(
-                `${baseURL}/projects/${id}/prompts/${promptId}`,
-                { response }, // Use the mapped response object
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                          token
-                        }`,
-                    },
-                }
-            );
-            setPestleData(editablePestleData); // Update the main data with the new data
-            setIsEditing(false);
-        } catch (error) {
-            console.error("Error saving data:", error);
-        }
     };
 
     return (
@@ -229,7 +229,8 @@ function Preview() {
                                                                 category,
                                                                 "inf",
                                                                 e.currentTarget
-                                                                    .textContent || ""
+                                                                    .textContent ||
+                                                                    ""
                                                             )
                                                         }
                                                         style={{
@@ -251,7 +252,8 @@ function Preview() {
                                                                 category,
                                                                 "imp",
                                                                 e.currentTarget
-                                                                    .textContent || ""
+                                                                    .textContent ||
+                                                                    ""
                                                             )
                                                         }
                                                         style={{
@@ -305,6 +307,7 @@ function Preview() {
                     </div>
                 </div>
             )}
+            <ToastContainer />
         </div>
     );
 }
