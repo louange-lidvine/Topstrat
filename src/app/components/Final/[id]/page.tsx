@@ -821,7 +821,7 @@ const renderList = (data: string) => {
       {logframeData.goal.impact?.outcomes?.map((outcomeItem:any, outcomeIndex:any) => (
         <React.Fragment key={`outcome-${outcomeIndex}`}>
           <tr className={outcomeIndex % 2 === 0 ? "bg-slate-100" : "-"}>
-            <td className="border border-1 p-2 text-center font-bold">Outcome</td>
+            <td className="border border-1 p-2 text-center font-bold">Outcome  {outcomeIndex+1} </td>
             <td className="border border-1 p-2 text-center">{outcomeItem.description || "-"}</td>
             <td className="border border-1 p-2">{outcomeItem.indicator || "-"}</td>
             <td className="border border-1 p-2">{outcomeItem.baseline || "-"}</td>
@@ -834,7 +834,7 @@ const renderList = (data: string) => {
           {outcomeItem.outputs?.map((outputItem:any, outputIndex:any) => (
             <React.Fragment key={`output-${outputIndex}`}>
               <tr className={outputIndex % 2 === 0 ? "bg-slate-100" : "-"}>
-                <td className="border border-1 p-2 text-center font-bold">Output</td>
+                <td className="border border-1 p-2 text-center font-bold">Output {outcomeIndex+1}.{outputIndex+1}</td>
                 <td className="border border-1 p-2 text-center">{outputItem.description || "-"}</td>
                 <td className="border border-1 p-2">{outputItem.indicator || "-"}</td>
                 <td className="border border-1 p-2">{outputItem.baseline || "0"}</td>
@@ -847,7 +847,7 @@ const renderList = (data: string) => {
               {outputItem.activities?.map((activityItem:any, activityIndex:any) => (
                 <React.Fragment key={`activity-${activityIndex}`}>
                   <tr className={activityIndex % 2 === 0 ? "bg-slate-100" : "-"}>
-                    <td className="border border-1 p-2 text-center font-bold">Activity</td>
+                    <td className="border border-1 p-2 text-center font-bold">Activity {outcomeIndex+1}.{outputIndex+1}.{activityIndex+1}</td>
                     <td className="border border-1 p-2 text-center">{activityItem.description || "-"}</td>
                     <td className="border border-1 p-2">{activityItem.indicator || "-"}</td>
                     <td className="border border-1 p-2">{activityItem.baseline || "-"}</td>
@@ -882,7 +882,6 @@ resources are available</td>
     </>
   )}
 </tbody>
-
 
               </table>
             </div>
