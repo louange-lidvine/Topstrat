@@ -8,6 +8,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
 import { baseURL } from "@/app/constants";
 import { toast } from "react-toastify";
+import _ from 'lodash';
 
 function Preview() {
   const router = useRouter();
@@ -51,6 +52,8 @@ function Preview() {
           }
         );
         const data = JSON.parse(response.data.logframe.response);
+              console.log(data)
+
         setLogframeData(data);
         setEditableLogData(data);
         setPromptId(response.data.logframe._id);
@@ -83,6 +86,7 @@ function Preview() {
       const data = JSON.parse(response.data.logframe.response);
       setLogframeData(data);
       setEditableLogData(data);
+      console.log(response.data.logframe)
       setPromptId(response.data.logframe._id);
     } catch (error) {
       console.log("Error refetching logframe data:", error);
@@ -92,6 +96,7 @@ function Preview() {
   };
 
   const handleSave = async () => {
+      console.log("Editable Data:", editableLogData);
     const token = getCookie("token");
     if (!promptId) {
       console.error("Prompt ID is not available");
@@ -121,22 +126,17 @@ function Preview() {
     }
   };
 
-  const handleCellChange = (
-    category: string,
-    field: string,
-    value: string,
-    index: number,
-    level: string
-  ) => {
-    setEditableLogData((prevData: any) => ({
-      ...prevData,
-      [category]: {
-        ...prevData[category],
-        [field]: value,
-      },
-    }));
-  };
-
+const handleCellChange = (category:any, field:any, value:any, index:any, level:any) => {
+  setEditableLogData((prevData:any) => {
+    const newData = _.cloneDeep(prevData); // clone the previous state
+    if (index === -1) {
+      newData[category][level] = value;  // update at the top level
+    } else {
+      newData[category][level][index][field] = value;  // update at the index level
+    }
+    return newData;
+  });
+};
 return (
   <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8">
     {loading ? (
