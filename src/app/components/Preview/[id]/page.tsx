@@ -20,6 +20,7 @@ function Preview() {
     const [swotData, setSwotData] = useState<any>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [projectData, setProjectData] = useState<any>();
+
     const [simpleData, setSimpleData] = useState({
         vision: "",
         mission: "",
@@ -106,31 +107,61 @@ function Preview() {
 
         fetchData();
     }, []);
-    const refetchData = async () => {
-        try {
-            const token = getCookie("token");
-            setIsLoading(true);
-            const response = await axios.get(
-                `${baseURL}/projects/prompts/latest/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            if (response.data) {
-                setPromptData(response.data);
-            } else {
-                setError("No data received");
-            }
-            setIsLoading(false);
-        } catch (error) {
-            setError("Error fetching data");
-            console.error("Error fetching data:", error);
-            setIsLoading(false);
-        }
-    };
+  const refetchData = async () => {
+      try {
+          const token = getCookie("token");
+          setIsLoading(true);
+
+          const response = await axios.post(
+              `${baseURL}/projects/projects/generate-analysis/${id}`,
+              { projectId: id },
+              {
+                  headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                  },
+              }
+          );
+
+          console.log("API Response:", response.data);
+
+          if (response.data && response.data.swot?.response) {
+              // Parse the stringified JSON in the response field
+              const parsedSwotResponse = JSON.parse(
+                  response.data.swot.response
+              );
+
+              // Set SWOT data using the parsed response
+              setEditableSwotData({
+                  strengths: parsedSwotResponse.strengths || [],
+                  weaknesses: parsedSwotResponse.weaknesses || [],
+                  opportunities: parsedSwotResponse.opportunities || [],
+                  threats: parsedSwotResponse.threats || [],
+              });
+
+              // Set other project data (vision, mission, etc.) if needed
+              setSimpleData({
+                  vision: response.data.vision?.response || "",
+                  mission: response.data.mission?.response || "",
+                  strategy: response.data.strategy?.response || "",
+                  objectives: response.data.objectives?.response || "",
+              });
+
+              setPromptData(response.data);
+          } else {
+              setError("No data received");
+          }
+
+          setIsLoading(false);
+      } catch (error) {
+          setError("Error fetching data");
+          console.error("Error fetching data:", error);
+          setIsLoading(false);
+      }
+  };
+
+
+
 
     const saveData = async () => {
         const token = getCookie("token");
