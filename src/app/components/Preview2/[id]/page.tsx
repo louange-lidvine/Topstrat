@@ -240,7 +240,7 @@ function Preview() {
                                                         {
                                                             editablePestleData[
                                                                 category
-                                                            ].inf
+                                                            ]?.inf
                                                         }
                                                     </td>
                                                     <td
@@ -263,7 +263,7 @@ function Preview() {
                                                         {
                                                             editablePestleData[
                                                                 category
-                                                            ].imp
+                                                            ]?.imp
                                                         }
                                                     </td>
                                                 </tr>
