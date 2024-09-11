@@ -20,6 +20,7 @@ function Preview() {
     const [editablePestleData, setEditablePestleData] = useState<any>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [promptId, setPromptId] = useState<string | null>(null);
+
     useEffect(() => {
         const getProject = async (id: string) => {
             try {
@@ -40,6 +41,7 @@ function Preview() {
         };
         getProject(id as string);
     }, [id]);
+
     useEffect(() => {
         const fetchData = async () => {
             const token = getCookie("token");
@@ -57,7 +59,7 @@ function Preview() {
                 const data = JSON.parse(response.data.pestle.response);
                 setPestleData(data);
                 setEditablePestleData(data);
-                setPromptId(response.data.swot._id);
+                setPromptId(response.data.pestle._id);
             } catch (error) {
                 console.error("Error fetching PESTLE data:", error);
             } finally {
@@ -67,49 +69,57 @@ function Preview() {
 
         fetchData();
     }, [id]);
-   const saveData = async () => {
-       const token = getCookie("token");
-       if (!promptId) {
-           console.error("Prompt ID is not available");
-           return;
-       }
-       if (!editablePestleData) {
-           console.error("Editable PESTLE data is missing");
-           toast.error("No data to save. Please try again.");
-           return;
-       }
-       const response = {
-           political: editablePestleData.political || {},
-           economic: editablePestleData.economic || {},
-           social: editablePestleData.social || {},
-           technological: editablePestleData.technological || {},
-           legal: editablePestleData.legal || {},
-           environmental: editablePestleData.environmental || {},
-       };
-       try {
-           const result = await axios.put(
-               `${baseURL}/projects/prompts/${promptId}`,
-               { response: JSON.stringify(response), },
-               {
-                   headers: {
-                       "Content-Type": "application/json",
-                       Authorization: `Bearer ${token}`,
-                   },
-               }
-           );
-           console.log("Response from the API:", result.data);
-           setPestleData(editablePestleData);
-           setIsEditing(false);
-           toast.success("Data saved successfully!");
-       } catch (error: any) {
-           console.error(
-               "Error saving data:",
-               error.response ? error.response.data : error.message
-           );
-           toast.error("Failed to save data. Please try again.");
-       }
-   };
 
+    const saveData = async () => {
+        const token = getCookie("token");
+        if (!promptId) {
+            console.error("Prompt ID is not available");
+            return;
+        }
+
+        if (!editablePestleData) {
+            console.error("Editable PESTLE data is missing");
+            toast.error("No data to save. Please try again.");
+            return;
+        }
+
+        // Convert the response object to a JSON string
+        const response = JSON.stringify({
+            political: editablePestleData.political || {},
+            economic: editablePestleData.economic || {},
+            social: editablePestleData.social || {},
+            technological: editablePestleData.technological || {},
+            legal: editablePestleData.legal || {},
+            environmental: editablePestleData.environmental || {},
+        });
+
+        try {
+            const result = await axios.put(
+                `${baseURL}/projects/prompts/latest/${promptId}`,
+                { response }, // Send the JSON string
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            // Handle success response
+            console.log("Response from the API:", result.data);
+            setPestleData(editablePestleData);
+            setIsEditing(false);
+
+            // Display success toast message
+            toast.success("Data saved successfully!");
+        } catch (error: any) {
+            console.error(
+                "Error saving data:",
+                error.response ? error.response.data : error.message
+            );
+            toast.error("Failed to save data. Please try again.");
+        }
+    };
 
     const refetchData = async () => {
         const token = getCookie("token");
@@ -193,7 +203,7 @@ function Preview() {
                             <table className="border border-1 m-auto">
                                 <thead>
                                     <tr className="bg-slate-300">
-                                        <th className="border border-1 p-2 text-blue-default font-bold text-center"></th>
+                                        <th className="border border-1 p-2 text-blue-default font-bold text-center">Category</th>
                                         <th className="border border-1 p-2 text-blue-default font-bold text-center">
                                             Influence on organization
                                         </th>
@@ -240,7 +250,7 @@ function Preview() {
                                                         {
                                                             editablePestleData[
                                                                 category
-                                                            ].inf
+                                                            ]!.inf
                                                         }
                                                     </td>
                                                     <td
@@ -276,7 +286,7 @@ function Preview() {
                     )}
                     <div className="flex justify-center my-5 gap-8">
                         <button
-                            className="bg-[#ED0C0C] text-white font-bold rounded-md  py-3 px-6"
+                            className="bg-[#ED0C0C] text-white font-bold rounded-md py-3 px-6"
                             onClick={() =>
                                 router.push(`../../components/Preview/${id}`)
                             }
@@ -290,7 +300,7 @@ function Preview() {
                             Regenerate
                         </button>
                         <button
-                            className="bg-green-500 text-white font-bold rounded-md  py-3 px-6"
+                            className="bg-green-500 text-white font-bold rounded-md py-3 px-6"
                             onClick={saveData}
                             disabled={!isEditing}
                         >
