@@ -111,7 +111,7 @@ function Preview() {
             setIsEditing(false);
 
             // Display success toast message
-            toast.success("Data saved successfully!");
+            toast.success("Data saved successfully?");
         } catch (error: any) {
             console.error(
                 "Error saving data:",
@@ -250,7 +250,7 @@ function Preview() {
                                                         {
                                                             editablePestleData[
                                                                 category
-                                                            ]!.inf
+                                                            ]?.inf
                                                         }
                                                     </td>
                                                     <td

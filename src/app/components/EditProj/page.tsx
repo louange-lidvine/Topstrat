@@ -2,9 +2,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
+import ReactModal from "react-modal";
 
 interface Project {
     name: string;
@@ -20,11 +21,21 @@ export default function ({
     selected: boolean;
     remove: () => void;
 }) {
+    const { id } = useParams();
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [openInput, setOpenInput] = useState(false);
     const [isHover, setIsHover] = useState(false);
     const [newName, setNewName] = useState(project.name);
     const navigate = useRouter();
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+
+      const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
 
     const checkResponseFormat = (response: any) => {
         const requiredFields = [
@@ -169,6 +180,9 @@ export default function ({
                                 >
                                     Rename
                                 </li> */}
+                                <li onClick={handleOpenModal}   className=" hover:bg-gray-100  hover:cursor-pointer p-2">
+                                    Edit
+                                </li>
                                 <li
                                     className=" hover:bg-gray-100  hover:cursor-pointer p-2"
                                     onClick={() => {
@@ -178,11 +192,53 @@ export default function ({
                                 >
                                     Delete
                                 </li>
+                             
                             </ul>
                         </div>
                     )}
                 </div>
             )}
+             <ReactModal
+        isOpen={isModalOpen}
+        onRequestClose={handleCloseModal}
+        className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-20 bg-white shadow-2xl rounded-lg"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
+      >
+        <form className="flex flex-col justify-center items-center gap-6">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+            Choose section to edit
+          </h2>
+
+          <div
+            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => navigate.push(`/components/Preview/${id}`)}
+          >
+            Section A: Mission, Vision, Values, Strategies, SWOT
+          </div>
+
+          <div
+            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => navigate.push(`/components/Preview2/${id}`)}
+          >
+            Section B: PESTLE Analysis
+          </div>
+
+          <div
+            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => navigate.push(`/components/Preview3/${id}`)}
+          >
+            Section C: Logframe Analysis
+          </div>
+
+          <button
+            type="button"
+            onClick={handleCloseModal}
+            className="bg-blue-default text-white py-2 px-8 rounded-md  transition-colors duration-200"
+          >
+            Cancel
+          </button>
+        </form>
+      </ReactModal>
         </div>
     );
 }
