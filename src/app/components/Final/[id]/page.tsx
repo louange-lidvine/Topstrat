@@ -344,268 +344,148 @@ function Final() {
                   <SwotSkeleton />
                 </div>
               ) : (
-                <div>
-                  <h2 className="text-xl font-bold text-blue-default">
-                    <p
-                      style={{
-                        fontSize: "20px",
-                        fontWeight: "bold",
-                        color: "#0B6C79",
-                      }}
-                    >
-                      SWOT ANALYSIS
-                    </p>
-                  </h2>
-                  <table
-                    style={{
-                      borderCollapse: "collapse",
-                      width: "100%",
-                      overflowX: "auto",
-                    }}
-                  >
-                    <tr style={{ color: "#0B6C79" }}>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                          paddingTop: "3px",
-                        }}
-                      >
-                        <p> Strengths(S)</p>
-                      </td>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>Weaknesses(W)</p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response).strengths[0]}
-                        </p>
-                      </td>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response).weaknesses[0]}
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response).strengths[1]}
-                        </p>
-                      </td>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response).weaknesses[1]}
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response).strengths[2]}
-                        </p>
-                      </td>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response).weaknesses[2]}
-                        </p>
-                      </td>
-                    </tr>
-                    <tr style={{ color: "#0B6C79" }}>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                          paddingTop: "3px",
-                        }}
-                      >
-                        <p>Opportunities (O)</p>
-                      </td>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p> Threats (T)</p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response)
-                              .opportunities[0]}
-                        </p>
-                      </td>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response).threats[0]}
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response)
-                              .opportunities[1]}
-                        </p>
-                      </td>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response).threats[1]}
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response)
-                              .opportunities[2]}
-                        </p>
-                      </td>
-                      <td
-                        style={{
-                          border: "2px solid black",
-                          padding: "6px",
-                          textAlign: "left",
-                          paddingLeft: "6px",
-                        }}
-                      >
-                        <p>
-                          {promptData &&
-                            promptData.swot &&
-                            promptData.swot.response &&
-                            JSON.parse(promptData.swot.response).threats[2]}
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
+             <div>
+  <h2 className="text-xl font-bold text-blue-default">
+    <p
+      style={{
+        fontSize: "20px",
+        fontWeight: "bold",
+        color: "#0B6C79",
+      }}
+    >
+      SWOT ANALYSIS
+    </p>
+  </h2>
+
+  <table
+    style={{
+      borderCollapse: "collapse",
+      width: "100%",
+      overflowX: "auto",
+    }}
+  >
+    <thead>
+      <tr style={{ color: "#0B6C79" }}>
+        <th
+          style={{
+            border: "2px solid black",
+            padding: "6px",
+            textAlign: "left",
+            paddingLeft: "6px",
+            paddingTop: "3px",
+          }}
+        >
+          Strengths (S)
+        </th>
+        <th
+          style={{
+            border: "2px solid black",
+            padding: "6px",
+            textAlign: "left",
+            paddingLeft: "6px",
+            paddingTop: "3px",
+          }}
+        >
+          Weaknesses (W)
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {/* Loop through all strengths and weaknesses */}
+      {promptData &&
+        promptData.swot &&
+        promptData.swot.response &&
+        JSON.parse(promptData.swot.response).strengths.map((strength: string, index: number) => (
+          <tr key={index}>
+            <td
+              style={{
+                border: "2px solid black",
+                padding: "6px",
+                textAlign: "left",
+                paddingLeft: "6px",
+              }}
+            >
+              <p>{strength}</p>
+            </td>
+            <td
+              style={{
+                border: "2px solid black",
+                padding: "6px",
+                textAlign: "left",
+                paddingLeft: "6px",
+              }}
+            >
+              <p>
+                {JSON.parse(promptData.swot.response).weaknesses[index] || ""}
+              </p>
+            </td>
+          </tr>
+        ))}
+    </tbody>
+
+    <thead>
+      <tr style={{ color: "#0B6C79" }}>
+        <th
+          style={{
+            border: "2px solid black",
+            padding: "6px",
+            textAlign: "left",
+            paddingLeft: "6px",
+            paddingTop: "3px",
+          }}
+        >
+          Opportunities (O)
+        </th>
+        <th
+          style={{
+            border: "2px solid black",
+            padding: "6px",
+            textAlign: "left",
+            paddingLeft: "6px",
+            paddingTop: "3px",
+          }}
+        >
+          Threats (T)
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {/* Loop through all opportunities and threats */}
+      {promptData &&
+        promptData.swot &&
+        promptData.swot.response &&
+        JSON.parse(promptData.swot.response).opportunities.map(
+          (opportunity: string, index: number) => (
+            <tr key={index}>
+              <td
+                style={{
+                  border: "2px solid black",
+                  padding: "6px",
+                  textAlign: "left",
+                  paddingLeft: "6px",
+                }}
+              >
+                <p>{opportunity}</p>
+              </td>
+              <td
+                style={{
+                  border: "2px solid black",
+                  padding: "6px",
+                  textAlign: "left",
+                  paddingLeft: "6px",
+                }}
+              >
+                <p>
+                  {JSON.parse(promptData.swot.response).threats[index] || ""}
+                </p>
+              </td>
+            </tr>
+          )
+        )}
+    </tbody>
+  </table>
+</div>
+
               )}
             </div>
           </div>
