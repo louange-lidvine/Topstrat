@@ -11,6 +11,8 @@ import { baseURL } from "@/app/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
+
 function Preview() {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(false);
@@ -266,7 +268,7 @@ function Preview() {
                             </div>
                         )}
                     </div>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3 no-scroll">
                         {isLoading ? (
                             <div className="w-full">
                                 <Skeleton width={100} />
@@ -279,7 +281,7 @@ function Preview() {
                                 </h3>
                                 {isEditingSimpleData ? (
                                     <textarea
-                                        className="bg-transparent"
+                                        className="bg-transparent h-fit"
                                         style={{
                                             height: "100px",
                                             width: "930px",
@@ -306,7 +308,7 @@ function Preview() {
                             </div>
                         )}
                     </div>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3 no-scroll">
                         {isLoading ? (
                             <div className="w-full">
                                 <Skeleton width={100} />
@@ -319,7 +321,7 @@ function Preview() {
                                 </h3>
                                 {isEditingSimpleData ? (
                                     <textarea
-                                        className="bg-transparent"
+                                        className="bg-transparent h-fit"
                                         style={{
                                             height: "100px",
                                             width: "930px",
@@ -346,7 +348,7 @@ function Preview() {
                             </div>
                         )}
                     </div>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3 no-scroll h-fit">
                         {isLoading ? (
                             <div className="w-full">
                                 <Skeleton width={100} />
@@ -359,10 +361,10 @@ function Preview() {
                                 </h3>
                                 {isEditingSimpleData ? (
                                     <textarea
-                                        className="bg-transparent"
+                                        className="bg-transparent h-fit"
                                         style={{
-                                            height: "100px",
-                                            width: "930px",
+                                            height: "200px",
+                                            width: "1100px",
                                         }}
                                         value={simpleData.objectives}
                                         onChange={(e) =>
@@ -373,20 +375,28 @@ function Preview() {
                                         }
                                     />
                                 ) : (
-                                    <p
-                                        onDoubleClick={() =>
-                                            setIsEditingSimpleData(true)
-                                        }
-                                    >
-                                        {promptData &&
-                                            promptData.objectives &&
-                                            promptData.objectives.response}
-                                    </p>
+                                    <ol>
+                                        {promptData?.objectives?.response
+                                            ? promptData.objectives.response
+                                                  .split("\n")
+                                                  .map(
+                                                      (
+                                                          item: string,
+                                                          index: number
+                                                      ) => (
+                                                          <li key={index}>
+                                                              {item}
+                                                          </li>
+                                                      )
+                                                  )
+                                            : null}
+                                    </ol>
                                 )}
                             </div>
                         )}
                     </div>
-                    <div className="flex flex-col gap-3">
+
+                    <div className="flex flex-col gap-3 no-scroll">
                         {isLoading ? (
                             <div className="w-full">
                                 <Skeleton width={100} />
@@ -399,10 +409,10 @@ function Preview() {
                                 </h3>
                                 {isEditingSimpleData ? (
                                     <textarea
-                                        className="bg-transparent"
+                                        className="bg-transparent scr"
                                         style={{
-                                            height: "100px",
-                                            width: "930px",
+                                            height: "500px",
+                                            width: "1100px",
                                         }}
                                         value={simpleData.strategy}
                                         onChange={(e) =>
@@ -413,20 +423,27 @@ function Preview() {
                                         }
                                     />
                                 ) : (
-                                    <p
-                                        onDoubleClick={() =>
-                                            setIsEditingSimpleData(true)
-                                        }
-                                    >
-                                        {promptData &&
-                                            promptData.strategy &&
-                                            promptData.strategy.response}
-                                    </p>
+                                    <ol>
+                                        {promptData?.strategy?.response
+                                            ? promptData.strategy.response
+                                                  .split("\n")
+                                                  .map(
+                                                      (
+                                                          item: string,
+                                                          index: number
+                                                      ) => (
+                                                          <li key={index}>
+                                                              {item}
+                                                          </li>
+                                                      )
+                                                  )
+                                            : null}
+                                    </ol>
                                 )}
                             </div>
                         )}
                     </div>
-                    {/* SWOT Analysis Section */}
+
                     <div className="flex flex-col gap-3">
                         <h3 className="text-xl font-bold text-blue-default">
                             SWOT Analysis
@@ -435,107 +452,166 @@ function Preview() {
                             <SwotSkeleton />
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    {/* Strengths */}
-    <div className="flex flex-col gap-2 p-3">
-        <h4 className="font-semibold text-blue-default">Strengths</h4>
-        {editableSwotData?.strengths?.map((value: string, index: number) => (
-            <div key={index} className="p-2">
-                {isEditing ? (
-                    <textarea
-                        className="w-full h-24 p-2 border border-gray-200 rounded"
-                        value={value}
-                        onChange={(e) =>
-                            handleTableDataChange("strengths", index, e.target.value)
-                        }
-                    />
-                ) : (
-                    <p
-                        className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                        onDoubleClick={() => setIsEditing(true)}
-                    >
-                        {value}
-                    </p>
-                )}
-            </div>
-        ))}
-    </div>
+                                {/* Strengths */}
+                                <div className="flex flex-col gap-2 p-3 no-scroll h-fit">
+                                    <h4 className="font-semibold text-blue-default">
+                                        Strengths
+                                    </h4>
+                                    {editableSwotData?.strengths?.map(
+                                        (value: string, index: number) => (
+                                            <div key={index} className="p-2">
+                                                {isEditing ? (
+                                                    <textarea
+                                                        className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
+                                                        value={value}
+                                                        onChange={(e) =>
+                                                            handleTableDataChange(
+                                                                "strengths",
+                                                                index,
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        rows={Math.max(
+                                                            2,
+                                                            value.split("\n")
+                                                                .length
+                                                        )} // Automatically adjust rows
+                                                    />
+                                                ) : (
+                                                    <p
+                                                        className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                                                        onDoubleClick={() =>
+                                                            setIsEditing(true)
+                                                        }
+                                                    >
+                                                        {value}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        )
+                                    )}
+                                </div>
 
-    {/* Weaknesses */}
-    <div className="flex flex-col gap-2 p-3">
-        <h4 className="font-semibold text-blue-default">Weaknesses</h4>
-        {editableSwotData?.weaknesses?.map((value: string, index: number) => (
-            <div key={index} className="p-2">
-                {isEditing ? (
-                    <textarea
-                        className="w-full h-24 p-2 border border-gray-200 rounded"
-                        value={value}
-                        onChange={(e) =>
-                            handleTableDataChange("weaknesses", index, e.target.value)
-                        }
-                    />
-                ) : (
-                    <p
-                        className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                        onDoubleClick={() => setIsEditing(true)}
-                    >
-                        {value}
-                    </p>
-                )}
-            </div>
-        ))}
-    </div>
+                                {/* Weaknesses */}
+                                <div className="flex flex-col gap-2 p-3 overflow-y-hidden h-fit">
+                                    <h4 className="font-semibold text-blue-default">
+                                        Weaknesses
+                                    </h4>
+                                    {editableSwotData?.weaknesses?.map(
+                                        (value: string, index: number) => (
+                                            <div key={index} className="p-2">
+                                                {isEditing ? (
+                                                    <textarea
+                                                        className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
+                                                        value={value}
+                                                        onChange={(e) =>
+                                                            handleTableDataChange(
+                                                                "weaknesses",
+                                                                index,
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        rows={Math.max(
+                                                            2,
+                                                            value.split("\n")
+                                                                .length
+                                                        )} // Automatically adjust rows
+                                                    />
+                                                ) : (
+                                                    <p
+                                                        className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                                                        onDoubleClick={() =>
+                                                            setIsEditing(true)
+                                                        }
+                                                    >
+                                                        {value}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        )
+                                    )}
+                                </div>
 
-    {/* Opportunities */}
-    <div className="flex flex-col gap-2 p-3">
-        <h4 className="font-semibold text-blue-default">Opportunities</h4>
-        {editableSwotData?.opportunities?.map((value: string, index: number) => (
-            <div key={index} className="p-2">
-                {isEditing ? (
-                    <textarea
-                        className="w-full h-24 p-2 border border-gray-200 rounded"
-                        value={value}
-                        onChange={(e) =>
-                            handleTableDataChange("opportunities", index, e.target.value)
-                        }
-                    />
-                ) : (
-                    <p
-                        className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                        onDoubleClick={() => setIsEditing(true)}
-                    >
-                        {value}
-                    </p>
-                )}
-            </div>
-        ))}
-    </div>
+                                {/* Opportunities */}
+                                <div className="flex flex-col gap-2 p-3 no-scroll h-fit">
+                                    <h4 className="font-semibold text-blue-default">
+                                        Opportunities
+                                    </h4>
+                                    {editableSwotData?.opportunities?.map(
+                                        (value: string, index: number) => (
+                                            <div key={index} className="p-2">
+                                                {isEditing ? (
+                                                    <textarea
+                                                        className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
+                                                        value={value}
+                                                        onChange={(e) =>
+                                                            handleTableDataChange(
+                                                                "opportunities",
+                                                                index,
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        rows={Math.max(
+                                                            2,
+                                                            value.split("\n")
+                                                                .length
+                                                        )} // Automatically adjust rows
+                                                    />
+                                                ) : (
+                                                    <p
+                                                        className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                                                        onDoubleClick={() =>
+                                                            setIsEditing(true)
+                                                        }
+                                                    >
+                                                        {value}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        )
+                                    )}
+                                </div>
 
-    {/* Threats */}
-    <div className="flex flex-col gap-2 p-3">
-        <h4 className="font-semibold text-blue-default">Threats</h4>
-        {editableSwotData?.threats?.map((value: string, index: number) => (
-            <div key={index} className="p-2">
-                {isEditing ? (
-                    <textarea
-                        className="w-full h-24 p-2 border border-gray-200 rounded"
-                        value={value}
-                        onChange={(e) =>
-                            handleTableDataChange("threats", index, e.target.value)
-                        }
-                    />
-                ) : (
-                    <p
-                        className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                        onDoubleClick={() => setIsEditing(true)}
-                    >
-                        {value}
-                    </p>
-                )}
-            </div>
-        ))}
-    </div>
-</div>
-
+                                {/* Threats */}
+                                <div className="flex flex-col gap-2 p-3 no-scroll h-fit">
+                                    <h4 className="font-semibold text-blue-default">
+                                        Threats
+                                    </h4>
+                                    {editableSwotData?.threats?.map(
+                                        (value: string, index: number) => (
+                                            <div key={index} className="p-2">
+                                                {isEditing ? (
+                                                    <textarea
+                                                        className="w-full h-fit overflow-y-hidden  p-2 border border-gray-200 rounded resize-none"
+                                                        value={value}
+                                                        onChange={(e) =>
+                                                            handleTableDataChange(
+                                                                "threats",
+                                                                index,
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        rows={Math.max(
+                                                            2,
+                                                            value.split("\n")
+                                                                .length
+                                                        )} // Automatically adjust rows
+                                                    />
+                                                ) : (
+                                                    <p
+                                                        className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                                                        onDoubleClick={() =>
+                                                            setIsEditing(true)
+                                                        }
+                                                    >
+                                                        {value}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+                            </div>
                         )}
                     </div>
 
