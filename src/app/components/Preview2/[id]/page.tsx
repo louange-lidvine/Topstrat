@@ -60,6 +60,8 @@ function Preview() {
                 setPestleData(data);
                 setEditablePestleData(data);
                 setPromptId(response.data.pestle._id);
+                console.table(data);
+                console.log(data)
             } catch (error) {
                 console.error("Error fetching PESTLE data:", error);
             } finally {
@@ -72,51 +74,74 @@ function Preview() {
 
     const saveData = async () => {
         const token = getCookie("token");
+
+        // Check if promptId is available
         if (!promptId) {
             console.error("Prompt ID is not available");
+            toast.error("Prompt ID is missing, cannot save data.");
             return;
         }
 
+        // Check if editablePestleData is available
         if (!editablePestleData) {
             console.error("Editable PESTLE data is missing");
             toast.error("No data to save. Please try again.");
             return;
         }
 
-        // Convert the response object to a JSON string
-        const response = JSON.stringify({
+        // Prepare the response object (without converting to string)
+        const response = {
             political: editablePestleData.political || {},
             economic: editablePestleData.economic || {},
             social: editablePestleData.social || {},
             technological: editablePestleData.technological || {},
             legal: editablePestleData.legal || {},
             environmental: editablePestleData.environmental || {},
-        });
+        };
+
+        // Log the request details for debugging
+        console.log("Attempting to save data...");
+        console.log(
+            "PUT URL:",
+            `${baseURL}/projects/prompts/latest/${promptId}`
+        );
+        console.log("Prompt ID:", promptId);
+        console.log("Response Data:", response);
 
         try {
             const result = await axios.put(
-                `${baseURL}/projects/prompts/latest/${promptId}`,
-                { response }, // Send the JSON string
+                `${baseURL}/projects/prompts/${promptId}`, // Ensure this endpoint exists
+                { response: JSON.stringify(response) }, // Send the response object (not as a string)
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`, // Ensure token is valid
                     },
                 }
             );
 
-            // Handle success response
+            // Log the API result
             console.log("Response from the API:", result.data);
+
+            // Update the state with saved data
             setPestleData(editablePestleData);
             setIsEditing(false);
 
             // Display success toast message
             toast.success("Data saved successfully!");
         } catch (error: any) {
-            console.error(
-                "Error saving data:",
-                error.response ? error.response.data : error.message
-            );
+            // Log the error for debugging
+            if (error.response) {
+                console.error(
+                    "Error saving data (API response error):",
+                    error.response.data
+                );
+            } else {
+                console.error(
+                    "Error saving data (Request error):",
+                    error.message
+                );
+            }
             toast.error("Failed to save data. Please try again.");
         }
     };
@@ -203,7 +228,9 @@ function Preview() {
                             <table className="border border-1 m-auto">
                                 <thead>
                                     <tr className="bg-slate-300">
-                                        <th className="border border-1 p-2 text-blue-default font-bold text-center">Category</th>
+                                        <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                                            Category
+                                        </th>
                                         <th className="border border-1 p-2 text-blue-default font-bold text-center">
                                             Influence on organization
                                         </th>
@@ -247,11 +274,9 @@ function Preview() {
                                                             minWidth: "200px",
                                                         }}
                                                     >
-                                                        {
-                                                            editablePestleData[
-                                                                category
-                                                            ]!.inf
-                                                        }
+                                                        {editablePestleData[
+                                                            category
+                                                        ]?.inf || ""}
                                                     </td>
                                                     <td
                                                         className="border border-1 p-2"
@@ -270,11 +295,9 @@ function Preview() {
                                                             minWidth: "200px",
                                                         }}
                                                     >
-                                                        {
-                                                            editablePestleData[
-                                                                category
-                                                            ].imp
-                                                        }
+                                                        {editablePestleData[
+                                                            category
+                                                        ]?.imp || ""}
                                                     </td>
                                                 </tr>
                                             ))}

@@ -2,3 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 /* @import '@mantine/core/styles.css'; */
+/* Add this to ensure the modal or section takes the full available space */
+.no-scroll {
+  overflow-y: auto;
+  max-height: none; /* Ensure content is fully shown */
+}
+
+/* Ensure text areas expand with content */
+textarea {
+  height: auto;
+  min-height: 100px;
+  width: 100%;
+}
+
+/* Adjust table container */
+.table-container {
+  overflow-x: auto; /* Allow horizontal scrolling for large tables */
+}
