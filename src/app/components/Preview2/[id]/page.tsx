@@ -60,6 +60,8 @@ function Preview() {
                 setPestleData(data);
                 setEditablePestleData(data);
                 setPromptId(response.data.pestle._id);
+                console.table(data);
+                console.log(data)
             } catch (error) {
                 console.error("Error fetching PESTLE data:", error);
             } finally {

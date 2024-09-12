@@ -1,4 +1,5 @@
-"use client";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import React, { useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
@@ -55,9 +56,7 @@ export default function ({
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${
-                         token
-                        }`,
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             );
@@ -78,9 +77,7 @@ export default function ({
             await axios.delete(`${baseURL}/projects/${projectId}`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${
-                       token
-                    }`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
             console.log("Delete API called");
@@ -91,21 +88,65 @@ export default function ({
         }
     };
 
-    // const rename = async () => {
-    //     axios
-    //         .put(
-    //             `http://157.245.121.185:5000/projects/${project.id}`,
-    //             {
-    //                 name: newNames,
-    //             }
-    //         )
-    //         .then((res) => {
-    //             console.log(res);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         })
-    // };
+    // Function to handle the printing
+    const handlePrint = async (projectId: string) => {
+        try {
+            const token = getCookie("token");
+            const response = await axios.get(
+                `${baseURL}/projects/prompts/latest/${projectId}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (response.data) {
+                const doc = new jsPDF();
+
+                // Add project details to the PDF
+                doc.setFontSize(18);
+                doc.text(`Project: ${response.data.name}`, 10, 10);
+
+                // Add more details like PESTLE analysis, etc. here
+                doc.setFontSize(12);
+                doc.text(`Mission: ${response.data.mission}`, 10, 20);
+                doc.text(`Vision: ${response.data.vision}`, 10, 30);
+                doc.text(`Objectives: ${response.data.objectives}`, 10, 40);
+
+                // Example for a table
+                const pestleData = response.data.pestle;
+                const tableColumnHeaders = ["Category", "Influence", "Impact"];
+                const tableRows: any[] = [];
+
+                [
+                    "political",
+                    "economic",
+                    "social",
+                    "technological",
+                    "legal",
+                    "environmental",
+                ].forEach((category) => {
+                    tableRows.push([
+                        category.charAt(0).toUpperCase() + category.slice(1),
+                        pestleData[category]?.inf || "",
+                        pestleData[category]?.imp || "",
+                    ]);
+                });
+
+                doc.autoTable({
+                    head: [tableColumnHeaders],
+                    body: tableRows,
+                });
+
+                // Save the PDF
+                doc.save(`${response.data.name}_Project.pdf`);
+            }
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+        }
+    };
 
     return (
         <div
@@ -115,7 +156,6 @@ export default function ({
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => {
                 setIsHover(false);
-                // rename();
                 setOpenInput(false);
                 setIsPopoverOpen(false);
             }}
@@ -136,11 +176,9 @@ export default function ({
                     />
                 ) : (
                     <p>
-                        {" "}
                         {project.name.length > 20
                             ? project.name.slice(20) + "..."
                             : project.name}
-                            
                     </p>
                 )}
             </div>
@@ -160,23 +198,23 @@ export default function ({
                             }}
                         >
                             <ul className=" flex flex-col gap-3">
-                                {/* <li
-                                    className=" hover:bg-slate-500 hover:cursor-pointer"
-                                    onClick={() => {
-                                        setIsPopoverOpen(false);
-                                        setOpenInput(true);
-                                    }}
-                                >
-                                    Rename
-                                </li> */}
                                 <li
                                     className=" hover:bg-gray-100  hover:cursor-pointer p-2"
                                     onClick={() => {
                                         setIsPopoverOpen(false);
-                                        handleDelete(project._id); 
+                                        handleDelete(project._id);
                                     }}
                                 >
                                     Delete
+                                </li>
+                                <li
+                                    className=" hover:bg-gray-100  hover:cursor-pointer p-2"
+                                    onClick={() => {
+                                        setIsPopoverOpen(false);
+                                        handlePrint(project._id);
+                                    }}
+                                >
+                                    Print
                                 </li>
                             </ul>
                         </div>
