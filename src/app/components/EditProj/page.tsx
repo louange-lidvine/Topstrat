@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -137,10 +137,10 @@ export default function ({
                     ]);
                 });
 
-                doc.autoTable({
-                    head: [tableColumnHeaders],
-                    body: tableRows,
-                });
+                // doc.autoTable({
+                //     head: [tableColumnHeaders],
+                //     body: tableRows,
+                // });
 
                 // Save the PDF
                 doc.save(`${response.data.name}_Project.pdf`);
