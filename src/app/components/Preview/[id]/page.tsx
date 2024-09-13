@@ -28,14 +28,13 @@ function Preview() {
         mission: "",
         objectives: "",
         strategy: "",
+        pestle:"",
+        logframe:"",
     });
     const [isEditingSimpleData, setIsEditingSimpleData] = useState(false);
     const [editableSwotData, setEditableSwotData] = useState<any>(null);
     const [promptId, setPromptId] = useState<string | null>(null);
 
-    const handleNextClick = () => {
-        router.push(`/components/Preview2/${id}`);
-    };
 
     useEffect(() => {
         const getProject = async (id: string) => {
@@ -79,6 +78,8 @@ function Preview() {
                         mission: response.data.mission.response,
                         strategy: response.data.strategy.response,
                         objectives: response.data.objectives.response,
+                        pestle:response.data.pestle.response,
+                        logframe:response.data.logframe.response
                     });
                     setEditableSwotData({
                         strengths:
@@ -146,9 +147,12 @@ function Preview() {
                   mission: response.data.mission?.response || "",
                   strategy: response.data.strategy?.response || "",
                   objectives: response.data.objectives?.response || "",
+                  pestle:response.data.pestle?.response || "",
+                  logframe:response.data.logframe?.response || "",
               });
 
               setPromptData(response.data);
+              setPromptId(response.data.swot._id);
           } else {
               setError("No data received");
           }
@@ -182,6 +186,8 @@ function Preview() {
             objectives: simpleData.objectives,
             strategy: simpleData.strategy,
             swotData: editableSwotData,
+            pestleData:simpleData.pestle,
+            logframeData:simpleData.logframe
         };
 
         try {
