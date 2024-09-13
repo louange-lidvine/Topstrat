@@ -40,7 +40,7 @@ function Preview() {
             }
         };
         getProject(id as string);
-    }, [id]);
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -70,7 +70,7 @@ function Preview() {
         };
 
         fetchData();
-    }, [id]);
+    }, []);
 
     const saveData = async () => {
         const token = getCookie("token");
@@ -110,8 +110,8 @@ function Preview() {
 
         try {
             const result = await axios.put(
-                `${baseURL}/projects/prompts/${promptId}`, // Ensure this endpoint exists
-                { response: JSON.stringify(response) }, // Send the response object (not as a string)
+                `${baseURL}/projects/prompts/${promptId}`, 
+                { response: JSON.stringify(response) }, 
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -128,7 +128,7 @@ function Preview() {
             setIsEditing(false);
 
             // Display success toast message
-            toast.success("Data saved successfully!");
+            toast.success("Data saved successfully?");
         } catch (error: any) {
             // Log the error for debugging
             if (error.response) {

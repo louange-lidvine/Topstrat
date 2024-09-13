@@ -377,10 +377,10 @@ const MyDocument: React.FC<MyDocumentProps> = ({
                                             Political
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.political.inf}
+                                            {pestleData?.political?.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.political.imp}
+                                            {pestleData?.political?.imp}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
@@ -388,10 +388,10 @@ const MyDocument: React.FC<MyDocumentProps> = ({
                                             Economic
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.economic.inf}
+                                            {pestleData?.economic?.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.economic.imp}
+                                            {pestleData?.economic?.imp}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
@@ -399,10 +399,10 @@ const MyDocument: React.FC<MyDocumentProps> = ({
                                             Social
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.social.inf}
+                                            {pestleData?.social?.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.social.imp}
+                                            {pestleData?.social?.imp}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
@@ -410,10 +410,10 @@ const MyDocument: React.FC<MyDocumentProps> = ({
                                             Technological
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.technological.inf}
+                                            {pestleData?.technological?.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.technological.imp}
+                                            {pestleData?.technological?.imp}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
@@ -421,10 +421,10 @@ const MyDocument: React.FC<MyDocumentProps> = ({
                                             Legal
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.legal.inf}
+                                            {pestleData?.legal?.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.legal.imp}
+                                            {pestleData?.legal?.imp}
                                         </Text>
                                     </View>
                                     <View style={styles.tableRow}>
@@ -432,10 +432,10 @@ const MyDocument: React.FC<MyDocumentProps> = ({
                                             Environmental
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.environmental.inf}
+                                            {pestleData?.environmental?.inf}
                                         </Text>
                                         <Text style={styles.tableCol}>
-                                            {pestleData.environmental.imp}
+                                            {pestleData?.environmental?.imp}
                                         </Text>
                                     </View>
                                 </>
