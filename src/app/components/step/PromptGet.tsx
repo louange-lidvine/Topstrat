@@ -395,8 +395,8 @@ const renderList = (data: string) => {
     <>
       {/* Impact Level */}
       <tr className="bg-slate-100">
-        <td className="border border-1 p-2 text-center font-bold">Impact</td>
-        <td className="border border-1 p-2 text-center">{logframeData.goal.impact?.description || "-"}</td>
+        <td className="border border-1 p-2  font-bold text-center">Impact</td>
+        <td className="border border-1 p-2 ">{logframeData.goal.impact?.description || "-"}</td>
         <td className="border border-1 p-2">
           {logframeData.goal.impact?.indicators &&
             Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
@@ -414,7 +414,7 @@ const renderList = (data: string) => {
               const indicator = logframeData.goal.impact.indicators[key];
               return (
                 <div key={idx}>
-                  <p>Baseline:</p> {indicator.baseline  || ""}, 
+                  {indicator.baseline  || ""}, 
                 </div>
               );
             })}
@@ -425,7 +425,7 @@ const renderList = (data: string) => {
               const indicator = logframeData.goal.impact.indicators[key];
               return (
                 <div key={idx}>
-                  <p>Target:</p> {indicator.target || "-"}
+                  {indicator.target || "-"}
                 </div>
               );
             })}
@@ -438,8 +438,8 @@ const renderList = (data: string) => {
       {logframeData.goal.impact?.outcomes?.map((outcomeItem:any, outcomeIndex:any) => (
         <React.Fragment key={`outcome-${outcomeIndex}`}>
           <tr className={outcomeIndex % 2 === 0 ? "bg-slate-100" : "-"}>
-            <td className="border border-1 p-2 text-center font-bold">Outcome  {outcomeIndex+1} </td>
-            <td className="border border-1 p-2 text-center">{outcomeItem.description || "-"}</td>
+            <td className="border border-1 p-2  font-bold text-center">Outcome  {outcomeIndex+1} </td>
+            <td className="border border-1 p-2 ">{outcomeItem.description || "-"}</td>
             <td className="border border-1 p-2">{outcomeItem.indicator || "-"}</td>
             <td className="border border-1 p-2">{outcomeItem.baseline || "-"}</td>
             <td className="border border-1 p-2">{outcomeItem.target || "-"}</td>
@@ -451,8 +451,8 @@ const renderList = (data: string) => {
           {outcomeItem.outputs?.map((outputItem:any, outputIndex:any) => (
             <React.Fragment key={`output-${outputIndex}`}>
               <tr className={outputIndex % 2 === 0 ? "bg-slate-100" : "-"}>
-                <td className="border border-1 p-2 text-center font-bold">Output {outcomeIndex+1}.{outputIndex+1}</td>
-                <td className="border border-1 p-2 text-center">{outputItem.description || "-"}</td>
+                <td className="border border-1 p-2  font-bold text-center">Output {outcomeIndex+1}.{outputIndex+1}</td>
+                <td className="border border-1 p-2 ">{outputItem.description || "-"}</td>
                 <td className="border border-1 p-2">{outputItem.indicator || "-"}</td>
                 <td className="border border-1 p-2">{outputItem.baseline || "0"}</td>
                 <td className="border border-1 p-2">{outputItem.target || "-"}</td>
@@ -464,8 +464,8 @@ const renderList = (data: string) => {
               {outputItem.activities?.map((activityItem:any, activityIndex:any) => (
                 <React.Fragment key={`activity-${activityIndex}`}>
                   <tr className={activityIndex % 2 === 0 ? "bg-slate-100" : "-"}>
-                    <td className="border border-1 p-2 text-center font-bold">Activity {outcomeIndex+1}.{outputIndex+1}.{activityIndex+1}</td>
-                    <td className="border border-1 p-2 text-center">{activityItem.description || "-"}</td>
+                    <td className="border border-1 p-2  font-bold text-center">Activity {outcomeIndex+1}.{outputIndex+1}.{activityIndex+1}</td>
+                    <td className="border border-1 p-2 ">{activityItem.description || "-"}</td>
                     <td className="border border-1 p-2">{activityItem.indicator || "-"}</td>
                     <td className="border border-1 p-2">{activityItem.baseline || "-"}</td>
                     <td className="border border-1 p-2">{activityItem.target || "-"}</td>
@@ -476,8 +476,8 @@ const renderList = (data: string) => {
                   {/* Inputs Level */}
                   {activityItem.inputs && (
                     <tr className="bg-slate-100">
-                      <td className="border border-1 p-2 text-center font-bold">Input</td>
-                      <td className="border border-1 p-2 text-center">
+                      <td className="border border-1 p-2  font-bold text-center">Input</td>
+                      <td className="border border-1 p-2 ">
                         {activityItem.inputs.join(", ")}
                       </td>
                       <td className="border border-1 p-2">(To be determined)</td>
@@ -499,7 +499,6 @@ resources are available</td>
     </>
   )}
 </tbody>
-
 
 
               </table>
