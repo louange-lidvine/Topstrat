@@ -67,11 +67,9 @@ function Final() {
         setData(logframeData);
         setLogframeData(logframeData);
         setIsLoading(false);
-        setIsLoading(false);
         return logframeData;
       } catch (error) {
         setError("Error fetching data");
-        console.error("Error fetching data:", error);
         setIsLoading(false);
       }
     };
@@ -143,7 +141,11 @@ function Final() {
           .map((item, index) => (
             <li
               key={index}
-              style={{ marginBottom: "8px", fontSize: "16px", color: "#333" }}
+              style={{
+                marginBottom: "8px",
+                fontSize: "16px",
+                color: "#333",
+              }}
             >
               {item.trim()}
             </li>
@@ -344,148 +346,152 @@ function Final() {
                   <SwotSkeleton />
                 </div>
               ) : (
-             <div>
-  <h2 className="text-xl font-bold text-blue-default">
-    <p
-      style={{
-        fontSize: "20px",
-        fontWeight: "bold",
-        color: "#0B6C79",
-      }}
-    >
-      SWOT ANALYSIS
-    </p>
-  </h2>
+                <div>
+                  <h2 className="text-xl font-bold text-blue-default">
+                    <p
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        color: "#0B6C79",
+                      }}
+                    >
+                      SWOT ANALYSIS
+                    </p>
+                  </h2>
 
-  <table
-    style={{
-      borderCollapse: "collapse",
-      width: "100%",
-      overflowX: "auto",
-    }}
-  >
-    <thead>
-      <tr style={{ color: "#0B6C79" }}>
-        <th
-          style={{
-            border: "2px solid black",
-            padding: "6px",
-            textAlign: "left",
-            paddingLeft: "6px",
-            paddingTop: "3px",
-          }}
-        >
-          Strengths (S)
-        </th>
-        <th
-          style={{
-            border: "2px solid black",
-            padding: "6px",
-            textAlign: "left",
-            paddingLeft: "6px",
-            paddingTop: "3px",
-          }}
-        >
-          Weaknesses (W)
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {/* Loop through all strengths and weaknesses */}
-      {promptData &&
-        promptData.swot &&
-        promptData.swot.response &&
-        JSON.parse(promptData.swot.response).strengths.map((strength: string, index: number) => (
-          <tr key={index}>
-            <td
-              style={{
-                border: "2px solid black",
-                padding: "6px",
-                textAlign: "left",
-                paddingLeft: "6px",
-              }}
-            >
-              <p>{strength}</p>
-            </td>
-            <td
-              style={{
-                border: "2px solid black",
-                padding: "6px",
-                textAlign: "left",
-                paddingLeft: "6px",
-              }}
-            >
-              <p>
-                {JSON.parse(promptData.swot.response).weaknesses[index] || ""}
-              </p>
-            </td>
-          </tr>
-        ))}
-    </tbody>
+                  <table
+                    style={{
+                      borderCollapse: "collapse",
+                      width: "100%",
+                      overflowX: "auto",
+                    }}
+                  >
+                    <thead>
+                      <tr style={{ color: "#0B6C79" }}>
+                        <th
+                          style={{
+                            border: "2px solid black",
+                            padding: "6px",
+                            textAlign: "left",
+                            paddingLeft: "6px",
+                            paddingTop: "3px",
+                          }}
+                        >
+                          Strengths (S)
+                        </th>
+                        <th
+                          style={{
+                            border: "2px solid black",
+                            padding: "6px",
+                            textAlign: "left",
+                            paddingLeft: "6px",
+                            paddingTop: "3px",
+                          }}
+                        >
+                          Weaknesses (W)
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Loop through all strengths and weaknesses */}
+                      {promptData &&
+                        promptData.swot &&
+                        promptData.swot.response &&
+                        JSON.parse(promptData.swot.response).strengths.map(
+                          (strength: string, index: number) => (
+                            <tr key={index}>
+                              <td
+                                style={{
+                                  border: "2px solid black",
+                                  padding: "6px",
+                                  textAlign: "left",
+                                  paddingLeft: "6px",
+                                }}
+                              >
+                                <p>{strength}</p>
+                              </td>
+                              <td
+                                style={{
+                                  border: "2px solid black",
+                                  padding: "6px",
+                                  textAlign: "left",
+                                  paddingLeft: "6px",
+                                }}
+                              >
+                                <p>
+                                  {JSON.parse(promptData.swot.response)
+                                    .weaknesses[index] || ""}
+                                </p>
+                              </td>
+                            </tr>
+                          )
+                        )}
+                    </tbody>
 
-    <thead>
-      <tr style={{ color: "#0B6C79" }}>
-        <th
-          style={{
-            border: "2px solid black",
-            padding: "6px",
-            textAlign: "left",
-            paddingLeft: "6px",
-            paddingTop: "3px",
-          }}
-        >
-          Opportunities (O)
-        </th>
-        <th
-          style={{
-            border: "2px solid black",
-            padding: "6px",
-            textAlign: "left",
-            paddingLeft: "6px",
-            paddingTop: "3px",
-          }}
-        >
-          Threats (T)
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {/* Loop through all opportunities and threats */}
-      {promptData &&
-        promptData.swot &&
-        promptData.swot.response &&
-        JSON.parse(promptData.swot.response).opportunities.map(
-          (opportunity: string, index: number) => (
-            <tr key={index}>
-              <td
-                style={{
-                  border: "2px solid black",
-                  padding: "6px",
-                  textAlign: "left",
-                  paddingLeft: "6px",
-                }}
-              >
-                <p>{opportunity}</p>
-              </td>
-              <td
-                style={{
-                  border: "2px solid black",
-                  padding: "6px",
-                  textAlign: "left",
-                  paddingLeft: "6px",
-                }}
-              >
-                <p>
-                  {JSON.parse(promptData.swot.response).threats[index] || ""}
-                </p>
-              </td>
-            </tr>
-          )
-        )}
-    </tbody>
-  </table>
-</div>
-
+                    <thead>
+                      <tr style={{ color: "#0B6C79" }}>
+                        <th
+                          style={{
+                            border: "2px solid black",
+                            padding: "6px",
+                            textAlign: "left",
+                            paddingLeft: "6px",
+                            paddingTop: "3px",
+                          }}
+                        >
+                          Opportunities (O)
+                        </th>
+                        <th
+                          style={{
+                            border: "2px solid black",
+                            padding: "6px",
+                            textAlign: "left",
+                            paddingLeft: "6px",
+                            paddingTop: "3px",
+                          }}
+                        >
+                          Threats (T)
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Loop through all opportunities and threats */}
+                      {promptData &&
+                        promptData.swot &&
+                        promptData.swot.response &&
+                        JSON.parse(promptData.swot.response).opportunities.map(
+                          (opportunity: string, index: number) => (
+                            <tr key={index}>
+                              <td
+                                style={{
+                                  border: "2px solid black",
+                                  padding: "6px",
+                                  textAlign: "left",
+                                  paddingLeft: "6px",
+                                }}
+                              >
+                                <p>{opportunity}</p>
+                              </td>
+                              <td
+                                style={{
+                                  border: "2px solid black",
+                                  padding: "6px",
+                                  textAlign: "left",
+                                  paddingLeft: "6px",
+                                }}
+                              >
+                                <p>
+                                  {JSON.parse(promptData.swot.response).threats[
+                                    index
+                                  ] || ""}
+                                </p>
+                              </td>
+                            </tr>
+                          )
+                        )}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
           </div>
@@ -637,116 +643,224 @@ function Final() {
                           </th>
                         </tr>
                       </thead>
-                  <tbody>
-  {logframeData && logframeData.goal && (
-    <>
-      {/* Impact Level */}
-      <tr className="bg-slate-100">
-        <td className="border border-1 p-2  font-bold text-center">Impact</td>
-        <td className="border border-1 p-2 ">{logframeData.goal.impact?.description || "-"}</td>
-        <td className="border border-1 p-2">
-          {logframeData.goal.impact?.indicators &&
-            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
-              const indicator = logframeData.goal.impact.indicators[key];
-              return (
-                <div key={idx}>
-                  <p>{key}:</p> , 
-                </div>
-              );
-            })}
-        </td>
-        <td className="border border-1 p-2">
-          {logframeData.goal.impact?.indicators &&
-            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
-              const indicator = logframeData.goal.impact.indicators[key];
-              return (
-                <div key={idx}>
-                  {indicator.baseline  || ""}, 
-                </div>
-              );
-            })}
-        </td>
-        <td className="border border-1 p-2">
-          {logframeData.goal.impact?.indicators &&
-            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
-              const indicator = logframeData.goal.impact.indicators[key];
-              return (
-                <div key={idx}>
-                  {indicator.target || "-"}
-                </div>
-              );
-            })}
-        </td>
-        <td className="border border-1 p-2">{logframeData.goal.impact?.timeline || "-"}</td>
-        <td className="border border-1 p-2">{logframeData.goal.impact?.assumptions || "-"}</td>
-      </tr>
+                      <tbody>
+                        {logframeData && logframeData.goal && (
+                          <>
+                            {/* Impact Level */}
+                            <tr className="bg-slate-100">
+                              <td className="border border-1 p-2  font-bold text-center">
+                                Impact
+                              </td>
+                              <td className="border border-1 p-2 ">
+                                {logframeData.goal.impact?.description || "-"}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.goal.impact?.indicators &&
+                                  Object.keys(
+                                    logframeData.goal.impact.indicators
+                                  ).map((key, idx) => {
+                                    const indicator =
+                                      logframeData.goal.impact.indicators[key];
+                                    return (
+                                      <div key={idx}>
+                                        <p>{key}:</p> ,
+                                      </div>
+                                    );
+                                  })}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.goal.impact?.indicators &&
+                                  Object.keys(
+                                    logframeData.goal.impact.indicators
+                                  ).map((key, idx) => {
+                                    const indicator =
+                                      logframeData.goal.impact.indicators[key];
+                                    return (
+                                      <div key={idx}>
+                                        {indicator.baseline || ""},
+                                      </div>
+                                    );
+                                  })}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.goal.impact?.indicators &&
+                                  Object.keys(
+                                    logframeData.goal.impact.indicators
+                                  ).map((key, idx) => {
+                                    const indicator =
+                                      logframeData.goal.impact.indicators[key];
+                                    return (
+                                      <div key={idx}>
+                                        {indicator.target || "-"}
+                                      </div>
+                                    );
+                                  })}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.goal.impact?.timeline || "-"}
+                              </td>
+                              <td className="border border-1 p-2">
+                                {logframeData.goal.impact?.assumptions || "-"}
+                              </td>
+                            </tr>
 
-      {/* Outcome Level */}
-      {logframeData.goal.impact?.outcomes?.map((outcomeItem:any, outcomeIndex:any) => (
-        <React.Fragment key={`outcome-${outcomeIndex}`}>
-          <tr className={outcomeIndex % 2 === 0 ? "bg-slate-100" : "-"}>
-            <td className="border border-1 p-2  font-bold text-center">Outcome  {outcomeIndex+1} </td>
-            <td className="border border-1 p-2 ">{outcomeItem.description || "-"}</td>
-            <td className="border border-1 p-2">{outcomeItem.indicator || "-"}</td>
-            <td className="border border-1 p-2">{outcomeItem.baseline || "-"}</td>
-            <td className="border border-1 p-2">{outcomeItem.target || "-"}</td>
-            <td className="border border-1 p-2">{outcomeItem.timeline || "-"}</td>
-            <td className="border border-1 p-2">{outcomeItem.assumptions || "-"}</td>
-          </tr>
+                            {/* Outcome Level */}
+                            {logframeData.goal.impact?.outcomes?.map(
+                              (outcomeItem: any, outcomeIndex: any) => (
+                                <React.Fragment key={`outcome-${outcomeIndex}`}>
+                                  <tr
+                                    className={
+                                      outcomeIndex % 2 === 0
+                                        ? "bg-slate-100"
+                                        : "-"
+                                    }
+                                  >
+                                    <td className="border border-1 p-2  font-bold text-center">
+                                      Outcome {outcomeIndex + 1}{" "}
+                                    </td>
+                                    <td className="border border-1 p-2 ">
+                                      {outcomeItem.description || "-"}
+                                    </td>
+                                    <td className="border border-1 p-2">
+                                      {outcomeItem.indicator || "-"}
+                                    </td>
+                                    <td className="border border-1 p-2">
+                                      {outcomeItem.baseline || "-"}
+                                    </td>
+                                    <td className="border border-1 p-2">
+                                      {outcomeItem.target || "-"}
+                                    </td>
+                                    <td className="border border-1 p-2">
+                                      {outcomeItem.timeline || "-"}
+                                    </td>
+                                    <td className="border border-1 p-2">
+                                      {outcomeItem.assumptions || "-"}
+                                    </td>
+                                  </tr>
 
-          {/* Output Level */}
-          {outcomeItem.outputs?.map((outputItem:any, outputIndex:any) => (
-            <React.Fragment key={`output-${outputIndex}`}>
-              <tr className={outputIndex % 2 === 0 ? "bg-slate-100" : "-"}>
-                <td className="border border-1 p-2  font-bold text-center">Output {outcomeIndex+1}.{outputIndex+1}</td>
-                <td className="border border-1 p-2 ">{outputItem.description || "-"}</td>
-                <td className="border border-1 p-2">{outputItem.indicator || "-"}</td>
-                <td className="border border-1 p-2">{outputItem.baseline || "0"}</td>
-                <td className="border border-1 p-2">{outputItem.target || "-"}</td>
-                <td className="border border-1 p-2">{outputItem.timeline || "-"}</td>
-                <td className="border border-1 p-2">{outputItem.assumptions || "-"}</td>
-              </tr>
+                                  {/* Output Level */}
+                                  {outcomeItem.outputs?.map(
+                                    (outputItem: any, outputIndex: any) => (
+                                      <React.Fragment
+                                        key={`output-${outputIndex}`}
+                                      >
+                                        <tr
+                                          className={
+                                            outputIndex % 2 === 0
+                                              ? "bg-slate-100"
+                                              : "-"
+                                          }
+                                        >
+                                          <td className="border border-1 p-2  font-bold text-center">
+                                            Output {outcomeIndex + 1}.
+                                            {outputIndex + 1}
+                                          </td>
+                                          <td className="border border-1 p-2 ">
+                                            {outputItem.description || "-"}
+                                          </td>
+                                          <td className="border border-1 p-2">
+                                            {outputItem.indicator || "-"}
+                                          </td>
+                                          <td className="border border-1 p-2">
+                                            {outputItem.baseline || "0"}
+                                          </td>
+                                          <td className="border border-1 p-2">
+                                            {outputItem.target || "-"}
+                                          </td>
+                                          <td className="border border-1 p-2">
+                                            {outputItem.timeline || "-"}
+                                          </td>
+                                          <td className="border border-1 p-2">
+                                            {outputItem.assumptions || "-"}
+                                          </td>
+                                        </tr>
 
-              {/* Activity Level */}
-              {outputItem.activities?.map((activityItem:any, activityIndex:any) => (
-                <React.Fragment key={`activity-${activityIndex}`}>
-                  <tr className={activityIndex % 2 === 0 ? "bg-slate-100" : "-"}>
-                    <td className="border border-1 p-2  font-bold text-center">Activity {outcomeIndex+1}.{outputIndex+1}.{activityIndex+1}</td>
-                    <td className="border border-1 p-2 ">{activityItem.description || "-"}</td>
-                    <td className="border border-1 p-2">{activityItem.indicator || "-"}</td>
-                    <td className="border border-1 p-2">{activityItem.baseline || "-"}</td>
-                    <td className="border border-1 p-2">{activityItem.target || "-"}</td>
-                    <td className="border border-1 p-2">{activityItem.timeline || "-"}</td>
-                    <td className="border border-1 p-2">{activityItem.assumptions || "-"}</td>
-                  </tr>
+                                        {/* Activity Level */}
+                                        {outputItem.activities?.map(
+                                          (
+                                            activityItem: any,
+                                            activityIndex: any
+                                          ) => (
+                                            <React.Fragment
+                                              key={`activity-${activityIndex}`}
+                                            >
+                                              <tr
+                                                className={
+                                                  activityIndex % 2 === 0
+                                                    ? "bg-slate-100"
+                                                    : "-"
+                                                }
+                                              >
+                                                <td className="border border-1 p-2  font-bold text-center">
+                                                  Activity {outcomeIndex + 1}.
+                                                  {outputIndex + 1}.
+                                                  {activityIndex + 1}
+                                                </td>
+                                                <td className="border border-1 p-2 ">
+                                                  {activityItem.description ||
+                                                    "-"}
+                                                </td>
+                                                <td className="border border-1 p-2">
+                                                  {activityItem.indicator ||
+                                                    "-"}
+                                                </td>
+                                                <td className="border border-1 p-2">
+                                                  {activityItem.baseline || "-"}
+                                                </td>
+                                                <td className="border border-1 p-2">
+                                                  {activityItem.target || "-"}
+                                                </td>
+                                                <td className="border border-1 p-2">
+                                                  {activityItem.timeline || "-"}
+                                                </td>
+                                                <td className="border border-1 p-2">
+                                                  {activityItem.assumptions ||
+                                                    "-"}
+                                                </td>
+                                              </tr>
 
-                  {/* Inputs Level */}
-                  {activityItem.inputs && (
-                    <tr className="bg-slate-100">
-                      <td className="border border-1 p-2  font-bold text-center">Input</td>
-                      <td className="border border-1 p-2 ">
-                        {activityItem.inputs.join(", ")}
-                      </td>
-                      <td className="border border-1 p-2">(To be determined)</td>
-                      <td className="border border-1 p-2">(To be determined)</td>
-                      <td className="border border-1 p-2">(To be determined)</td>
-                      <td className="border border-1 p-2">-</td>
-                      <td className="border border-1 p-2">Funding is 
-secured, and all 
-necessary 
-resources are available</td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              ))}
-            </React.Fragment>
-          ))}
-        </React.Fragment>
-      ))}
-    </>
-  )}
-</tbody>
-
+                                              {/* Inputs Level */}
+                                              {activityItem.inputs && (
+                                                <tr className="bg-slate-100">
+                                                  <td className="border border-1 p-2  font-bold text-center">
+                                                    Input
+                                                  </td>
+                                                  <td className="border border-1 p-2 ">
+                                                    {activityItem.inputs.join(
+                                                      ", "
+                                                    )}
+                                                  </td>
+                                                  <td className="border border-1 p-2">
+                                                    (To be determined)
+                                                  </td>
+                                                  <td className="border border-1 p-2">
+                                                    (To be determined)
+                                                  </td>
+                                                  <td className="border border-1 p-2">
+                                                    (To be determined)
+                                                  </td>
+                                                  <td className="border border-1 p-2">
+                                                    -
+                                                  </td>
+                                                  <td className="border border-1 p-2">
+                                                    Funding is secured, and all
+                                                    necessary resources are
+                                                    available
+                                                  </td>
+                                                </tr>
+                                              )}
+                                            </React.Fragment>
+                                          )
+                                        )}
+                                      </React.Fragment>
+                                    )
+                                  )}
+                                </React.Fragment>
+                              )
+                            )}
+                          </>
+                        )}
+                      </tbody>
                     </table>
                   </div>
                 </div>

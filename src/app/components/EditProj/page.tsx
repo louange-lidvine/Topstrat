@@ -2,13 +2,15 @@
 
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
 import ReactModal from "react-modal";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import ExportPage from "../Export/page";
 
 interface Project {
     name: string;
@@ -30,15 +32,80 @@ export default function ({
     const [isHover, setIsHover] = useState(false);
     const [newName, setNewName] = useState(project.name);
     const navigate = useRouter();
+
+    const [projectData, setProjectData] = useState<any>();
+    const [pestleData, setPestleData] = useState<any>();
+    const [logframeData, setLogframeData] = useState<any>([]);
+    const [Data, setData] = useState<any>([]);
+    const [error, setError] = useState<string | null>(null);
+    const [promptData, setPromptData] = useState<any>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
 
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = getCookie("token");
+                setIsLoading(true);
 
-      const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+                const promptResponse = await axios.get(
+                    `${baseURL}/projects/prompts/latest/${id}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setPromptData(promptResponse.data);
+
+                const projectResponse = await axios.get(
+                    `${baseURL}/projects/${id}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setProjectData(projectResponse.data);
+
+                const response = await axios.get(
+                    `${baseURL}/projects/prompts/latest/${id}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                setPestleData(JSON.parse(response.data.pestle.response));
+
+                const logframeData = JSON.parse(
+                    response.data.logframe.response
+                );
+                setData(logframeData);
+                setLogframeData(logframeData);
+                setIsLoading(false);
+                setIsLoading(false);
+                return logframeData;
+            } catch (error) {
+                setError("Error fetching data");
+                console.error("Error fetching data:", error);
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [id]);
+
 
     const checkResponseFormat = (response: any) => {
         const requiredFields = [
@@ -101,69 +168,9 @@ export default function ({
         }
     };
 
-    // Function to handle the printing
-    const handlePrint = async (projectId: string) => {
-        try {
-            const token = getCookie("token");
-            const response = await axios.get(
-                `${baseURL}/projects/prompts/latest/${projectId}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            if (response.data) {
-                const doc = new jsPDF();
-
-                // Add project details to the PDF
-                doc.setFontSize(18);
-                doc.text(`Project: ${response.data.name}`, 10, 10);
-
-                // Add more details like PESTLE analysis, etc. here
-                doc.setFontSize(12);
-                doc.text(`Mission: ${response.data.mission}`, 10, 20);
-                doc.text(`Vision: ${response.data.vision}`, 10, 30);
-                doc.text(`Objectives: ${response.data.objectives}`, 10, 40);
-
-                // Example for a table
-                const pestleData = response.data.pestle;
-                const tableColumnHeaders = ["Category", "Influence", "Impact"];
-                const tableRows: any[] = [];
-
-                [
-                    "political",
-                    "economic",
-                    "social",
-                    "technological",
-                    "legal",
-                    "environmental",
-                ].forEach((category) => {
-                    tableRows.push([
-                        category.charAt(0).toUpperCase() + category.slice(1),
-                        pestleData[category]?.inf || "",
-                        pestleData[category]?.imp || "",
-                    ]);
-                });
-
-                // doc.autoTable({
-                //     head: [tableColumnHeaders],
-                //     body: tableRows,
-                // });
-
-                // Save the PDF
-                doc.save(`${response.data.name}_Project.pdf`);
-            }
-        } catch (error) {
-            console.error("Error generating PDF:", error);
-        }
-    };
-
     return (
-        <div
-            className={`relative hover:bg-white hover:bg-opacity-20  px-10 py-3 mt-3  rounded-sm ${
+         <div
+            className={`relative hover:bg-white hover:bg-opacity-20 px-10 py-3 mt-3 rounded-sm ${
                 selected && "bg-transparent"
             }`}
             onMouseEnter={() => setIsHover(true)}
@@ -174,7 +181,7 @@ export default function ({
             }}
         >
             <div
-                className="  w-[auto] "
+                className="w-[auto]"
                 onClick={() =>
                     isPopoverOpen === false && handleProjectClick(project._id)
                 }
@@ -197,7 +204,7 @@ export default function ({
             </div>
             {isHover && (
                 <div
-                    className="absolute z-index items-center justify-end bg-blue-default rounded  text-white top-2 translate-y-1/2 right-5"
+                    className="absolute z-index items-center justify-end bg-blue-default rounded text-white top-2 translate-y-1/2 right-5"
                     onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                 >
                     <FaEllipsisH />
@@ -210,9 +217,31 @@ export default function ({
                                 borderRadius: "4px",
                             }}
                         >
-                            <ul className=" flex flex-col gap-3">
+                            <ul className="flex flex-col gap-3">
+                                <li className="hover:bg-gray-100 hover:cursor-pointer p-2">
+                                    {typeof window !== "undefined" && (
+                                        <PDFDownloadLink
+                                            document={
+                                                <ExportPage
+                                                    projectData={projectData}
+                                                    promptData={promptData}
+                                                    pestleData={pestleData}
+                                                    logframeData={logframeData}
+                                                    isLoading={isLoading}
+                                                />
+                                            }
+                                            fileName={`${project.name}_document.pdf`}
+                                        >
+                                            {({ loading }) =>
+                                                loading
+                                                    ? "Loading document.."
+                                                    : "Download PDF"
+                                            }
+                                        </PDFDownloadLink>
+                                    )}
+                                </li>
                                 <li
-                                    className=" hover:bg-gray-100  hover:cursor-pointer p-2"
+                                    className="hover:bg-gray-100 hover:cursor-pointer p-2"
                                     onClick={() => {
                                         setIsPopoverOpen(false);
                                         handleDelete(project._id);
@@ -220,61 +249,58 @@ export default function ({
                                 >
                                     Delete
                                 </li>
-                                <li
-                                    className=" hover:bg-gray-100  hover:cursor-pointer p-2"
-                                    onClick={() => {
-                                        setIsPopoverOpen(false);
-                                        handlePrint(project._id);
-                                    }}
-                                >
-                                    Print
-                                </li>
                             </ul>
                         </div>
                     )}
                 </div>
             )}
-             <ReactModal
-        isOpen={isModalOpen}
-        onRequestClose={handleCloseModal}
-        className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-20 bg-white shadow-2xl rounded-lg"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
-      >
-        <form className="flex flex-col justify-center items-center gap-6">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-            Choose section to edit
-          </h2>
+            <ReactModal
+                isOpen={isModalOpen}
+                onRequestClose={handleCloseModal}
+                className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-20 bg-white shadow-2xl rounded-lg"
+                overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
+            >
+                <form className="flex flex-col justify-center items-center gap-6">
+                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+                        Choose section to edit
+                    </h2>
 
-          <div
-            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-            onClick={() => navigate.push(`/components/Preview/${id}`)}
-          >
-            Section A: Mission, Vision, Values, Strategies, SWOT
-          </div>
+                    <div
+                        className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+                        onClick={() =>
+                            navigate.push(`/components/Preview/${id}`)
+                        }
+                    >
+                        Section A: Mission, Vision, Values, Strategies, SWOT
+                    </div>
 
-          <div
-            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-            onClick={() => navigate.push(`/components/Preview2/${id}`)}
-          >
-            Section B: PESTLE Analysis
-          </div>
+                    <div
+                        className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+                        onClick={() =>
+                            navigate.push(`/components/Preview2/${id}`)
+                        }
+                    >
+                        Section B: PESTLE Analysis
+                    </div>
 
-          <div
-            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-            onClick={() => navigate.push(`/components/Preview3/${id}`)}
-          >
-            Section C: Logframe Analysis
-          </div>
+                    <div
+                        className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+                        onClick={() =>
+                            navigate.push(`/components/Preview3/${id}`)
+                        }
+                    >
+                        Section C: Logframe Analysis
+                    </div>
 
-          <button
-            type="button"
-            onClick={handleCloseModal}
-            className="bg-blue-default text-white py-2 px-8 rounded-md  transition-colors duration-200"
-          >
-            Cancel
-          </button>
-        </form>
-      </ReactModal>
+                    <button
+                        type="button"
+                        onClick={handleCloseModal}
+                        className="bg-blue-default text-white py-2 px-8 rounded-md  transition-colors duration-200"
+                    >
+                        Cancel
+                    </button>
+                </form>
+            </ReactModal>
         </div>
     );
 }

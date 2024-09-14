@@ -22,19 +22,25 @@ function Preview() {
     const [swotData, setSwotData] = useState<any>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [projectData, setProjectData] = useState<any>();
+    const [visionId, setVisionId] = useState<string | null>(null);
+    const [missionId, setMissionId] = useState<string | null>(null);
+    const [objectivesId, setObjectivesId] = useState<string | null>(null);
+    const [strategyId, setStrategyId] = useState<string | null>(null);
+    const [swotId, setSwotId] = useState<string | null>(null);
 
     const [simpleData, setSimpleData] = useState({
         vision: "",
         mission: "",
         objectives: "",
         strategy: "",
-        pestle:"",
-        logframe:"",
     });
     const [isEditingSimpleData, setIsEditingSimpleData] = useState(false);
     const [editableSwotData, setEditableSwotData] = useState<any>(null);
     const [promptId, setPromptId] = useState<string | null>(null);
 
+    const handleNextClick = () => {
+        router.push(`/components/Preview2/${id}`);
+    };
 
     useEffect(() => {
         const getProject = async (id: string) => {
@@ -62,6 +68,8 @@ function Preview() {
             try {
                 const token = getCookie("token");
                 setIsLoading(true);
+
+                // Fetching the latest project data
                 const response = await axios.get(
                     `${baseURL}/projects/prompts/latest/${id}`,
                     {
@@ -71,32 +79,44 @@ function Preview() {
                         },
                     }
                 );
+
                 if (response.data) {
                     console.log(response.data);
+
+                    // Set the fetched content for simpleData and SWOT analysis
                     setSimpleData({
                         vision: response.data.vision.response,
                         mission: response.data.mission.response,
                         strategy: response.data.strategy.response,
                         objectives: response.data.objectives.response,
-                        pestle:response.data.pestle.response,
-                        logframe:response.data.logframe.response
                     });
+
+                    // Parse SWOT response and set editable SWOT data
                     setEditableSwotData({
                         strengths:
                             JSON.parse(response.data.swot.response).strengths ||
-                            {},
+                            [],
                         weaknesses:
                             JSON.parse(response.data.swot.response)
-                                .weaknesses || {},
+                                .weaknesses || [],
                         opportunities:
                             JSON.parse(response.data.swot.response)
-                                .opportunities || {},
+                                .opportunities || [],
                         threats:
                             JSON.parse(response.data.swot.response).threats ||
-                            {},
+                            [],
                     });
+
+                    // Set individual section IDs
+                    setVisionId(response.data.vision._id);
+                    setMissionId(response.data.mission._id);
+                    setObjectivesId(response.data.objectives._id);
+                    setStrategyId(response.data.strategy._id);
+                    setSwotId(response.data.swot._id);
+
+                    // Store full prompt data for later use
                     setPromptData(response.data);
-                    setPromptId(response.data.swot._id);
+                    setPromptId(response.data.swot._id); // Storing the SWOT ID as the promptId
                 } else {
                     setError("No data received");
                 }
@@ -109,69 +129,82 @@ function Preview() {
         };
 
         fetchData();
-    }, []);
-  const refetchData = async () => {
-      try {
-          const token = getCookie("token");
-          setIsLoading(true);
+    }, [id]); // Dependencies updated
 
-          const response = await axios.post(
-              `${baseURL}/projects/projects/generate-analysis/${id}`,
-              { projectId: id },
-              {
-                  headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${token}`,
-                  },
-              }
-          );
+   const refetchData = async () => {
+       try {
+           const token = getCookie("token");
+           setIsLoading(true);
 
-          console.log("API Response:", response.data);
+           // Sending request to regenerate the analysis
+           const response = await axios.post(
+               `${baseURL}/projects/projects/generate-analysis/${id}`,
+               { projectId: id },
+               {
+                   headers: {
+                       "Content-Type": "application/json",
+                       Authorization: `Bearer ${token}`,
+                   },
+               }
+           );
 
-          if (response.data && response.data.swot?.response) {
-         
-              const parsedSwotResponse = JSON.parse(
-                  response.data.swot.response
-              );
+           console.log("API Response:", response.data);
 
-         
-              setEditableSwotData({
-                  strengths: parsedSwotResponse.strengths || [],
-                  weaknesses: parsedSwotResponse.weaknesses || [],
-                  opportunities: parsedSwotResponse.opportunities || [],
-                  threats: parsedSwotResponse.threats || [],
-              });
+           if (response.data && response.data.swot?.response) {
+               // Parse the SWOT response and update editable SWOT data
+               const parsedSwotResponse = JSON.parse(
+                   response.data.swot.response
+               );
 
-              setSimpleData({
-                  vision: response.data.vision?.response || "",
-                  mission: response.data.mission?.response || "",
-                  strategy: response.data.strategy?.response || "",
-                  objectives: response.data.objectives?.response || "",
-                  pestle:response.data.pestle?.response || "",
-                  logframe:response.data.logframe?.response || "",
-              });
+               setEditableSwotData({
+                   strengths: parsedSwotResponse.strengths || [],
+                   weaknesses: parsedSwotResponse.weaknesses || [],
+                   opportunities: parsedSwotResponse.opportunities || [],
+                   threats: parsedSwotResponse.threats || [],
+               });
 
-              setPromptData(response.data);
-              setPromptId(response.data.swot._id);
-          } else {
-              setError("No data received");
-          }
+               // Update simpleData with the new refetched data
+               setSimpleData({
+                   vision: response.data.vision?.response || "",
+                   mission: response.data.mission?.response || "",
+                   strategy: response.data.strategy?.response || "",
+                   objectives: response.data.objectives?.response || "",
+               });
 
-          setIsLoading(false);
-      } catch (error) {
-          setError("Error fetching data");
-          console.error("Error fetching data:", error);
-          setIsLoading(false);
-      }
-  };
+               // Update individual section IDs in case they change after regeneration
+               setVisionId(response.data.vision._id);
+               setMissionId(response.data.mission._id);
+               setObjectivesId(response.data.objectives._id);
+               setStrategyId(response.data.strategy._id);
+               setSwotId(response.data.swot._id);
 
+               // Store prompt data after the refetch
+               setPromptData(response.data);
+           } else {
+               setError("No data received");
+           }
 
+           setIsLoading(false);
+       } catch (error) {
+           setError("Error fetching data");
+           console.error("Error fetching data:", error);
+           setIsLoading(false);
+       }
+   };
 
 
     const saveData = async () => {
         const token = getCookie("token");
-        if (!promptId) {
-            console.error("Prompt ID is not available");
+
+        // Validate presence of IDs and data
+        if (
+            !visionId ||
+            !missionId ||
+            !objectivesId ||
+            !strategyId ||
+            !swotId
+        ) {
+            console.error("One or more required IDs are not available");
             return;
         }
         if (!editableSwotData && !simpleData) {
@@ -180,32 +213,78 @@ function Preview() {
             return;
         }
 
-        const response = {
-            vision: simpleData.vision,
-            mission: simpleData.mission,
-            objectives: simpleData.objectives,
-            strategy: simpleData.strategy,
-            swotData: editableSwotData,
-            pestleData:simpleData.pestle,
-            logframeData:simpleData.logframe
-        };
+        // Prepare individual payloads for each section
+        const visionPayload = { vision: simpleData.vision };
+        const missionPayload = { mission: simpleData.mission };
+        const objectivesPayload = { objectives: simpleData.objectives };
+        const strategyPayload = { strategy: simpleData.strategy };
+        const swotPayload = { swotData: editableSwotData };
 
-        try {
-            const result = await axios.put(
-                `${baseURL}/projects/prompts/${promptId}`,
-                { response: JSON.stringify(response) },
+        // Array of API calls with specific IDs
+        const apiCalls = [
+            axios.put(
+                `${baseURL}/projects/prompts/${visionId}`,
+                visionPayload,
                 {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
                     },
                 }
-            );
-            console.log("Response from the API:", result.data);
+            ),
+            axios.put(
+                `${baseURL}/projects/prompts/${missionId}`,
+                missionPayload,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            ),
+            axios.put(
+                `${baseURL}/projects/prompts/${objectivesId}`,
+                objectivesPayload,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            ),
+            axios.put(
+                `${baseURL}/projects/prompts/${strategyId}`,
+                strategyPayload,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            ),
+            axios.put(`${baseURL}/projects/prompts/${swotId}`, swotPayload, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+        ];
+
+        try {
+            // Send all requests concurrently
+            const results = await Promise.all(apiCalls);
+            console.log("Response from the API:", results);
+
+            // Assuming success if all are resolved, update state accordingly
             setSwotData(editableSwotData);
             setIsEditing(false);
             setIsEditingSimpleData(false);
+            console.log("Editable SWOT Data:", editableSwotData);
+            console.log("Simple Data:", simpleData);
+            // setPromptId(swotId); // Storing the SWOT ID as the promptId
 
+
+            // Notify user of success
             toast.success("Data saved successfully!");
         } catch (error: any) {
             console.error(
@@ -230,6 +309,7 @@ function Preview() {
         }));
         setIsEditing(true);
     };
+
     const handleTableDataChange = (type: string, index: number, value: any) => {
         const updatedSwotData = { ...editableSwotData };
 
@@ -385,7 +465,10 @@ function Preview() {
                                                           item: string,
                                                           index: number
                                                       ) => (
-                                                          <li key={index} className="py-2">
+                                                          <li
+                                                              key={index}
+                                                              className="py-2"
+                                                          >
                                                               {item}
                                                           </li>
                                                       )
@@ -433,7 +516,10 @@ function Preview() {
                                                           item: string,
                                                           index: number
                                                       ) => (
-                                                          <li key={index} className="py-2">
+                                                          <li
+                                                              key={index}
+                                                              className="py-2"
+                                                          >
                                                               {item}
                                                           </li>
                                                       )
@@ -453,116 +539,211 @@ function Preview() {
                             <SwotSkeleton />
                         ) : (
                             <table className="min-w-full table-auto border-collapse border border-gray-300">
-    <thead>
-        <tr>
-            <th className="border border-gray-300 p-3 text-blue-default font-semibold">Strengths</th>
-            <th className="border border-gray-300 p-3 text-blue-default font-semibold">Weaknesses</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="border border-gray-300 p-3 align-top">
-                {editableSwotData?.strengths?.map((value: string, index: number) => (
-                    <div key={index} className="p-2">
-                        {isEditing ? (
-                            <textarea
-                                className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
-                                value={value}
-                                onChange={(e) =>
-                                    handleTableDataChange("strengths", index, e.target.value)
-                                }
-                                rows={Math.max(2, value.split("\n").length)}
-                            />
-                        ) : (
-                            <p
-                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                                onDoubleClick={() => setIsEditing(true)}
-                            >
-                                {value}
-                            </p>
-                        )}
-                    </div>
-                ))}
-            </td>
-            <td className="border border-gray-300 p-3 align-top">
-                {editableSwotData?.weaknesses?.map((value: string, index: number) => (
-                    <div key={index} className="p-2">
-                        {isEditing ? (
-                            <textarea
-                                className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
-                                value={value}
-                                onChange={(e) =>
-                                    handleTableDataChange("weaknesses", index, e.target.value)
-                                }
-                                rows={Math.max(2, value.split("\n").length)}
-                            />
-                        ) : (
-                            <p
-                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                                onDoubleClick={() => setIsEditing(true)}
-                            >
-                                {value}
-                            </p>
-                        )}
-                    </div>
-                ))}
-            </td>
-        </tr>
-        <tr>
-            <th className="border border-gray-300 p-3 text-blue-default font-semibold">Opportunities</th>
-            <th className="border border-gray-300 p-3 text-blue-default font-semibold">Threats</th>
-        </tr>
-        <tr>
-            <td className="border border-gray-300 p-3 align-top">
-                {editableSwotData?.opportunities?.map((value: string, index: number) => (
-                    <div key={index} className="p-2">
-                        {isEditing ? (
-                            <textarea
-                                className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
-                                value={value}
-                                onChange={(e) =>
-                                    handleTableDataChange("opportunities", index, e.target.value)
-                                }
-                                rows={Math.max(2, value.split("\n").length)}
-                            />
-                        ) : (
-                            <p
-                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                                onDoubleClick={() => setIsEditing(true)}
-                            >
-                                {value}
-                            </p>
-                        )}
-                    </div>
-                ))}
-            </td>
-            <td className="border border-gray-300 p-3 align-top">
-                {editableSwotData?.threats?.map((value: string, index: number) => (
-                    <div key={index} className="p-2">
-                        {isEditing ? (
-                            <textarea
-                                className="w-full h-fit overflow-y-hidden  p-2 border border-gray-200 rounded resize-none"
-                                value={value}
-                                onChange={(e) =>
-                                    handleTableDataChange("threats", index, e.target.value)
-                                }
-                                rows={Math.max(2, value.split("\n").length)}
-                            />
-                        ) : (
-                            <p
-                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                                onDoubleClick={() => setIsEditing(true)}
-                            >
-                                {value}
-                            </p>
-                        )}
-                    </div>
-                ))}
-            </td>
-        </tr>
-    </tbody>
-</table>
-
+                                <thead>
+                                    <tr>
+                                        <th className="border border-gray-300 p-3 text-blue-default font-semibold">
+                                            Strengths
+                                        </th>
+                                        <th className="border border-gray-300 p-3 text-blue-default font-semibold">
+                                            Weaknesses
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td className="border border-gray-300 p-3 align-top">
+                                            {editableSwotData?.strengths?.map(
+                                                (
+                                                    value: string,
+                                                    index: number
+                                                ) => (
+                                                    <div
+                                                        key={index}
+                                                        className="p-2"
+                                                    >
+                                                        {isEditing ? (
+                                                            <textarea
+                                                                className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
+                                                                value={value}
+                                                                onChange={(e) =>
+                                                                    handleTableDataChange(
+                                                                        "strengths",
+                                                                        index,
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                rows={Math.max(
+                                                                    2,
+                                                                    value.split(
+                                                                        "\n"
+                                                                    ).length
+                                                                )}
+                                                            />
+                                                        ) : (
+                                                            <p
+                                                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                                                                onDoubleClick={() =>
+                                                                    setIsEditing(
+                                                                        true
+                                                                    )
+                                                                }
+                                                            >
+                                                                {value}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                )
+                                            )}
+                                        </td>
+                                        <td className="border border-gray-300 p-3 align-top">
+                                            {editableSwotData?.weaknesses?.map(
+                                                (
+                                                    value: string,
+                                                    index: number
+                                                ) => (
+                                                    <div
+                                                        key={index}
+                                                        className="p-2"
+                                                    >
+                                                        {isEditing ? (
+                                                            <textarea
+                                                                className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
+                                                                value={value}
+                                                                onChange={(e) =>
+                                                                    handleTableDataChange(
+                                                                        "weaknesses",
+                                                                        index,
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                rows={Math.max(
+                                                                    2,
+                                                                    value.split(
+                                                                        "\n"
+                                                                    ).length
+                                                                )}
+                                                            />
+                                                        ) : (
+                                                            <p
+                                                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                                                                onDoubleClick={() =>
+                                                                    setIsEditing(
+                                                                        true
+                                                                    )
+                                                                }
+                                                            >
+                                                                {value}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                )
+                                            )}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="border border-gray-300 p-3 text-blue-default font-semibold">
+                                            Opportunities
+                                        </th>
+                                        <th className="border border-gray-300 p-3 text-blue-default font-semibold">
+                                            Threats
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td className="border border-gray-300 p-3 align-top">
+                                            {editableSwotData?.opportunities?.map(
+                                                (
+                                                    value: string,
+                                                    index: number
+                                                ) => (
+                                                    <div
+                                                        key={index}
+                                                        className="p-2"
+                                                    >
+                                                        {isEditing ? (
+                                                            <textarea
+                                                                className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
+                                                                value={value}
+                                                                onChange={(e) =>
+                                                                    handleTableDataChange(
+                                                                        "opportunities",
+                                                                        index,
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                rows={Math.max(
+                                                                    2,
+                                                                    value.split(
+                                                                        "\n"
+                                                                    ).length
+                                                                )}
+                                                            />
+                                                        ) : (
+                                                            <p
+                                                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                                                                onDoubleClick={() =>
+                                                                    setIsEditing(
+                                                                        true
+                                                                    )
+                                                                }
+                                                            >
+                                                                {value}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                )
+                                            )}
+                                        </td>
+                                        <td className="border border-gray-300 p-3 align-top">
+                                            {editableSwotData?.threats?.map(
+                                                (
+                                                    value: string,
+                                                    index: number
+                                                ) => (
+                                                    <div
+                                                        key={index}
+                                                        className="p-2"
+                                                    >
+                                                        {isEditing ? (
+                                                            <textarea
+                                                                className="w-full h-fit overflow-y-hidden  p-2 border border-gray-200 rounded resize-none"
+                                                                value={value}
+                                                                onChange={(e) =>
+                                                                    handleTableDataChange(
+                                                                        "threats",
+                                                                        index,
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                rows={Math.max(
+                                                                    2,
+                                                                    value.split(
+                                                                        "\n"
+                                                                    ).length
+                                                                )}
+                                                            />
+                                                        ) : (
+                                                            <p
+                                                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
+                                                                onDoubleClick={() =>
+                                                                    setIsEditing(
+                                                                        true
+                                                                    )
+                                                                }
+                                                            >
+                                                                {value}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                )
+                                            )}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         )}
                     </div>
 
