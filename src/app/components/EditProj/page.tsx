@@ -106,56 +106,6 @@ export default function ({
         fetchData();
     }, [id]);
 
-    const regenerateData = async () => {
-        try {
-            const token = getCookie("token");
-            setIsLoading(true);
-
-            const promptResponse = await axios.get(
-                `${baseURL}/projects/projects/generate-analysis/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            setPromptData(promptResponse.data);
-
-            const projectResponse = await axios.get(
-                `${baseURL}/projects/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            setProjectData(projectResponse.data);
-
-            const response = await axios.post(
-                `${baseURL}/projects/projects/generate-analysis/${id}`,
-                { projectId: id },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            setPestleData(JSON.parse(response.data.pestle.response));
-
-            const logframeData = JSON.parse(response.data.logframe.response);
-            setLogframeData(logframeData);
-            setData(logframeData);
-            return logframeData;
-        } catch (error) {
-            setError("Error fetching data");
-            console.error("Error fetching data:", error);
-            setIsLoading(false);
-        }
-    };
 
     const checkResponseFormat = (response: any) => {
         const requiredFields = [
@@ -218,70 +168,9 @@ export default function ({
         }
     };
 
-    // Function to handle the printing
-   const handlePrint = async (projectId: string) => {
-       try {
-           const token = getCookie("token");
-           const response = await axios.get(
-               `${baseURL}/projects/prompts/latest/${projectId}`,
-               {
-                   headers: {
-                       "Content-Type": "application/json",
-                       Authorization: `Bearer ${token}`,
-                   },
-               }
-           );
-
-           if (response.data) {
-               const doc = new jsPDF();
-
-               // Add project details to the PDF
-               doc.setFontSize(18);
-               doc.text(`Project: ${response.data.name}`, 10, 10);
-
-               // Add more details like PESTLE analysis, etc. here
-               doc.setFontSize(12);
-               doc.text(`Mission: ${response.data.mission}`, 10, 20);
-               doc.text(`Vision: ${response.data.vision}`, 10, 30);
-               doc.text(`Objectives: ${response.data.objectives}`, 10, 40);
-
-               // Example for a table
-               const pestleData = response.data.pestle;
-               const tableColumnHeaders = ["Category", "Influence", "Impact"];
-               const tableRows: any[] = [];
-
-               [
-                   "political",
-                   "economic",
-                   "social",
-                   "technological",
-                   "legal",
-                   "environmental",
-               ].forEach((category) => {
-                   tableRows.push([
-                       category.charAt(0).toUpperCase() + category.slice(1),
-                       pestleData[category]?.inf || "",
-                       pestleData[category]?.imp || "",
-                   ]);
-               });
-
-               // doc.autoTable({
-               //     head: [tableColumnHeaders],
-               //     body: tableRows,
-               // });
-
-               // Save the PDF
-               doc.save(`${response.data.name}_Project.pdf`);
-           }
-       } catch (error) {
-           console.error("Error generating PDF:", error);
-       }
-   };
-
-
     return (
-        <div
-            className={`relative hover:bg-white hover:bg-opacity-20  px-10 py-3 mt-3  rounded-sm ${
+         <div
+            className={`relative hover:bg-white hover:bg-opacity-20 px-10 py-3 mt-3 rounded-sm ${
                 selected && "bg-transparent"
             }`}
             onMouseEnter={() => setIsHover(true)}
@@ -292,7 +181,7 @@ export default function ({
             }}
         >
             <div
-                className="  w-[auto] "
+                className="w-[auto]"
                 onClick={() =>
                     isPopoverOpen === false && handleProjectClick(project._id)
                 }
@@ -315,7 +204,7 @@ export default function ({
             </div>
             {isHover && (
                 <div
-                    className="absolute z-index items-center justify-end bg-blue-default rounded  text-white top-2 translate-y-1/2 right-5"
+                    className="absolute z-index items-center justify-end bg-blue-default rounded text-white top-2 translate-y-1/2 right-5"
                     onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                 >
                     <FaEllipsisH />
@@ -328,9 +217,9 @@ export default function ({
                                 borderRadius: "4px",
                             }}
                         >
-                            <ul className=" flex flex-col gap-3">
-                                <li className=" hover:bg-gray-100  hover:cursor-pointer p-2">
-                                    {/* {typeof window !== "undefined" && (
+                            <ul className="flex flex-col gap-3">
+                                <li className="hover:bg-gray-100 hover:cursor-pointer p-2">
+                                    {typeof window !== "undefined" && (
                                         <PDFDownloadLink
                                             document={
                                                 <ExportPage
@@ -338,38 +227,21 @@ export default function ({
                                                     promptData={promptData}
                                                     pestleData={pestleData}
                                                     logframeData={logframeData}
-                                                    isLoading={false}
+                                                    isLoading={isLoading}
                                                 />
-                                            }
-                                            fileName="document.pdf"
-                                        >
-                                            {({ loading }) =>
-                                                loading
-                                                    ? "Loading document.."
-                                                    : "Print"
-                                            }
-                                        </PDFDownloadLink>
-                                    )} */}
-                                    {promptData && (
-                                        <PDFDownloadLink
-                                            document={
-                                                <ExportPage
-                                                    projectData={projectData}
-                                                    promptData={promptData} pestleData={null} logframeData={null} isLoading={false}                                                />
                                             }
                                             fileName={`${project.name}_document.pdf`}
                                         >
                                             {({ loading }) =>
                                                 loading
-                                                    ? "Loading document..."
+                                                    ? "Loading document.."
                                                     : "Download PDF"
                                             }
                                         </PDFDownloadLink>
                                     )}
                                 </li>
-
                                 <li
-                                    className=" hover:bg-gray-100  hover:cursor-pointer p-2"
+                                    className="hover:bg-gray-100 hover:cursor-pointer p-2"
                                     onClick={() => {
                                         setIsPopoverOpen(false);
                                         handleDelete(project._id);
