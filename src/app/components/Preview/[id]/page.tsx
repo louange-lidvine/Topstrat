@@ -321,6 +321,17 @@ function Preview() {
         setEditableSwotData(updatedSwotData);
     };
 
+    const renderTextWithBold = (text: string) => {
+    const parts = text.split(/\*\*(.*?)\*\*/g); 
+    return parts.map((part, index) =>
+        index % 2 === 1 ? (
+            <strong key={index}>{part}</strong> 
+        ) : (
+            <span key={index}>{part}</span> 
+        )
+    );
+};
+
     return (
         <div className="border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium">
             <div className="flex flex-col justify-center items-center gap-4 text-xl">
@@ -343,7 +354,7 @@ function Preview() {
                         ) : (
                             <div>
                                 <h3 className="text-blue-default font-bold text-xl">
-                                    Project Overview
+                                    Introduction
                                 </h3>
                                 <p>{projectData && projectData.description}</p>
                             </div>
@@ -507,243 +518,19 @@ function Preview() {
                                         }
                                     />
                                 ) : (
-                                    <ol>
-                                        {promptData?.strategy?.response
-                                            ? promptData.strategy.response
-                                                  .split("\n")
-                                                  .map(
-                                                      (
-                                                          item: string,
-                                                          index: number
-                                                      ) => (
-                                                          <li
-                                                              key={index}
-                                                              className="py-2"
-                                                          >
-                                                              {item}
-                                                          </li>
-                                                      )
-                                                  )
-                                            : null}
-                                    </ol>
+                                   <ol>
+            {promptData?.strategy?.response
+                ? promptData.strategy.response
+                      .split("\n")
+                      .map((item:any, index:any) => (
+                          <li key={index} className="py-2">
+                              {renderTextWithBold(item)}
+                          </li>
+                      ))
+                : null}
+        </ol>
                                 )}
                             </div>
-                        )}
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                        <h3 className="text-xl font-bold text-blue-default">
-                            SWOT Analysis
-                        </h3>
-                        {isLoading ? (
-                            <SwotSkeleton />
-                        ) : (
-                            <table className="min-w-full table-auto border-collapse border border-gray-300">
-                                <thead>
-                                    <tr>
-                                        <th className="border border-gray-300 p-3 text-blue-default font-semibold">
-                                            Strengths
-                                        </th>
-                                        <th className="border border-gray-300 p-3 text-blue-default font-semibold">
-                                            Weaknesses
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className="border border-gray-300 p-3 align-top">
-                                            {editableSwotData?.strengths?.map(
-                                                (
-                                                    value: string,
-                                                    index: number
-                                                ) => (
-                                                    <div
-                                                        key={index}
-                                                        className="p-2"
-                                                    >
-                                                        {isEditing ? (
-                                                            <textarea
-                                                                className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
-                                                                value={value}
-                                                                onChange={(e) =>
-                                                                    handleTableDataChange(
-                                                                        "strengths",
-                                                                        index,
-                                                                        e.target
-                                                                            .value
-                                                                    )
-                                                                }
-                                                                rows={Math.max(
-                                                                    2,
-                                                                    value.split(
-                                                                        "\n"
-                                                                    ).length
-                                                                )}
-                                                            />
-                                                        ) : (
-                                                            <p
-                                                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                                                                onDoubleClick={() =>
-                                                                    setIsEditing(
-                                                                        true
-                                                                    )
-                                                                }
-                                                            >
-                                                                {value}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                )
-                                            )}
-                                        </td>
-                                        <td className="border border-gray-300 p-3 align-top">
-                                            {editableSwotData?.weaknesses?.map(
-                                                (
-                                                    value: string,
-                                                    index: number
-                                                ) => (
-                                                    <div
-                                                        key={index}
-                                                        className="p-2"
-                                                    >
-                                                        {isEditing ? (
-                                                            <textarea
-                                                                className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
-                                                                value={value}
-                                                                onChange={(e) =>
-                                                                    handleTableDataChange(
-                                                                        "weaknesses",
-                                                                        index,
-                                                                        e.target
-                                                                            .value
-                                                                    )
-                                                                }
-                                                                rows={Math.max(
-                                                                    2,
-                                                                    value.split(
-                                                                        "\n"
-                                                                    ).length
-                                                                )}
-                                                            />
-                                                        ) : (
-                                                            <p
-                                                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                                                                onDoubleClick={() =>
-                                                                    setIsEditing(
-                                                                        true
-                                                                    )
-                                                                }
-                                                            >
-                                                                {value}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                )
-                                            )}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th className="border border-gray-300 p-3 text-blue-default font-semibold">
-                                            Opportunities
-                                        </th>
-                                        <th className="border border-gray-300 p-3 text-blue-default font-semibold">
-                                            Threats
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <td className="border border-gray-300 p-3 align-top">
-                                            {editableSwotData?.opportunities?.map(
-                                                (
-                                                    value: string,
-                                                    index: number
-                                                ) => (
-                                                    <div
-                                                        key={index}
-                                                        className="p-2"
-                                                    >
-                                                        {isEditing ? (
-                                                            <textarea
-                                                                className="w-full overflow-y-hidden h-fit p-2 border border-gray-200 rounded resize-none"
-                                                                value={value}
-                                                                onChange={(e) =>
-                                                                    handleTableDataChange(
-                                                                        "opportunities",
-                                                                        index,
-                                                                        e.target
-                                                                            .value
-                                                                    )
-                                                                }
-                                                                rows={Math.max(
-                                                                    2,
-                                                                    value.split(
-                                                                        "\n"
-                                                                    ).length
-                                                                )}
-                                                            />
-                                                        ) : (
-                                                            <p
-                                                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                                                                onDoubleClick={() =>
-                                                                    setIsEditing(
-                                                                        true
-                                                                    )
-                                                                }
-                                                            >
-                                                                {value}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                )
-                                            )}
-                                        </td>
-                                        <td className="border border-gray-300 p-3 align-top">
-                                            {editableSwotData?.threats?.map(
-                                                (
-                                                    value: string,
-                                                    index: number
-                                                ) => (
-                                                    <div
-                                                        key={index}
-                                                        className="p-2"
-                                                    >
-                                                        {isEditing ? (
-                                                            <textarea
-                                                                className="w-full h-fit overflow-y-hidden  p-2 border border-gray-200 rounded resize-none"
-                                                                value={value}
-                                                                onChange={(e) =>
-                                                                    handleTableDataChange(
-                                                                        "threats",
-                                                                        index,
-                                                                        e.target
-                                                                            .value
-                                                                    )
-                                                                }
-                                                                rows={Math.max(
-                                                                    2,
-                                                                    value.split(
-                                                                        "\n"
-                                                                    ).length
-                                                                )}
-                                                            />
-                                                        ) : (
-                                                            <p
-                                                                className="cursor-pointer p-2 hover:bg-gray-100 rounded"
-                                                                onDoubleClick={() =>
-                                                                    setIsEditing(
-                                                                        true
-                                                                    )
-                                                                }
-                                                            >
-                                                                {value}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                )
-                                            )}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         )}
                     </div>
 
@@ -764,7 +551,7 @@ function Preview() {
                         <div
                             className="flex bg-blue-default text-white font-bold rounded-md py-3 px-6 cursor-pointer"
                             onClick={() =>
-                                router.push(`/components/Preview2/${id}`)
+                                router.push(`/components/Preview1/${id}`)
                             }
                         >
                             Next

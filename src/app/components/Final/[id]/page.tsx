@@ -154,6 +154,17 @@ function Final() {
     );
   };
 
+     const renderTextWithBold = (text: string) => {
+    const parts = text.split(/\*\*(.*?)\*\*/g); 
+    return parts.map((part, index) =>
+        index % 2 === 1 ? (
+            <strong key={index}>{part}</strong> 
+        ) : (
+            <span key={index}>{part}</span> 
+        )
+    );
+};
+
   const MyDocument = () => (
     <Document pageMode="fullScreen">
       <Page size="A4" style={{ margin: "auto" }}>
@@ -184,7 +195,7 @@ function Final() {
                   <div>
                     <h3 className="text-blue-default font-bold text-xl">
                       {" "}
-                      <p> Project Overview </p>
+                      <p> Introduction </p>
                     </h3>
                     <p className="">
                       <p> {projectData && projectData.description}</p>
@@ -330,9 +341,17 @@ function Final() {
                         Strategy
                       </p>{" "}
                     </h3>
-                    {promptData && promptData.strategy && (
-                      <ul>{renderList(promptData.strategy.response)}</ul>
-                    )}
+                                          <ol>
+            {promptData?.strategy?.response
+                ? promptData.strategy.response
+                      .split("\n")
+                      .map((item:any, index:any) => (
+                          <li key={index} className="py-2">
+                              {renderTextWithBold(item)}
+                          </li>
+                      ))
+                : null}
+        </ol>
                   </div>
                 )}
               </div>
@@ -347,7 +366,7 @@ function Final() {
                 </div>
               ) : (
                 <div>
-                  <h2 className="text-xl font-bold text-blue-default">
+                  <h2 className="text-xl mb-4 font-bold text-blue-default">
                     <p
                       style={{
                         fontSize: "20px",
@@ -913,7 +932,7 @@ function Final() {
       <ReactModal
         isOpen={isModalOpen}
         onRequestClose={handleCloseModal}
-        className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-20 bg-white shadow-2xl rounded-lg"
+        className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-5 bg-white shadow-2xl rounded-lg"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
       >
         <form className="flex flex-col justify-center items-center gap-6">
@@ -925,21 +944,28 @@ function Final() {
             className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
             onClick={() => router.push(`/components/Preview/${id}`)}
           >
-            Section A: Mission, Vision, Values, Strategies, SWOT
+            Section A: Mission, Vision, Values, Strategies
+          </div>
+
+          <div
+            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => router.push(`/components/Preview1/${id}`)}
+          >
+            Section B:SWOT Analysis
           </div>
 
           <div
             className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
             onClick={() => router.push(`/components/Preview2/${id}`)}
           >
-            Section B: PESTLE Analysis
+            Section C: PESTLE Analysis
           </div>
 
           <div
             className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
             onClick={() => router.push(`/components/Preview3/${id}`)}
           >
-            Section C: Logframe Analysis
+            Section D: Logframe Analysis
           </div>
 
           <button

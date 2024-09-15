@@ -37,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         setIsLoading(true);
         setCookie("token", undefined);
         toast.success("See you again 👋");
-        navigate.push("../../Pages/signIn/page.tsx");
+        navigate.push("../../Pages/signIn");
     };
 
     const toggleMenu = () => {
@@ -51,6 +51,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const handleCloseProfile = () => {
         setIsProfileOpen(false);
     };
+    const handleClose=()=>{
+        setIsProfileOpen(false);
+       navigate.push('../ProjectPage')
+    }
 
     const handleProfileClick = () => {
         setMenuVisible(!menuVisible);
@@ -169,7 +173,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     </div>
                     <div className="py-10 fixed bottom-0">
                         <h2 className="font-bold hover:bg-white hover:bg-opacity-20 pl-10 w-[255px] py-3 h-12 rounded-sm" onClick={handleProfileClick}>
-                            Profile
+                            Settings
                         </h2>
                         <h2 className="font-bold hover:bg-white hover:bg-opacity-20 pl-10 py-3 h-12 rounded-sm w-[255x]" onClick={handleButtonClick}>
                             Logout
@@ -225,13 +229,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                 <p>Loading...</p>
                             )}
                         </div>
-                        <div className="flex justify-center">
+                        <div className="flex justify-center gap-4">
                             <button
                                 type="button"
                                 className="bg-[#0F872F] py-2 px-6 text-white rounded-md hover:bg-[#0d6a34]"
                                 onClick={handleCloseProfile}
                             >
                                 Return
+                            </button>
+                            <button
+                                type="button"
+                                className="bg-orange-default py-2 px-6 text-white rounded-md hover:bg-orange-400"
+                         onClick={handleClose}
+
+                            >
+                                View all projects
                             </button>
                         </div>
                     </ReactModal>
@@ -277,7 +289,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                         </div>
                         <div className="flex flex-col fixed bottom-0">
                              <h2 className="font-bold hover:bg-white hover:bg-opacity-20 pl-10 w-[235px] py-3 h-12 rounded-sm" onClick={handleProfileClick}>
-                            Profile
+                            Settings
                         </h2>
                         <h2 className="font-bold hover:bg-white hover:bg-opacity-20 pl-10 py-3 h-12 rounded-sm w-[235px]" onClick={handleButtonClick}>
                             Logout
