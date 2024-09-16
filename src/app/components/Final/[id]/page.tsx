@@ -270,33 +270,7 @@ function Final() {
                   </div>
                 )}
               </div>
-              <div className="flex flex-col gap-3">
-                {isLoading ? (
-                  <div className="w-full">
-                    <Skeleton width={80} />
-                    <Skeleton height={80} />
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-xl font-bold">
-                      {" "}
-                      <p
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          color: "#0B6C79",
-                        }}
-                      >
-                        Objectives
-                      </p>{" "}
-                    </h3>
-                    {promptData && promptData.objectives && (
-                      <ul>{renderList(promptData.objectives.response)}</ul>
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3">
                 {isLoading ? (
                   <div className="w-full">
                     <Skeleton width={80} />
@@ -322,39 +296,7 @@ function Final() {
                   </div>
                 )}
               </div>
-              <div className="flex flex-col gap-3">
-                {isLoading ? (
-                  <div className="w-full">
-                    <Skeleton width={80} />
-                    <Skeleton height={80} />
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-xl font-bold">
-                      <p
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          color: "#0B6C79",
-                        }}
-                      >
-                        Strategy
-                      </p>{" "}
-                    </h3>
-                                          <ol>
-            {promptData?.strategy?.response
-                ? promptData.strategy.response
-                      .split("\n")
-                      .map((item:any, index:any) => (
-                          <li key={index} className="py-2">
-                              {renderTextWithBold(item)}
-                          </li>
-                      ))
-                : null}
-        </ol>
-                  </div>
-                )}
-              </div>
+           
             </div>
           </div>
           <div className="flex flex-col gap-6 mt-5 ">
@@ -474,7 +416,6 @@ function Final() {
                       </tr>
                     </thead>
                     <tbody>
-                      {/* Loop through all opportunities and threats */}
                       {promptData &&
                         promptData.swot &&
                         promptData.swot.response &&
@@ -622,6 +563,66 @@ function Final() {
               </div>
             )}
           </div>
+             <div className="flex flex-col gap-3">
+                {isLoading ? (
+                  <div className="w-full">
+                    <Skeleton width={80} />
+                    <Skeleton height={80} />
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="text-xl mt-5 font-bold">
+                      {" "}
+                      <p
+                        style={{
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                          color: "#0B6C79",
+                        }}
+                      >
+                        Objectives
+                      </p>{" "}
+                    </h3>
+                    {promptData && promptData.objectives && (
+                      <ul>{renderList(promptData.objectives.response)}</ul>
+                    )}
+                  </div>
+                )}
+              </div>
+          
+              <div className="flex flex-col gap-3">
+                {isLoading ? (
+                  <div className="w-full">
+                    <Skeleton width={80} />
+                    <Skeleton height={80} />
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="text-xl font-bold">
+                      <p
+                        style={{
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                          color: "#0B6C79",
+                        }}
+                      >
+                        Strategy
+                      </p>{" "}
+                    </h3>
+                                          <ol>
+            {promptData?.strategy?.response
+                ? promptData.strategy.response
+                      .split("\n")
+                      .map((item:any, index:any) => (
+                          <li key={index} className="py-2">
+                              {renderTextWithBold(item)}
+                          </li>
+                      ))
+                : null}
+        </ol>
+                  </div>
+                )}
+              </div>
           <div>
             {isLoading ? (
               <div className="w-full">

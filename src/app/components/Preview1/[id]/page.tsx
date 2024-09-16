@@ -530,6 +530,14 @@ function Preview() {
                     </div>
 
                     <div className="flex justify-center my-5 gap-8">
+                           <button
+                    className="bg-[#ED0C0C] text-white font-bold rounded-md py-3 px-6"
+                    onClick={() =>
+                        router.push(`../../components/Preview/${id}`)
+                    }
+                >
+                    Back
+                </button>
                         <button
                             className="bg-orange-default text-white font-bold rounded-md py-3 px-6"
                             onClick={refetchData}
