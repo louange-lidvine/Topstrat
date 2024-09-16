@@ -63,6 +63,28 @@ function Preview() {
         setIsLoading(false);
     }, []);
 
+      const renderList = (data: string) => {
+    return (
+      <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
+        {data
+          .split(/\d+\.\s*/)
+          .filter((item) => item.trim() !== "")
+          .map((item, index) => (
+            <li
+              key={index}
+              style={{
+                marginBottom: "8px",
+                fontSize: "16px",
+                color: "#333",
+              }}
+            >
+              {item.trim()}
+            </li>
+          ))}
+      </ul>
+    );
+  };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -440,99 +462,33 @@ function Preview() {
                             </div>
                         )}
                     </div>
-                    <div className="flex flex-col gap-3 no-scroll h-fit">
-                        {isLoading ? (
-                            <div className="w-full">
-                                <Skeleton width={100} />
-                                <Skeleton />
-                            </div>
-                        ) : (
-                            <div>
-                                <h3 className="text-xl font-bold text-blue-default">
-                                    Objectives
-                                </h3>
-                                {isEditingSimpleData ? (
-                                    <textarea
-                                        className="bg-transparent h-fit"
-                                        style={{
-                                            height: "200px",
-                                            width: "1100px",
-                                        }}
-                                        value={simpleData.objectives}
-                                        onChange={(e) =>
-                                            setSimpleData((prev) => ({
-                                                ...prev,
-                                                objectives: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                ) : (
-                                    <ol>
-                                        {promptData?.objectives?.response
-                                            ? promptData.objectives.response
-                                                  .split("\n")
-                                                  .map(
-                                                      (
-                                                          item: string,
-                                                          index: number
-                                                      ) => (
-                                                          <li
-                                                              key={index}
-                                                              className="py-2"
-                                                          >
-                                                              {item}
-                                                          </li>
-                                                      )
-                                                  )
-                                            : null}
-                                    </ol>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="flex flex-col gap-3 no-scroll">
-                        {isLoading ? (
-                            <div className="w-full">
-                                <Skeleton width={100} />
-                                <Skeleton />
-                            </div>
-                        ) : (
-                            <div>
-                                <h3 className="text-xl font-bold text-blue-default">
-                                    Strategy
-                                </h3>
-                                {isEditingSimpleData ? (
-                                    <textarea
-                                        className="bg-transparent scr"
-                                        style={{
-                                            height: "500px",
-                                            width: "1100px",
-                                        }}
-                                        value={simpleData.strategy}
-                                        onChange={(e) =>
-                                            setSimpleData((prev) => ({
-                                                ...prev,
-                                                strategy: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                ) : (
-                                   <ol>
-            {promptData?.strategy?.response
-                ? promptData.strategy.response
-                      .split("\n")
-                      .map((item:any, index:any) => (
-                          <li key={index} className="py-2">
-                              {renderTextWithBold(item)}
-                          </li>
-                      ))
-                : null}
-        </ol>
-                                )}
-                            </div>
-                        )}
-                    </div>
+                        <div className="flex flex-col gap-3">
+                {isLoading ? (
+                  <div className="w-full">
+                    <Skeleton width={80} />
+                    <Skeleton height={80} />
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="text-xl font-bold">
+                      {" "}
+                      <p
+                        style={{
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                          color: "#0B6C79",
+                        }}
+                      >
+                        Values
+                      </p>
+                    </h3>
+                    {promptData && promptData.values && (
+                      <ul>{renderList(promptData.values.response)}</ul>
+                    )}
+                  </div>
+                )}
+              </div>
+                  
 
                     <div className="flex justify-center my-5 gap-8">
                         <button

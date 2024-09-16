@@ -270,33 +270,7 @@ function Final() {
                   </div>
                 )}
               </div>
-              <div className="flex flex-col gap-3">
-                {isLoading ? (
-                  <div className="w-full">
-                    <Skeleton width={80} />
-                    <Skeleton height={80} />
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-xl font-bold">
-                      {" "}
-                      <p
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          color: "#0B6C79",
-                        }}
-                      >
-                        Objectives
-                      </p>{" "}
-                    </h3>
-                    {promptData && promptData.objectives && (
-                      <ul>{renderList(promptData.objectives.response)}</ul>
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3">
                 {isLoading ? (
                   <div className="w-full">
                     <Skeleton width={80} />
@@ -322,39 +296,7 @@ function Final() {
                   </div>
                 )}
               </div>
-              <div className="flex flex-col gap-3">
-                {isLoading ? (
-                  <div className="w-full">
-                    <Skeleton width={80} />
-                    <Skeleton height={80} />
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-xl font-bold">
-                      <p
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          color: "#0B6C79",
-                        }}
-                      >
-                        Strategy
-                      </p>{" "}
-                    </h3>
-                                          <ol>
-            {promptData?.strategy?.response
-                ? promptData.strategy.response
-                      .split("\n")
-                      .map((item:any, index:any) => (
-                          <li key={index} className="py-2">
-                              {renderTextWithBold(item)}
-                          </li>
-                      ))
-                : null}
-        </ol>
-                  </div>
-                )}
-              </div>
+           
             </div>
           </div>
           <div className="flex flex-col gap-6 mt-5 ">
@@ -474,7 +416,6 @@ function Final() {
                       </tr>
                     </thead>
                     <tbody>
-                      {/* Loop through all opportunities and threats */}
                       {promptData &&
                         promptData.swot &&
                         promptData.swot.response &&
@@ -622,6 +563,66 @@ function Final() {
               </div>
             )}
           </div>
+             <div className="flex flex-col gap-3">
+                {isLoading ? (
+                  <div className="w-full">
+                    <Skeleton width={80} />
+                    <Skeleton height={80} />
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="text-xl mt-5 font-bold">
+                      {" "}
+                      <p
+                        style={{
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                          color: "#0B6C79",
+                        }}
+                      >
+                        Objectives
+                      </p>{" "}
+                    </h3>
+                    {promptData && promptData.objectives && (
+                      <ul>{renderList(promptData.objectives.response)}</ul>
+                    )}
+                  </div>
+                )}
+              </div>
+          
+              <div className="flex flex-col gap-3">
+                {isLoading ? (
+                  <div className="w-full">
+                    <Skeleton width={80} />
+                    <Skeleton height={80} />
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="text-xl font-bold">
+                      <p
+                        style={{
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                          color: "#0B6C79",
+                        }}
+                      >
+                        Strategy
+                      </p>{" "}
+                    </h3>
+                                          <ol>
+            {promptData?.strategy?.response
+                ? promptData.strategy.response
+                      .split("\n")
+                      .map((item:any, index:any) => (
+                          <li key={index} className="py-2">
+                              {renderTextWithBold(item)}
+                          </li>
+                      ))
+                : null}
+        </ol>
+                  </div>
+                )}
+              </div>
           <div>
             {isLoading ? (
               <div className="w-full">
@@ -899,7 +900,7 @@ function Final() {
                       isLoading={false}
                     />
                   }
-                  fileName="document.pdf"
+                 fileName={`${projectData?.name}.pdf`}
                 >
                   {({ loading }) =>
                     loading ? "Loading document..." : "Download PDF"
@@ -932,42 +933,49 @@ function Final() {
       <ReactModal
         isOpen={isModalOpen}
         onRequestClose={handleCloseModal}
-        className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-5 bg-white shadow-2xl rounded-lg"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
+        className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-20 bg-white shadow-2xl rounded-lg"
+        overlayClassName="fixed  inset-0 bg-black bg-opacity-50 flex justify-center items-start"
       >
         <form className="flex flex-col justify-center items-center gap-6">
           <h2 className="text-2xl font-semibold mb-6 text-gray-800">
             Choose section to edit
           </h2>
-
+      <div className="grid lg:grid-cols-2 gap-4">
           <div
-            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
             onClick={() => router.push(`/components/Preview/${id}`)}
           >
-            Section A: Mission, Vision, Values, Strategies
+            Section A: Mission, Vision, Values
           </div>
 
           <div
-            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
             onClick={() => router.push(`/components/Preview1/${id}`)}
           >
             Section B:SWOT Analysis
           </div>
 
           <div
-            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
             onClick={() => router.push(`/components/Preview2/${id}`)}
           >
             Section C: PESTLE Analysis
           </div>
+          <div
+            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => router.push(`/components/Preview3/${id}`)}
+          >
+            Section D: Objectives and strategies
+          </div>
 
           <div
-            className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-            onClick={() => router.push(`/components/Preview3/${id}`)}
+            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => router.push(`/components/Preview4/${id}`)}
           >
             Section D: Logframe Analysis
           </div>
 
+</div>
           <button
             type="button"
             onClick={handleCloseModal}

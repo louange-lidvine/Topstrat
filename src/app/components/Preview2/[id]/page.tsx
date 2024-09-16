@@ -311,7 +311,7 @@ function Preview() {
                         <button
                             className="bg-[#ED0C0C] text-white font-bold rounded-md py-3 px-6"
                             onClick={() =>
-                                router.push(`../../components/Preview/${id}`)
+                                router.push(`../../components/Preview1/${id}`)
                             }
                         >
                             Back
