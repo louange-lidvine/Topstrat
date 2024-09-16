@@ -235,17 +235,17 @@ export default function ({
            if (response.data) {
                const doc = new jsPDF();
 
-               // Add project details to the PDF
+              
                doc.setFontSize(18);
                doc.text(`Project: ${response.data.name}`, 10, 10);
 
-               // Add more details like PESTLE analysis, etc. here
+               
                doc.setFontSize(12);
                doc.text(`Mission: ${response.data.mission}`, 10, 20);
                doc.text(`Vision: ${response.data.vision}`, 10, 30);
                doc.text(`Objectives: ${response.data.objectives}`, 10, 40);
 
-               // Example for a table
+              
                const pestleData = response.data.pestle;
                const tableColumnHeaders = ["Category", "Influence", "Impact"];
                const tableRows: any[] = [];
@@ -265,12 +265,7 @@ export default function ({
                    ]);
                });
 
-               // doc.autoTable({
-               //     head: [tableColumnHeaders],
-               //     body: tableRows,
-               // });
-
-               // Save the PDF
+             
                doc.save(`${response.data.name}_Project.pdf`);
            }
        } catch (error) {
@@ -330,26 +325,7 @@ export default function ({
                         >
                             <ul className=" flex flex-col gap-3">
                                 <li className=" hover:bg-gray-100  hover:cursor-pointer p-2">
-                                    {/* {typeof window !== "undefined" && (
-                                        <PDFDownloadLink
-                                            document={
-                                                <ExportPage
-                                                    projectData={projectData}
-                                                    promptData={promptData}
-                                                    pestleData={pestleData}
-                                                    logframeData={logframeData}
-                                                    isLoading={false}
-                                                />
-                                            }
-                                            fileName="document.pdf"
-                                        >
-                                            {({ loading }) =>
-                                                loading
-                                                    ? "Loading document.."
-                                                    : "Print"
-                                            }
-                                        </PDFDownloadLink>
-                                    )} */}
+                                    
                                     {promptData && (
                                         <PDFDownloadLink
                                             document={

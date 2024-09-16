@@ -37,47 +37,45 @@ function Page() {
             [name]: value,
         }));
     };
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setLoading(true);
 
-    try {
-        const response = await axios.post(
-            `${baseURL}/auth/signup`,
-            formData,
-            {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-            }
-        );
+      try {
+          const response = await axios.post(
+              `${baseURL}/auth/signup`,
+              formData,
+              {
+                  headers: {
+                      Accept: "application/json",
+                      "Content-Type": "application/json",
+                  },
+              }
+          );
 
-        console.log(response.data);
-        toast.success("Created account successfully");
-     router.push('https://topstrat-payment-portal.vercel.app/');
-    } catch (error: any) {
-        console.error("Error:", error);
+          console.log(response.data);
+          toast.success("Account created successfully");
 
-   
-        if (error.response && error.response.data) {
-            const msg =
-                error.response.data.message || error.response.data.error;
+          // Redirect to payment portal
+          router.push("https://topstrat-payment-portal.vercel.app/");
+      } catch (error: any) {
+          console.error("Error:", error);
+          if (error.response && error.response.data) {
+              const msg =
+                  error.response.data.message || error.response.data.error;
+              if (msg) {
+                  toast.error(msg);
+              } else {
+                  toast.error("Failed to create account, please try again.");
+              }
+          } else {
+              toast.error("Failed to create account, please try again.");
+          }
+      } finally {
+          setLoading(false);
+      }
+  };
 
-            if (msg) {
-                toast.error(msg); 
-            } else {
-                toast.error("Failed to create account, please try again.");
-            }
-        } else {
-            toast.error("Failed to create account, please try again.");
-        }
-
-        router.push("/Pages/signup");
-    } finally {
-        setLoading(false);
-    }
-};
 
 
     return (

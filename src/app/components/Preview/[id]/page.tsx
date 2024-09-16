@@ -11,8 +11,6 @@ import { baseURL } from "@/app/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-
 function Preview() {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(false);
@@ -131,67 +129,66 @@ function Preview() {
         fetchData();
     }, [id]); // Dependencies updated
 
-   const refetchData = async () => {
-       try {
-           const token = getCookie("token");
-           setIsLoading(true);
+    const refetchData = async () => {
+        try {
+            const token = getCookie("token");
+            setIsLoading(true);
 
-           // Sending request to regenerate the analysis
-           const response = await axios.post(
-               `${baseURL}/projects/projects/generate-analysis/${id}`,
-               { projectId: id },
-               {
-                   headers: {
-                       "Content-Type": "application/json",
-                       Authorization: `Bearer ${token}`,
-                   },
-               }
-           );
+            // Sending request to regenerate the analysis
+            const response = await axios.post(
+                `${baseURL}/projects/projects/generate-analysis/${id}`,
+                { projectId: id },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
-           console.log("API Response:", response.data);
+            console.log("API Response:", response.data);
 
-           if (response.data && response.data.swot?.response) {
-               // Parse the SWOT response and update editable SWOT data
-               const parsedSwotResponse = JSON.parse(
-                   response.data.swot.response
-               );
+            if (response.data && response.data.swot?.response) {
+                // Parse the SWOT response and update editable SWOT data
+                const parsedSwotResponse = JSON.parse(
+                    response.data.swot.response
+                );
 
-               setEditableSwotData({
-                   strengths: parsedSwotResponse.strengths || [],
-                   weaknesses: parsedSwotResponse.weaknesses || [],
-                   opportunities: parsedSwotResponse.opportunities || [],
-                   threats: parsedSwotResponse.threats || [],
-               });
+                setEditableSwotData({
+                    strengths: parsedSwotResponse.strengths || [],
+                    weaknesses: parsedSwotResponse.weaknesses || [],
+                    opportunities: parsedSwotResponse.opportunities || [],
+                    threats: parsedSwotResponse.threats || [],
+                });
 
-               // Update simpleData with the new refetched data
-               setSimpleData({
-                   vision: response.data.vision?.response || "",
-                   mission: response.data.mission?.response || "",
-                   strategy: response.data.strategy?.response || "",
-                   objectives: response.data.objectives?.response || "",
-               });
+                // Update simpleData with the new refetched data
+                setSimpleData({
+                    vision: response.data.vision?.response || "",
+                    mission: response.data.mission?.response || "",
+                    strategy: response.data.strategy?.response || "",
+                    objectives: response.data.objectives?.response || "",
+                });
 
-               // Update individual section IDs in case they change after regeneration
-               setVisionId(response.data.vision._id);
-               setMissionId(response.data.mission._id);
-               setObjectivesId(response.data.objectives._id);
-               setStrategyId(response.data.strategy._id);
-               setSwotId(response.data.swot._id);
+                // Update individual section IDs in case they change after regeneration
+                setVisionId(response.data.vision._id);
+                setMissionId(response.data.mission._id);
+                setObjectivesId(response.data.objectives._id);
+                setStrategyId(response.data.strategy._id);
+                setSwotId(response.data.swot._id);
 
-               // Store prompt data after the refetch
-               setPromptData(response.data);
-           } else {
-               setError("No data received");
-           }
+                // Store prompt data after the refetch
+                setPromptData(response.data);
+            } else {
+                setError("No data received");
+            }
 
-           setIsLoading(false);
-       } catch (error) {
-           setError("Error fetching data");
-           console.error("Error fetching data:", error);
-           setIsLoading(false);
-       }
-   };
-
+            setIsLoading(false);
+        } catch (error) {
+            setError("Error fetching data");
+            console.error("Error fetching data:", error);
+            setIsLoading(false);
+        }
+    };
 
     const saveData = async () => {
         const token = getCookie("token");
@@ -282,7 +279,6 @@ function Preview() {
             console.log("Editable SWOT Data:", editableSwotData);
             console.log("Simple Data:", simpleData);
             // setPromptId(swotId); // Storing the SWOT ID as the promptId
-
 
             // Notify user of success
             toast.success("Data saved successfully!");

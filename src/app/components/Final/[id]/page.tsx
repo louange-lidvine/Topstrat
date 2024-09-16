@@ -168,6 +168,12 @@ function Final() {
         <Document pageMode="fullScreen">
             <Page size="A4" style={{ margin: "auto" }}>
                 <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium">
+                    <button
+                        onClick={() => router.push("/")}
+                        className="bg-gray-200 text-gray-700 py-2 px-6 rounded-lg mb-4 mt-2 transition-colors duration-200 hover:bg-gray-300"
+                    >
+                        Back to Home
+                    </button>
                     <div className="flex flex-col  justify-center items-center gap-4 text-xl ">
                         <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
                             {" "}
@@ -808,6 +814,7 @@ function Final() {
                                                                                             {
                                                                                                 key
                                                                                             }
+
                                                                                             :
                                                                                         </p>{" "}
                                                                                         ,
@@ -846,6 +853,7 @@ function Final() {
                                                                                     >
                                                                                         {indicator.baseline ||
                                                                                             ""}
+
                                                                                         ,
                                                                                     </div>
                                                                                 );
@@ -974,6 +982,7 @@ function Final() {
                                                                                             Output{" "}
                                                                                             {outcomeIndex +
                                                                                                 1}
+
                                                                                             .
                                                                                             {outputIndex +
                                                                                                 1}
@@ -1026,9 +1035,11 @@ function Final() {
                                                                                                         Activity{" "}
                                                                                                         {outcomeIndex +
                                                                                                             1}
+
                                                                                                         .
                                                                                                         {outputIndex +
                                                                                                             1}
+
                                                                                                         .
                                                                                                         {activityIndex +
                                                                                                             1}
