@@ -373,7 +373,7 @@ function Preview() {
                         {isLoading ? (
                             <div className="w-full">
                                 <Skeleton width={100} />
-                                <Skeleton />
+                                <Skeleton height={300} />
                             </div>
                         ) : (
                             <div>
@@ -424,7 +424,7 @@ function Preview() {
                         {isLoading ? (
                             <div className="w-full">
                                 <Skeleton width={100} />
-                                <Skeleton />
+                           <Skeleton height={300} />
                             </div>
                         ) : (
                             <div>
