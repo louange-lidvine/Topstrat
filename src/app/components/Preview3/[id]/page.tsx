@@ -28,6 +28,8 @@ function Preview() {
     const [objectivesId, setObjectivesId] = useState<string | null>(null);
     const [strategyId, setStrategyId] = useState<string | null>(null);
     const [swotId, setSwotId] = useState<string | null>(null);
+    const [logframeData, setLogframeData] = useState<any>({});
+
 
     const [simpleData, setSimpleData] = useState({
         vision: "",
@@ -64,27 +66,7 @@ function Preview() {
         setIsLoading(false);
     }, []);
 
-      const renderList = (data: string) => {
-    return (
-      <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
-        {data
-          .split(/\d+\.\s*/)
-          .filter((item) => item.trim() !== "")
-          .map((item, index) => (
-            <li
-              key={index}
-              style={{
-                marginBottom: "8px",
-                fontSize: "16px",
-                color: "#333",
-              }}
-            >
-              {item.trim()}
-            </li>
-          ))}
-      </ul>
-    );
-  };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -139,7 +121,11 @@ function Preview() {
 
                     // Store full prompt data for later use
                     setPromptData(response.data);
-                    setPromptId(response.data.swot._id); // Storing the SWOT ID as the promptId
+                    setPromptId(response.data.swot._id); 
+                const data = JSON.parse(response.data.logframe.response);
+                console.log(data);
+
+                setLogframeData(data);
                 } else {
                     setError("No data received");
                 }
@@ -203,6 +189,10 @@ function Preview() {
 
                // Store prompt data after the refetch
                setPromptData(response.data);
+                  const data = JSON.parse(response.data.logframe.response);
+                console.log(data);
+
+                setLogframeData(data);
            } else {
                setError("No data received");
            }
@@ -388,6 +378,13 @@ function Preview() {
                                 <h3 className="text-xl font-bold text-blue-default">
                                     Objectives
                                 </h3>
+                                <div>
+                               <h1 className="mt-3">General objective :</h1>
+                               <h2 className="mb-4 mt-2"> {logframeData?.goal?.description}</h2>
+                                </div>
+  
+
+                                <h2>Specific Objectives</h2>
                                 {isEditingSimpleData ? (
                                     <textarea
                                         className="bg-transparent h-fit"

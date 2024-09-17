@@ -591,6 +591,12 @@ function Final() {
                         Objectives
                       </p>{" "}
                     </h3>
+                     <div>
+                               <h1 className="mt-3">General objective :</h1>
+                               <h2 className="mb-4 mt-2"> {logframeData?.goal?.description}</h2>
+                                </div>
+                                
+                                <h2>Specific Objectives</h2>
                     {promptData && promptData.objectives && (
                       <ul>{renderList(promptData.objectives.response)}</ul>
                     )}
