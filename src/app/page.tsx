@@ -77,9 +77,9 @@ function Page() {
                 <Image
                     src={Office}
                     alt="Office"
-                    width={500}
-                    height={300}
-                    className="md:w-1/2 object-cover"
+                    width={600}
+                    height={600}
+                    className=" object-cover"
                 />
             </section>
 

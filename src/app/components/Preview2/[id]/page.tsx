@@ -9,6 +9,7 @@ import PestleSkeleton from "../../skeletons/PestleSkeleton";
 import { baseURL } from "@/app/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BiArrowBack } from "react-icons/bi";
 
 function Preview() {
     const router = useRouter();
@@ -188,7 +189,14 @@ function Preview() {
     };
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 w-full">
+        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
+                  <div className="justify-end flex gap-2 cursor-pointer"  
+                onClick={() =>
+                                router.push('/')
+                            }>
+                                <BiArrowBack className="mt-1"/>
+                                <p className="">Return to home</p>
+                                </div>
             {projectLoading ? (
                 <div>
                     <div className="flex flex-col justify-center items-center gap-4 text-2xl">

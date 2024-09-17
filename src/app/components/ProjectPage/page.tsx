@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { BiArrowBack } from "react-icons/bi";
+
 
 const AllProjectsPage: React.FC = () => {
     const { id } = useParams();
@@ -44,6 +46,13 @@ const AllProjectsPage: React.FC = () => {
 
     return (
         <div className="border border-blue-default h-screen mt-4 mb-12 lg:mb-4 rounded-lg mx-2 p-4 font-medium bg-white shadow-md">
+      <div className="justify-end flex gap-2 cursor-pointer"  
+                onClick={() =>
+                                navigate.push('/')
+                            }>
+                                <BiArrowBack className="mt-1"/>
+                                <p className="">Return to home</p>
+                                </div>
             <h1 className="text-2xl font-bold mb-6 text-gray-800">All Projects</h1>
             {isLoading ? (
                 <div className="">
