@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import SbLoad from "@/app/shared/loader/sbload";
 import { baseURL } from "../../constants/index"; 
+import logo from '../../../../public/assets/logo.png'
 
 function Page() {
     const router = useRouter();
@@ -79,27 +80,33 @@ function Page() {
 
 
     return (
-        <div className="min-h-screen flex items-center px-16 lg:px-32">
+        <div className="min-h-screen flex items-center px-10 md:px-16 lg:px-32">
             <Image
                 src={Background}
                 className="w-full h-full fixed left-0 top-0 -z-10"
                 alt="background-img"
             />
-            <div className="flex flex-col items-center lg:flex-row w-[100%]">
-                <div className="w-[60%] lg:flex items-center hidden">
+            <div className="flex flex-col items-center justify-center lg:flex-row w-[100%]">
+                {/* <div className="w-[60%] lg:flex items-center hidden">
                     <Image
                         src={Graphics}
                         alt="graphics-image"
                         width={618}
                         height={689}
                     />
-                </div>
-                <div className="p-4 rounded w-full lg:w-[40%]">
-                    <h1 className="text-2xl font-bold mb-4">
+                </div> */}
+                <div className="max-w-md p-4 rounded bg-white shadow-lg w-full lg:w-[40%] flex flex-col justify-center">
+                      <div className="flex items-center justify-center">
+    <a href="#home" className="text-2xl font-bold text-blue-default">
+      <Image src={logo} alt="alt" width={50} height={50} />
+    </a>
+        <h1 className="font-bold text-xl text-blue-default">TOPSTRAT</h1>
+  </div>
+                    <h1 className=" text-center text-xl font-bold mb-4">
                         Create an account
                     </h1>
                     <form
-                        className="flex flex-col space-y-4"
+                        className="flex flex-col space-y-2"
                         onSubmit={handleSubmit}
                     >
                         <div className="flex flex-col">
@@ -112,7 +119,7 @@ function Page() {
                                 name="firstname"
                                 value={formData.firstname}
                                 onChange={handleChange}
-                                className="border border-black p-3 rounded-md outline-none placeholder-transparent bg-opacity-0"
+                                className="border border-black p-2 rounded-md outline-none placeholder-transparent bg-opacity-0"
                                 required
                             />
                         </div>
@@ -127,7 +134,7 @@ function Page() {
                                 name="lastname"
                                 value={formData.lastname}
                                 onChange={handleChange}
-                                className="border border-black outline-none p-3 rounded-md placeholder-transparent bg-opacity-0"
+                                className="border border-black outline-none p-2 rounded-md placeholder-transparent bg-opacity-0"
                                 required
                             />
                         </div>
@@ -142,7 +149,7 @@ function Page() {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="border p-3 border-black outline-none rounded-md placeholder-transparent bg-opacity-0"
+                                className="border p-2 border-black outline-none rounded-md placeholder-transparent bg-opacity-0"
                                 required
                             />
                         </div>
@@ -151,7 +158,7 @@ function Page() {
                             <label htmlFor="password" className="mb-1">
                                 Password:
                             </label>
-                            <div className="flex space-between border p-3 outline-none rounded-md placeholder-transparent bg-opacity-0 border-black">
+                            <div className="flex space-between border p-2 outline-none rounded-md placeholder-transparent bg-opacity-0 border-black">
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     id="password"
@@ -171,7 +178,7 @@ function Page() {
                         </div>
                         <button
                             type="submit"
-                            className={`bg-blue-default text-white  py-4 px-10 rounded-lg ${
+                            className={`bg-blue-default text-white py-3 px-10 rounded-lg ${
                                 loading ? " cursor-not-allowed" : ""
                             }`}
                             disabled={loading}
