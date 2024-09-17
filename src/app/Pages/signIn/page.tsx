@@ -16,9 +16,6 @@ import { jwtDecode } from "jwt-decode";
 import GoogleSignInButton from "@/app/constants/(auth)/googleSignInButton";
 import { redirect } from "next/navigation";
 import { baseURL, ApiURL } from "../../constants/index"; 
-import logo from '../../../../public/assets/logo.png'
-
-
 function Page() {
   const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
@@ -90,15 +87,17 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 className="w-full h-full fixed left-0 top-0 -z-10"
                 alt="background-img"
             />
-            <div className="flex flex-col items-center justify-center lg:flex-row w-[100%]">
-                <div className="max-w-md p-4 rounded bg-white shadow-lg w-full lg:w-[40%] flex flex-col justify-center">
-                      <div className="flex items-center justify-center">
-    <a href="#home" className="text-2xl font-bold text-blue-default">
-      <Image src={logo} alt="alt" width={50} height={50} />
-    </a>
-        <h1 className="font-bold text-xl text-blue-default">TOPSTRAT</h1>
-  </div>
-                    <h1 className="text-xl font-bold mb-4 text-center">Sign In</h1>
+            <div className="flex flex-col items-center lg:flex-row w-[100%]">
+                <div className="w-[60%] lg:flex items-center hidden ">
+                    <Image
+                        src={Graphics}
+                        alt="graphics-image"
+                        width={500}
+                        height={500}
+                    />
+                </div>
+                <div className="max-w-md p-4 rounded w-full lg:w-[40%] flex flex-col justify-center">
+                    <h1 className="text-2xl font-bold mb-4">Sign In</h1>
                     <form
                         className="flex flex-col space-y-4"
                         onSubmit={handleSubmit}

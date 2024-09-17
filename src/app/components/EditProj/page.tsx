@@ -197,110 +197,119 @@ export default function ({
                 ) : (
                     <p>
                         {project.name.length > 20
-                            ? project.name.slice(20) + "..."
+                            ? project.name.slice(0,16) + "..."
                             : project.name}
                     </p>
                 )}
             </div>
             {isHover && (
                 <div
-                    className="absolute z-index items-center justify-end bg-blue-default rounded text-white top-2 translate-y-1/2 right-5"
+                    className="absolute z-index items-center justify-end rounded text-white top-2 translate-y-1/2 right-5"
                     onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                 >
                     <FaEllipsisH />
-                    {isPopoverOpen && (
-                        <div
-                            className="popover w-[200px] absolute left-0 text-black bg-[#fff] p-[10px]"
-                            style={{
-                                zIndex: "50",
-                                boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-                                borderRadius: "4px",
-                            }}
-                        >
-                            <ul className="flex flex-col gap-3">
-                                <li className="hover:bg-gray-100 hover:cursor-pointer p-2">
-                                    {typeof window !== "undefined" && (
-                                        <PDFDownloadLink
-                                            document={
-                                                <ExportPage
-                                                    projectData={projectData}
-                                                    promptData={promptData}
-                                                    pestleData={pestleData}
-                                                    logframeData={logframeData}
-                                                    isLoading={isLoading}
-                                                />
-                                            }
-                                            fileName={`${project.name}_document.pdf`}
-                                        >
-                                            {({ loading }) =>
-                                                loading
-                                                    ? "Loading document.."
-                                                    : "Download PDF"
-                                            }
-                                        </PDFDownloadLink>
-                                    )}
-                                </li>
-                                <li
-                                    className="hover:bg-gray-100 hover:cursor-pointer p-2"
-                                    onClick={() => {
-                                        setIsPopoverOpen(false);
-                                        handleDelete(project._id);
-                                    }}
-                                >
-                                    Delete
-                                </li>
-                            </ul>
-                        </div>
-                    )}
+                  {isHover && (
+        <div className="absolute top-4 left-0 text-gray-800">
+          {isPopoverOpen && (
+            <div
+              className="absolute right-0 bg-white text-gray-800 shadow-lg rounded-lg p-3 z-50"
+              style={{ minWidth: "180px" }}
+            >
+              <ul className="flex flex-col gap-2">
+                <li className="hover:bg-gray-100 p-2 rounded-md cursor-pointer">
+                  {typeof window !== "undefined" && (
+                    <PDFDownloadLink
+                      document={
+                        <ExportPage
+                          projectData={projectData}
+                          promptData={promptData}
+                          pestleData={pestleData}
+                          logframeData={logframeData}
+                          isLoading={isLoading}
+                        />
+                      }
+                      fileName={`${project.name}.pdf`}
+                    >
+                      {({ loading }) =>
+                        loading ? "Loading document..." : "Download PDF"
+                      }
+                    </PDFDownloadLink>
+                  )}
+                </li>
+                <li className="hover:bg-gray-100 p-2 rounded-md cursor-pointer" onClick={handleOpenModal}>
+                Edit
+                </li>
+                <li
+                  className="hover:bg-red-100 text-red-600 p-2 rounded-md cursor-pointer"
+                  onClick={() => {
+                    setIsPopoverOpen(false);
+                    handleDelete(project._id);
+                  }}
+                >
+                  Delete
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
                 </div>
             )}
-            <ReactModal
-                isOpen={isModalOpen}
-                onRequestClose={handleCloseModal}
-                className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-20 bg-white shadow-2xl rounded-lg"
-                overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
-            >
-                <form className="flex flex-col justify-center items-center gap-6">
-                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-                        Choose section to edit
-                    </h2>
+         <ReactModal
+        isOpen={isModalOpen}
+        onRequestClose={handleCloseModal}
+        className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-20 bg-white shadow-2xl rounded-lg"
+        overlayClassName="fixed  inset-0 bg-black bg-opacity-50 flex justify-center items-start"
+      >
+        <form className="flex flex-col justify-center items-center gap-6">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+            Choose section to edit
+          </h2>
+      <div className="grid lg:grid-cols-2 gap-4">
+          <div
+            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => navigate.push(`/components/Preview/${id}`)}
+          >
+            Section A: Mission, Vision, Values
+          </div>
 
-                    <div
-                        className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                        onClick={() =>
-                            navigate.push(`/components/Preview/${id}`)
-                        }
-                    >
-                        Section A: Mission, Vision, Values, Strategies, SWOT
-                    </div>
+          <div
+            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => navigate.push(`/components/Preview1/${id}`)}
+          >
+            Section B:SWOT Analysis
+          </div>
 
-                    <div
-                        className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                        onClick={() =>
-                            navigate.push(`/components/Preview2/${id}`)
-                        }
-                    >
-                        Section B: PESTLE Analysis
-                    </div>
+          <div
+            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => navigate.push(`/components/Preview2/${id}`)}
+          >
+            Section C: PESTLE Analysis
+          </div>
+          <div
+            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => navigate.push(`/components/Preview3/${id}`)}
+          >
+            Section D: Objectives and strategies
+          </div>
 
-                    <div
-                        className="bg-gray-100 h-20 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                        onClick={() =>
-                            navigate.push(`/components/Preview3/${id}`)
-                        }
-                    >
-                        Section C: Logframe Analysis
-                    </div>
+          <div
+            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
+            onClick={() => navigate.push(`/components/Preview4/${id}`)}
+          >
+            Section D: Logframe Analysis
+          </div>
 
-                    <button
-                        type="button"
-                        onClick={handleCloseModal}
-                        className="bg-blue-default text-white py-2 px-8 rounded-md  transition-colors duration-200"
-                    >
-                        Cancel
-                    </button>
-                </form>
-            </ReactModal>
+</div>
+          <button
+            type="button"
+            onClick={handleCloseModal}
+            className="bg-blue-default text-white py-2 px-8 rounded-md  transition-colors duration-200"
+          >
+            Cancel
+          </button>
+        </form>
+      </ReactModal>
         </div>
     );
 }
