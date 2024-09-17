@@ -13,6 +13,7 @@ import ExportPage from "../../Export/page";
 import { baseURL } from "@/app/constants";
 import ReactModal from "react-modal";
 import { useRouter } from "next/navigation";
+import { BiArrowBack } from "react-icons/bi";
 
 function Final() {
   const { id } = useParams();
@@ -169,6 +170,13 @@ function Final() {
     <Document pageMode="fullScreen">
       <Page size="A4" style={{ margin: "auto" }}>
         <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium">
+                <div className="justify-end flex gap-2 cursor-pointer"  
+                onClick={() =>
+                                router.push('/')
+                            }>
+                                <BiArrowBack className="mt-1"/>
+                                <p className="">Return to home</p>
+                                </div>
           <div className="flex flex-col  justify-center items-center gap-4 text-xl ">
             <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
               {" "}

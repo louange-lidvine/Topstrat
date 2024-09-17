@@ -9,6 +9,7 @@ import LogFrameSkeleton from "../../skeletons/LogFrameSkeleton";
 import { baseURL } from "@/app/constants";
 import { toast } from "react-toastify";
 import _ from "lodash";
+import { BiArrowBack } from "react-icons/bi";
 
 function Preview() {
     const router = useRouter();
@@ -144,9 +145,9 @@ function Preview() {
         }
     ) => {
         setEditableLogData((prevData: any) => {
-            const newData = _.cloneDeep(prevData); // clone the previous state
+            const newData = _.cloneDeep(prevData);
             if (index === -1) {
-                newData[category][level] = value; // update at the top level
+                newData[category][level] = value; 
                 console.log(
                     "Data saved 1",
                     newData[category][level],
@@ -176,6 +177,13 @@ function Preview() {
     };
     return (
         <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8">
+                  <div className="justify-end flex gap-2 cursor-pointer"  
+                onClick={() =>
+                                router.push('/')
+                            }>
+                                <BiArrowBack className="mt-1"/>
+                                <p className="">Return to home</p>
+                                </div>
             {loading ? (
                 <div>
                     <div className="flex flex-col justify-center items-center gap-4 text-2xl">

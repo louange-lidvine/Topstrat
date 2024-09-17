@@ -3,8 +3,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Prompt from "../prompt/page";
+import { BiArrowBack } from "react-icons/bi";
+import { useRouter } from "next/navigation";
 
 function page() {
+    const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isSecModalOpen, setIsSecModalOpen] = useState<boolean>(false);
     const [prompts, setPrompts] = useState<string[]>([]);
@@ -23,6 +26,13 @@ function page() {
 
     return (
         <div className=" border border-blue-default lg:full my-4 rounded-md lg:mx-2 float-right lg:z-[9999]">
+                  <div className="justify-end flex gap-2 cursor-pointer"  
+                onClick={() =>
+                                router.push('/')
+                            }>
+                                <BiArrowBack className="mt-1"/>
+                                <p className="">Return to home</p>
+                                </div>
             <div className="input flex justify-center">
                 {/* <input
                     type="text"
