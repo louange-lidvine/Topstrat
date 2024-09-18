@@ -39,9 +39,6 @@ function Preview() {
     const [editableSwotData, setEditableSwotData] = useState<any>(null);
     const [promptId, setPromptId] = useState<string | null>(null);
 
-    const handleNextClick = () => {
-        router.push(`/components/Preview2/${id}`);
-    };
 
     useEffect(() => {
         const getProject = async (id: string) => {
@@ -294,20 +291,17 @@ function Preview() {
         ];
 
         try {
-            // Send all requests concurrently
             const results = await Promise.all(apiCalls);
             console.log("Response from the API:", results);
 
-            // Assuming success if all are resolved, update state accordingly
             setSwotData(editableSwotData);
             setIsEditing(false);
             setIsEditingSimpleData(false);
             console.log("Editable SWOT Data:", editableSwotData);
             console.log("Simple Data:", simpleData);
-            // setPromptId(swotId); // Storing the SWOT ID as the promptId
 
 
-            // Notify user of success
+      
             toast.success("Data saved successfully!");
         } catch (error: any) {
             console.error(
@@ -318,42 +312,7 @@ function Preview() {
         }
     };
 
-    const handleCellChange = (
-        category: string,
-        field: string,
-        value: string
-    ) => {
-        setEditableSwotData((prevData: any) => ({
-            ...prevData,
-            [category]: {
-                ...prevData[category],
-                [field]: value,
-            },
-        }));
-        setIsEditing(true);
-    };
 
-    const handleTableDataChange = (type: string, index: number, value: any) => {
-        const updatedSwotData = { ...editableSwotData };
-
-        const updatedTypeArray = [...updatedSwotData[type]];
-        updatedTypeArray[index] = value;
-
-        updatedSwotData[type] = updatedTypeArray;
-
-        setEditableSwotData(updatedSwotData);
-    };
-
-    const renderTextWithBold = (text: string) => {
-    const parts = text.split(/\*\*(.*?)\*\*/g); 
-    return parts.map((part, index) =>
-        index % 2 === 1 ? (
-            <strong key={index}>{part}</strong> 
-        ) : (
-            <span key={index}>{part}</span> 
-        )
-    );
-};
 
     return (
         <div className="border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium">
@@ -507,7 +466,7 @@ function Preview() {
                             Regenerate
                         </button>
                         <button
-                            className="bg-green-500 text-white font-bold rounded-md  py-3 px-6"
+                            className="bg-green-500 text-white font-bold rounded-md cursor-pointer  py-3 px-6"
                             onClick={saveData}
                             disabled={!isEditing}
                         >

@@ -203,11 +203,11 @@ function Final() {
                   <div>
                     <h3 className="text-blue-default font-bold text-xl">
                       {" "}
-                      <p> Introduction </p>
+                       Introduction 
                     </h3>
-                    <p className="">
-                      <p> {projectData && projectData.description}</p>
-                    </p>
+                  
+                     <p> {projectData && projectData.description}</p>
+                  
                   </div>
                 )}
               </div>
@@ -222,26 +222,18 @@ function Final() {
                   </div>
                 ) : (
                   <div>
-                    <h3 className="text-xl font-bold">
-                      {" "}
-                      <p
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          color: "#0B6C79",
-                        }}
-                      >
-                        {" "}
+                    <h3 className="text-xl font-bold text-blue-default">
+                   
                         Vision
-                      </p>
+                 
                     </h3>
-                    <p>
+                  
                       <p>
                         {promptData &&
                           promptData.vision &&
                           promptData.vision.response}
                       </p>
-                    </p>
+          
                   </div>
                 )}
               </div>
@@ -256,25 +248,19 @@ function Final() {
                   </div>
                 ) : (
                   <div>
-                    <h3 className="text-xl font-bold">
-                      {" "}
-                      <p
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          color: "#0B6C79",
-                        }}
-                      >
+                    <h3 className="text-xl font-bold text-blue-default">
+                    
+                   
                         Mission
-                      </p>{" "}
+                 
                     </h3>
-                    <p>
+                  
                       <p>
                         {promptData &&
                           promptData.mission &&
                           promptData.mission.response}
                       </p>
-                    </p>
+                 
                   </div>
                 )}
               </div>
@@ -286,17 +272,10 @@ function Final() {
                   </div>
                 ) : (
                   <div>
-                    <h3 className="text-xl font-bold">
-                      {" "}
-                      <p
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          color: "#0B6C79",
-                        }}
-                      >
+                    <h3 className="text-xl font-bold text-blue-default">
+                   
                         Values
-                      </p>
+              
                     </h3>
                     {promptData && promptData.values && (
                       <ul>{renderList(promptData.values.response)}</ul>
@@ -317,15 +296,9 @@ function Final() {
               ) : (
                 <div>
                   <h2 className="text-xl mb-4 font-bold text-blue-default">
-                    <p
-                      style={{
-                        fontSize: "20px",
-                        fontWeight: "bold",
-                        color: "#0B6C79",
-                      }}
-                    >
+                  
                       SWOT ANALYSIS
-                    </p>
+                   
                   </h2>
 
                   <table
@@ -362,7 +335,6 @@ function Final() {
                       </tr>
                     </thead>
                     <tbody>
-                      {/* Loop through all strengths and weaknesses */}
                       {promptData &&
                         promptData.swot &&
                         promptData.swot.response &&
@@ -471,7 +443,7 @@ function Final() {
                 <PestleSkeleton />
               </div>
             ) : (
-              <div className="w-full">
+              <div className="w-full font-bold text-blue-default">
                 <p
                   style={{
                     fontSize: "20px",
@@ -579,7 +551,7 @@ function Final() {
                   </div>
                 ) : (
                   <div>
-                    <h3 className="text-xl mt-5 font-bold">
+                  
                       {" "}
                       <p
                         style={{
@@ -590,7 +562,7 @@ function Final() {
                       >
                         Objectives
                       </p>{" "}
-                    </h3>
+                 
                      <div>
                                <h1 className="mt-3">General objective :</h1>
                                <h2 className="mb-4 mt-2"> {logframeData?.goal?.description}</h2>
@@ -612,16 +584,10 @@ function Final() {
                   </div>
                 ) : (
                   <div>
-                    <h3 className="text-xl font-bold">
-                      <p
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          color: "#0B6C79",
-                        }}
-                      >
+                    <h3 className="text-xl font-bold text-blue-default">
+                   
                         Strategy
-                      </p>{" "}
+                   
                     </h3>
                                           <ol>
             {promptData?.strategy?.response

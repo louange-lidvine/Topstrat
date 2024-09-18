@@ -19,6 +19,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [formData, setFormData] = useState({
         name: "",
+        file: null,
         description: "",
         method: "", 
     });
@@ -138,42 +139,72 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                     </div>
                 </div>
             )}
-          <ReactModal
+<ReactModal
   isOpen={isModalOpen}
   onRequestClose={handleCloseModal}
-  className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-20 bg-white shadow-2xl rounded-lg"
+  className="lg:w-[600px] w-[90%] max-h-screen max-w-lg mx-auto p-6 mt-10 bg-white shadow-xl rounded-md"
   overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
 >
-  <form
-    className="flex flex-col justify-center items-center gap-4"
-    onSubmit={handleSubmit}
-  >
-    <h2 className="text-xl font-semibold mb-4">Enter Project Information</h2>
+  <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+    <h2 className="text-2xl font-semibold text-center mb-6">Project Information</h2>
 
-    <input
-      type="text"
-      placeholder="Enter name"
-      className="w-full border border-gray-300 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-default transition"
-      name="name"
-      onChange={handleChange}
-      value={formData.name}
-    />
+    <div className="flex flex-col">
+      <label className="text-start mb-2 font-medium text-gray-700">Project Name</label>
+      <input
+        type="text"
+        placeholder="Enter project name"
+        className="w-full border border-gray-300 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-default transition"
+        name="name"
+        onChange={handleChange}
+        value={formData.name}
+      />
+    </div>
 
-    <textarea
-      placeholder="Enter description"
-      rows={4}
-      onChange={handleChange}
-      className="w-full border border-gray-300 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-default transition"
-      name="description"
-      value={formData.description}
-    />
+    <div className="flex flex-col">
+      <label className="text-start mb-2 font-medium text-gray-700">Project Description</label>
+      <textarea
+        placeholder="Enter description"
+        rows={2}
+        className="w-full border border-gray-300 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-default transition"
+        name="description"
+        onChange={handleChange}
+        value={formData.description}
+      />
+    </div>
 
-    <div className="flex gap-4 mt-4">
+    <div className="flex flex-col">
+      <label className="text-start mb-2 font-medium text-gray-700">Organization Logo</label>
+      <div className="flex flex-col items-center justify-center p-4 w-full h-[6rem]  border-dashed border-2 border-blue-default bg-gray-50 rounded-lg shadow-sm">
+        <label
+          htmlFor="file-upload"
+          className="flex flex-col items-center justify-center cursor-pointer space-y-1"
+        >
+          {formData.file ? (
+            <div className="text-center">
+              <p className="text-gray-500">Logo uploaded</p>
+            </div>
+          ) : (
+            <div className="text-center">
+              <p className="text-gray-500">Upload logo</p>
+              <p className="text-gray-400">or drag and drop</p>
+            </div>
+          )}
+        </label>
+        <input
+          id="file-upload"
+          type="file"
+          name="file"
+          style={{ display: "none" }}
+          onChange={handleChange}
+        />
+      </div>
+    </div>
+
+    <div className="flex gap-4 w-full mt-2 justify-end">
       <button
         type="submit"
         disabled={isLoading}
-        className={`bg-blue-default hover:bg-blue-default text-white py-2 px-6 rounded-md transition ${isLoading ? "cursor-not-allowed opacity-50" : ""
-          }`}
+        className={`bg-blue-default text-white py-2 px-6 rounded-md transition ${isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-default"}`}
       >
         {isLoading ? <SbLoad /> : "Submit"}
       </button>

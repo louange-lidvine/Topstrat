@@ -142,7 +142,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                         <Profile />
                     </div>
                     <div className="middle-part flex flex-col gap-3 w-64">
-                        <hr className="ml-3 w-[16vw]" />
+                        <hr className="ml-3 max-w-[90%] justify-center items-center" />
                         <div className="projects">
                             <div className="title grid grid-cols-2 space-x-16">
                                 <div className="title grid grid-cols-2 space-x-40">
@@ -180,11 +180,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                         </h2>
                     </div>
                     <ReactModal
-                                            overlayClassName="fixed inset-0 bg-gray-800 bg-opacity-50"
-
                         isOpen={isModalOpen}
                         onRequestClose={handleCloseModal}
-                        className="w-[600px] z-[9999] p-10 mt-20 bg-white shadow-lg lg:ml-[350px]"
+                        className="w-[600px] z-[9999] p-6 bg-white shadow-lg mx-auto my-20"
+                        overlayClassName="fixed inset-0 bg-gray-800 bg-opacity-50"
                     >
                         <h1 className="font-bold text-center">Are you sure you want to logout?</h1>
                         <div className="buttons flex space-x-5 mt-10 justify-center">
@@ -261,7 +260,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                             <Profile />
                         </div>
                         <div className="middle-part flex flex-col gap-3">
-                            <hr className="lg:max-w-[40vw]" />
+                            <hr className="lg:max-w-[40vw] justify-center items-center" />
                             <div className="projects">
                                 <div className="title grid grid-cols-2 space-x-16">
                                     <div className="title grid grid-cols-2 space-x-40">
