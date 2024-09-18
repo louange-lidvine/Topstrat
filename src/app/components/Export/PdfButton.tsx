@@ -8,7 +8,7 @@ const PdfButton = () => {
   return (
     <>
       {typeof window !== "undefined" && (
-        <PDFDownloadLink document={<Final />} fileName="document.pdf">
+        <PDFDownloadLink document={<Final  />} fileName="document.pdf">
           {({ blob, url, loading, error }) =>
             loading ? (
               <div>Loading...</div>
