@@ -305,6 +305,8 @@ const page: React.FC = () => {
                 isOpen={isModalOpen}
                 onRequestClose={handleCloseModal}
                 className="p-10  mt-20 bg-white shadow-lg lg:w-full lg:max-w-[800px] mx-auto"
+                overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
+
             >
                 {selectedObject && (
                     <Step
@@ -336,6 +338,8 @@ const page: React.FC = () => {
                 isOpen={isSecModalOpen}
                 onRequestClose={handleCloseModal}
                 className="px-10 py-10 mt-20 bg-white shadow-lg lg:w-full lg:max-w-[800px] mx-auto"
+                overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
+
             
             >
                 <div className="overflow-y-auto max-h-[70vh]">
