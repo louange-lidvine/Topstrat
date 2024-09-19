@@ -26,7 +26,7 @@ function page() {
 
     return (
         <div className=" border border-blue-default lg:full my-4 rounded-md lg:mx-2 float-right lg:z-[9999]">
-                  <div className="justify-end flex gap-2 cursor-pointer"  
+                  <div className="justify-end flex gap-2 cursor-pointer p-2"  
                 onClick={() =>
                                 router.push('/')
                             }>
