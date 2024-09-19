@@ -25,15 +25,12 @@ function Preview() {
     const [projectData, setProjectData] = useState<any>();
     const [visionId, setVisionId] = useState<string | null>(null);
     const [missionId, setMissionId] = useState<string | null>(null);
-    const [objectivesId, setObjectivesId] = useState<string | null>(null);
-    const [strategyId, setStrategyId] = useState<string | null>(null);
-    const [swotId, setSwotId] = useState<string | null>(null);
+    const [valuesId,setValuesId] = useState<string|null>(null);
 
     const [simpleData, setSimpleData] = useState({
         vision: "",
         mission: "",
-        objectives: "",
-        strategy: "",
+        values:"",
     });
     const [isEditingSimpleData, setIsEditingSimpleData] = useState(false);
     const [editableSwotData, setEditableSwotData] = useState<any>(null);
@@ -107,8 +104,7 @@ function Preview() {
                     setSimpleData({
                         vision: response.data.vision.response,
                         mission: response.data.mission.response,
-                        strategy: response.data.strategy.response,
-                        objectives: response.data.objectives.response,
+                        values:response.data.values.response
                     });
 
                     // Parse SWOT response and set editable SWOT data
@@ -130,9 +126,7 @@ function Preview() {
                     // Set individual section IDs
                     setVisionId(response.data.vision._id);
                     setMissionId(response.data.mission._id);
-                    setObjectivesId(response.data.objectives._id);
-                    setStrategyId(response.data.strategy._id);
-                    setSwotId(response.data.swot._id);
+                   setValuesId(response.data.values._id)
 
                     // Store full prompt data for later use
                     setPromptData(response.data);
@@ -187,17 +181,13 @@ function Preview() {
                setSimpleData({
                    vision: response.data.vision?.response || "",
                    mission: response.data.mission?.response || "",
-                   strategy: response.data.strategy?.response || "",
-                   objectives: response.data.objectives?.response || "",
+                  values:response.data.values?.response || "",
                });
 
                // Update individual section IDs in case they change after regeneration
                setVisionId(response.data.vision._id);
                setMissionId(response.data.mission._id);
-               setObjectivesId(response.data.objectives._id);
-               setStrategyId(response.data.strategy._id);
-               setSwotId(response.data.swot._id);
-
+              setValuesId(response.data.values._id);
                // Store prompt data after the refetch
                setPromptData(response.data);
            } else {
@@ -220,9 +210,7 @@ function Preview() {
         if (
             !visionId ||
             !missionId ||
-            !objectivesId ||
-            !strategyId ||
-            !swotId
+            !valuesId  
         ) {
             console.error("One or more required IDs are not available");
             return;
@@ -236,9 +224,7 @@ function Preview() {
         // Prepare individual payloads for each section
         const visionPayload = { vision: simpleData.vision };
         const missionPayload = { mission: simpleData.mission };
-        const objectivesPayload = { objectives: simpleData.objectives };
-        const strategyPayload = { strategy: simpleData.strategy };
-        const swotPayload = { swotData: editableSwotData };
+        const valuesPayload = {values:simpleData.values}
 
         // Array of API calls with specific IDs
         const apiCalls = [
@@ -263,8 +249,8 @@ function Preview() {
                 }
             ),
             axios.put(
-                `${baseURL}/projects/prompts/${objectivesId}`,
-                objectivesPayload,
+                `${baseURL}/projects/prompts/${valuesId}`,
+                valuesPayload,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -272,22 +258,6 @@ function Preview() {
                     },
                 }
             ),
-            axios.put(
-                `${baseURL}/projects/prompts/${strategyId}`,
-                strategyPayload,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            ),
-            axios.put(`${baseURL}/projects/prompts/${swotId}`, swotPayload, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            }),
         ];
 
         try {
@@ -369,12 +339,13 @@ function Preview() {
                                             width: "930px",
                                         }}
                                         value={simpleData.vision}
-                                        onChange={(e) =>
-                                            setSimpleData((prev) => ({
-                                                ...prev,
-                                                vision: e.target.value,
-                                            }))
-                                        }
+                                        onChange={(e) => {
+    setSimpleData((prev) => ({
+        ...prev,
+        vision: e.target.value,
+    }));
+    setIsEditing(true);  // Enable Save button after editing
+}}
                                     />
                                 ) : (
                                     <p
@@ -409,12 +380,13 @@ function Preview() {
                                             width: "930px",
                                         }}
                                         value={simpleData.mission}
-                                        onChange={(e) =>
-                                            setSimpleData((prev) => ({
-                                                ...prev,
-                                                mission: e.target.value,
-                                            }))
-                                        }
+                                    onChange={(e) => {
+    setSimpleData((prev) => ({
+        ...prev,
+        mission: e.target.value,
+    }));
+    setIsEditing(true);  
+}}
                                     />
                                 ) : (
                                     <p

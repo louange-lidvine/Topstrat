@@ -457,11 +457,11 @@ function Final() {
                   <table className="border border-1 m-auto">
                     <thead>
                       <tr className="bg-slate-300">
-                        <th className="border border-1 p-2 text-blue-default font-bold text-center"></th>
-                        <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                        <th className="border border-1 p-2  text-blue-default font-bold text-center"></th>
+                        <th className="border border-1 p-2  text-blue-default font-bold text-center">
                           Influence on organization
                         </th>
-                        <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                        <th className="border border-1 p-2  text-blue-default font-bold text-center">
                           Impact of organization's activities
                         </th>
                       </tr>
@@ -470,68 +470,68 @@ function Final() {
                       {pestleData && (
                         <>
                           <tr>
-                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                            <td className="border border-1 p-2 text-black text-center font-bold bg-slate-300">
                               Political
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.political?.inf}
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.political?.imp}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                            <td className="border border-1 p-2 text-black text-center font-bold bg-slate-300">
                               Economic
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.economic?.inf}
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.economic?.imp}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                            <td className="border border-1 p-2 text-black  text-center font-bold bg-slate-300">
                               Social
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.social?.inf}
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.social?.imp}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                            <td className="border border-1 p-2 text-black  text-center font-bold bg-slate-300">
                               Technological
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.technological?.inf}
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.technological?.imp}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                            <td className="border border-1 p-2 text-black  text-center font-bold bg-slate-300">
                               Legal
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.legal?.inf}
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.legal?.imp}
                             </td>
                           </tr>
                           <tr>
-                            <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                            <td className="border border-1 p-2 text-black text-center font-bold bg-slate-300">
                               Environmental
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.environmental?.inf}
                             </td>
-                            <td className="border border-1 p-2">
+                            <td className="border border-1 p-2 text-black font-medium">
                               {pestleData?.environmental?.imp}
                             </td>
                           </tr>
@@ -626,19 +626,19 @@ function Final() {
                           >
                             Results Chain
                           </th>
-                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                          <th className="border border-1 p-2  text-blue-default font-bold text-center">
                             Indicator
                           </th>
-                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                          <th className="border border-1 p-2  text-blue-default font-bold text-center">
                             Baseline
                           </th>
-                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                          <th className="border border-1 p-2  text-blue-default font-bold text-center">
                             Target
                           </th>
-                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                          <th className="border border-1 p-2  text-blue-default font-bold text-center">
                             Timeline
                           </th>
-                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                          <th className="border border-1 p-2  text-blue-default font-bold text-center">
                             Assumptions
                           </th>
                         </tr>
@@ -648,13 +648,13 @@ function Final() {
                           <>
                             {/* Impact Level */}
                             <tr className="bg-slate-100">
-                              <td className="border border-1 p-2  font-bold text-center">
+                              <td className="border border-1 p-2 text-black   font-bold text-center">
                                 Impact
                               </td>
-                              <td className="border border-1 p-2 ">
+                              <td className="border border-1 p-2 text-black font-medium ">
                                 {logframeData.goal.impact?.description || "-"}
                               </td>
-                              <td className="border border-1 p-2">
+                              <td className="border border-1 p-2 text-black font-medium">
                                 {logframeData.goal.impact?.indicators &&
                                   Object.keys(
                                     logframeData.goal.impact.indicators
@@ -668,7 +668,7 @@ function Final() {
                                     );
                                   })}
                               </td>
-                              <td className="border border-1 p-2">
+                              <td className="border border-1 p-2 text-black font-medium">
                                 {logframeData.goal.impact?.indicators &&
                                   Object.keys(
                                     logframeData.goal.impact.indicators
@@ -682,7 +682,7 @@ function Final() {
                                     );
                                   })}
                               </td>
-                              <td className="border border-1 p-2">
+                              <td className="border border-1 p-2 text-black font-medium">
                                 {logframeData.goal.impact?.indicators &&
                                   Object.keys(
                                     logframeData.goal.impact.indicators
@@ -696,10 +696,10 @@ function Final() {
                                     );
                                   })}
                               </td>
-                              <td className="border border-1 p-2">
+                              <td className="border border-1 p-2 text-black font-medium">
                                 {logframeData.goal.impact?.timeline || "-"}
                               </td>
-                              <td className="border border-1 p-2">
+                              <td className="border border-1 p-2 text-black font-medium">
                                 {logframeData.goal.impact?.assumptions || "-"}
                               </td>
                             </tr>
@@ -715,25 +715,25 @@ function Final() {
                                         : "-"
                                     }
                                   >
-                                    <td className="border border-1 p-2  font-bold text-center">
+                                    <td className="border border-1 p-2 text-black font-bold text-center">
                                       Outcome {outcomeIndex + 1}{" "}
                                     </td>
-                                    <td className="border border-1 p-2 ">
+                                    <td className="border border-1 p-2 text-black font-medium ">
                                       {outcomeItem.description || "-"}
                                     </td>
-                                    <td className="border border-1 p-2">
+                                    <td className="border border-1 p-2 text-black font-medium">
                                       {outcomeItem.indicator || "-"}
                                     </td>
-                                    <td className="border border-1 p-2">
+                                    <td className="border border-1 p-2 text-black font-medium">
                                       {outcomeItem.baseline || "-"}
                                     </td>
-                                    <td className="border border-1 p-2">
+                                    <td className="border border-1 p-2 text-black font-medium">
                                       {outcomeItem.target || "-"}
                                     </td>
-                                    <td className="border border-1 p-2">
+                                    <td className="border border-1 p-2 text-black font-medium">
                                       {outcomeItem.timeline || "-"}
                                     </td>
-                                    <td className="border border-1 p-2">
+                                    <td className="border border-1 p-2 text-black font-medium">
                                       {outcomeItem.assumptions || "-"}
                                     </td>
                                   </tr>
@@ -751,26 +751,26 @@ function Final() {
                                               : "-"
                                           }
                                         >
-                                          <td className="border border-1 p-2  font-bold text-center">
+                                          <td className="border border-1 p-2 text-black   font-bold text-center">
                                             Output {outcomeIndex + 1}.
                                             {outputIndex + 1}
                                           </td>
-                                          <td className="border border-1 p-2 ">
+                                          <td className="border border-1 p-2 text-black font-medium ">
                                             {outputItem.description || "-"}
                                           </td>
-                                          <td className="border border-1 p-2">
+                                          <td className="border border-1 p-2 text-black font-medium">
                                             {outputItem.indicator || "-"}
                                           </td>
-                                          <td className="border border-1 p-2">
+                                          <td className="border border-1 p-2 text-black font-medium">
                                             {outputItem.baseline || "0"}
                                           </td>
-                                          <td className="border border-1 p-2">
+                                          <td className="border border-1 p-2 text-black font-medium">
                                             {outputItem.target || "-"}
                                           </td>
-                                          <td className="border border-1 p-2">
+                                          <td className="border border-1 p-2 text-black font-medium">
                                             {outputItem.timeline || "-"}
                                           </td>
-                                          <td className="border border-1 p-2">
+                                          <td className="border border-1 p-2 text-black font-medium">
                                             {outputItem.assumptions || "-"}
                                           </td>
                                         </tr>
@@ -791,29 +791,29 @@ function Final() {
                                                     : "-"
                                                 }
                                               >
-                                                <td className="border border-1 p-2  font-bold text-center">
+                                                <td className="border border-1 p-2 text-black   font-bold text-center">
                                                   Activity {outcomeIndex + 1}.
                                                   {outputIndex + 1}.
                                                   {activityIndex + 1}
                                                 </td>
-                                                <td className="border border-1 p-2 ">
+                                                <td className="border border-1 p-2 text-black font-medium ">
                                                   {activityItem.description ||
                                                     "-"}
                                                 </td>
-                                                <td className="border border-1 p-2">
+                                                <td className="border border-1 p-2 text-black font-medium">
                                                   {activityItem.indicator ||
                                                     "-"}
                                                 </td>
-                                                <td className="border border-1 p-2">
+                                                <td className="border border-1 p-2 text-black font-medium">
                                                   {activityItem.baseline || "-"}
                                                 </td>
-                                                <td className="border border-1 p-2">
+                                                <td className="border border-1 p-2 text-black font-medium">
                                                   {activityItem.target || "-"}
                                                 </td>
-                                                <td className="border border-1 p-2">
+                                                <td className="border border-1 p-2 text-black font-medium">
                                                   {activityItem.timeline || "-"}
                                                 </td>
-                                                <td className="border border-1 p-2">
+                                                <td className="border border-1 p-2 text-black font-medium">
                                                   {activityItem.assumptions ||
                                                     "-"}
                                                 </td>
@@ -822,27 +822,27 @@ function Final() {
                                               {/* Inputs Level */}
                                               {activityItem.inputs && (
                                                 <tr className="bg-slate-100">
-                                                  <td className="border border-1 p-2  font-bold text-center">
+                                                  <td className="border border-1 p-2 text-black   font-bold text-center">
                                                     Input
                                                   </td>
-                                                  <td className="border border-1 p-2 ">
+                                                  <td className="border border-1 p-2 text-black font-medium ">
                                                     {activityItem.inputs.join(
                                                       ", "
                                                     )}
                                                   </td>
-                                                  <td className="border border-1 p-2">
+                                                  <td className="border border-1 p-2 text-black font-medium">
                                                     (To be determined)
                                                   </td>
-                                                  <td className="border border-1 p-2">
+                                                  <td className="border border-1 p-2 text-black font-medium">
                                                     (To be determined)
                                                   </td>
-                                                  <td className="border border-1 p-2">
+                                                  <td className="border border-1 p-2 text-black font-medium">
                                                     (To be determined)
                                                   </td>
-                                                  <td className="border border-1 p-2">
+                                                  <td className="border border-1 p-2 text-black font-medium">
                                                     -
                                                   </td>
-                                                  <td className="border border-1 p-2">
+                                                  <td className="border border-1 p-2 text-black font-medium">
                                                     Funding is secured, and all
                                                     necessary resources are
                                                     available
