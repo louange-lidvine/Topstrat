@@ -58,92 +58,92 @@ function Preview() {
         setIsLoading(false);
     }, []);
 
-      const renderList = (data: string) => {
+ const renderList = (data: string | undefined) => {
+    
+    if (typeof data !== "string") {
+        return <ul><li>loading</li></ul>; 
+    }
+
     return (
-      <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
-        {data
-          .split(/\d+\.\s*/)
-          .filter((item) => item.trim() !== "")
-          .map((item, index) => (
-            <li
-              key={index}
-              style={{
-                marginBottom: "8px",
-                fontSize: "16px",
-                color: "#333",
-              }}
-            >
-              {item.trim()}
-            </li>
-          ))}
-      </ul>
+        <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
+            {data
+                .split(/\d+\.\s*/)
+                .filter((item) => item.trim() !== "")
+                .map((item, index) => (
+                    <li
+                        key={index}
+                        style={{
+                            marginBottom: "8px",
+                            fontSize: "16px",
+                            color: "#333",
+                        }}
+                    >
+                        {item.trim()}
+                    </li>
+                ))}
+        </ul>
     );
-  };
+};
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = getCookie("token");
-                setIsLoading(true);
 
-                // Fetching the latest project data
-                const response = await axios.get(
-                    `${baseURL}/projects/prompts/latest/${id}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+ const fetchData = async () => {
+    try {
+        const token = getCookie("token");
+        setIsLoading(true);
 
-                if (response.data) {
-                    console.log(response.data);
-
-                    // Set the fetched content for simpleData and SWOT analysis
-                    setSimpleData({
-                        vision: response.data.vision.response,
-                        mission: response.data.mission.response,
-                        values:response.data.values.response
-                    });
-
-                    // Parse SWOT response and set editable SWOT data
-                    setEditableSwotData({
-                        strengths:
-                            JSON.parse(response.data.swot.response).strengths ||
-                            [],
-                        weaknesses:
-                            JSON.parse(response.data.swot.response)
-                                .weaknesses || [],
-                        opportunities:
-                            JSON.parse(response.data.swot.response)
-                                .opportunities || [],
-                        threats:
-                            JSON.parse(response.data.swot.response).threats ||
-                            [],
-                    });
-
-                    // Set individual section IDs
-                    setVisionId(response.data.vision._id);
-                    setMissionId(response.data.mission._id);
-                   setValuesId(response.data.values._id)
-
-                    // Store full prompt data for later use
-                    setPromptData(response.data);
-                    setPromptId(response.data.swot._id); // Storing the SWOT ID as the promptId
-                } else {
-                    setError("No data received");
-                }
-                setIsLoading(false);
-            } catch (error) {
-                setError("Error fetching data");
-                console.error("Error fetching data:", error);
-                setIsLoading(false);
+        // Fetching the latest project data
+        const response = await axios.get(
+            `${baseURL}/projects/prompts/latest/${id}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
             }
-        };
+        );
 
-        fetchData();
-    }, [id]); // Dependencies updated
+        if (response.data) {
+            console.log(response.data);
+
+            // Set the fetched content for simpleData and SWOT analysis
+            setSimpleData({
+                vision: response.data.vision.response,
+                mission: response.data.mission.response,
+                values: response.data.values.response,
+            });
+
+            // Parse SWOT response and set editable SWOT data
+            setEditableSwotData({
+                strengths: JSON.parse(response.data.swot.response).strengths || [],
+                weaknesses: JSON.parse(response.data.swot.response).weaknesses || [],
+                opportunities: JSON.parse(response.data.swot.response).opportunities || [],
+                threats: JSON.parse(response.data.swot.response).threats || [],
+            });
+
+            // Set individual section IDs
+            setVisionId(response.data.vision._id);
+            setMissionId(response.data.mission._id);
+            setValuesId(response.data.values._id);
+
+            // Store prompt data for later use
+            setPromptData(response.data);
+            setPromptId(response.data.swot._id); // Storing the SWOT ID as the promptId
+        } else {
+            setError("No data received");
+        }
+        setIsLoading(false);
+    } catch (error) {
+        setError("Error fetching data");
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+    }
+};
+
+// useEffect for initial fetch
+useEffect(() => {
+    fetchData();
+}, [id]);
+
 
    const refetchData = async () => {
        try {
@@ -203,84 +203,80 @@ function Preview() {
    };
 
 
-    const saveData = async () => {
-        const token = getCookie("token");
+const saveData = async () => {
+    const token = getCookie("token");
+    console.log(simpleData);
 
-        // Validate presence of IDs and data
-        if (
-            !visionId ||
-            !missionId ||
-            !valuesId  
-        ) {
-            console.error("One or more required IDs are not available");
-            return;
-        }
-        if (!editableSwotData && !simpleData) {
-            console.error("No data to save");
-            toast.error("No data to save. Please try again.");
-            return;
-        }
+    // Validate presence of IDs and data
+    if (!visionId || !missionId || !valuesId) {
+        console.error("One or more required IDs are not available");
+        toast.error("One or more required IDs are missing.");
+        return;
+    }
+    
+    if (!simpleData || (!simpleData.vision && !simpleData.mission && !simpleData.values)) {
+        console.error("No data to save");
+        toast.error("No data to save. Please try again.");
+        return;
+    }
 
-        // Prepare individual payloads for each section
-        const visionPayload = { vision: simpleData.vision };
-        const missionPayload = { mission: simpleData.mission };
-        const valuesPayload = {values:simpleData.values}
+    // Prepare individual payloads for each section
+    const visionPayload = { response: simpleData.vision };
+    const missionPayload = { response: simpleData.mission };
+    const valuesPayload = { response: simpleData.values };
 
-        // Array of API calls with specific IDs
-        const apiCalls = [
-            axios.put(
-                `${baseURL}/projects/prompts/${visionId}`,
-                visionPayload,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            ),
-            axios.put(
-                `${baseURL}/projects/prompts/${missionId}`,
-                missionPayload,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            ),
-            axios.put(
-                `${baseURL}/projects/prompts/${valuesId}`,
-                valuesPayload,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            ),
-        ];
+    // Array of API calls with specific IDs
+    const apiCalls = [
+        axios.put(
+            `${baseURL}/projects/prompts/${visionId}`,
+            visionPayload,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        ),
+        axios.put(
+            `${baseURL}/projects/prompts/${missionId}`,
+            missionPayload,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        ),
+        axios.put(
+            `${baseURL}/projects/prompts/${valuesId}`,
+            valuesPayload,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        ),
+    ];
 
-        try {
-            const results = await Promise.all(apiCalls);
-            console.log("Response from the API:", results);
+    try {
+        await Promise.all(apiCalls);
+        console.log("Response from the API: Data saved successfully!");
 
-            setSwotData(editableSwotData);
-            setIsEditing(false);
-            setIsEditingSimpleData(false);
-            console.log("Editable SWOT Data:", editableSwotData);
-            console.log("Simple Data:", simpleData);
+        // Refetch the updated data
+        await fetchData();
 
+        // Optionally update local state if needed
+        setIsEditing(false);
+        setIsEditingSimpleData(false);
+        
+        toast.success("Data saved successfully!");
+    } catch (error: any) {
+        console.error("Error saving data:", error.response ? error.response.data : error.message);
+        toast.error("Failed to save data. Please try again.");
+    }
+};
 
-      
-            toast.success("Data saved successfully!");
-        } catch (error: any) {
-            console.error(
-                "Error saving data:",
-                error.response ? error.response.data : error.message
-            );
-            toast.error("Failed to save data. Please try again.");
-        }
-    };
 
 
 
@@ -335,8 +331,8 @@ function Preview() {
                                     <textarea
                                         className="bg-transparent h-fit"
                                         style={{
-                                            height: "100px",
-                                            width: "930px",
+                                            height: "150px",
+                                            width: "950px",
                                         }}
                                         value={simpleData.vision}
                                         onChange={(e) => {
@@ -376,8 +372,8 @@ function Preview() {
                                     <textarea
                                         className="bg-transparent h-fit"
                                         style={{
-                                            height: "100px",
-                                            width: "930px",
+                                            height: "150px",
+                                            width: "950px",
                                         }}
                                         value={simpleData.mission}
                                     onChange={(e) => {
@@ -409,23 +405,40 @@ function Preview() {
                     <Skeleton height={80} />
                   </div>
                 ) : (
-                  <div>
-                    <h3 className="text-xl font-bold">
-                      {" "}
-                      <p
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          color: "#0B6C79",
-                        }}
-                      >
-                        Values
-                      </p>
-                    </h3>
-                    {promptData && promptData.values && (
-                      <ul>{renderList(promptData.values.response)}</ul>
-                    )}
-                  </div>
+               <div>
+            <h3 className="text-xl font-bold">
+                <p
+                    style={{
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        color: "#0B6C79",
+                    }}
+                >
+                    Values
+                </p>
+            </h3>
+            {isEditing ? (
+                <textarea
+                    className="bg-transparent h-fit"
+                    style={{
+                        height: "250px",
+                        width: "950px",
+                    }}
+                    value={simpleData.values}
+                    onChange={(e) => {
+                        setSimpleData((prev) => ({
+                            ...prev,
+                            values: e.target.value,
+                        }));
+                        setIsEditing(true); 
+                    }}
+                />
+            ) : (
+                <ul onDoubleClick={() => setIsEditing(true)}>
+                {renderList(promptData?.values.response)}
+                </ul>
+            )}
+        </div>
                 )}
               </div>
                   
