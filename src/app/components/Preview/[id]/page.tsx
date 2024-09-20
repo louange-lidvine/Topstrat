@@ -444,6 +444,15 @@ const saveData = async () => {
                   
 
                     <div className="flex justify-center my-5 gap-8">
+                             <div
+                            className="flex bg-blue-400 text-white font-bold rounded-md py-3 px-6 cursor-pointer"
+                            onClick={() =>
+                                router.push(`/components/cover/${id}`)
+                            }
+                        >
+                            Return to cover page
+                        </div>
+
                         <button
                             className="bg-orange-default text-white font-bold rounded-md py-3 px-6"
                             onClick={refetchData}
