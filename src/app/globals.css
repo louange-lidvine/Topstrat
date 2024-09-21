@@ -15,17 +15,31 @@ textarea {
   width: 100%;
 }
 
-/* Adjust table container */
-.table-container {
-  overflow-x: auto; /* Allow horizontal scrolling for large tables */
+@media print {
+    .no-print {
+        display: none;
+    }
 }
 
-@media print {
+.watermarked {
+    background-image: url("/path-to-watermark-image.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.9;
+    position: relative;
+    padding: 2rem;
+}
 
-            .no-print {
-                display: none;
-            }
- }
-
- 
-
+.watermarked::before {
+    content: "TOPSTRAT";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 100px;
+    color: rgba(0, 0, 0, 0.1);
+    z-index: -1;
+    white-space: nowrap;
+    font-style: oblique;
+}

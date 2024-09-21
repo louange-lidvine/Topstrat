@@ -25,6 +25,7 @@ const PrintModal: React.FC<PrintModalProps> = ({
 }) => {
     const [numberOfPages, setNumberOfPages] = useState(1);
     const [selectedPrinter, setSelectedPrinter] = useState("");
+    const [layout, setLayout] = useState("portrait"); // Default layout
 
     const printers = ["Printer1", "Printer2", "Printer3"];
 
@@ -34,18 +35,25 @@ const PrintModal: React.FC<PrintModalProps> = ({
             return;
         }
 
+        if (!layout) {
+            alert("Please select a layout (portrait or landscape).");
+            return;
+        }
+
         const element = document.getElementById("pdf-content_" + id);
         const scaleValue = 2;
         const marginValue = 1;
 
+        const opt = {
+            margin: marginValue,
+            filename: `generated_${selectedPrinter}_${layout}.pdf`,
+            html2canvas: { scale: scaleValue },
+            jsPDF: { unit: "mm", format: "a4", orientation: layout }, // Explicitly set orientation
+        };
+
         await html2pdf()
             .from(element)
-            .set({
-                margin: marginValue,
-                filename: `${projectData.name}.pdf`,
-                html2canvas: { scale: scaleValue },
-                jsPDF: { orientation: "portrait" },
-            })
+            .set(opt)
             .toPdf()
             .get("pdf")
             .then(function (pdf: {
@@ -74,6 +82,7 @@ const PrintModal: React.FC<PrintModalProps> = ({
             .save();
 
         console.log(`Selected Printer: ${selectedPrinter}`);
+        console.log(`Selected Layout: ${layout}`);
     };
 
     return (
@@ -113,7 +122,21 @@ const PrintModal: React.FC<PrintModalProps> = ({
                                 ))}
                             </select>
                         </div>
+                        <div className="mb-4 border">
+                            <label className="block mb-2 font-semibold">
+                                Select Layout:
+                            </label>
+                            <select
+                                value={layout}
+                                onChange={(e) => setLayout(e.target.value)}
+                                className="border rounded-md p-2 w-full"
+                            >
+                                <option value="portrait">Portrait</option>
+                                <option value="landscape">Landscape</option>
+                            </select>
+                        </div>
 
+                        
                         <div className="mb-4">
                             <label className="block mb-2 font-semibold">
                                 Number of Pages:
