@@ -13,6 +13,7 @@ import { baseURL } from "@/app/constants";
 import ReactModal from "react-modal";
 import { useRouter } from "next/navigation";
 import { BiArrowBack } from "react-icons/bi";
+
 import Prompt from "./prompt/page";
 interface FinalsProps {
     id: string;
@@ -27,7 +28,11 @@ function Finals({ id }: FinalsProps) {
     const [pestleData, setPestleData] = useState<any>();
     const [logframeData, setLogframeData] = useState<any>([]);
     const [Data, setData] = useState<any>([]);
-  const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [userData, setUserData] = useState<any>(null);
+    const [gravatarUrl, setGravatarUrl] = useState<string>(""); // Optional: Gravatar URL
+    const [hasWatermark, setHasWatermark] = useState(false); // State for watermark
+
 
 
     useEffect(() => {
@@ -85,6 +90,74 @@ function Finals({ id }: FinalsProps) {
 
         fetchData();
     }, [id]);
+
+    
+      useEffect(() => {
+          // Fetch project data
+          const getProject = async (id: string) => {
+              try {
+                  const token = getCookie("token");
+                  const response = await axios.get(
+                      `${baseURL}/projects/${id}`,
+                      {
+                          headers: {
+                              "Content-Type": "application/json",
+                              Authorization: `Bearer ${token}`,
+                          },
+                      }
+                  );
+                  console.log("Project data:", response.data);
+                  setProjectData(response.data);
+              } catch (error) {
+                  console.error("Error fetching project data:", error);
+                  setError("Failed to fetch project data.");
+              }
+          };
+
+          // Fetch user data using userId from localStorage
+          const getUserData = async () => {
+              try {
+                  const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
+                  const token = getCookie("token");
+
+                  if (userId) {
+                      const response = await axios.get(
+                          `${baseURL}/users/${userId}`,
+                          {
+                              headers: {
+                                  "Content-Type": "application/json",
+                                  Authorization: `Bearer ${token}`,
+                              },
+                          }
+                      );
+                      console.log("User data:", response.data);
+                      setUserData(response.data);
+
+                      // Optional: If Gravatar URL is part of user data
+                      if (response.data.gravatar) {
+                          setGravatarUrl(response.data.gravatar);
+                      }
+
+                      // Check subscription type for watermark
+                      if (response.data.subscription === "FreeTrial") {
+                          setHasWatermark(true);
+                      } else {
+                          setHasWatermark(false);
+                      }
+                  } else {
+                      console.error("User ID not found in localStorage.");
+                  }
+              } catch (error) {
+                  console.error("Error fetching user data:", error);
+                  setError("Failed to fetch user data.");
+              }
+          };
+
+          getProject(id as string);
+          getUserData();
+          setIsLoading(false);
+      }, [id]);
+
 
     const regenerateData = async () => {
         try {
@@ -144,6 +217,8 @@ function Finals({ id }: FinalsProps) {
         setIsModalOpen(true);
     };
 
+
+
     const renderList = (data: string) => {
         return (
             <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
@@ -165,6 +240,7 @@ function Finals({ id }: FinalsProps) {
             </ul>
         );
     };
+    
 
     const renderTextWithBold = (text: string) => {
         const parts = text.split(/\*\*(.*?)\*\*/g);
@@ -178,9 +254,13 @@ function Finals({ id }: FinalsProps) {
     };
 
     const MyDocument = () => (
-        <Document pageMode="fullScreen" >
+        <Document pageMode="fullScreen">
             <Page size="A4" style={{ margin: "auto" }}>
-          <div className="border  border-blue-default my-4 rounded-md mx-2 p-4 font-medium" id={`pdf-content_${id}`}>
+                <div
+                    className={`border  border-blue-default my-4 rounded-md mx-2 p-4 font-medium ${
+                hasWatermark ? "watermarked" : "" }`}
+                    id={`pdf-content_${id}`}  
+                >
                     <div
                         className="justify-end flex gap-2 cursor-pointer"
                         onClick={() => router.push("/")}
@@ -188,6 +268,25 @@ function Finals({ id }: FinalsProps) {
                         <BiArrowBack className="mt-1" />
                         <p className="">Return to home</p>
                     </div>
+                    {userData && (
+                        <div className="flex items-center gap-4 mb-4">
+                            {gravatarUrl && (
+                                <img
+                                    src={gravatarUrl}
+                                    alt="User Gravatar"
+                                    className="w-16 h-16 rounded-full"
+                                />
+                            )}
+                            {/* <div>
+                        <p className="font-bold">User: {userData.name}</p>
+                        <p className="text-gray-500">Email: {userData.email}</p>
+                        <p className="text-gray-500">
+                            Subscription: {userData.subscription}
+                        </p>
+                    </div> */}
+                        </div>
+                    )}
+
                     <div className="flex flex-col  justify-center items-center gap-4 text-xl ">
                         <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
                             {" "}

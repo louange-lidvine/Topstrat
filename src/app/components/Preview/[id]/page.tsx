@@ -3,14 +3,15 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import Loader from "../../../shared/loader/page";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import SwotSkeleton from "../../skeletons/SwotSkeleton";
 import { baseURL } from "@/app/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BiArrowBack } from "react-icons/bi";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import ExportPage from "../../Export/page";
+import '../../../globals.css'
 
 function Preview() {
     const { id } = useParams();
@@ -24,7 +25,6 @@ function Preview() {
     const [visionId, setVisionId] = useState<string | null>(null);
     const [missionId, setMissionId] = useState<string | null>(null);
     const [valuesId, setValuesId] = useState<string | null>(null);
-
     const [simpleData, setSimpleData] = useState({
         vision: "",
         mission: "",
@@ -34,7 +34,12 @@ function Preview() {
     const [editableSwotData, setEditableSwotData] = useState<any>(null);
     const [promptId, setPromptId] = useState<string | null>(null);
 
+    const [userData, setUserData] = useState<any>(null); // Store user data here
+    const [gravatarUrl, setGravatarUrl] = useState<string>(""); // Optional: Gravatar URL
+    const [hasWatermark, setHasWatermark] = useState(false); // State for watermark
+
     useEffect(() => {
+        // Fetch project data
         const getProject = async (id: string) => {
             try {
                 const token = getCookie("token");
@@ -44,22 +49,63 @@ function Preview() {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                console.log(response.data);
+                console.log("Project data:", response.data);
                 setProjectData(response.data);
             } catch (error) {
                 console.error("Error fetching project data:", error);
+                setError("Failed to fetch project data.");
             }
         };
+
+        // Fetch user data using userId from localStorage
+        const getUserData = async () => {
+            try {
+                const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
+                const token = getCookie("token");
+
+                if (userId) {
+                    const response = await axios.get(
+                        `${baseURL}/users/${userId}`,
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    console.log("User data:", response.data);
+                    setUserData(response.data);
+
+                    // Optional: If Gravatar URL is part of user data
+                    if (response.data.gravatar) {
+                        setGravatarUrl(response.data.gravatar);
+                    }
+
+                    // Check subscription type for watermark
+                    if (response.data.subscription === "FreeTrial") {
+                        setHasWatermark(true);
+                    } else {
+                        setHasWatermark(false);
+                    }
+                } else {
+                    console.error("User ID not found in localStorage.");
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                setError("Failed to fetch user data.");
+            }
+        };
+
         getProject(id as string);
-        console.log("projects");
+        getUserData();
         setIsLoading(false);
-    }, []);
+    }, [id]);
 
     const renderList = (data: string | undefined) => {
         if (typeof data !== "string") {
             return (
                 <ul>
-                    <li>loading</li>
+                    <li>Loading...</li>
                 </ul>
             );
         }
@@ -102,7 +148,7 @@ function Preview() {
             );
 
             if (response.data) {
-                console.log(response.data);
+                console.log("Prompt data:", response.data);
 
                 // Set the fetched content for simpleData and SWOT analysis
                 setSimpleData({
@@ -134,12 +180,12 @@ function Preview() {
                 setPromptData(response.data);
                 setPromptId(response.data.swot._id); // Storing the SWOT ID as the promptId
             } else {
-                setError("No data received");
+                setError("No data received.");
             }
             setIsLoading(false);
         } catch (error) {
-            setError("Error fetching data");
-            console.error("Error fetching data:", error);
+            console.error("Error fetching prompt data:", error);
+            setError("Error fetching prompt data.");
             setIsLoading(false);
         }
     };
@@ -192,16 +238,17 @@ function Preview() {
                 setVisionId(response.data.vision._id);
                 setMissionId(response.data.mission._id);
                 setValuesId(response.data.values._id);
+
                 // Store prompt data after the refetch
                 setPromptData(response.data);
             } else {
-                setError("No data received");
+                setError("No data received.");
             }
 
             setIsLoading(false);
         } catch (error) {
-            setError("Error fetching data");
-            console.error("Error fetching data:", error);
+            console.error("Error refetching data:", error);
+            setError("Error refetching data.");
             setIsLoading(false);
         }
     };
@@ -226,12 +273,12 @@ function Preview() {
             return;
         }
 
-        // Prepare individual payloads for each section
+        // Prepare payloads
         const visionPayload = { response: simpleData.vision };
         const missionPayload = { response: simpleData.mission };
         const valuesPayload = { response: simpleData.values };
 
-        // Array of API calls with specific IDs
+        // Make the API calls
         const apiCalls = [
             axios.put(
                 `${baseURL}/projects/prompts/${visionId}`,
@@ -269,13 +316,11 @@ function Preview() {
             await Promise.all(apiCalls);
             console.log("Response from the API: Data saved successfully!");
 
-            // Refetch the updated data
+            // Refetch data
             await fetchData();
 
-            // Optionally update local state if needed
             setIsEditing(false);
             setIsEditingSimpleData(false);
-
             toast.success("Data saved successfully!");
         } catch (error: any) {
             console.error(
@@ -287,14 +332,40 @@ function Preview() {
     };
 
     return (
-        <div className="border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium">
+        <div
+            className={`border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium ${
+                hasWatermark ? "watermarked" : ""
+            }`}
+        >
             <div
                 className="justify-end flex gap-2 cursor-pointer"
                 onClick={() => router.push("/")}
             >
                 <BiArrowBack className="mt-1" />
-                <p className="">Return to home</p>
+                <p>Return to home</p>
             </div>
+
+            {/* Display user information and Gravatar if available */}
+            {userData && (
+                <div className="flex items-center gap-4 mb-4">
+                    {gravatarUrl && (
+                        <img
+                            src={gravatarUrl}
+                            alt="User Gravatar"
+                            className="w-16 h-16 rounded-full"
+                        />
+                    )}
+                    {/* <div>
+                        <p className="font-bold">User: {userData.name}</p>
+                        <p className="text-gray-500">Email: {userData.email}</p>
+                        <p className="text-gray-500">
+                            Subscription: {userData.subscription}
+                        </p>
+                    </div> */}
+                </div>
+            )}
+
+            {/* Main Content */}
             <div className="flex flex-col justify-center items-center gap-4 text-xl">
                 <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
                     {projectData && projectData.name}
@@ -304,8 +375,11 @@ function Preview() {
                     Strategic Plan {projectData && projectData.name}
                 </div>
             </div>
+
+            {/* Page Content */}
             <div className="w-full mt-4">
                 <div className="flex flex-col gap-6">
+                    {/* Introduction Section */}
                     <div className="flex flex-col gap-4">
                         {isLoading ? (
                             <div className="w-full">
@@ -321,6 +395,8 @@ function Preview() {
                             </div>
                         )}
                     </div>
+
+                    {/* Vision Section */}
                     <div className="flex flex-col gap-3 no-scroll">
                         {isLoading ? (
                             <div className="w-full">
@@ -337,7 +413,7 @@ function Preview() {
                                         className="bg-transparent h-fit"
                                         style={{
                                             height: "150px",
-                                            width: "950px",
+                                            width: "100%",
                                         }}
                                         value={simpleData.vision}
                                         onChange={(e) => {
@@ -345,7 +421,7 @@ function Preview() {
                                                 ...prev,
                                                 vision: e.target.value,
                                             }));
-                                            setIsEditing(true); // Enable Save button after editing
+                                            setIsEditing(true);
                                         }}
                                     />
                                 ) : (
@@ -354,19 +430,19 @@ function Preview() {
                                             setIsEditingSimpleData(true)
                                         }
                                     >
-                                        {promptData &&
-                                            promptData.vision &&
-                                            promptData.vision.response}
+                                        {promptData?.vision?.response || ""}
                                     </p>
                                 )}
                             </div>
                         )}
                     </div>
+
+                    {/* Mission Section */}
                     <div className="flex flex-col gap-3 no-scroll">
                         {isLoading ? (
                             <div className="w-full">
                                 <Skeleton width={100} />
-                                <Skeleton />
+                                <Skeleton height={30} />
                             </div>
                         ) : (
                             <div>
@@ -378,7 +454,7 @@ function Preview() {
                                         className="bg-transparent h-fit"
                                         style={{
                                             height: "150px",
-                                            width: "950px",
+                                            width: "100%",
                                         }}
                                         value={simpleData.mission}
                                         onChange={(e) => {
@@ -395,14 +471,14 @@ function Preview() {
                                             setIsEditingSimpleData(true)
                                         }
                                     >
-                                        {promptData &&
-                                            promptData.mission &&
-                                            promptData.mission.response}
+                                        {promptData?.mission?.response || ""}
                                     </p>
                                 )}
                             </div>
                         )}
                     </div>
+
+                    {/* Values Section */}
                     <div className="flex flex-col gap-3">
                         {isLoading ? (
                             <div className="w-full">
@@ -427,7 +503,7 @@ function Preview() {
                                         className="bg-transparent h-fit"
                                         style={{
                                             height: "250px",
-                                            width: "950px",
+                                            width: "100%",
                                         }}
                                         value={simpleData.values}
                                         onChange={(e) => {
@@ -443,7 +519,7 @@ function Preview() {
                                         onDoubleClick={() => setIsEditing(true)}
                                     >
                                         {renderList(
-                                            promptData?.values.response
+                                            promptData?.values?.response
                                         )}
                                     </ul>
                                 )}
@@ -451,6 +527,7 @@ function Preview() {
                         )}
                     </div>
 
+                    {/* Regenerate and Save Buttons */}
                     <div className="flex justify-center my-5 gap-8">
                         <button
                             className="bg-orange-default text-white font-bold rounded-md py-3 px-6"
@@ -459,7 +536,7 @@ function Preview() {
                             Regenerate
                         </button>
                         <button
-                            className="bg-green-500 text-white font-bold rounded-md cursor-pointer  py-3 px-6"
+                            className="bg-green-500 text-white font-bold rounded-md cursor-pointer py-3 px-6"
                             onClick={saveData}
                             disabled={!isEditing}
                         >
@@ -473,6 +550,26 @@ function Preview() {
                         >
                             Next
                         </div>
+                        {/* <div className="flex bg-blue-default text-white font-bold py-3 px-6 rounded-md">
+                            <PDFDownloadLink
+                                document={
+                                    <ExportPage
+                                        projectData={projectData}
+                                        promptData={promptData}
+                                        pestleData={swotData}
+                                        logframeData={swotData?.logframe}
+                                        isLoading={false} // hasWatermark={hasWatermark}
+                                    />
+                                }
+                                fileName="preview.pdf"
+                            >
+                                {({ loading }) =>
+                                    loading
+                                        ? "Loading document..."
+                                        : "Download PDF"
+                                }
+                            </PDFDownloadLink>
+                        </div> */}
                     </div>
                 </div>
             </div>
