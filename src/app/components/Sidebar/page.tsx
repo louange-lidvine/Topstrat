@@ -53,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     };
     const handleClose=()=>{
         setIsProfileOpen(false);
-       navigate.push('../ProjectPage')
+       navigate.push('/components/ProjectPage')
     }
 
     const handleProfileClick = () => {
@@ -137,7 +137,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     return (
         <>
             <div className={`hidden lg:flex flex-col text-white max-w-[20vw] bg-blue-default m-2 rounded-md`}>
-                <div className="flex flex-col justify-between gap-40">
+                <div className="flex flex-col justify-between gap-32">
                     <div className="user-part">
                         <Profile />
                     </div>

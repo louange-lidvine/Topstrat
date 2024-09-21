@@ -1,75 +1,42 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Image from "next/image";
-import Prompt from "../prompt/page";
-import { BiArrowBack } from "react-icons/bi";
+import React from "react";
 import { useRouter } from "next/navigation";
+import { BiArrowBack } from "react-icons/bi";
 
-function page() {
+function Page() {
     const router = useRouter();
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [isSecModalOpen, setIsSecModalOpen] = useState<boolean>(false);
-    const [prompts, setPrompts] = useState<string[]>([]);
-
-    const [title, setTitle] = useState("untitled");
-    const handleInputChange = (event: {
-        target: { value: React.SetStateAction<string> };
-    }) => {
-        setTitle(event.target.value);
-    };
-
-    const handleButtonClick = () => {
-        setIsModalOpen(false);
-        setIsSecModalOpen(true);
-    };
 
     return (
-        <div className=" border border-blue-default lg:full my-4 rounded-md lg:mx-2 float-right lg:z-[9999]">
-                  <div className="justify-end flex gap-2 cursor-pointer p-2"  
-                onClick={() =>
-                                router.push('/')
-                            }>
-                                <BiArrowBack className="mt-1"/>
-                                <p className="">Return to home</p>
-                                </div>
-            <div className="input flex justify-center">
-                {/* <input
-                    type="text"
-                    placeholder="untitled"
-                    className="border m-4 lg:py-2 mt-10 p-2 outline-none lg:px-10 text-center rounded-md"
-                /> */}
+        <div className="border border-blue-default lg:full my-2 p-6 rounded-md shadow-lg lg:mx-auto lg:w-full">
+            <div className="flex items-center gap-2 cursor-pointer justify-end"  
+                 onClick={() => router.push('/')}>
+                <BiArrowBack className="mt-1" size={24} />
+                <p className="text-md">Return to Home</p>
             </div>
-            <div>
-                <h1 className="text-3xl my-40 font-bold text-center text-blue-default">
-                    Strategic plan
+
+            <div className="text-center my-32 ">
+                <h1 className="text-4xl font-bold text-blue-default">
+                    Strategic Plan
                 </h1>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 lg:w-full lg:py-20 lg:px-20 mt-6">
-                <Prompt content="Generate a strategic plan for a rabbit rearing project and provide clear objectives" />
-                <Prompt content="Generate a strategic plan for a rabbit rearing project and provide clear objectives" />
-                <Prompt content="Generate a strategic plan for a rabbit rearing project and provide clear objectives" />
-                <Prompt content="Generate a strategic plan for a rabbit rearing project and provide clear objectives" />
-            </div>
-            <div className="input flex justify-between lg:mx-auto lg:w-[90%] border m-4 py-3 px-6 rounded-md space-x-5">
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Add a short description"
-                        className="outline-none bg-transparent lg:w-full"
-                    />
-                </div>
-                <div>
-                    <button
-                        type="submit"
-                        className="text-blue-default font-bold"
-                    >
-                        Generate
-                    </button>
-                </div>
+        <div className="px-6 py-4 text-gray-700 leading-relaxed">
+                <p className="mb-6 text-lg">
+                    <strong>What is a Strategic Plan?</strong><br />
+                    A strategic plan is a comprehensive roadmap that outlines the steps and decisions needed to achieve long-term goals. It helps organizations set clear objectives, understand both internal and external environments, and define actionable strategies to reach desired outcomes. 
+                </p>
+
+                <p className="mb-6 text-lg">
+                    <strong>How to Use This App:</strong><br />
+                    Our strategic planning tool allows you to easily create and manage your strategy. Start by creating a project on using the plus sign (+), then continue the steps and analyze your business environment through tools like SWOT or PESTLE analysis, and monitor your progress as you work towards achieving your goals. This app simplifies the process, guiding you step by step in creating a plan that aligns with your vision.
+                </p>
+
+          
+                <p className="mt-10 text-center text-lg text-gray-500">
+                    Powered by <span className="font-semibold text-blue-default">TopStrat</span>
+                </p>
             </div>
         </div>
     );
 }
 
-export default page;
+export default Page;
