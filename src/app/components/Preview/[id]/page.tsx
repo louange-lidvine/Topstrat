@@ -33,9 +33,9 @@ function Preview() {
     const [editableSwotData, setEditableSwotData] = useState<any>(null);
     const [promptId, setPromptId] = useState<string | null>(null);
 
-    const [userData, setUserData] = useState<any>(null); // Store user data here
-    const [gravatarUrl, setGravatarUrl] = useState<string>(""); // Optional: Gravatar URL
-    const [hasWatermark, setHasWatermark] = useState(false); // State for watermark
+    const [userData, setUserData] = useState<any>(null); 
+    const [gravatarUrl, setGravatarUrl] = useState<string>("");
+    const [hasWatermark, setHasWatermark] = useState(false); 
 
     useEffect(() => {
         // Fetch project data
@@ -56,10 +56,10 @@ function Preview() {
             }
         };
 
-        // Fetch user data using userId from localStorage
+       
         const getUserData = async () => {
             try {
-                const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
+                const userId = localStorage.getItem("userId");
                 const token = getCookie("token");
 
                 if (userId) {
@@ -75,12 +75,10 @@ function Preview() {
                     console.log("User data:", response.data);
                     setUserData(response.data);
 
-                    // Optional: If Gravatar URL is part of user data
                     if (response.data.gravatar) {
                         setGravatarUrl(response.data.gravatar);
                     }
 
-                    // Check subscription type for watermark
                     if (response.data.subscription === "FreeTrial") {
                         setHasWatermark(true);
                     } else {
@@ -135,7 +133,6 @@ function Preview() {
             const token = getCookie("token");
             setIsLoading(true);
 
-            // Fetching the latest project data
             const response = await axios.get(
                 `${baseURL}/projects/prompts/latest/${id}`,
                 {
@@ -149,7 +146,6 @@ function Preview() {
             if (response.data) {
                 console.log("Prompt data:", response.data);
 
-                // Set the fetched content for simpleData and SWOT analysis
                 setSimpleData({
                     vision: response.data.vision.response,
                     mission: response.data.mission.response,
@@ -354,17 +350,10 @@ function Preview() {
                             className="w-16 h-16 rounded-full"
                         />
                     )}
-                    {/* <div>
-                        <p className="font-bold">User: {userData.name}</p>
-                        <p className="text-gray-500">Email: {userData.email}</p>
-                        <p className="text-gray-500">
-                            Subscription: {userData.subscription}
-                        </p>
-                    </div> */}
                 </div>
             )}
 
-            {/* Main Content */}
+            
             <div className="flex flex-col justify-center items-center gap-4 text-xl">
                 <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
                     {projectData && projectData.name}
@@ -526,7 +515,7 @@ function Preview() {
                         )}
                     </div>
 
-                    {/* Regenerate and Save Buttons */}
+              
                     <div className="flex justify-center my-5 gap-8">
                              <div
                             className="flex bg-blue-400 text-white font-bold rounded-md py-3 px-6 cursor-pointer"

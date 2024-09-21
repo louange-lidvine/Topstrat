@@ -592,6 +592,40 @@ function Preview() {
        }
    };
 
+      const renderList = (data: string) => {
+        return (
+            <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
+                {data
+                    .split(/\d+\.\s*/)
+                    .filter((item) => item.trim() !== "")
+                    .map((item, index) => (
+                        <li
+                            key={index}
+                            style={{
+                                marginBottom: "8px",
+                                fontSize: "16px",
+                                color: "#333",
+                            }}
+                        >
+                            {item.trim()}
+                        </li>
+                    ))}
+            </ul>
+        );
+    };
+    
+
+    const renderTextWithBold = (text: string) => {
+        const parts = text.split(/\*\*(.*?)\*\*/g);
+        return parts.map((part, index) =>
+            index % 2 === 1 ? (
+                <strong key={index}>{part}</strong>
+            ) : (
+                <span key={index}>{part}</span>
+            )
+        );
+    };
+
 
     return (
         <div className="border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium">
@@ -610,78 +644,74 @@ function Preview() {
             </div>
             <div className="w-full mt-4">
                 <div className="flex flex-col gap-6">
-                    <div className="flex flex-col gap-3 no-scroll h-fit">
+                       <div className="flex flex-col gap-3">
                         {isLoading ? (
-                           <div className="w-full">
-                    <Skeleton width={80} />
-                    <Skeleton height={120} />
-                  </div>
+                            <div className="w-full">
+                                <Skeleton width={80} />
+                                <Skeleton height={80} />
+                            </div>
                         ) : (
                             <div>
-                                <h3 className="text-xl font-bold text-blue-default">Objectives</h3>
-                                {isEditingSimpleData ? (
-                                    <textarea
-                                        className="bg-transparent h-fit"
-                                        style={{ height: "200px", width: "1100px" }}
-                                        value={simpleData.objectives}
-                                                                            onChange={(e) => {
-    setSimpleData((prev) => ({
-        ...prev,
-        objectives: e.target.value,
-    }));
-    setIsEditingSimpleData(true); 
-}}
-                                    />
-                                ) : (
-                                    <ol   onDoubleClick={() =>
-                                            setIsEditingSimpleData(true)
-                                        }>
-                                        {promptData?.objectives?.response?.split("\n").map((item:any, index:any) => (
-                                            <li key={index} className="py-2">{item}</li>
-                                        ))}
-                                    </ol>
+                                <h3 className="text-xl mt-5 font-bold">
+                                    {" "}
+                                    <p
+                                        style={{
+                                            fontSize: "20px",
+                                            fontWeight: "bold",
+                                            color: "#0B6C79",
+                                        }}
+                                    >
+                                        Objectives
+                                    </p>{" "}
+                                </h3>
+
+                                <h1 className="font-bold my-2">General objective</h1>
+                                <p>{logframeData?.goal?.description}</p>
+                                <h1 className="font-bold my-2">Specific objectives</h1>
+                                {promptData && promptData.objectives && (
+                                    <ul>
+                                        {renderList(
+                                            promptData.objectives.response
+                                        )}
+                                    </ul>
                                 )}
-                                {/* <button
-                                    className="mt-2 bg-blue-500 text-white rounded-md px-4 py-2"
-                                    onClick={() => setIsEditingSimpleData(!isEditingSimpleData)}
-                                >
-                                    {isEditingSimpleData ? "Cancel" : "Edit"}
-                                </button> */}
                             </div>
                         )}
                     </div>
 
-                    <div className="flex flex-col gap-3 no-scroll">
+                    <div className="flex flex-col gap-3">
                         {isLoading ? (
-                          <div className="w-full">
-                    <Skeleton width={80} />
-                    <Skeleton height={120} />
-                  </div>
+                            <div className="w-full">
+                                <Skeleton width={80} />
+                                <Skeleton height={80} />
+                            </div>
                         ) : (
                             <div>
-                                <h3 className="text-xl font-bold text-blue-default">Strategy</h3>
-                                {isEditingSimpleData ? (
-                                    <textarea
-                                        className="bg-transparent h-fit"
-                                        style={{ height: "500px", width: "1100px" }}
-                                        value={simpleData.strategy}
-                                                                            onChange={(e) => {
-    setSimpleData((prev) => ({
-        ...prev,
-    strategy: e.target.value,
-    }));
-    setIsEditingSimpleData(true);  
-}}
-                                    />
-                                ) : (
-                                    <ol   onDoubleClick={() =>
-                                            setIsEditingSimpleData(true)
-                                        }>
-                                        {promptData?.strategy?.response?.split("\n").map((item:any, index:any) => (
-                                            <li key={index} className="py-2">{item}</li>
-                                        ))}
-                                    </ol>
-                                )}
+                                <h3 className="text-xl font-bold">
+                                    <p
+                                        style={{
+                                            fontSize: "20px",
+                                            fontWeight: "bold",
+                                            color: "#0B6C79",
+                                        }}
+                                    >
+                                        Strategy
+                                    </p>{" "}
+                                </h3>
+                                <ol>
+                                    {promptData?.strategy?.response
+                                        ? promptData.strategy.response
+                                              .split("\n")
+                                              .map((item: any, index: any) => (
+                                                  <li
+                                                      key={index}
+                                                      className="py-2"
+                                                  >
+                                                      {renderTextWithBold(item)}
+                                                  </li>
+                                              ))
+                                        : null}
+                                </ol>
                             </div>
                         )}
                     </div>

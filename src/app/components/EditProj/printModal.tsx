@@ -46,7 +46,7 @@ const PrintModal: React.FC<PrintModalProps> = ({
 
         const opt = {
             margin: marginValue,
-            filename: `generated_${selectedPrinter}_${layout}.pdf`,
+            filename: `${projectData.name}.pdf`,
             html2canvas: { scale: scaleValue },
             jsPDF: { unit: "mm", format: "a4", orientation: layout }, // Explicitly set orientation
         };

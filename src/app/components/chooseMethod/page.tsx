@@ -95,7 +95,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
           const projectId = response.data._id;
           refetchProject();
           if (formData.method === "quick") {
-              router.push(`/components/Preview/${projectId}`);
+              router.push(`/components/cover/${projectId}`);
           } else if (formData.method === "step") {
               router.push(`/components/step/${projectId}`);
           }

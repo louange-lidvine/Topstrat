@@ -127,7 +127,7 @@ export default function ProjectCard({
                 }
             );
             if (checkResponseFormat(response.data)) {
-                navigate.push(`/components/Preview/${projectId}`);
+                navigate.push(`/components/cover/${projectId}`);
             } else {
                 navigate.push(`/components/step/${projectId}`);
             }
