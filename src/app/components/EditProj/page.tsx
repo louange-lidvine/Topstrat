@@ -6,22 +6,25 @@ import { getCookie } from "cookies-next";
 import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
-import ReactModal from "react-modal";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import ExportPage from "../Export/page"; // This is where PDF content is generated
+import ExportPage from "../Export/page"; // PDF content generation component
+import PrintModal from "./printModal"; 
+import { resolve } from "path";
 
 interface Project {
     name: string;
     _id: string;
 }
 
-export default function ({
+export default function ProjectCard({
     project,
     remove,
-    selected,
+  selected,
+    selectedId
 }: {
     project: Project;
     selected: boolean;
+    selectedId: string;
     remove: () => void;
 }) {
     const { id } = useParams();
@@ -31,9 +34,12 @@ export default function ({
     const [projectData, setProjectData] = useState<any>();
     const [promptData, setPromptData] = useState<any>();
     const [pestleData, setPestleData] = useState<any>();
-    const [logframeData, setLogframeData] = useState<any>([]);
-    const [isLoading, setIsLoading] = useState(false);
+  const [logframeData, setLogframeData] = useState<any>([]);
 
+
+ 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
     const navigate = useRouter();
 
     useEffect(() => {
@@ -86,17 +92,69 @@ export default function ({
         fetchData();
     }, [resolvedId]);
 
+    const checkResponseFormat = (response: any) => {
+        const requiredFields = [
+            "mission",
+            "vision",
+            "swot",
+            "objectives",
+            "values",
+            "strategy",
+            "logframe",
+            "pestle",
+        ];
+
+        for (const field of requiredFields) {
+            if (!(field in response)) {
+                return false;
+            }
+        }
+        return true;
+  };
+ 
+
+
     const handleProjectClick = async (projectId: string) => {
-        // Project click handler logic here
+        try {
+            const token = getCookie("token");
+            const response = await axios.get(
+                `${baseURL}/projects/prompts/latest/${projectId}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            if (checkResponseFormat(response.data)) {
+                navigate.push(`/components/Preview/${projectId}`);
+            } else {
+                navigate.push(`/components/step/${projectId}`);
+            }
+        } catch (error) {
+            console.error("Error fetching project data:", error);
+        }
     };
 
     const handleDelete = async (projectId: string) => {
-        // Delete project logic here
+        try {
+            const token = getCookie("token");
+            await axios.delete(`${baseURL}/projects/${projectId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log("Project deleted successfully");
+            remove(); // Update UI after deleting the project
+        } catch (error) {
+            console.error("Error deleting project:", error);
+        }
     };
 
     return (
         <div
-            className={`relative hover:bg-white hover:bg-opacity-20 px-10 py-3 mt-3 rounded-sm ${
+            className={`relative hover:bg-white hover:bg-opacity-20 px-10 py-3 mt-3 rounded-sm  ${
                 selected && "bg-transparent"
             }`}
             onMouseEnter={() => setIsHover(true)}
@@ -130,36 +188,13 @@ export default function ({
                             style={{ minWidth: "180px" }}
                         >
                             <ul className="flex flex-col gap-2">
-                                <li className="hover:bg-gray-100 p-2 rounded-md cursor-pointer">
-                                    {typeof window !== "undefined" &&
-                                        projectData &&
-                                        promptData &&
-                                        pestleData &&
-                                        logframeData && (
-                                            <PDFDownloadLink
-                                                document={(() => (
-                                                    <ExportPage
-                                                        projectData={
-                                                            projectData
-                                                        }
-                                                        promptData={promptData}
-                                                        pestleData={pestleData}
-                                                        logframeData={
-                                                            logframeData
-                                                        }
-                                                        isLoading={isLoading}
-                                                    />
-                                                ))()}
-                                                fileName={`${project.name}.pdf`}
-                                            >
-                                                {({ loading }) =>
-                                                    loading
-                                                        ? "Loading document..."
-                                                        : "Download PDF"
-                                                }
-                                            </PDFDownloadLink>
-                                        )}
+                                <li
+                                    onClick={()=>{setIsPrintModalOpen(true)}}
+                                    className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
+                                >
+                                    Print
                                 </li>
+
                                 <li
                                     className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
                                     onClick={() =>
@@ -181,6 +216,15 @@ export default function ({
                     )}
                 </div>
             )}
+            <PrintModal
+          isOpen={isPrintModalOpen}
+               id={selectedId}
+                onClose={() => setIsPrintModalOpen(false)}
+                projectData={projectData}
+                promptData={promptData}
+                pestleData={pestleData}
+                logframeData={logframeData}
+            />
         </div>
     );
 }

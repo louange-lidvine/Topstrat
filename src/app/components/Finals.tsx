@@ -27,7 +27,8 @@ function Finals({ id }: FinalsProps) {
     const [pestleData, setPestleData] = useState<any>();
     const [logframeData, setLogframeData] = useState<any>([]);
     const [Data, setData] = useState<any>([]);
-    const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -177,9 +178,9 @@ function Finals({ id }: FinalsProps) {
     };
 
     const MyDocument = () => (
-        <Document pageMode="fullScreen">
+        <Document pageMode="fullScreen" >
             <Page size="A4" style={{ margin: "auto" }}>
-                <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium">
+          <div className="border  border-blue-default my-4 rounded-md mx-2 p-4 font-medium" id={`pdf-content_${id}`}>
                     <div
                         className="justify-end flex gap-2 cursor-pointer"
                         onClick={() => router.push("/")}

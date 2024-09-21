@@ -23,23 +23,16 @@ function Preview() {
     const [projectData, setProjectData] = useState<any>();
     const [visionId, setVisionId] = useState<string | null>(null);
     const [missionId, setMissionId] = useState<string | null>(null);
-    const [objectivesId, setObjectivesId] = useState<string | null>(null);
-    const [strategyId, setStrategyId] = useState<string | null>(null);
-    const [swotId, setSwotId] = useState<string | null>(null);
+    const [valuesId, setValuesId] = useState<string | null>(null);
 
     const [simpleData, setSimpleData] = useState({
         vision: "",
         mission: "",
-        objectives: "",
-        strategy: "",
+        values: "",
     });
     const [isEditingSimpleData, setIsEditingSimpleData] = useState(false);
     const [editableSwotData, setEditableSwotData] = useState<any>(null);
     const [promptId, setPromptId] = useState<string | null>(null);
-
-    const handleNextClick = () => {
-        router.push(`/components/Preview2/${id}`);
-    };
 
     useEffect(() => {
         const getProject = async (id: string) => {
@@ -62,95 +55,99 @@ function Preview() {
         setIsLoading(false);
     }, []);
 
-      const renderList = (data: string) => {
-    return (
-      <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
-        {data
-          .split(/\d+\.\s*/)
-          .filter((item) => item.trim() !== "")
-          .map((item, index) => (
-            <li
-              key={index}
-              style={{
-                marginBottom: "8px",
-                fontSize: "16px",
-                color: "#333",
-              }}
-            >
-              {item.trim()}
-            </li>
-          ))}
-      </ul>
-    );
-  };
+    const renderList = (data: string | undefined) => {
+        if (typeof data !== "string") {
+            return (
+                <ul>
+                    <li>loading</li>
+                </ul>
+            );
+        }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = getCookie("token");
-                setIsLoading(true);
+        return (
+            <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
+                {data
+                    .split(/\d+\.\s*/)
+                    .filter((item) => item.trim() !== "")
+                    .map((item, index) => (
+                        <li
+                            key={index}
+                            style={{
+                                marginBottom: "8px",
+                                fontSize: "16px",
+                                color: "#333",
+                            }}
+                        >
+                            {item.trim()}
+                        </li>
+                    ))}
+            </ul>
+        );
+    };
 
-                // Fetching the latest project data
-                const response = await axios.get(
-                    `${baseURL}/projects/prompts/latest/${id}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+    const fetchData = async () => {
+        try {
+            const token = getCookie("token");
+            setIsLoading(true);
 
-                if (response.data) {
-                    console.log(response.data);
-
-                    // Set the fetched content for simpleData and SWOT analysis
-                    setSimpleData({
-                        vision: response.data.vision.response,
-                        mission: response.data.mission.response,
-                        strategy: response.data.strategy.response,
-                        objectives: response.data.objectives.response,
-                    });
-
-                    // Parse SWOT response and set editable SWOT data
-                    setEditableSwotData({
-                        strengths:
-                            JSON.parse(response.data.swot.response).strengths ||
-                            [],
-                        weaknesses:
-                            JSON.parse(response.data.swot.response)
-                                .weaknesses || [],
-                        opportunities:
-                            JSON.parse(response.data.swot.response)
-                                .opportunities || [],
-                        threats:
-                            JSON.parse(response.data.swot.response).threats ||
-                            [],
-                    });
-
-                    // Set individual section IDs
-                    setVisionId(response.data.vision._id);
-                    setMissionId(response.data.mission._id);
-                    setObjectivesId(response.data.objectives._id);
-                    setStrategyId(response.data.strategy._id);
-                    setSwotId(response.data.swot._id);
-
-                    // Store full prompt data for later use
-                    setPromptData(response.data);
-                    setPromptId(response.data.swot._id); // Storing the SWOT ID as the promptId
-                } else {
-                    setError("No data received");
+            // Fetching the latest project data
+            const response = await axios.get(
+                `${baseURL}/projects/prompts/latest/${id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-                setIsLoading(false);
-            } catch (error) {
-                setError("Error fetching data");
-                console.error("Error fetching data:", error);
-                setIsLoading(false);
-            }
-        };
+            );
 
+            if (response.data) {
+                console.log(response.data);
+
+                // Set the fetched content for simpleData and SWOT analysis
+                setSimpleData({
+                    vision: response.data.vision.response,
+                    mission: response.data.mission.response,
+                    values: response.data.values.response,
+                });
+
+                // Parse SWOT response and set editable SWOT data
+                setEditableSwotData({
+                    strengths:
+                        JSON.parse(response.data.swot.response).strengths || [],
+                    weaknesses:
+                        JSON.parse(response.data.swot.response).weaknesses ||
+                        [],
+                    opportunities:
+                        JSON.parse(response.data.swot.response).opportunities ||
+                        [],
+                    threats:
+                        JSON.parse(response.data.swot.response).threats || [],
+                });
+
+                // Set individual section IDs
+                setVisionId(response.data.vision._id);
+                setMissionId(response.data.mission._id);
+                setValuesId(response.data.values._id);
+
+                // Store prompt data for later use
+                setPromptData(response.data);
+                setPromptId(response.data.swot._id); // Storing the SWOT ID as the promptId
+            } else {
+                setError("No data received");
+            }
+            setIsLoading(false);
+        } catch (error) {
+            setError("Error fetching data");
+            console.error("Error fetching data:", error);
+            setIsLoading(false);
+        }
+    };
+
+    // useEffect for initial fetch
+    useEffect(() => {
         fetchData();
-    }, [id]); // Dependencies updated
+    }, [id]);
 
     const refetchData = async () => {
         try {
@@ -188,17 +185,13 @@ function Preview() {
                 setSimpleData({
                     vision: response.data.vision?.response || "",
                     mission: response.data.mission?.response || "",
-                    strategy: response.data.strategy?.response || "",
-                    objectives: response.data.objectives?.response || "",
+                    values: response.data.values?.response || "",
                 });
 
                 // Update individual section IDs in case they change after regeneration
                 setVisionId(response.data.vision._id);
                 setMissionId(response.data.mission._id);
-                setObjectivesId(response.data.objectives._id);
-                setStrategyId(response.data.strategy._id);
-                setSwotId(response.data.swot._id);
-
+                setValuesId(response.data.values._id);
                 // Store prompt data after the refetch
                 setPromptData(response.data);
             } else {
@@ -215,30 +208,28 @@ function Preview() {
 
     const saveData = async () => {
         const token = getCookie("token");
+        console.log(simpleData);
 
         // Validate presence of IDs and data
-        if (
-            !visionId ||
-            !missionId ||
-            !objectivesId ||
-            !strategyId ||
-            !swotId
-        ) {
+        if (!visionId || !missionId || !valuesId) {
             console.error("One or more required IDs are not available");
+            toast.error("One or more required IDs are missing.");
             return;
         }
-        if (!editableSwotData && !simpleData) {
+
+        if (
+            !simpleData ||
+            (!simpleData.vision && !simpleData.mission && !simpleData.values)
+        ) {
             console.error("No data to save");
             toast.error("No data to save. Please try again.");
             return;
         }
 
         // Prepare individual payloads for each section
-        const visionPayload = { vision: simpleData.vision };
-        const missionPayload = { mission: simpleData.mission };
-        const objectivesPayload = { objectives: simpleData.objectives };
-        const strategyPayload = { strategy: simpleData.strategy };
-        const swotPayload = { swotData: editableSwotData };
+        const visionPayload = { response: simpleData.vision };
+        const missionPayload = { response: simpleData.mission };
+        const valuesPayload = { response: simpleData.values };
 
         // Array of API calls with specific IDs
         const apiCalls = [
@@ -263,8 +254,8 @@ function Preview() {
                 }
             ),
             axios.put(
-                `${baseURL}/projects/prompts/${objectivesId}`,
-                objectivesPayload,
+                `${baseURL}/projects/prompts/${valuesId}`,
+                valuesPayload,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -272,38 +263,19 @@ function Preview() {
                     },
                 }
             ),
-            axios.put(
-                `${baseURL}/projects/prompts/${strategyId}`,
-                strategyPayload,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            ),
-            axios.put(`${baseURL}/projects/prompts/${swotId}`, swotPayload, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            }),
         ];
 
         try {
-            // Send all requests concurrently
-            const results = await Promise.all(apiCalls);
-            console.log("Response from the API:", results);
+            await Promise.all(apiCalls);
+            console.log("Response from the API: Data saved successfully!");
 
-            // Assuming success if all are resolved, update state accordingly
-            setSwotData(editableSwotData);
+            // Refetch the updated data
+            await fetchData();
+
+            // Optionally update local state if needed
             setIsEditing(false);
             setIsEditingSimpleData(false);
-            console.log("Editable SWOT Data:", editableSwotData);
-            console.log("Simple Data:", simpleData);
-            // setPromptId(swotId); // Storing the SWOT ID as the promptId
 
-            // Notify user of success
             toast.success("Data saved successfully!");
         } catch (error: any) {
             console.error(
@@ -314,54 +286,16 @@ function Preview() {
         }
     };
 
-    const handleCellChange = (
-        category: string,
-        field: string,
-        value: string
-    ) => {
-        setEditableSwotData((prevData: any) => ({
-            ...prevData,
-            [category]: {
-                ...prevData[category],
-                [field]: value,
-            },
-        }));
-        setIsEditing(true);
-    };
-
-    const handleTableDataChange = (type: string, index: number, value: any) => {
-        const updatedSwotData = { ...editableSwotData };
-
-        const updatedTypeArray = [...updatedSwotData[type]];
-        updatedTypeArray[index] = value;
-
-        updatedSwotData[type] = updatedTypeArray;
-
-        setEditableSwotData(updatedSwotData);
-    };
-
-    const renderTextWithBold = (text: string) => {
-    const parts = text.split(/\*\*(.*?)\*\*/g); 
-    return parts.map((part, index) =>
-        index % 2 === 1 ? (
-            <strong key={index}>{part}</strong> 
-        ) : (
-            <span key={index}>{part}</span> 
-        )
-    );
-};
-
     return (
         <div className="border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium">
-              <div className="justify-end flex gap-2 cursor-pointer"  
-                onClick={() =>
-                                router.push('/')
-                            }>
-                                <BiArrowBack className="mt-1"/>
-                                <p className="">Return to home</p>
-                                </div>
+            <div
+                className="justify-end flex gap-2 cursor-pointer"
+                onClick={() => router.push("/")}
+            >
+                <BiArrowBack className="mt-1" />
+                <p className="">Return to home</p>
+            </div>
             <div className="flex flex-col justify-center items-center gap-4 text-xl">
-              
                 <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
                     {projectData && projectData.name}
                 </div>
@@ -402,16 +336,17 @@ function Preview() {
                                     <textarea
                                         className="bg-transparent h-fit"
                                         style={{
-                                            height: "100px",
-                                            width: "930px",
+                                            height: "150px",
+                                            width: "950px",
                                         }}
                                         value={simpleData.vision}
-                                        onChange={(e) =>
+                                        onChange={(e) => {
                                             setSimpleData((prev) => ({
                                                 ...prev,
                                                 vision: e.target.value,
-                                            }))
-                                        }
+                                            }));
+                                            setIsEditing(true); // Enable Save button after editing
+                                        }}
                                     />
                                 ) : (
                                     <p
@@ -442,16 +377,17 @@ function Preview() {
                                     <textarea
                                         className="bg-transparent h-fit"
                                         style={{
-                                            height: "100px",
-                                            width: "930px",
+                                            height: "150px",
+                                            width: "950px",
                                         }}
                                         value={simpleData.mission}
-                                        onChange={(e) =>
+                                        onChange={(e) => {
                                             setSimpleData((prev) => ({
                                                 ...prev,
                                                 mission: e.target.value,
-                                            }))
-                                        }
+                                            }));
+                                            setIsEditing(true);
+                                        }}
                                     />
                                 ) : (
                                     <p
@@ -467,33 +403,53 @@ function Preview() {
                             </div>
                         )}
                     </div>
-                        <div className="flex flex-col gap-3">
-                {isLoading ? (
-                  <div className="w-full">
-                    <Skeleton width={80} />
-                    <Skeleton height={80} />
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-xl font-bold">
-                      {" "}
-                      <p
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          color: "#0B6C79",
-                        }}
-                      >
-                        Values
-                      </p>
-                    </h3>
-                    {promptData && promptData.values && (
-                      <ul>{renderList(promptData.values.response)}</ul>
-                    )}
-                  </div>
-                )}
-              </div>
-                  
+                    <div className="flex flex-col gap-3">
+                        {isLoading ? (
+                            <div className="w-full">
+                                <Skeleton width={80} />
+                                <Skeleton height={80} />
+                            </div>
+                        ) : (
+                            <div>
+                                <h3 className="text-xl font-bold">
+                                    <p
+                                        style={{
+                                            fontSize: "20px",
+                                            fontWeight: "bold",
+                                            color: "#0B6C79",
+                                        }}
+                                    >
+                                        Values
+                                    </p>
+                                </h3>
+                                {isEditing ? (
+                                    <textarea
+                                        className="bg-transparent h-fit"
+                                        style={{
+                                            height: "250px",
+                                            width: "950px",
+                                        }}
+                                        value={simpleData.values}
+                                        onChange={(e) => {
+                                            setSimpleData((prev) => ({
+                                                ...prev,
+                                                values: e.target.value,
+                                            }));
+                                            setIsEditing(true);
+                                        }}
+                                    />
+                                ) : (
+                                    <ul
+                                        onDoubleClick={() => setIsEditing(true)}
+                                    >
+                                        {renderList(
+                                            promptData?.values.response
+                                        )}
+                                    </ul>
+                                )}
+                            </div>
+                        )}
+                    </div>
 
                     <div className="flex justify-center my-5 gap-8">
                         <button
@@ -503,7 +459,7 @@ function Preview() {
                             Regenerate
                         </button>
                         <button
-                            className="bg-green-500 text-white font-bold rounded-md  py-3 px-6"
+                            className="bg-green-500 text-white font-bold rounded-md cursor-pointer  py-3 px-6"
                             onClick={saveData}
                             disabled={!isEditing}
                         >
