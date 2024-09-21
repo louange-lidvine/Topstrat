@@ -258,7 +258,7 @@ function Page() {
                                     </li>
                                     <li className="mb-2">✓ 1 Team Member</li>
                                     <li className="mb-2">
-                                        ✓ Export plan as PDF
+                                        ✓ Export Strategic plan as PDF
                                     </li>
                                 </ul>
                                 <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all">
@@ -292,7 +292,7 @@ function Page() {
                                     <li className="mb-2">✓ 5 Team Members</li>
                                     <li className="mb-2">✓ 5 Team Members</li>
                                     <li className="mb-2">
-                                        ✓ Export plan as PDF
+                                        ✓ Export Strategic plan as PDF
                                     </li>
                                 </ul>
                                 <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all">
@@ -323,7 +323,7 @@ function Page() {
                                         ✓ Unlimited Team Members
                                     </li>
                                     <li className="mb-2">
-                                        ✓ Export plan as Word
+                                        ✓ Export Strategic plan as Word
                                     </li>
                                 </ul>
                                 <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all">
