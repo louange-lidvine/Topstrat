@@ -92,54 +92,53 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 
- logframeTable: {
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    marginVertical: 15,
-    backgroundColor: '#f4f4f4',
-  },
-  logframeHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#cbd5e1', // Equivalent to bg-slate-300
-    paddingVertical: 10,
-  },
-  logframeRow: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#dddddd',
-  },
-  logframeRowEven: {
-    backgroundColor: '#f1f5f9', // Equivalent to bg-slate-100
-  },
-  logframeRowOdd: {
-    backgroundColor: '#ffffff',
-  },
-  logframeCell: {
-    flex: 1,
-    padding: 8,
-    textAlign: 'center',
-    borderRightWidth: 1,
-    borderRightColor: '#dddddd',
-    fontSize: 12,
-  },
-  logframeCellHeader: {
-    fontWeight: 'bold',
-    color: '#1e3a8a', 
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  logframeCellBold: {
-    fontWeight: 'bold',
-  },
-  logframeCellColSpan: {
-    flex: 2,
-    padding: 8,
-    textAlign: 'center',
-    borderRightWidth: 1,
-    borderRightColor: '#dddddd',
-    fontSize: 12,
-  },
-    
+    logframeTable: {
+        borderWidth: 1,
+        borderColor: "#cccccc",
+        marginVertical: 15,
+        backgroundColor: "#f4f4f4",
+    },
+    logframeHeader: {
+        flexDirection: "row",
+        backgroundColor: "#cbd5e1", // Equivalent to bg-slate-300
+        paddingVertical: 10,
+    },
+    logframeRow: {
+        flexDirection: "row",
+        borderBottomWidth: 1,
+        borderBottomColor: "#dddddd",
+    },
+    logframeRowEven: {
+        backgroundColor: "#f1f5f9", // Equivalent to bg-slate-100
+    },
+    logframeRowOdd: {
+        backgroundColor: "#ffffff",
+    },
+    logframeCell: {
+        flex: 1,
+        padding: 8,
+        textAlign: "center",
+        borderRightWidth: 1,
+        borderRightColor: "#dddddd",
+        fontSize: 12,
+    },
+    logframeCellHeader: {
+        fontWeight: "bold",
+        color: "#1e3a8a",
+        fontSize: 12,
+        textAlign: "center",
+    },
+    logframeCellBold: {
+        fontWeight: "bold",
+    },
+    logframeCellColSpan: {
+        flex: 2,
+        padding: 8,
+        textAlign: "center",
+        borderRightWidth: 1,
+        borderRightColor: "#dddddd",
+        fontSize: 12,
+    },
 });
 
 interface ProjectData {
@@ -166,37 +165,36 @@ interface PestleData {
 }
 
 interface Indicator {
-  indicator: string;
-  baseline: string;
-  target: string;
+    indicator: string;
+    baseline: string;
+    target: string;
 }
 
 interface LevelData {
-  description: string;
-  indicators: Indicator[];
-  timeline: string;
-  assumptions: string;
+    description: string;
+    indicators: Indicator[];
+    timeline: string;
+    assumptions: string;
 }
 
 interface ActivityData extends LevelData {
-  inputs: string[];
+    inputs: string[];
 }
 
 interface OutputData extends LevelData {
-  activities?: ActivityData[];
+    activities?: ActivityData[];
 }
 
 interface OutcomeData extends LevelData {
-  outputs?: OutputData[];
+    outputs?: OutputData[];
 }
 
 interface LogframeData {
-  goal?: {
-    impact?: LevelData;
-    outcomes?: OutcomeData[];
-  };
+    goal?: {
+        impact?: LevelData;
+        outcomes?: OutcomeData[];
+    };
 }
-
 
 interface MyDocumentProps {
     projectData: ProjectData | null;
@@ -454,175 +452,466 @@ const MyDocument: React.FC<MyDocumentProps> = ({
                             )}
                         </View>
                     </View>
-                     <Text style={styles.subHeader}>Logframe</Text>
-      <View style={styles.logframeTable}>
-        <View style={styles.logframeHeader}>
-          <View style={styles.tableRow}>
-            <View style={[styles.logframeCellColSpan, styles.logframeCellHeader]}>
-              <Text>Results Chain</Text>
-            </View>
-            <View style={[ styles.logframeCellHeader]}>
-              <Text>Indicator</Text>
-            </View>
-            <View style={[ styles.logframeCellHeader]}>
-              <Text>Baseline</Text>
-            </View>
-            <View style={[ styles.logframeCellHeader]}>
-              <Text>Target</Text>
-            </View>
-            <View style={[ styles.logframeCellHeader]}>
-              <Text>Timeline</Text>
-            </View>
-            <View style={[styles.logframeCellHeader]}>
-              <Text>Assumptions</Text>
-            </View>
-          </View>
-        </View>
-        {logframeData?.goal?.impact && (
-          <>
-            <View style={[styles.logframeRow, styles.logframeRowEven]}>
-              <View style={styles.logframeCell}>
-                <Text>Impact</Text>
-              </View>
-              <View style={styles.logframeCell}>
-                <Text>{logframeData.goal.impact?.description || '-'}</Text>
-              </View>
-              <View style={styles.logframeCell}>
-                <Text>{Object.keys(logframeData.goal.impact.indicators || {}).map((key:any) => (
-                  <Text key={key}>{key}:</Text>
-                ))}</Text>
-              </View>
-              <View style={styles.logframeCell}>
-                <Text>{Object.keys(logframeData.goal.impact.indicators || {}).map((key:any) => (
-                  <Text key={key}>{logframeData.goal.impact.indicators[key].baseline || ''}</Text>
-                ))}</Text>
-              </View>
-              <View style={styles.logframeCell}>
-                <Text>{Object.keys(logframeData.goal.impact.indicators || {}).map((key:any) => (
-                  <Text key={key}>{logframeData.goal.impact.indicators[key].target || '-'}</Text>
-                ))}</Text>
-              </View>
-              <View style={styles.logframeCell}>
-                <Text>{logframeData.goal.impact?.timeline || '-'}</Text>
-              </View>
-              <View style={styles.logframeCell}>
-                <Text>{logframeData.goal.impact?.assumptions || '-'}</Text>
-              </View>
-            </View>
-
-            {logframeData.goal.impact.outcomes?.map((outcomeItem:any, outcomeIndex:any) => (
-              <React.Fragment key={outcomeIndex}>
-                <View style={[styles.logframeRow, outcomeIndex % 2 === 0 ? styles.logframeRowEven : {}]}>
-                  <View style={styles.logframeCell}>
-                    <Text>Outcome {outcomeIndex + 1}</Text>
-                  </View>
-                  <View style={styles.logframeCell}>
-                    <Text>{outcomeItem.description || '-'}</Text>
-                  </View>
-                  <View style={styles.logframeCell}>
-                    <Text>{outcomeItem.indicator || '-'}</Text>
-                  </View>
-                  <View style={styles.logframeCell}>
-                    <Text>{outcomeItem.baseline || '-'}</Text>
-                  </View>
-                  <View style={styles.logframeCell}>
-                    <Text>{outcomeItem.target || '-'}</Text>
-                  </View>
-                  <View style={styles.logframeCell}>
-                    <Text>{outcomeItem.timeline || '-'}</Text>
-                  </View>
-                  <View style={styles.logframeCell}>
-                    <Text>{outcomeItem.assumptions || '-'}</Text>
-                  </View>
-                </View>
-
-                {outcomeItem.outputs?.map((outputItem:any, outputIndex:any) => (
-                  <React.Fragment key={outputIndex}>
-                    <View style={[styles.logframeRow, outputIndex % 2 === 0 ? styles.logframeRowEven : {}]}>
-                      <View style={styles.logframeCell}>
-                        <Text>Output {outcomeIndex + 1}.{outputIndex + 1}</Text>
-                      </View>
-                      <View style={styles.logframeCell}>
-                        <Text>{outputItem.description || '-'}</Text>
-                      </View>
-                      <View style={styles.logframeCell}>
-                        <Text>{outputItem.indicator || '-'}</Text>
-                      </View>
-                      <View style={styles.logframeCell}>
-                        <Text>{outputItem.baseline || '0'}</Text>
-                      </View>
-                      <View style={styles.logframeCell}>
-                        <Text>{outputItem.target || '-'}</Text>
-                      </View>
-                      <View style={styles.logframeCell}>
-                        <Text>{outputItem.timeline || '-'}</Text>
-                      </View>
-                      <View style={styles.logframeCell}>
-                        <Text>{outputItem.assumptions || '-'}</Text>
-                      </View>
-                    </View>
-
-                    {outputItem.activities?.map((activityItem:any, activityIndex:any) => (
-                      <React.Fragment key={activityIndex}>
-                        <View style={[styles.logframeRow, activityIndex % 2 === 0 ? styles.logframeRowEven : {}]}>
-                          <View style={styles.logframeCell}>
-                            <Text>Activity {outcomeIndex + 1}.{outputIndex + 1}.{activityIndex + 1}</Text>
-                          </View>
-                          <View style={styles.logframeCell}>
-                            <Text>{activityItem.description || '-'}</Text>
-                          </View>
-                          <View style={styles.logframeCell}>
-                            <Text>{activityItem.indicator || '-'}</Text>
-                          </View>
-                          <View style={styles.logframeCell}>
-                            <Text>{activityItem.baseline || '-'}</Text>
-                          </View>
-                          <View style={styles.logframeCell}>
-                            <Text>{activityItem.target || '-'}</Text>
-                          </View>
-                          <View style={styles.logframeCell}>
-                            <Text>{activityItem.timeline || '-'}</Text>
-                          </View>
-                          <View style={styles.logframeCell}>
-                            <Text>{activityItem.assumptions || '-'}</Text>
-                          </View>
+                    <Text style={styles.subHeader}>Logframe</Text>
+                    <View style={styles.logframeTable}>
+                        <View style={styles.logframeHeader}>
+                            <View style={styles.tableRow}>
+                                <View
+                                    style={[
+                                        styles.logframeCellColSpan,
+                                        styles.logframeCellHeader,
+                                    ]}
+                                >
+                                    <Text>Results Chain</Text>
+                                </View>
+                                <View style={[styles.logframeCellHeader]}>
+                                    <Text>Indicator</Text>
+                                </View>
+                                <View style={[styles.logframeCellHeader]}>
+                                    <Text>Baseline</Text>
+                                </View>
+                                <View style={[styles.logframeCellHeader]}>
+                                    <Text>Target</Text>
+                                </View>
+                                <View style={[styles.logframeCellHeader]}>
+                                    <Text>Timeline</Text>
+                                </View>
+                                <View style={[styles.logframeCellHeader]}>
+                                    <Text>Assumptions</Text>
+                                </View>
+                            </View>
                         </View>
+                        {logframeData?.goal?.impact && (
+                            <>
+                                <View
+                                    style={[
+                                        styles.logframeRow,
+                                        styles.logframeRowEven,
+                                    ]}
+                                >
+                                    <View style={styles.logframeCell}>
+                                        <Text>Impact</Text>
+                                    </View>
+                                    <View style={styles.logframeCell}>
+                                        <Text>
+                                            {logframeData.goal.impact
+                                                ?.description || "-"}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.logframeCell}>
+                                        <Text>
+                                            {Object.keys(
+                                                logframeData.goal.impact
+                                                    .indicators || {}
+                                            ).map((key: any) => (
+                                                <Text key={key}>{key}:</Text>
+                                            ))}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.logframeCell}>
+                                        <Text>
+                                            {Object.keys(
+                                                logframeData.goal.impact
+                                                    .indicators || {}
+                                            ).map((key: any) => (
+                                                <Text key={key}>
+                                                    {logframeData.goal.impact
+                                                        .indicators[key]
+                                                        .baseline || ""}
+                                                </Text>
+                                            ))}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.logframeCell}>
+                                        <Text>
+                                            {Object.keys(
+                                                logframeData.goal.impact
+                                                    .indicators || {}
+                                            ).map((key: any) => (
+                                                <Text key={key}>
+                                                    {logframeData.goal.impact
+                                                        .indicators[key]
+                                                        .target || "-"}
+                                                </Text>
+                                            ))}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.logframeCell}>
+                                        <Text>
+                                            {logframeData.goal.impact
+                                                ?.timeline || "-"}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.logframeCell}>
+                                        <Text>
+                                            {logframeData.goal.impact
+                                                ?.assumptions || "-"}
+                                        </Text>
+                                    </View>
+                                </View>
 
-                        {activityItem.inputs && (
-                          <View style={[styles.logframeRow, styles.logframeRowEven]}>
-                            <View style={styles.logframeCell}>
-                              <Text>Input</Text>
-                            </View>
-                            <View style={styles.logframeCell}>
-                              <Text>{activityItem.inputs.join(', ')}</Text>
-                            </View>
-                            <View style={styles.logframeCell}>
-                              <Text>(To be determined)</Text>
-                            </View>
-                            <View style={styles.logframeCell}>
-                              <Text>(To be determined)</Text>
-                            </View>
-                            <View style={styles.logframeCell}>
-                              <Text>(To be determined)</Text>
-                            </View>
-                            <View style={styles.logframeCell}>
-                              <Text>-</Text>
-                            </View>
-                            <View style={styles.logframeCell}>
-                              <Text>Funding is secured, and all necessary resources are available</Text>
-                            </View>
-                          </View>
+                                {logframeData.goal.impact.outcomes?.map(
+                                    (outcomeItem: any, outcomeIndex: any) => (
+                                        <React.Fragment key={outcomeIndex}>
+                                            <View
+                                                style={[
+                                                    styles.logframeRow,
+                                                    outcomeIndex % 2 === 0
+                                                        ? styles.logframeRowEven
+                                                        : {},
+                                                ]}
+                                            >
+                                                <View
+                                                    style={styles.logframeCell}
+                                                >
+                                                    <Text>
+                                                        Outcome{" "}
+                                                        {outcomeIndex + 1}
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={styles.logframeCell}
+                                                >
+                                                    <Text>
+                                                        {outcomeItem.description ||
+                                                            "-"}
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={styles.logframeCell}
+                                                >
+                                                    <Text>
+                                                        {outcomeItem.indicator ||
+                                                            "-"}
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={styles.logframeCell}
+                                                >
+                                                    <Text>
+                                                        {outcomeItem.baseline ||
+                                                            "-"}
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={styles.logframeCell}
+                                                >
+                                                    <Text>
+                                                        {outcomeItem.target ||
+                                                            "-"}
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={styles.logframeCell}
+                                                >
+                                                    <Text>
+                                                        {outcomeItem.timeline ||
+                                                            "-"}
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={styles.logframeCell}
+                                                >
+                                                    <Text>
+                                                        {outcomeItem.assumptions ||
+                                                            "-"}
+                                                    </Text>
+                                                </View>
+                                            </View>
+
+                                            {outcomeItem.outputs?.map(
+                                                (
+                                                    outputItem: any,
+                                                    outputIndex: any
+                                                ) => (
+                                                    <React.Fragment
+                                                        key={outputIndex}
+                                                    >
+                                                        <View
+                                                            style={[
+                                                                styles.logframeRow,
+                                                                outputIndex %
+                                                                    2 ===
+                                                                0
+                                                                    ? styles.logframeRowEven
+                                                                    : {},
+                                                            ]}
+                                                        >
+                                                            <View
+                                                                style={
+                                                                    styles.logframeCell
+                                                                }
+                                                            >
+                                                                <Text>
+                                                                    Output{" "}
+                                                                    {outcomeIndex +
+                                                                        1}
+                                                                    .
+                                                                    {outputIndex +
+                                                                        1}
+                                                                </Text>
+                                                            </View>
+                                                            <View
+                                                                style={
+                                                                    styles.logframeCell
+                                                                }
+                                                            >
+                                                                <Text>
+                                                                    {outputItem.description ||
+                                                                        "-"}
+                                                                </Text>
+                                                            </View>
+                                                            <View
+                                                                style={
+                                                                    styles.logframeCell
+                                                                }
+                                                            >
+                                                                <Text>
+                                                                    {outputItem.indicator ||
+                                                                        "-"}
+                                                                </Text>
+                                                            </View>
+                                                            <View
+                                                                style={
+                                                                    styles.logframeCell
+                                                                }
+                                                            >
+                                                                <Text>
+                                                                    {outputItem.baseline ||
+                                                                        "0"}
+                                                                </Text>
+                                                            </View>
+                                                            <View
+                                                                style={
+                                                                    styles.logframeCell
+                                                                }
+                                                            >
+                                                                <Text>
+                                                                    {outputItem.target ||
+                                                                        "-"}
+                                                                </Text>
+                                                            </View>
+                                                            <View
+                                                                style={
+                                                                    styles.logframeCell
+                                                                }
+                                                            >
+                                                                <Text>
+                                                                    {outputItem.timeline ||
+                                                                        "-"}
+                                                                </Text>
+                                                            </View>
+                                                            <View
+                                                                style={
+                                                                    styles.logframeCell
+                                                                }
+                                                            >
+                                                                <Text>
+                                                                    {outputItem.assumptions ||
+                                                                        "-"}
+                                                                </Text>
+                                                            </View>
+                                                        </View>
+
+                                                        {outputItem.activities?.map(
+                                                            (
+                                                                activityItem: any,
+                                                                activityIndex: any
+                                                            ) => (
+                                                                <React.Fragment
+                                                                    key={
+                                                                        activityIndex
+                                                                    }
+                                                                >
+                                                                    <View
+                                                                        style={[
+                                                                            styles.logframeRow,
+                                                                            activityIndex %
+                                                                                2 ===
+                                                                            0
+                                                                                ? styles.logframeRowEven
+                                                                                : {},
+                                                                        ]}
+                                                                    >
+                                                                        <View
+                                                                            style={
+                                                                                styles.logframeCell
+                                                                            }
+                                                                        >
+                                                                            <Text>
+                                                                                Activity{" "}
+                                                                                {outcomeIndex +
+                                                                                    1}
+                                                                                .
+                                                                                {outputIndex +
+                                                                                    1}
+                                                                                .
+                                                                                {activityIndex +
+                                                                                    1}
+                                                                            </Text>
+                                                                        </View>
+                                                                        <View
+                                                                            style={
+                                                                                styles.logframeCell
+                                                                            }
+                                                                        >
+                                                                            <Text>
+                                                                                {activityItem.description ||
+                                                                                    "-"}
+                                                                            </Text>
+                                                                        </View>
+                                                                        <View
+                                                                            style={
+                                                                                styles.logframeCell
+                                                                            }
+                                                                        >
+                                                                            <Text>
+                                                                                {activityItem.indicator ||
+                                                                                    "-"}
+                                                                            </Text>
+                                                                        </View>
+                                                                        <View
+                                                                            style={
+                                                                                styles.logframeCell
+                                                                            }
+                                                                        >
+                                                                            <Text>
+                                                                                {activityItem.baseline ||
+                                                                                    "-"}
+                                                                            </Text>
+                                                                        </View>
+                                                                        <View
+                                                                            style={
+                                                                                styles.logframeCell
+                                                                            }
+                                                                        >
+                                                                            <Text>
+                                                                                {activityItem.target ||
+                                                                                    "-"}
+                                                                            </Text>
+                                                                        </View>
+                                                                        <View
+                                                                            style={
+                                                                                styles.logframeCell
+                                                                            }
+                                                                        >
+                                                                            <Text>
+                                                                                {activityItem.timeline ||
+                                                                                    "-"}
+                                                                            </Text>
+                                                                        </View>
+                                                                        <View
+                                                                            style={
+                                                                                styles.logframeCell
+                                                                            }
+                                                                        >
+                                                                            <Text>
+                                                                                {activityItem.assumptions ||
+                                                                                    "-"}
+                                                                            </Text>
+                                                                        </View>
+                                                                    </View>
+
+                                                                    {activityItem.inputs && (
+                                                                        <View
+                                                                            style={[
+                                                                                styles.logframeRow,
+                                                                                styles.logframeRowEven,
+                                                                            ]}
+                                                                        >
+                                                                            <View
+                                                                                style={
+                                                                                    styles.logframeCell
+                                                                                }
+                                                                            >
+                                                                                <Text>
+                                                                                    Input
+                                                                                </Text>
+                                                                            </View>
+                                                                            <View
+                                                                                style={
+                                                                                    styles.logframeCell
+                                                                                }
+                                                                            >
+                                                                                <Text>
+                                                                                    {activityItem.inputs.join(
+                                                                                        ", "
+                                                                                    )}
+                                                                                </Text>
+                                                                            </View>
+                                                                            <View
+                                                                                style={
+                                                                                    styles.logframeCell
+                                                                                }
+                                                                            >
+                                                                                <Text>
+                                                                                    (To
+                                                                                    be
+                                                                                    determined)
+                                                                                </Text>
+                                                                            </View>
+                                                                            <View
+                                                                                style={
+                                                                                    styles.logframeCell
+                                                                                }
+                                                                            >
+                                                                                <Text>
+                                                                                    (To
+                                                                                    be
+                                                                                    determined)
+                                                                                </Text>
+                                                                            </View>
+                                                                            <View
+                                                                                style={
+                                                                                    styles.logframeCell
+                                                                                }
+                                                                            >
+                                                                                <Text>
+                                                                                    (To
+                                                                                    be
+                                                                                    determined)
+                                                                                </Text>
+                                                                            </View>
+                                                                            <View
+                                                                                style={
+                                                                                    styles.logframeCell
+                                                                                }
+                                                                            >
+                                                                                <Text>
+                                                                                    -
+                                                                                </Text>
+                                                                            </View>
+                                                                            <View
+                                                                                style={
+                                                                                    styles.logframeCell
+                                                                                }
+                                                                            >
+                                                                                <Text>
+                                                                                    Funding
+                                                                                    is
+                                                                                    secured,
+                                                                                    and
+                                                                                    all
+                                                                                    necessary
+                                                                                    resources
+                                                                                    are
+                                                                                    available
+                                                                                </Text>
+                                                                            </View>
+                                                                        </View>
+                                                                    )}
+                                                                </React.Fragment>
+                                                            )
+                                                        )}
+                                                    </React.Fragment>
+                                                )
+                                            )}
+                                        </React.Fragment>
+                                    )
+                                )}
+                            </>
                         )}
-                      </React.Fragment>
-                    ))}
-                  </React.Fragment>
-                ))}
-              </React.Fragment>
-            ))}
-          </>
-        )}
-      </View>
-
+                    </View>
                 </View>
             </Page>
         </Document>

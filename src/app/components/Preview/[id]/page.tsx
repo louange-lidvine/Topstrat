@@ -12,8 +12,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BiArrowBack } from "react-icons/bi";
 
-
-
 function Preview() {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(false);
@@ -25,17 +23,16 @@ function Preview() {
     const [projectData, setProjectData] = useState<any>();
     const [visionId, setVisionId] = useState<string | null>(null);
     const [missionId, setMissionId] = useState<string | null>(null);
-    const [valuesId,setValuesId] = useState<string|null>(null);
+    const [valuesId, setValuesId] = useState<string | null>(null);
 
     const [simpleData, setSimpleData] = useState({
         vision: "",
         mission: "",
-        values:"",
+        values: "",
     });
     const [isEditingSimpleData, setIsEditingSimpleData] = useState(false);
     const [editableSwotData, setEditableSwotData] = useState<any>(null);
     const [promptId, setPromptId] = useState<string | null>(null);
-
 
     useEffect(() => {
         const getProject = async (id: string) => {
@@ -58,6 +55,14 @@ function Preview() {
         setIsLoading(false);
     }, []);
 
+    const renderList = (data: string | undefined) => {
+        if (typeof data !== "string") {
+            return (
+                <ul>
+                    <li>loading</li>
+                </ul>
+            );
+        }
     
 
  const renderList = (data: string | undefined) => {
@@ -66,233 +71,238 @@ function Preview() {
         return <ul><li>loading</li></ul>; 
     }
 
-    return (
-        <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
-            {data
-                .split(/\d+\.\s*/)
-                .filter((item) => item.trim() !== "")
-                .map((item, index) => (
-                    <li
-                        key={index}
-                        style={{
-                            marginBottom: "8px",
-                            fontSize: "16px",
-                            color: "#333",
-                        }}
-                    >
-                        {item.trim()}
-                    </li>
-                ))}
-        </ul>
-    );
-};
-
-
- const fetchData = async () => {
-    try {
-        const token = getCookie("token");
-        setIsLoading(true);
-
-        // Fetching the latest project data
-        const response = await axios.get(
-            `${baseURL}/projects/prompts/latest/${id}`,
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            }
+        return (
+            <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
+                {data
+                    .split(/\d+\.\s*/)
+                    .filter((item) => item.trim() !== "")
+                    .map((item, index) => (
+                        <li
+                            key={index}
+                            style={{
+                                marginBottom: "8px",
+                                fontSize: "16px",
+                                color: "#333",
+                            }}
+                        >
+                            {item.trim()}
+                        </li>
+                    ))}
+            </ul>
         );
+    };
 
-        if (response.data) {
-            console.log(response.data);
+    const fetchData = async () => {
+        try {
+            const token = getCookie("token");
+            setIsLoading(true);
 
-            // Set the fetched content for simpleData and SWOT analysis
-            setSimpleData({
-                vision: response.data.vision.response,
-                mission: response.data.mission.response,
-                values: response.data.values.response,
-            });
+            // Fetching the latest project data
+            const response = await axios.get(
+                `${baseURL}/projects/prompts/latest/${id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
-            // Parse SWOT response and set editable SWOT data
-            setEditableSwotData({
-                strengths: JSON.parse(response.data.swot.response).strengths || [],
-                weaknesses: JSON.parse(response.data.swot.response).weaknesses || [],
-                opportunities: JSON.parse(response.data.swot.response).opportunities || [],
-                threats: JSON.parse(response.data.swot.response).threats || [],
-            });
+            if (response.data) {
+                console.log(response.data);
 
-            // Set individual section IDs
-            setVisionId(response.data.vision._id);
-            setMissionId(response.data.mission._id);
-            setValuesId(response.data.values._id);
+                // Set the fetched content for simpleData and SWOT analysis
+                setSimpleData({
+                    vision: response.data.vision.response,
+                    mission: response.data.mission.response,
+                    values: response.data.values.response,
+                });
 
-            // Store prompt data for later use
-            setPromptData(response.data);
-            setPromptId(response.data.swot._id); // Storing the SWOT ID as the promptId
-        } else {
-            setError("No data received");
+                // Parse SWOT response and set editable SWOT data
+                setEditableSwotData({
+                    strengths:
+                        JSON.parse(response.data.swot.response).strengths || [],
+                    weaknesses:
+                        JSON.parse(response.data.swot.response).weaknesses ||
+                        [],
+                    opportunities:
+                        JSON.parse(response.data.swot.response).opportunities ||
+                        [],
+                    threats:
+                        JSON.parse(response.data.swot.response).threats || [],
+                });
+
+                // Set individual section IDs
+                setVisionId(response.data.vision._id);
+                setMissionId(response.data.mission._id);
+                setValuesId(response.data.values._id);
+
+                // Store prompt data for later use
+                setPromptData(response.data);
+                setPromptId(response.data.swot._id); // Storing the SWOT ID as the promptId
+            } else {
+                setError("No data received");
+            }
+            setIsLoading(false);
+        } catch (error) {
+            setError("Error fetching data");
+            console.error("Error fetching data:", error);
+            setIsLoading(false);
         }
-        setIsLoading(false);
-    } catch (error) {
-        setError("Error fetching data");
-        console.error("Error fetching data:", error);
-        setIsLoading(false);
-    }
-};
+    };
 
-// useEffect for initial fetch
-useEffect(() => {
-    fetchData();
-}, [id]);
+    // useEffect for initial fetch
+    useEffect(() => {
+        fetchData();
+    }, [id]);
 
+    const refetchData = async () => {
+        try {
+            const token = getCookie("token");
+            setIsLoading(true);
 
-   const refetchData = async () => {
-       try {
-           const token = getCookie("token");
-           setIsLoading(true);
+            // Sending request to regenerate the analysis
+            const response = await axios.post(
+                `${baseURL}/projects/projects/generate-analysis/${id}`,
+                { projectId: id },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
-           // Sending request to regenerate the analysis
-           const response = await axios.post(
-               `${baseURL}/projects/projects/generate-analysis/${id}`,
-               { projectId: id },
-               {
-                   headers: {
-                       "Content-Type": "application/json",
-                       Authorization: `Bearer ${token}`,
-                   },
-               }
-           );
+            console.log("API Response:", response.data);
 
-           console.log("API Response:", response.data);
+            if (response.data && response.data.swot?.response) {
+                // Parse the SWOT response and update editable SWOT data
+                const parsedSwotResponse = JSON.parse(
+                    response.data.swot.response
+                );
 
-           if (response.data && response.data.swot?.response) {
-               // Parse the SWOT response and update editable SWOT data
-               const parsedSwotResponse = JSON.parse(
-                   response.data.swot.response
-               );
+                setEditableSwotData({
+                    strengths: parsedSwotResponse.strengths || [],
+                    weaknesses: parsedSwotResponse.weaknesses || [],
+                    opportunities: parsedSwotResponse.opportunities || [],
+                    threats: parsedSwotResponse.threats || [],
+                });
 
-               setEditableSwotData({
-                   strengths: parsedSwotResponse.strengths || [],
-                   weaknesses: parsedSwotResponse.weaknesses || [],
-                   opportunities: parsedSwotResponse.opportunities || [],
-                   threats: parsedSwotResponse.threats || [],
-               });
+                // Update simpleData with the new refetched data
+                setSimpleData({
+                    vision: response.data.vision?.response || "",
+                    mission: response.data.mission?.response || "",
+                    values: response.data.values?.response || "",
+                });
 
-               // Update simpleData with the new refetched data
-               setSimpleData({
-                   vision: response.data.vision?.response || "",
-                   mission: response.data.mission?.response || "",
-                  values:response.data.values?.response || "",
-               });
-
-               // Update individual section IDs in case they change after regeneration
-               setVisionId(response.data.vision._id);
-               setMissionId(response.data.mission._id);
-              setValuesId(response.data.values._id);
-               // Store prompt data after the refetch
-               setPromptData(response.data);
-           } else {
-               setError("No data received");
-           }
-
-           setIsLoading(false);
-       } catch (error) {
-           setError("Error fetching data");
-           console.error("Error fetching data:", error);
-           setIsLoading(false);
-       }
-   };
-
-
-const saveData = async () => {
-    const token = getCookie("token");
-    console.log(simpleData);
-
-    // Validate presence of IDs and data
-    if (!visionId || !missionId || !valuesId) {
-        console.error("One or more required IDs are not available");
-        toast.error("One or more required IDs are missing.");
-        return;
-    }
-    
-    if (!simpleData || (!simpleData.vision && !simpleData.mission && !simpleData.values)) {
-        console.error("No data to save");
-        toast.error("No data to save. Please try again.");
-        return;
-    }
-
-    // Prepare individual payloads for each section
-    const visionPayload = { response: simpleData.vision };
-    const missionPayload = { response: simpleData.mission };
-    const valuesPayload = { response: simpleData.values };
-
-    // Array of API calls with specific IDs
-    const apiCalls = [
-        axios.put(
-            `${baseURL}/projects/prompts/${visionId}`,
-            visionPayload,
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+                // Update individual section IDs in case they change after regeneration
+                setVisionId(response.data.vision._id);
+                setMissionId(response.data.mission._id);
+                setValuesId(response.data.values._id);
+                // Store prompt data after the refetch
+                setPromptData(response.data);
+            } else {
+                setError("No data received");
             }
-        ),
-        axios.put(
-            `${baseURL}/projects/prompts/${missionId}`,
-            missionPayload,
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        ),
-        axios.put(
-            `${baseURL}/projects/prompts/${valuesId}`,
-            valuesPayload,
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        ),
-    ];
 
-    try {
-        await Promise.all(apiCalls);
-        console.log("Response from the API: Data saved successfully!");
+            setIsLoading(false);
+        } catch (error) {
+            setError("Error fetching data");
+            console.error("Error fetching data:", error);
+            setIsLoading(false);
+        }
+    };
 
-        // Refetch the updated data
-        await fetchData();
+    const saveData = async () => {
+        const token = getCookie("token");
+        console.log(simpleData);
 
-        // Optionally update local state if needed
-        setIsEditing(false);
-        setIsEditingSimpleData(false);
-        
-        toast.success("Data saved successfully!");
-    } catch (error: any) {
-        console.error("Error saving data:", error.response ? error.response.data : error.message);
-        toast.error("Failed to save data. Please try again.");
-    }
-};
+        // Validate presence of IDs and data
+        if (!visionId || !missionId || !valuesId) {
+            console.error("One or more required IDs are not available");
+            toast.error("One or more required IDs are missing.");
+            return;
+        }
 
+        if (
+            !simpleData ||
+            (!simpleData.vision && !simpleData.mission && !simpleData.values)
+        ) {
+            console.error("No data to save");
+            toast.error("No data to save. Please try again.");
+            return;
+        }
 
+        // Prepare individual payloads for each section
+        const visionPayload = { response: simpleData.vision };
+        const missionPayload = { response: simpleData.mission };
+        const valuesPayload = { response: simpleData.values };
 
+        // Array of API calls with specific IDs
+        const apiCalls = [
+            axios.put(
+                `${baseURL}/projects/prompts/${visionId}`,
+                visionPayload,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            ),
+            axios.put(
+                `${baseURL}/projects/prompts/${missionId}`,
+                missionPayload,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            ),
+            axios.put(
+                `${baseURL}/projects/prompts/${valuesId}`,
+                valuesPayload,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            ),
+        ];
+
+        try {
+            await Promise.all(apiCalls);
+            console.log("Response from the API: Data saved successfully!");
+
+            // Refetch the updated data
+            await fetchData();
+
+            // Optionally update local state if needed
+            setIsEditing(false);
+            setIsEditingSimpleData(false);
+
+            toast.success("Data saved successfully!");
+        } catch (error: any) {
+            console.error(
+                "Error saving data:",
+                error.response ? error.response.data : error.message
+            );
+            toast.error("Failed to save data. Please try again.");
+        }
+    };
 
     return (
         <div className="border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium">
-              <div className="justify-end flex gap-2 cursor-pointer"  
-                onClick={() =>
-                                router.push('/')
-                            }>
-                                <BiArrowBack className="mt-1"/>
-                                <p className="">Return to home</p>
-                                </div>
+            <div
+                className="justify-end flex gap-2 cursor-pointer"
+                onClick={() => router.push("/")}
+            >
+                <BiArrowBack className="mt-1" />
+                <p className="">Return to home</p>
+            </div>
             <div className="flex flex-col justify-center items-center gap-4 text-xl">
-              
                 <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
                     {projectData && projectData.name}
                 </div>
@@ -338,12 +348,12 @@ const saveData = async () => {
                                         }}
                                         value={simpleData.vision}
                                         onChange={(e) => {
-    setSimpleData((prev) => ({
-        ...prev,
-        vision: e.target.value,
-    }));
-    setIsEditing(true);  // Enable Save button after editing
-}}
+                                            setSimpleData((prev) => ({
+                                                ...prev,
+                                                vision: e.target.value,
+                                            }));
+                                            setIsEditing(true); // Enable Save button after editing
+                                        }}
                                     />
                                 ) : (
                                     <p
@@ -378,13 +388,13 @@ const saveData = async () => {
                                             width: "950px",
                                         }}
                                         value={simpleData.mission}
-                                    onChange={(e) => {
-    setSimpleData((prev) => ({
-        ...prev,
-        mission: e.target.value,
-    }));
-    setIsEditing(true);  
-}}
+                                        onChange={(e) => {
+                                            setSimpleData((prev) => ({
+                                                ...prev,
+                                                mission: e.target.value,
+                                            }));
+                                            setIsEditing(true);
+                                        }}
                                     />
                                 ) : (
                                     <p
@@ -400,50 +410,53 @@ const saveData = async () => {
                             </div>
                         )}
                     </div>
-                        <div className="flex flex-col gap-3">
-                {isLoading ? (
-                  <div className="w-full">
-                    <Skeleton width={80} />
-                    <Skeleton height={80} />
-                  </div>
-                ) : (
-               <div>
-            <h3 className="text-xl font-bold">
-                <p
-                    style={{
-                        fontSize: "20px",
-                        fontWeight: "bold",
-                        color: "#0B6C79",
-                    }}
-                >
-                    Values
-                </p>
-            </h3>
-            {isEditing ? (
-                <textarea
-                    className="bg-transparent h-fit"
-                    style={{
-                        height: "250px",
-                        width: "950px",
-                    }}
-                    value={simpleData.values}
-                    onChange={(e) => {
-                        setSimpleData((prev) => ({
-                            ...prev,
-                            values: e.target.value,
-                        }));
-                        setIsEditing(true); 
-                    }}
-                />
-            ) : (
-                <ul onDoubleClick={() => setIsEditing(true)}>
-                {renderList(promptData?.values.response)}
-                </ul>
-            )}
-        </div>
-                )}
-              </div>
-                  
+                    <div className="flex flex-col gap-3">
+                        {isLoading ? (
+                            <div className="w-full">
+                                <Skeleton width={80} />
+                                <Skeleton height={80} />
+                            </div>
+                        ) : (
+                            <div>
+                                <h3 className="text-xl font-bold">
+                                    <p
+                                        style={{
+                                            fontSize: "20px",
+                                            fontWeight: "bold",
+                                            color: "#0B6C79",
+                                        }}
+                                    >
+                                        Values
+                                    </p>
+                                </h3>
+                                {isEditing ? (
+                                    <textarea
+                                        className="bg-transparent h-fit"
+                                        style={{
+                                            height: "250px",
+                                            width: "950px",
+                                        }}
+                                        value={simpleData.values}
+                                        onChange={(e) => {
+                                            setSimpleData((prev) => ({
+                                                ...prev,
+                                                values: e.target.value,
+                                            }));
+                                            setIsEditing(true);
+                                        }}
+                                    />
+                                ) : (
+                                    <ul
+                                        onDoubleClick={() => setIsEditing(true)}
+                                    >
+                                        {renderList(
+                                            promptData?.values.response
+                                        )}
+                                    </ul>
+                                )}
+                            </div>
+                        )}
+                    </div>
 
                     <div className="flex justify-center my-5 gap-8">
                              <div

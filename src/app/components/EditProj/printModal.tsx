@@ -1,0 +1,155 @@
+import React, { useState } from "react";
+import ReactModal from "react-modal";
+import jsPDF from "jspdf";
+import html2pdf from "html2pdf.js";
+import Finals from "../Finals"; // Assuming Finals is your final page component
+
+interface PrintModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    projectData: any; // Adjust according to your actual data structure
+    promptData: any;
+    pestleData: any;
+    id: string;
+    logframeData: any;
+}
+
+const PrintModal: React.FC<PrintModalProps> = ({
+    isOpen,
+    id,
+    onClose,
+    projectData,
+    promptData,
+    pestleData,
+    logframeData,
+}) => {
+    const [numberOfPages, setNumberOfPages] = useState(1);
+    const [selectedPrinter, setSelectedPrinter] = useState("");
+
+    const printers = ["Printer1", "Printer2", "Printer3"]; // Add more if needed
+
+    const handlePrint = async () => {
+        if (!selectedPrinter) {
+            alert("Please select a printer.");
+            return;
+        }
+
+        const element = document.getElementById("pdf-content_" + id);
+        const scaleValue = 2;
+        const marginValue = 1;
+
+        await html2pdf()
+            .from(element)
+            .set({
+                margin: marginValue,
+                filename: `generated_${selectedPrinter}.pdf`,
+                html2canvas: { scale: scaleValue },
+                jsPDF: { orientation: "portrait" },
+            })
+            .toPdf()
+            .get("pdf")
+            .then(function (pdf: {
+                internal: { getNumberOfPages: () => any };
+                deletePage: (arg0: any) => void;
+                addPage: () => void;
+            }) {
+                const totalPages = pdf.internal.getNumberOfPages();
+                console.log(`Total pages before adjustment: ${totalPages}`);
+
+                // Adjust the number of pages
+                if (totalPages > numberOfPages) {
+                    for (let i = totalPages; i > numberOfPages; i--) {
+                        pdf.deletePage(i);
+                    }
+                } else if (totalPages < numberOfPages) {
+                    for (let i = totalPages; i < numberOfPages; i++) {
+                        pdf.addPage(); // Add blank pages if fewer than requested
+                    }
+                }
+
+                console.log(
+                    `Total pages after adjustment: ${pdf.internal.getNumberOfPages()}`
+                );
+            })
+            .save();
+
+        console.log(`Selected Printer: ${selectedPrinter}`);
+        // Here, you'd send the `selectedPrinter` to your server or print service for actual use.
+    };
+
+    return (
+        <ReactModal
+            isOpen={isOpen}
+            onRequestClose={onClose}
+            className="lg:w-[80%] w-[90%] h-[90%] max-w-5xl mx-auto p-6 bg-white shadow-xl rounded-md flex"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+        >
+            <div className="flex flex-col w-full h-full">
+                <h2 className="text-2xl font-semibold text-center mb-4">
+                    Print Options
+                </h2>
+                <div className="flex h-full">
+                    {/* Left Side: Final Page */}
+                    <div className="flex-1 overflow-y-auto p-4 border-r border-gray-300">
+                        <Finals id={id} />
+                    </div>
+
+                    {/* Right Side: Printer Selection and Options */}
+                    <div className="w-1/3 p-4">
+                        <div className="mb-4">
+                            <label className="block mb-2 font-semibold">
+                                Select Printer:
+                            </label>
+                            <select
+                                value={selectedPrinter}
+                                onChange={(e) =>
+                                    setSelectedPrinter(e.target.value)
+                                }
+                                className="border rounded-md p-2 w-full"
+                            >
+                                <option value="">Select Printer</option>
+                                {printers.map((printer, index) => (
+                                    <option key={index} value={printer}>
+                                        {printer}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block mb-2 font-semibold">
+                                Number of Pages:
+                            </label>
+                            <input
+                                type="number"
+                                value={numberOfPages}
+                                onChange={(e) =>
+                                    setNumberOfPages(Number(e.target.value))
+                                }
+                                min={1}
+                                className="border rounded-md p-2 w-full"
+                            />
+                        </div>
+
+                        <div className="flex justify-end mt-auto">
+                            <button
+                                onClick={handlePrint}
+                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                            >
+                                Print
+                            </button>
+                            <button
+                                onClick={onClose}
+                                className="bg-gray-300 text-black px-4 py-2 rounded ml-2"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ReactModal>
+    );
+};
+
+export default PrintModal;

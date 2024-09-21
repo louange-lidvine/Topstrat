@@ -19,3 +19,13 @@ textarea {
 .table-container {
   overflow-x: auto; /* Allow horizontal scrolling for large tables */
 }
+
+@media print {
+
+            .no-print {
+                display: none;
+            }
+ }
+
+ 
+
