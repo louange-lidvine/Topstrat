@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import ReactModal from "react-modal";
 import jsPDF from "jspdf";
 import html2pdf from "html2pdf.js";
-import Finals from "../Finals"; // Assuming Finals is your final page component
+import Finals from "../Finals";
 
 interface PrintModalProps {
     isOpen: boolean;
     onClose: () => void;
-    projectData: any; // Adjust according to your actual data structure
+    projectData: any; 
     promptData: any;
     pestleData: any;
     id: string;
@@ -27,7 +27,7 @@ const PrintModal: React.FC<PrintModalProps> = ({
     const [selectedPrinter, setSelectedPrinter] = useState("");
     const [layout, setLayout] = useState("portrait"); // Default layout
 
-    const printers = ["Printer1", "Printer2", "Printer3"]; // Add more if needed
+    const printers = ["Printer1", "Printer2", "Printer3"];
 
     const handlePrint = async () => {
         if (!selectedPrinter) {
@@ -64,14 +64,14 @@ const PrintModal: React.FC<PrintModalProps> = ({
                 const totalPages = pdf.internal.getNumberOfPages();
                 console.log(`Total pages before adjustment: ${totalPages}`);
 
-                // Adjust the number of pages
+            
                 if (totalPages > numberOfPages) {
                     for (let i = totalPages; i > numberOfPages; i--) {
                         pdf.deletePage(i);
                     }
                 } else if (totalPages < numberOfPages) {
                     for (let i = totalPages; i < numberOfPages; i++) {
-                        pdf.addPage(); // Add blank pages if fewer than requested
+                        pdf.addPage();
                     }
                 }
 
@@ -96,13 +96,12 @@ const PrintModal: React.FC<PrintModalProps> = ({
                 <h2 className="text-2xl font-semibold text-center mb-4">
                     Print Options
                 </h2>
-                <div className="flex h-full">
-                    {/* Left Side: Final Page */}
-                    <div className="flex-1 overflow-y-auto p-4 border-r border-gray-300">
+                <div className="flex h-full ">
+                  
+                    <div className=" h-full flex-1 overflow-y-auto p-4 border-r border-gray-300">
                         <Finals id={id} />
                     </div>
 
-                    {/* Right Side: Printer Selection and Options */}
                     <div className="w-1/3 p-4">
                         <div className="mb-4">
                             <label className="block mb-2 font-semibold">

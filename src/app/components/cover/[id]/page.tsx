@@ -11,6 +11,8 @@ import Skeleton from "react-loading-skeleton";
 
 function Page() {
   const router = useRouter();
+    const [userData, setUserData] = useState<any>();
+
   const {id} = useParams()
   const [projectData, setProjectData] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
@@ -35,29 +37,52 @@ function Page() {
         getProject(id as string);
         console.log("projects");
         setIsLoading(false);
+        fetchUserData();
     }, []);
 
+      const fetchUserData = async () => {
+      const userId = localStorage.getItem("userId");
+      const token = getCookie("token");
+      try {
+        const response = await fetch(`${baseURL}/users/${userId}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data);
+        } else {
+          console.error("Failed to fetch user data");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
   return (
-<div className="relative w-screen bg-white lg:max-w-6xl mx-auto my-6 lg:rounded-lg shadow-lg h-screen overflow-hidden ">
+<div className="relative w-full border border-blue-default bg-white lg:max-w-6xl my-6 lg:rounded-lg shadow-lg h-screen overflow-hidden ">
       <div className="relative w-full overflow-hidden">
         <Image
           src={cover}
           alt="Cover page image"
-          className="w-full h-screen opacity-30  object-cover"
+          className="w-full h-screen  object-cover"
         />
       </div>
 
       <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between p-8 text-white">
         <div className="flex justify-between">
       <div className="flex flex-col items-start">
-    <div className="bg-white p-2 rounded-md">
-            <Image
-              src={logo}
-              alt="Cooky Logo"
-              width={80}
-              height={80}
-            />
-          </div>
+   <div className="bg-white p-2 rounded-md">
+              <Image
+                src={projectData?.logo ? projectData.logo : logo}
+                alt="organization logo"
+                width={80}
+                height={80}
+                className="object-contain"
+              />
+            </div>
           <h2 className="text-xl font-bold mt-2 text-black">   {projectData && projectData.name}</h2>
           </div>
       
@@ -95,7 +120,7 @@ function Page() {
 </h3>
           <p className="text-sm text-black mt-2">
             +250-792-531-980<br />
-            E-mail: cooky@gmail.com<br />
+            {userData?.email}<br />
             www.cooky.com<br />
             BP 3451 KIGALI-RWANDA
           </p>
