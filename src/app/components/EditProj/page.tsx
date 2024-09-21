@@ -8,7 +8,6 @@ import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import ExportPage from "../Export/page"; // PDF content generation component
 import PrintModal from "./printModal"; 
 import { resolve } from "path";
 

@@ -8,19 +8,21 @@ import SwotSkeleton from "../components/skeletons/SwotSkeleton";
 import LogFrameSkeleton from "../components/skeletons/LogFrameSkeleton";
 import PestleSkeleton from "../components/skeletons/PestleSkeleton";
 import Skeleton from "react-loading-skeleton";
-import ExportPage from "../components//Export/page";
 import { baseURL } from "@/app/constants";
 import ReactModal from "react-modal";
 import { useRouter } from "next/navigation";
 import { BiArrowBack } from "react-icons/bi";
 
 import Prompt from "./prompt/page";
+import PrintModal from "./EditProj/printModal";
 interface FinalsProps {
     id: string;
 }
 
 function Finals({ id }: FinalsProps) {
     const router = useRouter();
+      const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
     const [promptData, setPromptData] = useState<any>();
@@ -1249,29 +1251,14 @@ function Finals({ id }: FinalsProps) {
                         )}
                     </div>
                     <div className="flex justify-center gap-8 my-5">
-                        <button className="bg-blue-default text-white font-bold rounded-md py-3 px-6">
-                            {typeof window !== "undefined" && (
-                                <PDFDownloadLink
-                                    document={(() => {
-                                        return (
-                                            <ExportPage
-                                                projectData={projectData}
-                                                promptData={promptData}
-                                                pestleData={pestleData}
-                                                logframeData={logframeData}
-                                                isLoading={false}
-                                            />
-                                        );
-                                    })()}
-                                    fileName={`${projectData?.name}.pdf`}
-                                >
-                                    {({ loading }) =>
-                                        loading
-                                            ? "Loading document..."
-                                            : "Download PDF"
-                                    }
-                                </PDFDownloadLink>
-                            )}
+                               <button
+                            onClick={()=>router.push('/components/Landingpage')}
+                            className="bg-blue-400 text-white font-bold rounded-md py-3 px-6"
+                        >
+                            Save and Exit
+                        </button>
+                        <button className="bg-blue-default text-white font-bold rounded-md py-3 px-6" onClick={()=>{setIsPrintModalOpen(true)}}>
+                        Download
                         </button>
 
                         <button
@@ -1359,6 +1346,15 @@ function Finals({ id }: FinalsProps) {
                     </button>
                 </form>
             </ReactModal>
+              <PrintModal
+          isOpen={isPrintModalOpen}
+               id={id}
+                onClose={() => setIsPrintModalOpen(false)}
+                projectData={projectData}
+                promptData={promptData}
+                pestleData={pestleData}
+                logframeData={logframeData}
+            />
         </div>
     );
 }
