@@ -15,10 +15,6 @@ import { useRouter } from "next/navigation";
 import { BiArrowBack } from "react-icons/bi";
 
 import Prompt from "./prompt/page";
-import PrintModal from "./EditProj/printModal";
-import cover from '../../../public/assets/cover3.svg'
-import Image from "next/image";
-import logo from '../../../public/assets/logo.png'
 interface FinalsProps {
     id: string;
 }
@@ -28,8 +24,6 @@ function Finals({ id }: FinalsProps) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
     const [promptData, setPromptData] = useState<any>();
-        const [userData, setUserData] = useState<any>();
-
     const [projectData, setProjectData] = useState<any>();
     const [pestleData, setPestleData] = useState<any>();
     const [logframeData, setLogframeData] = useState<any>([]);
@@ -1255,10 +1249,29 @@ function Finals({ id }: FinalsProps) {
                         )}
                     </div>
                     <div className="flex justify-center gap-8 my-5">
-                        <button className="bg-blue-default text-white font-bold rounded-md py-3 px-6"                    
-                         onClick={()=>{setIsPrintModalOpen(true)}}
->
-                        Download
+                        <button className="bg-blue-default text-white font-bold rounded-md py-3 px-6">
+                            {typeof window !== "undefined" && (
+                                <PDFDownloadLink
+                                    document={(() => {
+                                        return (
+                                            <ExportPage
+                                                projectData={projectData}
+                                                promptData={promptData}
+                                                pestleData={pestleData}
+                                                logframeData={logframeData}
+                                                isLoading={false}
+                                            />
+                                        );
+                                    })()}
+                                    fileName={`${projectData?.name}.pdf`}
+                                >
+                                    {({ loading }) =>
+                                        loading
+                                            ? "Loading document..."
+                                            : "Download PDF"
+                                    }
+                                </PDFDownloadLink>
+                            )}
                         </button>
 
                         <button
@@ -1282,15 +1295,6 @@ function Finals({ id }: FinalsProps) {
     return (
         <div>
             <MyDocument />
-            <PrintModal
-              isOpen={isPrintModalOpen}
-                 id={id}
-                onClose={() => setIsPrintModalOpen(false)}
-                projectData={projectData}
-                promptData={promptData}
-                pestleData={pestleData}
-                logframeData={logframeData}
-            />
             <ReactModal
                 isOpen={isModalOpen}
                 onRequestClose={handleCloseModal}
