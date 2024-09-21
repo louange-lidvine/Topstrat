@@ -10,7 +10,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BiArrowBack } from "react-icons/bi";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import ExportPage from "../../Export/page";
 import '../../../globals.css'
 
 function Preview() {
