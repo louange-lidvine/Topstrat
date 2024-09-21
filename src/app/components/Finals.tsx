@@ -14,6 +14,10 @@ import ReactModal from "react-modal";
 import { useRouter } from "next/navigation";
 import { BiArrowBack } from "react-icons/bi";
 import Prompt from "./prompt/page";
+import PrintModal from "./EditProj/printModal";
+import cover from '../../../public/assets/cover3.svg'
+import Image from "next/image";
+import logo from '../../../public/assets/logo.png'
 interface FinalsProps {
     id: string;
 }
@@ -23,11 +27,15 @@ function Finals({ id }: FinalsProps) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
     const [promptData, setPromptData] = useState<any>();
+        const [userData, setUserData] = useState<any>();
+
     const [projectData, setProjectData] = useState<any>();
     const [pestleData, setPestleData] = useState<any>();
     const [logframeData, setLogframeData] = useState<any>([]);
     const [Data, setData] = useState<any>([]);
   const [error, setError] = useState<string | null>(null);
+    const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+
 
 
     useEffect(() => {
@@ -85,6 +93,28 @@ function Finals({ id }: FinalsProps) {
 
         fetchData();
     }, [id]);
+
+         const fetchUserData = async () => {
+      const userId = localStorage.getItem("userId");
+      const token = getCookie("token");
+      try {
+        const response = await fetch(`${baseURL}/users/${userId}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data);
+        } else {
+          console.error("Failed to fetch user data");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
 
     const regenerateData = async () => {
         try {
@@ -178,8 +208,73 @@ function Finals({ id }: FinalsProps) {
     };
 
     const MyDocument = () => (
-        <Document pageMode="fullScreen" >
-            <Page size="A4" style={{ margin: "auto" }}>
+        <Document pageMode="fullScreen"  >
+            <Page size="A4" orientation={"portrait"}  style={{ margin: "auto" }}>
+                {/* <div className="relative w-full border border-blue-default bg-white lg:max-w-6xl my-6 lg:rounded-lg shadow-lg h-screen overflow-hidden ">
+      <div className="relative w-full overflow-hidden">
+        <Image
+          src={cover}
+          alt="Cover page image"
+          className="w-full h-screen  object-cover"
+        />
+      </div>
+
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between p-8 text-white">
+        <div className="flex justify-between">
+      <div className="flex flex-col items-start">
+   <div className="bg-white p-2 rounded-md">
+              <Image
+                src={projectData?.logo ? projectData.logo : logo}
+                alt="organization logo"
+                width={80}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+          <h2 className="text-xl font-bold mt-2 text-black">   {projectData && projectData.name}</h2>
+          </div>
+      
+          <h1 onClick={()=> router.push(`/components/Preview/${id}`)} className="text-black cursor-pointer">Continue to project</h1>
+        </div>
+
+  
+        <div className="flex flex-col items-start mt-20">
+          <h1 className="text-5xl font-bold text-black">STRATEGIC PLAN</h1>
+          <h2 className="text-2xl font-semibold text-black  mt-2">2024-2028</h2>
+        </div>
+
+        <div className="flex flex-col items-start mt-8 text-black">
+           <div className="flex flex-col gap-4">
+                        {isLoading ? (
+                            <div className="w-full">
+                                <Skeleton width={100} />
+                                <Skeleton />
+                            </div>
+                        ) : (
+                            <div className="w-[50%]">
+                                <p>{projectData && projectData.description}</p>
+                            </div>
+                        )}
+                    </div>
+        </div>
+
+        <div className="text-yellow-500 mt-8">
+<h3 className="text-xl font-semibold">
+  {projectData && new Date(projectData.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long', 
+    day: 'numeric'
+  })}
+</h3>
+          <p className="text-sm text-black mt-2">
+            +250-792-531-980<br />
+            {userData?.email}<br />
+            www.cooky.com<br />
+            BP 3451 KIGALI-RWANDA
+          </p>
+        </div>
+      </div>
+    </div> */}
           <div className="border  border-blue-default my-4 rounded-md mx-2 p-4 font-medium" id={`pdf-content_${id}`}>
                     <div
                         className="justify-end flex gap-2 cursor-pointer"
@@ -1150,29 +1245,10 @@ function Finals({ id }: FinalsProps) {
                         )}
                     </div>
                     <div className="flex justify-center gap-8 my-5">
-                        <button className="bg-blue-default text-white font-bold rounded-md py-3 px-6">
-                            {typeof window !== "undefined" && (
-                                <PDFDownloadLink
-                                    document={(() => {
-                                        return (
-                                            <ExportPage
-                                                projectData={projectData}
-                                                promptData={promptData}
-                                                pestleData={pestleData}
-                                                logframeData={logframeData}
-                                                isLoading={false}
-                                            />
-                                        );
-                                    })()}
-                                    fileName={`${projectData?.name}.pdf`}
-                                >
-                                    {({ loading }) =>
-                                        loading
-                                            ? "Loading document..."
-                                            : "Download PDF"
-                                    }
-                                </PDFDownloadLink>
-                            )}
+                        <button className="bg-blue-default text-white font-bold rounded-md py-3 px-6"                    
+                         onClick={()=>{setIsPrintModalOpen(true)}}
+>
+                        Download
                         </button>
 
                         <button
@@ -1196,6 +1272,15 @@ function Finals({ id }: FinalsProps) {
     return (
         <div>
             <MyDocument />
+            <PrintModal
+              isOpen={isPrintModalOpen}
+                 id={id}
+                onClose={() => setIsPrintModalOpen(false)}
+                projectData={projectData}
+                promptData={promptData}
+                pestleData={pestleData}
+                logframeData={logframeData}
+            />
             <ReactModal
                 isOpen={isModalOpen}
                 onRequestClose={handleCloseModal}

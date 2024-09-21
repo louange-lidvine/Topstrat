@@ -136,7 +136,7 @@ const AllProjectsPage: React.FC = () => {
     }, []);
 
     return (
-        <div className="border border-blue-default min-h-screen mx-auto my-2 rounded-md flex flex-col items-center py-8 px-4 bg-gray-50">
+        <div className="border border-blue-default min-h-screen mx-auto my-2 rounded-md flex flex-col items-center py-8 px-4 ">
          
             <div className="w-full max-w-4xl flex justify-end items-center mb-6">
           
@@ -175,10 +175,11 @@ const AllProjectsPage: React.FC = () => {
                 ) : projects.length > 0 ? (
                     <ul className="space-y-4">
                         {projects.map((project: any, index: any) => (
-                            <li key={project._id} className=" bg-blue-default rounded-md ">
+                            <li key={project._id} className="bg-blue-default text-white rounded-md">
                                 <EditProj 
                                     project={project}
                                     selected={id === project._id}
+                                    selectedId={project._id}
                                     remove={() => {
                                         setProjects(projects.filter((proj: any) => proj._id !== project._id));
                                         fetchProjects();

@@ -278,6 +278,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                             key={index}
                                             project={project}
                                             selected={id === project._id}
+                                            selectedId={project._id}
                                             remove={() => {
                                                 setProjects(projects.filter((proj: any) => proj._id !== project._id));
                                                 fetchProjects();

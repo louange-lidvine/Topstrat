@@ -74,14 +74,15 @@ function Page() {
       <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between p-8 text-white">
         <div className="flex justify-between">
       <div className="flex flex-col items-start">
-    <div className="bg-white p-2 rounded-md">
-            <Image
-              src={logo}
-              alt="organisation logo"
-              width={80}
-              height={80}
-            />
-          </div>
+   <div className="bg-white p-2 rounded-md">
+              <Image
+                src={projectData?.logo ? projectData.logo : logo}
+                alt="organization logo"
+                width={80}
+                height={80}
+                className="object-contain"
+              />
+            </div>
           <h2 className="text-xl font-bold mt-2 text-black">   {projectData && projectData.name}</h2>
           </div>
       

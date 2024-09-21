@@ -28,7 +28,7 @@ export default function ProjectCard({
     remove: () => void;
 }) {
     const { id } = useParams();
-    const resolvedId = Array.isArray(id) ? id[0] : id; // Ensure `id` is a string
+    const resolvedId = Array.isArray(id) ? id[0] : id; 
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [isHover, setIsHover] = useState(false);
     const [projectData, setProjectData] = useState<any>();
@@ -40,7 +40,7 @@ export default function ProjectCard({
  
   const [isLoading, setIsLoading] = useState(false);
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
-    const navigate = useRouter();
+  const navigate = useRouter();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -153,16 +153,16 @@ export default function ProjectCard({
     };
 
     return (
-        <div
-            className={`relative hover:bg-white hover:bg-opacity-20 px-10 py-3 mt-3 rounded-sm  ${
-                selected && "bg-transparent"
-            }`}
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => {
-                setIsHover(false);
-                setIsPopoverOpen(false);
-            }}
-        >
+      <div
+  className={`relative group px-10 py-3 mt-3 rounded-sm transition-all duration-200 ${
+    selected ? "bg-white bg-opacity-20" : "hover:bg-white hover:bg-opacity-20"
+  }`}
+  onMouseEnter={() => setIsHover(true)}
+  onMouseLeave={() => {
+    setIsHover(false);
+    setIsPopoverOpen(false);
+  }}
+>
             <div
                 className="w-auto"
                 onClick={() =>

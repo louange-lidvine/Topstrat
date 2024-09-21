@@ -63,13 +63,6 @@ function Preview() {
                 </ul>
             );
         }
-    
-
- const renderList = (data: string | undefined) => {
-    
-    if (typeof data !== "string") {
-        return <ul><li>loading</li></ul>; 
-    }
 
         return (
             <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
