@@ -1,20 +1,15 @@
+"use client"
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import { PDFDownloadLink, Document, Page, Text } from "@react-pdf/renderer";
-import Loader from "@/app/shared/loader/page";
-import { useParams } from "next/navigation";
-import SwotSkeleton from "../components/skeletons/SwotSkeleton";
-import LogFrameSkeleton from "../components/skeletons/LogFrameSkeleton";
-import PestleSkeleton from "../components/skeletons/PestleSkeleton";
+import { Document, Page } from "@react-pdf/renderer";
+import SwotSkeleton from "./skeletons/SwotSkeleton";
+import PestleSkeleton from "./skeletons/PestleSkeleton";
+import LogFrameSkeleton from "./skeletons/LogFrameSkeleton";
 import Skeleton from "react-loading-skeleton";
 import { baseURL } from "@/app/constants";
-import ReactModal from "react-modal";
 import { useRouter } from "next/navigation";
 import { BiArrowBack } from "react-icons/bi";
-
-import Prompt from "./prompt/page";
-import PrintModal from "./EditProj/printModal";
 interface FinalsProps {
     id: string;
 }
@@ -161,56 +156,7 @@ function Finals({ id }: FinalsProps) {
       }, [id]);
 
 
-    const regenerateData = async () => {
-        try {
-            const token = getCookie("token");
-            setIsLoading(true);
-
-            const promptResponse = await axios.get(
-                `${baseURL}/projects/projects/generate-analysis/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            setPromptData(promptResponse.data);
-
-            const projectResponse = await axios.get(
-                `${baseURL}/projects/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            setProjectData(projectResponse.data);
-
-            const response = await axios.post(
-                `${baseURL}/projects/projects/generate-analysis/${id}`,
-                { projectId: id },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            setPestleData(JSON.parse(response.data.pestle.response));
-
-            const logframeData = JSON.parse(response.data.logframe.response);
-            setLogframeData(logframeData);
-            setData(logframeData);
-            return logframeData;
-        } catch (error) {
-            setError("Error fetching data");
-            console.error("Error fetching data:", error);
-            setIsLoading(false);
-        }
-    };
+ 
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
@@ -259,7 +205,7 @@ function Finals({ id }: FinalsProps) {
         <Document pageMode="fullScreen">
             <Page size="A4" style={{ margin: "auto" }}>
                 <div
-                    className={`border  border-blue-default my-4 rounded-md mx-2 p-4 font-medium ${
+                    className={`my-4 rounded-md mx-2 p-4 font-medium ${
                 hasWatermark ? "watermarked" : "" }`}
                     id={`pdf-content_${id}`}  
                 >
@@ -777,7 +723,7 @@ function Finals({ id }: FinalsProps) {
                             </div>
                         )}
                     </div>
-                    <div className="flex flex-col gap-3">
+                        <div className="flex flex-col gap-3">
                         {isLoading ? (
                             <div className="w-full">
                                 <Skeleton width={80} />
@@ -797,6 +743,10 @@ function Finals({ id }: FinalsProps) {
                                         Objectives
                                     </p>{" "}
                                 </h3>
+
+                                <h1 className="font-bold my-2">General objective</h1>
+                                <p>{logframeData?.goal?.description}</p>
+                                <h1 className="font-bold my-2">Specific objectives</h1>
                                 {promptData && promptData.objectives && (
                                     <ul>
                                         {renderList(
@@ -1250,30 +1200,7 @@ function Finals({ id }: FinalsProps) {
                             </div>
                         )}
                     </div>
-                    <div className="flex justify-center gap-8 my-5">
-                               <button
-                            onClick={()=>router.push('/components/Landingpage')}
-                            className="bg-blue-400 text-white font-bold rounded-md py-3 px-6"
-                        >
-                            Save and Exit
-                        </button>
-                        <button className="bg-blue-default text-white font-bold rounded-md py-3 px-6" onClick={()=>{setIsPrintModalOpen(true)}}>
-                        Download
-                        </button>
-
-                        <button
-                            onClick={regenerateData}
-                            className="bg-orange-default text-white font-bold rounded-md py-3 px-6"
-                        >
-                            Regenerate
-                        </button>
-                        <button
-                            onClick={handleOpenModal}
-                            className="bg-green-500 text-white font-bold rounded-md py-3 px-6"
-                        >
-                            Edit
-                        </button>
-                    </div>
+                   
                 </div>
             </Page>
         </Document>
@@ -1282,79 +1209,6 @@ function Finals({ id }: FinalsProps) {
     return (
         <div>
             <MyDocument />
-            <ReactModal
-                isOpen={isModalOpen}
-                onRequestClose={handleCloseModal}
-                className="lg:w-[600px] w-[90%] max-w-lg mx-auto p-8 mt-20 bg-white shadow-2xl rounded-lg"
-                overlayClassName="fixed  inset-0 bg-black bg-opacity-50 flex justify-center items-start"
-            >
-                <form className="flex flex-col justify-center items-center gap-6">
-                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-                        Choose section to edit
-                    </h2>
-                    <div className="grid lg:grid-cols-2 gap-4">
-                        <div
-                            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                            onClick={() =>
-                                router.push(`/components/Preview/${id}`)
-                            }
-                        >
-                            Section A: Mission, Vision, Values
-                        </div>
-
-                        <div
-                            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                            onClick={() =>
-                                router.push(`/components/Preview1/${id}`)
-                            }
-                        >
-                            Section B:SWOT Analysis
-                        </div>
-
-                        <div
-                            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                            onClick={() =>
-                                router.push(`/components/Preview2/${id}`)
-                            }
-                        >
-                            Section C: PESTLE Analysis
-                        </div>
-                        <div
-                            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                            onClick={() =>
-                                router.push(`/components/Preview3/${id}`)
-                            }
-                        >
-                            Section D: Objectives and strategies
-                        </div>
-
-                        <div
-                            className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                            onClick={() =>
-                                router.push(`/components/Preview4/${id}`)
-                            }
-                        >
-                            Section D: Logframe Analysis
-                        </div>
-                    </div>
-                    <button
-                        type="button"
-                        onClick={handleCloseModal}
-                        className="bg-blue-default text-white py-2 px-8 rounded-md  transition-colors duration-200"
-                    >
-                        Cancel
-                    </button>
-                </form>
-            </ReactModal>
-              <PrintModal
-          isOpen={isPrintModalOpen}
-               id={id}
-                onClose={() => setIsPrintModalOpen(false)}
-                projectData={projectData}
-                promptData={promptData}
-                pestleData={pestleData}
-                logframeData={logframeData}
-            />
         </div>
     );
 }
