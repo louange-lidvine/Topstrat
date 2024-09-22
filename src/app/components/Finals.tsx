@@ -2,20 +2,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import { PDFDownloadLink, Document, Page, Text } from "@react-pdf/renderer";
-import Loader from "@/app/shared/loader/page";
-import { useParams } from "next/navigation";
-import SwotSkeleton from "../components/skeletons/SwotSkeleton";
-import LogFrameSkeleton from "../components/skeletons/LogFrameSkeleton";
-import PestleSkeleton from "../components/skeletons/PestleSkeleton";
+import { Document, Page } from "@react-pdf/renderer";
+import SwotSkeleton from "./skeletons/SwotSkeleton";
+import PestleSkeleton from "./skeletons/PestleSkeleton";
+import LogFrameSkeleton from "./skeletons/LogFrameSkeleton";
 import Skeleton from "react-loading-skeleton";
 import { baseURL } from "@/app/constants";
-import ReactModal from "react-modal";
 import { useRouter } from "next/navigation";
 import { BiArrowBack } from "react-icons/bi";
-
-import Prompt from "./prompt/page";
-import PrintModal from "./EditProj/printModal";
 interface FinalsProps {
     id: string;
 }
