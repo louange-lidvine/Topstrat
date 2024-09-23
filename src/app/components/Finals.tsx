@@ -1141,47 +1141,33 @@ function Finals({ id }: FinalsProps) {
                                                                                                 </tr>
 
                                                                                                 {/* Inputs Level */}
-                                                                                                {activityItem.inputs && (
-                                                                                                    <tr className="bg-slate-100">
-                                                                                                        <td className="border border-1 p-2  font-bold text-center">
-                                                                                                            Input
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2 ">
-                                                                                                            {activityItem.inputs.join(
-                                                                                                                ", "
-                                                                                                            )}
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2">
-                                                                                                            (To
-                                                                                                            be
-                                                                                                            determined)
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2">
-                                                                                                            (To
-                                                                                                            be
-                                                                                                            determined)
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2">
-                                                                                                            (To
-                                                                                                            be
-                                                                                                            determined)
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2">
-                                                                                                            -
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2">
-                                                                                                            Funding
-                                                                                                            is
-                                                                                                            secured,
-                                                                                                            and
-                                                                                                            all
-                                                                                                            necessary
-                                                                                                            resources
-                                                                                                            are
-                                                                                                            available
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                )}
+                                                                                      {activityItem.inputs && (
+    <tr className="bg-slate-100">
+        <td className="border border-1 p-2 font-bold text-center">
+            Input
+        </td>
+        <td className="border border-1 p-2">
+            {activityItem.inputs[0].description}
+        </td>
+        <td className="border border-1 p-2">
+            {activityItem.inputs[0].baseline || "(To be determined)"}
+        </td>
+     <td className="border border-1 p-2">
+            {activityItem.inputs[0].target || "(To be determined)"}
+        </td>
+        <td className="border border-1 p-2">
+            {activityItem.inputs[0].indicator || "(To be determined)"}
+        </td>
+        <td className="border border-1 p-2">
+            {activityItem.inputs[0].timeline || "-"}
+        </td>
+        <td className="border border-1 p-2">
+            {activityItem.inputs[0].assumptions || "(To be determined)"}
+        </td>
+    
+    </tr>
+)}
+
                                                                                             </React.Fragment>
                                                                                         )
                                                                                     )}

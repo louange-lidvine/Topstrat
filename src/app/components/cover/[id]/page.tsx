@@ -67,7 +67,7 @@ function Page() {
         <Image
           src={cover}
           alt="Cover page image"
-          className="w-full h-screen  object-cover"
+          className="w-full h-screen  object-cover opacity-30"
         />
       </div>
 
