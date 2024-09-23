@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import ReactModal from "react-modal";
-import jsPDF from "jspdf";
 import html2pdf from "html2pdf.js";
 import Finals from "../Finals";
 
 interface PrintModalProps {
     isOpen: boolean;
     onClose: () => void;
-    projectData: any; 
+    projectData: any;
     promptData: any;
     pestleData: any;
     id: string;
@@ -25,7 +24,8 @@ const PrintModal: React.FC<PrintModalProps> = ({
 }) => {
     const [numberOfPages, setNumberOfPages] = useState(1);
     const [selectedPrinter, setSelectedPrinter] = useState("");
-    const [layout, setLayout] = useState("portrait"); // Default layout
+    const [layout, setLayout] = useState("portrait");
+    const [printWholePage, setPrintWholePage] = useState(false); // New state for checkbox
 
     const printers = ["Printer1", "Printer2", "Printer3"];
 
@@ -48,41 +48,46 @@ const PrintModal: React.FC<PrintModalProps> = ({
             margin: marginValue,
             filename: `generated_${selectedPrinter}_${layout}.pdf`,
             html2canvas: { scale: scaleValue },
-            jsPDF: { unit: "mm", format: "a4", orientation: layout }, // Explicitly set orientation
+            jsPDF: { unit: "mm", format: "a4", orientation: layout },
         };
 
-        await html2pdf()
-            .from(element)
-            .set(opt)
-            .toPdf()
-            .get("pdf")
-            .then(function (pdf: {
-                internal: { getNumberOfPages: () => any };
-                deletePage: (arg0: any) => void;
-                addPage: () => void;
-            }) {
-                const totalPages = pdf.internal.getNumberOfPages();
-                console.log(`Total pages before adjustment: ${totalPages}`);
+        const pdf = html2pdf().from(element).set(opt);
 
-            
-                if (totalPages > numberOfPages) {
-                    for (let i = totalPages; i > numberOfPages; i--) {
-                        pdf.deletePage(i);
-                    }
-                } else if (totalPages < numberOfPages) {
-                    for (let i = totalPages; i < numberOfPages; i++) {
-                        pdf.addPage();
-                    }
-                }
+        // If the checkbox is checked, print the whole page
+        if (printWholePage) {
+            await pdf.toPdf().save();
+        } else {
+            await pdf
+                .toPdf()
+                .get("pdf")
+                .then(function (pdf: {
+                    internal: { getNumberOfPages: () => any };
+                    deletePage: (arg0: any) => void;
+                    addPage: () => void;
+                }) {
+                    const totalPages = pdf.internal.getNumberOfPages();
+                    console.log(`Total pages before adjustment: ${totalPages}`);
 
-                console.log(
-                    `Total pages after adjustment: ${pdf.internal.getNumberOfPages()}`
-                );
-            })
-            .save();
+                    if (totalPages > numberOfPages) {
+                        for (let i = totalPages; i > numberOfPages; i--) {
+                            pdf.deletePage(i);
+                        }
+                    } else if (totalPages < numberOfPages) {
+                        for (let i = totalPages; i < numberOfPages; i++) {
+                            pdf.addPage();
+                        }
+                    }
+
+                    console.log(
+                        `Total pages after adjustment: ${pdf.internal.getNumberOfPages()}`
+                    );
+                })
+                .save();
+        }
 
         console.log(`Selected Printer: ${selectedPrinter}`);
         console.log(`Selected Layout: ${layout}`);
+        console.log(`Print Whole Page: ${printWholePage}`);
     };
 
     return (
@@ -97,7 +102,6 @@ const PrintModal: React.FC<PrintModalProps> = ({
                     Print Options
                 </h2>
                 <div className="flex h-full ">
-                  
                     <div className=" h-full flex-1 overflow-y-auto p-4 border-r border-gray-300">
                         <Finals id={id} />
                     </div>
@@ -122,7 +126,8 @@ const PrintModal: React.FC<PrintModalProps> = ({
                                 ))}
                             </select>
                         </div>
-                        <div className="mb-4 border">
+
+                        <div className="mb-4">
                             <label className="block mb-2 font-semibold">
                                 Select Layout:
                             </label>
@@ -136,7 +141,6 @@ const PrintModal: React.FC<PrintModalProps> = ({
                             </select>
                         </div>
 
-                        
                         <div className="mb-4">
                             <label className="block mb-2 font-semibold">
                                 Number of Pages:
@@ -150,6 +154,21 @@ const PrintModal: React.FC<PrintModalProps> = ({
                                 min={1}
                                 className="border rounded-md p-2 w-full"
                             />
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block mb-2 font-semibold">
+                                Print Whole Page:
+                            </label>
+                            <input
+                                type="checkbox"
+                                checked={printWholePage}
+                                onChange={(e) =>
+                                    setPrintWholePage(e.target.checked)
+                                }
+                                className="mr-2"
+                            />
+                            Print entire page of Finals
                         </div>
 
                         <div className="flex justify-end mt-auto">

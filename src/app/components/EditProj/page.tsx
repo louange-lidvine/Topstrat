@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import React, { useEffect, useState } from "react";
@@ -8,8 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import ExportPage from "../Export/page"; // PDF content generation component
-import PrintModal from "./printModal"; 
+import PrintModal from "./printModal";
 import { resolve } from "path";
 
 interface Project {
@@ -20,8 +19,8 @@ interface Project {
 export default function ProjectCard({
     project,
     remove,
-  selected,
-    selectedId
+    selected,
+    selectedId,
 }: {
     project: Project;
     selected: boolean;
@@ -29,19 +28,17 @@ export default function ProjectCard({
     remove: () => void;
 }) {
     const { id } = useParams();
-    const resolvedId = Array.isArray(id) ? id[0] : id; 
+    const resolvedId = Array.isArray(id) ? id[0] : id;
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [isHover, setIsHover] = useState(false);
     const [projectData, setProjectData] = useState<any>();
     const [promptData, setPromptData] = useState<any>();
     const [pestleData, setPestleData] = useState<any>();
-  const [logframeData, setLogframeData] = useState<any>([]);
+    const [logframeData, setLogframeData] = useState<any>([]);
 
-
- 
-  const [isLoading, setIsLoading] = useState(false);
-  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
-  const navigate = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+    const navigate = useRouter();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -111,9 +108,7 @@ export default function ProjectCard({
             }
         }
         return true;
-  };
- 
-
+    };
 
     const handleProjectClick = async (projectId: string) => {
         try {
@@ -154,16 +149,18 @@ export default function ProjectCard({
     };
 
     return (
-      <div
-  className={`relative group px-10 py-3 mt-3 rounded-sm transition-all duration-200 ${
-    selected ? "bg-white bg-opacity-20" : "hover:bg-white hover:bg-opacity-20"
-  }`}
-  onMouseEnter={() => setIsHover(true)}
-  onMouseLeave={() => {
-    setIsHover(false);
-    setIsPopoverOpen(false);
-  }}
->
+        <div
+            className={`relative group px-10 py-3 mt-3 rounded-sm transition-all duration-200 ${
+                selected
+                    ? "bg-white bg-opacity-20"
+                    : "hover:bg-white hover:bg-opacity-20"
+            }`}
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => {
+                setIsHover(false);
+                setIsPopoverOpen(false);
+            }}
+        >
             <div
                 className="w-auto"
                 onClick={() =>
@@ -190,7 +187,9 @@ export default function ProjectCard({
                         >
                             <ul className="flex flex-col gap-2">
                                 <li
-                                    onClick={()=>{setIsPrintModalOpen(true)}}
+                                    onClick={() => {
+                                        setIsPrintModalOpen(true);
+                                    }}
                                     className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
                                 >
                                     Print
@@ -218,8 +217,8 @@ export default function ProjectCard({
                 </div>
             )}
             <PrintModal
-          isOpen={isPrintModalOpen}
-               id={selectedId}
+                isOpen={isPrintModalOpen}
+                id={selectedId}
                 onClose={() => setIsPrintModalOpen(false)}
                 projectData={projectData}
                 promptData={promptData}
