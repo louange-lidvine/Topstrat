@@ -30,6 +30,8 @@ function Finals({ id }: FinalsProps) {
     const [gravatarUrl, setGravatarUrl] = useState<string>(""); // Optional: Gravatar URL
     const [hasWatermark, setHasWatermark] = useState(false); // State for watermark
 
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -86,68 +88,72 @@ function Finals({ id }: FinalsProps) {
         fetchData();
     }, [id]);
 
-    useEffect(() => {
-        // Fetch project data
-        const getProject = async (id: string) => {
-            try {
-                const token = getCookie("token");
-                const response = await axios.get(`${baseURL}/projects/${id}`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                console.log("Project data:", response.data);
-                setProjectData(response.data);
-            } catch (error) {
-                console.error("Error fetching project data:", error);
-                setError("Failed to fetch project data.");
-            }
-        };
+    
+      useEffect(() => {
+          // Fetch project data
+          const getProject = async (id: string) => {
+              try {
+                  const token = getCookie("token");
+                  const response = await axios.get(
+                      `${baseURL}/projects/${id}`,
+                      {
+                          headers: {
+                              "Content-Type": "application/json",
+                              Authorization: `Bearer ${token}`,
+                          },
+                      }
+                  );
+                  console.log("Project data:", response.data);
+                  setProjectData(response.data);
+              } catch (error) {
+                  console.error("Error fetching project data:", error);
+                  setError("Failed to fetch project data.");
+              }
+          };
 
-        // Fetch user data using userId from localStorage
-        const getUserData = async () => {
-            try {
-                const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
-                const token = getCookie("token");
+          // Fetch user data using userId from localStorage
+          const getUserData = async () => {
+              try {
+                  const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
+                  const token = getCookie("token");
 
-                if (userId) {
-                    const response = await axios.get(
-                        `${baseURL}/users/${userId}`,
-                        {
-                            headers: {
-                                "Content-Type": "application/json",
-                                Authorization: `Bearer ${token}`,
-                            },
-                        }
-                    );
-                    console.log("User data:", response.data);
-                    setUserData(response.data);
+                  if (userId) {
+                      const response = await axios.get(
+                          `${baseURL}/users/${userId}`,
+                          {
+                              headers: {
+                                  "Content-Type": "application/json",
+                                  Authorization: `Bearer ${token}`,
+                              },
+                          }
+                      );
+                      console.log("User data:", response.data);
+                      setUserData(response.data);
 
-                    // Optional: If Gravatar URL is part of user data
-                    if (response.data.gravatar) {
-                        setGravatarUrl(response.data.gravatar);
-                    }
+                      // Optional: If Gravatar URL is part of user data
+                      if (response.data.gravatar) {
+                          setGravatarUrl(response.data.gravatar);
+                      }
 
-                    // Check subscription type for watermark
-                    if (response.data.subscription === "FreeTrial") {
-                        setHasWatermark(true);
-                    } else {
-                        setHasWatermark(false);
-                    }
-                } else {
-                    console.error("User ID not found in localStorage.");
-                }
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-                setError("Failed to fetch user data.");
-            }
-        };
+                      // Check subscription type for watermark
+                      if (response.data.subscription === "FreeTrial") {
+                          setHasWatermark(true);
+                      } else {
+                          setHasWatermark(false);
+                      }
+                  } else {
+                      console.error("User ID not found in localStorage.");
+                  }
+              } catch (error) {
+                  console.error("Error fetching user data:", error);
+                  setError("Failed to fetch user data.");
+              }
+          };
 
-        getProject(id as string);
-        getUserData();
-        setIsLoading(false);
-    }, [id]);
+          getProject(id as string);
+          getUserData();
+          setIsLoading(false);
+      }, [id]);
 
 
  
@@ -158,6 +164,8 @@ function Finals({ id }: FinalsProps) {
     const handleOpenModal = () => {
         setIsModalOpen(true);
     };
+
+
 
     const renderList = (data: string) => {
         return (
@@ -180,6 +188,7 @@ function Finals({ id }: FinalsProps) {
             </ul>
         );
     };
+    
 
     const renderTextWithBold = (text: string) => {
         const parts = text.split(/\*\*(.*?)\*\*/g);
@@ -1132,47 +1141,33 @@ function Finals({ id }: FinalsProps) {
                                                                                                 </tr>
 
                                                                                                 {/* Inputs Level */}
-                                                                                                {activityItem.inputs && (
-                                                                                                    <tr className="bg-slate-100">
-                                                                                                        <td className="border border-1 p-2  font-bold text-center">
-                                                                                                            Input
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2 ">
-                                                                                                            {activityItem.inputs.join(
-                                                                                                                ", "
-                                                                                                            )}
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2">
-                                                                                                            (To
-                                                                                                            be
-                                                                                                            determined)
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2">
-                                                                                                            (To
-                                                                                                            be
-                                                                                                            determined)
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2">
-                                                                                                            (To
-                                                                                                            be
-                                                                                                            determined)
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2">
-                                                                                                            -
-                                                                                                        </td>
-                                                                                                        <td className="border border-1 p-2">
-                                                                                                            Funding
-                                                                                                            is
-                                                                                                            secured,
-                                                                                                            and
-                                                                                                            all
-                                                                                                            necessary
-                                                                                                            resources
-                                                                                                            are
-                                                                                                            available
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                )}
+                                                                                      {activityItem.inputs && (
+    <tr className="bg-slate-100">
+        <td className="border border-1 p-2 font-bold text-center">
+            Input
+        </td>
+        <td className="border border-1 p-2">
+            {activityItem.inputs[0].description}
+        </td>
+        <td className="border border-1 p-2">
+            {activityItem.inputs[0].baseline || "(To be determined)"}
+        </td>
+     <td className="border border-1 p-2">
+            {activityItem.inputs[0].target || "(To be determined)"}
+        </td>
+        <td className="border border-1 p-2">
+            {activityItem.inputs[0].indicator || "(To be determined)"}
+        </td>
+        <td className="border border-1 p-2">
+            {activityItem.inputs[0].timeline || "-"}
+        </td>
+        <td className="border border-1 p-2">
+            {activityItem.inputs[0].assumptions || "(To be determined)"}
+        </td>
+    
+    </tr>
+)}
+
                                                                                             </React.Fragment>
                                                                                         )
                                                                                     )}

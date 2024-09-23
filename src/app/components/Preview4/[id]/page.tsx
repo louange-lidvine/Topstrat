@@ -1006,77 +1006,146 @@ function Preview() {
                                                                                 {/* Inputs Level */}
                                                                                 {activityItem.inputs && (
                                                                                     <tr className="bg-slate-100">
-                                                                                        <td className="border border-1 p-2 font-bold text-center">
-                                                                                            Input
-                                                                                        </td>
-                                                                                        <td className="border border-1 p-2">
-                                                                                            {activityItem.inputs.map(
-                                                                                                (
-                                                                                                    text: any,
-                                                                                                    inputIndex: any
-                                                                                                ) => (
-                                                                                                    <div
-                                                                                                        contentEditable
-                                                                                                        onBlur={(
-                                                                                                            e
-                                                                                                        ) =>
-                                                                                                            handleCellChange(
-                                                                                                                "goal",
-                                                                                                                "inputs",
-                                                                                                                e
-                                                                                                                    .currentTarget
-                                                                                                                    .textContent ||
-                                                                                                                    "",
-                                                                                                                inputIndex,
-                                                                                                                "description",
-                                                                                                                {
-                                                                                                                    outcomes:
-                                                                                                                        outcomeIndex,
-                                                                                                                    outputs:
-                                                                                                                        outputIndex,
-                                                                                                                    actvivity:
-                                                                                                                        activityIndex,
-                                                                                                                }
-                                                                                                            )
-                                                                                                        }
-                                                                                                        suppressContentEditableWarning
-                                                                                                    >
-                                                                                                        {
-                                                                                                            text
-                                                                                                        }
-                                                                                                    </div>
-                                                                                                )
-                                                                                            )}
-                                                                                        </td>
-                                                                                        <td className="border border-1 p-2">
-                                                                                            (To
-                                                                                            be
-                                                                                            determined)
-                                                                                        </td>
-                                                                                        <td className="border border-1 p-2">
-                                                                                            (To
-                                                                                            be
-                                                                                            determined)
-                                                                                        </td>
-                                                                                        <td className="border border-1 p-2">
-                                                                                            (To
-                                                                                            be
-                                                                                            determined)
-                                                                                        </td>
-                                                                                        <td className="border border-1 p-2">
-                                                                                            -
-                                                                                        </td>
-                                                                                        <td className="border border-1 p-2">
-                                                                                            Funding
-                                                                                            is
-                                                                                            secured,
-                                                                                            and
-                                                                                            all
-                                                                                            necessary
-                                                                                            resources
-                                                                                            are
-                                                                                            available
-                                                                                        </td>
+                                                                                          <td className="border border-1 p-2 font-bold text-center">
+            Input
+        </td>
+        {/* Description */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, // Assuming single input
+                        "description",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            actvivity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].description}
+            </div>
+        </td>
+        {/* Baseline */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, // Assuming single input
+                        "baseline",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            actvivity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].baseline}
+            </div>
+        </td>
+        {/* Target */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, // Assuming single input
+                        "target",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            actvivity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].target}
+            </div>
+        </td>
+        {/* Indicator */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, // Assuming single input
+                        "indicator",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            actvivity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].indicator}
+            </div>
+        </td>
+        {/* Timeline */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, // Assuming single input
+                        "timeline",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            actvivity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].timeline}
+            </div>
+        </td>
+                                                                                <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, 
+                        "assumptions",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            actvivity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].assumptions || "(To be determined)"}
+            </div>
+        </td>
                                                                                     </tr>
                                                                                 )}
                                                                             </React.Fragment>
