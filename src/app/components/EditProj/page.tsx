@@ -6,6 +6,7 @@ import { getCookie } from "cookies-next";
 import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
+import EditModal from "../EdiModal";
 
 const PrintModal = dynamic(() => import("./printModal"), { ssr: false });
 
@@ -35,6 +36,7 @@ function ProjectCard({
   const [isLoading, setIsLoading] = useState(false);
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false);
+
 
   const navigate = useRouter();
 
@@ -138,7 +140,7 @@ function ProjectCard({
         },
       });
       console.log("Project deleted successfully");
-      remove(); // Update UI after deleting the project
+      remove(); 
     } catch (error) {
       console.error("Error deleting project:", error);
     }
@@ -146,7 +148,7 @@ function ProjectCard({
 
   return (
     <div
-      className={`relative group px-10 py-3 mt-1 rounded-sm transition-all duration-200 ${
+      className={`relative group px-10 py-2 mt-1 rounded-sm transition-all duration-200 ${
         selected ? "bg-white bg-opacity-20" : "hover:bg-white hover:bg-opacity-20"
       }`}
     >
@@ -162,7 +164,7 @@ function ProjectCard({
       </div>
 
       <div
-        className="absolute top-4 right-5 cursor-pointer"
+        className="absolute top-3 right-5 cursor-pointer"
         onClick={() => setIsPopoverOpen(!isPopoverOpen)}
       >
         <FaEllipsisH />
@@ -181,7 +183,8 @@ function ProjectCard({
               </li>
               <li
                 className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
-                onClick={() => navigate.push(`/components/Preview/${resolvedId}`)}
+                onClick={() => setEditOpen(true)}
+
               >
                 Edit
               </li>
@@ -195,6 +198,11 @@ function ProjectCard({
           </div>
         )}
       </div>
+      <EditModal
+        isOpen={isEditOpen}
+        onClose={() => setEditOpen(false)}
+        id={project._id}
+      />
 
       <PrintModal
         isOpen={isPrintModalOpen}

@@ -146,7 +146,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                         <div className="projects">
                             <div className="title grid grid-cols-2 space-x-16">
                                 <div className="title grid grid-cols-2 space-x-40">
-                                    <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">Projects</h1>
+                                    <h1 className="my-2 ml-10 text-xl font-bold flex-[0.8]">Projects</h1>
                                     <ChooseMethod refetchProject={fetchProjects} closeSidebar={closeSidebar} />
                                 </div>
                             </div>
