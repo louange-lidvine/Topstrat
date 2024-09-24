@@ -138,7 +138,7 @@ function ProjectCard({
         },
       });
       console.log("Project deleted successfully");
-      remove(); // Update UI after deleting the project
+      remove(); 
     } catch (error) {
       console.error("Error deleting project:", error);
     }
@@ -146,7 +146,7 @@ function ProjectCard({
 
   return (
     <div
-      className={`relative group px-10 py-3 mt-1 rounded-sm transition-all duration-200 ${
+      className={`relative group px-10 py-2 mt-1 rounded-sm transition-all duration-200 ${
         selected ? "bg-white bg-opacity-20" : "hover:bg-white hover:bg-opacity-20"
       }`}
     >
@@ -162,7 +162,7 @@ function ProjectCard({
       </div>
 
       <div
-        className="absolute top-4 right-5 cursor-pointer"
+        className="absolute top-3 right-5 cursor-pointer"
         onClick={() => setIsPopoverOpen(!isPopoverOpen)}
       >
         <FaEllipsisH />
