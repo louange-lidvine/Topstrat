@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -6,6 +6,7 @@ import { getCookie } from "cookies-next";
 import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
+
 const PrintModal = dynamic(() => import("./printModal"), { ssr: false });
 
 interface Project {
@@ -27,14 +28,14 @@ function ProjectCard({
   const { id } = useParams();
   const resolvedId = Array.isArray(id) ? id[0] : id;
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [isHover, setIsHover] = useState(false);
   const [projectData, setProjectData] = useState<any>();
   const [promptData, setPromptData] = useState<any>();
   const [pestleData, setPestleData] = useState<any>();
   const [logframeData, setLogframeData] = useState<any>([]);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+  const [isEditOpen, setEditOpen] = useState(false);
+
   const navigate = useRouter();
 
   useEffect(() => {
@@ -145,18 +146,13 @@ function ProjectCard({
 
   return (
     <div
-      className={`relative group px-10 py-3 mt-3 rounded-sm transition-all duration-200 ${
+      className={`relative group px-10 py-3 mt-1 rounded-sm transition-all duration-200 ${
         selected ? "bg-white bg-opacity-20" : "hover:bg-white hover:bg-opacity-20"
       }`}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => {
-        setIsHover(false);
-        setIsPopoverOpen(false);
-      }}
     >
       <div
-        className="w-auto"
-        onClick={() => !isPopoverOpen && handleProjectClick(project._id)}
+        className="w-auto cursor-pointer"
+        onClick={() => handleProjectClick(project._id)}
       >
         <p>
           {project?.name?.length > 20
@@ -165,44 +161,41 @@ function ProjectCard({
         </p>
       </div>
 
-      {isHover && (
-        <div
-          className="absolute z-index items-center justify-end rounded text-white top-2 translate-y-1/2 right-5"
-          onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-        >
-          <FaEllipsisH />
-          {isPopoverOpen && (
-            <div
-              className="absolute right-0 bg-white text-gray-800 shadow-lg rounded-lg p-3 z-50"
-              style={{ minWidth: "180px" }}
-            >
-              <ul className="flex flex-col gap-2">
-                <li
-                  onClick={() => setIsPrintModalOpen(true)}
-                  className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
-                >
-                  Print
-                </li>
+      <div
+        className="absolute top-4 right-5 cursor-pointer"
+        onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+      >
+        <FaEllipsisH />
+        {isPopoverOpen && (
+          <div
+            className="absolute right-0 bg-white text-gray-800 shadow-lg rounded-lg p-3 z-50"
+            style={{ minWidth: "180px" }}
+            onMouseLeave={() => setIsPopoverOpen(false)}
+          >
+            <ul className="flex flex-col gap-2">
+              <li
+                onClick={() => setIsPrintModalOpen(true)}
+                className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
+              >
+                Print
+              </li>
+              <li
+                className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
+                onClick={() => navigate.push(`/components/Preview/${resolvedId}`)}
+              >
+                Edit
+              </li>
+              <li
+                className="hover:bg-red-100 text-red-600 p-2 rounded-md cursor-pointer"
+                onClick={() => handleDelete(project._id)}
+              >
+                Delete
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
 
-                <li
-                  className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
-                  onClick={() =>
-                    navigate.push(`/components/Preview/${resolvedId}`)
-                  }
-                >
-                  Edit
-                </li>
-                <li
-                  className="hover:bg-red-100 text-red-600 p-2 rounded-md cursor-pointer"
-                  onClick={() => handleDelete(project._id)}
-                >
-                  Delete
-                </li>
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
       <PrintModal
         isOpen={isPrintModalOpen}
         id={selectedId}

@@ -10,6 +10,10 @@ import Skeleton from "react-loading-skeleton";
 import { baseURL } from "@/app/constants";
 import { useRouter } from "next/navigation";
 import { BiArrowBack } from "react-icons/bi";
+import Image from 'next/image'
+import logo from '../../../public/assets/logo.png'
+import cover from '../../../public/assets/cover3.svg'
+
 interface FinalsProps {
     id: string;
 }
@@ -204,6 +208,69 @@ function Finals({ id }: FinalsProps) {
     const MyDocument = () => (
         <Document pageMode="fullScreen">
             <Page size="A4" style={{ margin: "auto" }}>
+        <div className="relative w-full h-screen lg:max-w-6xl overflow-hidden ">
+      <div className="relative w-full overflow-hidden">
+        <Image
+          src={cover}
+          alt="Cover page image"
+          className="w-full h-screen  object-cover"
+        />
+      </div>
+
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between p-8 text-white">
+        <div className="flex justify-between">
+      <div className="flex flex-col items-start">
+   <div className="bg-white p-2 rounded-md">
+              <Image
+                src={projectData?.logo ? projectData.logo : logo}
+                alt="organization logo"
+                width={80}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+          <h2 className="text-xl font-bold mt-2 text-black">   {projectData && projectData.name}</h2>
+          </div>     
+        </div>
+
+  
+        <div className="flex flex-col items-start mt-20">
+          <h1 className="text-5xl font-bold text-black">STRATEGIC PLAN</h1>
+          <h2 className="text-2xl font-semibold text-black  mt-2">2024-2028</h2>
+        </div>
+
+        <div className="flex flex-col items-start mt-8 text-black">
+           <div className="flex flex-col gap-4">
+                        {isLoading ? (
+                            <div className="w-full">
+                                <Skeleton width={100} />
+                                <Skeleton />
+                            </div>
+                        ) : (
+                            <div className="w-[50%]">
+                                <p>{projectData && projectData.description}</p>
+                            </div>
+                        )}
+                    </div>
+        </div>
+
+        <div className="text-yellow-500 mt-8">
+<h3 className="text-xl font-semibold">
+  {projectData && new Date(projectData.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long', 
+    day: 'numeric'
+  })}
+</h3>
+          <p className="text-sm text-black mt-2">
+            +250-792-531-980<br />
+            {userData?.email}<br />
+            www.cooky.com<br />
+            BP 3451 KIGALI-RWANDA
+          </p>
+        </div>
+      </div>
+    </div>
                 <div
                     className={`my-4 rounded-md mx-2 p-4 font-medium ${
                 hasWatermark ? "watermarked" : "" }`}
