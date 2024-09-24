@@ -6,6 +6,7 @@ import { getCookie } from "cookies-next";
 import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
+import EditModal from "../EdiModal";
 
 const PrintModal = dynamic(() => import("./printModal"), { ssr: false });
 
@@ -35,6 +36,7 @@ function ProjectCard({
   const [isLoading, setIsLoading] = useState(false);
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false);
+
 
   const navigate = useRouter();
 
@@ -181,7 +183,8 @@ function ProjectCard({
               </li>
               <li
                 className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
-                onClick={() => navigate.push(`/components/Preview/${resolvedId}`)}
+                onClick={() => setEditOpen(true)}
+
               >
                 Edit
               </li>
@@ -195,6 +198,11 @@ function ProjectCard({
           </div>
         )}
       </div>
+      <EditModal
+        isOpen={isEditOpen}
+        onClose={() => setEditOpen(false)}
+        id={project._id}
+      />
 
       <PrintModal
         isOpen={isPrintModalOpen}
