@@ -81,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            const limitedProjects = response.data.slice(0, 3);
+            const limitedProjects = response.data.slice(0, 5);
             setProjects(limitedProjects);
             setIsLoading(false);
         } catch (error) {
@@ -137,7 +137,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     return (
         <>
             <div className={`hidden lg:flex flex-col text-white max-w-[20vw] bg-blue-default m-2 rounded-md`}>
-                <div className="flex flex-col justify-between gap-32">
+                <div className="flex flex-col justify-between gap-20">
                     <div className="user-part">
                         <Profile />
                     </div>
