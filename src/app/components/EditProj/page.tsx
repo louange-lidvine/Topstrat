@@ -201,7 +201,7 @@ function ProjectCard({
       <EditModal
         isOpen={isEditOpen}
         onClose={() => setEditOpen(false)}
-        id={project._id}
+        id={project?._id}
       />
 
       <PrintModal
