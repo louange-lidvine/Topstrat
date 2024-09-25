@@ -240,7 +240,7 @@ function Page() {
                             Edit
                         </button>
                     </div>
-            <EdiTModal isOpen={isEditModalOpen} onClose={()=>setIsEditModalOpen(false)} id={projectData._id} />
+            <EdiTModal isOpen={isEditModalOpen} onClose={()=>setIsEditModalOpen(false)} id={projectData?._id} />
               <PrintModal
           isOpen={isPrintModalOpen}
                 id={resolvedId}
