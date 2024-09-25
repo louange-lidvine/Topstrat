@@ -100,7 +100,6 @@ function Preview() {
             environmental: editablePestleData.environmental || {},
         };
 
-        // Log the request details for debugging
         console.log("Attempting to save data...");
         console.log(
             "PUT URL:",

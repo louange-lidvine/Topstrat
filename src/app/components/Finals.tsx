@@ -208,52 +208,88 @@ function Finals({ id }: FinalsProps) {
     const MyDocument = () => (
         <Document pageMode="fullScreen">
             <Page size="A4" style={{ margin: "auto" }}>
-  
                 <div
                     className={`my-4 rounded-md mx-2 p-4 font-medium ${
                 hasWatermark ? "watermarked" : "" }`}
                     id={`pdf-content_${id}`}  
                 >
-                    <div
-                        className="justify-end flex gap-2 cursor-pointer"
-                        onClick={() => router.push("/")}
-                    >
-                        <BiArrowBack className="mt-1" />
-                        <p className="">Return to home</p>
-                    </div>
-                    {userData && (
-                        <div className="flex items-center gap-4 mb-4">
-                            {gravatarUrl && (
-                                <img
-                                    src={gravatarUrl}
-                                    alt="User Gravatar"
-                                    className="w-16 h-16 rounded-full"
-                                />
-                            )}
-                            {/* <div>
-                        <p className="font-bold">User: {userData.name}</p>
-                        <p className="text-gray-500">Email: {userData.email}</p>
-                        <p className="text-gray-500">
-                            Subscription: {userData.subscription}
-                        </p>
-                    </div> */}
-                        </div>
-                    )}
-
-                    <div className="flex flex-col  justify-center items-center gap-4 text-xl ">
-                        <div className="text-gray-400   flex items-center justify-center border-2  p-3 rounded-md py-2  px-6">
-                            {" "}
-                            <p>{projectData && projectData.name}</p>
-                        </div>
-                        <div className="text-yellow-500 font-bold ">
-                            <p>Preview</p>
-                        </div>
+                     <div className="flex flex-col  justify-center items-center gap-4 text-xl ">
+            <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
+                    {projectData && projectData.name}
+                </div>
                         <div className="text-blue-default font-bold  ">
                             <p>
                                 Strategic Plan {projectData && projectData.name}
                             </p>{" "}
                         </div>
                     </div>
+             <div className="relative w-full bg-white lg:max-w-6xl my-6 lg:rounded-lg shadow-lg h-screen overflow-hidden ">
+      <div className="relative w-full overflow-hidden">
+        <Image
+          src={cover}
+          alt="Cover page image"
+          className="w-full h-screen  object-cover"
+        />
+      </div>
+
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between p-8 text-white">
+        <div className="flex justify-between">
+      <div className="flex flex-col items-start">
+   <div className="bg-white p-2 rounded-md">
+              <Image
+                src={projectData?.logo ? projectData.logo : logo}
+                alt="organization logo"
+                width={80}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+          <h2 className="text-xl font-bold mt-2 text-black">   {projectData && projectData.name}</h2>
+          </div>
+      
+          <h1 onClick={()=> router.push(`/components/Preview/${id}`)} className="text-black cursor-pointer">Continue to project</h1>
+        </div>
+
+  
+        <div className="flex flex-col items-start mt-20">
+          <h1 className="text-5xl font-bold text-black">STRATEGIC PLAN</h1>
+          <h2 className="text-2xl font-semibold text-black  mt-2">2024-2028</h2>
+        </div>
+
+        <div className="flex flex-col items-start mt-8 text-black">
+           <div className="flex flex-col gap-4">
+                        {isLoading ? (
+                            <div className="w-full">
+                                <Skeleton width={100} />
+                                <Skeleton />
+                            </div>
+                        ) : (
+                            <div className="w-[50%]">
+                                <p>{projectData && projectData.description}</p>
+                            </div>
+                        )}
+                    </div>
+        </div>
+
+        <div className="text-yellow-500 mt-8">
+<h3 className="text-xl font-semibold">
+  {projectData && new Date(projectData.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long', 
+    day: 'numeric'
+  })}
+</h3>
+          <p className="text-sm text-black mt-2">
+            +250-792-531-980<br />
+            {userData?.email}<br />
+            www.cooky.com<br />
+            BP 3451 KIGALI-RWANDA
+          </p>
+        </div>
+      </div>
+    </div>
+
+                   
                     <div className=" w-full">
                         {" "}
                         <div className="flex flex-col gap-6 ">
