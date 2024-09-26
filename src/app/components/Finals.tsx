@@ -714,6 +714,154 @@ function Finals({ id }: FinalsProps) {
               </div>
             )}
           </div>
+            <div>
+            {isLoading ? (
+              <div className="w-full">
+                <Skeleton width={100} />
+                <LogFrameSkeleton />
+              </div>
+            ) : (
+              <div className="w-full">
+                <div className="flex flex-col gap-3">
+                  <div className="text-blue-default font-bold text-2xl py-5">
+                    Logframe
+                  </div>
+                  <h1>Goal : {logframeData?.goal?.description}</h1>
+                  <div className="overflow-x-auto">
+                    <table className="border border-1 m-auto">
+                      <thead>
+                        <tr className="bg-slate-300">
+                          <th
+                            className="border border-1 p-2  text-blue-default font-bold text-center"
+                            colSpan={2}
+                          >
+                            Results Chain
+                          </th>
+                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                            Indicator
+                          </th>
+                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                            Baseline
+                          </th>
+                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                            Target
+                          </th>
+                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                            Timeline
+                          </th>
+                          <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                            Assumptions
+                          </th>
+                        </tr>
+                      </thead>
+                     <tbody>
+  {logframeData && logframeData.goal && (
+    <>
+      {/* Impact Level */}
+      <tr style={{ backgroundColor: '#f8fafc', fontSize: '10px' }}>
+        <td style={{ border: '1px solid #000', padding: '4px', fontWeight: 'bold', textAlign: 'center' }}>Impact</td>
+        <td style={{ border: '1px solid #000', padding: '4px' }}>{logframeData.goal.impact?.description || "-"}</td>
+        <td style={{ border: '1px solid #000', padding: '4px' }}>
+          {logframeData.goal.impact?.indicators &&
+            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => (
+              <div key={idx} style={{ fontSize: '8px' }}>
+                <p>{key}:</p>
+              </div>
+            ))}
+        </td>
+        <td style={{ border: '1px solid #000', padding: '4px' }}>
+          {logframeData.goal.impact?.indicators &&
+            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
+              const indicator = logframeData.goal.impact.indicators[key];
+              return (
+                <div key={idx} style={{ fontSize: '8px' }}>{indicator.baseline || ""},</div>
+              );
+            })}
+        </td>
+        <td style={{ border: '1px solid #000', padding: '4px' }}>
+          {logframeData.goal.impact?.indicators &&
+            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
+              const indicator = logframeData.goal.impact.indicators[key];
+              return (
+                <div key={idx} style={{ fontSize: '8px' }}>{indicator.target || "-"}</div>
+              );
+            })}
+        </td>
+        <td style={{ border: '1px solid #000', padding: '4px' }}>{logframeData.goal.impact?.timeline || "-"}</td>
+        <td style={{ border: '1px solid #000', padding: '4px' }}>{logframeData.goal.impact?.assumptions || "-"}</td>
+      </tr>
+
+      {/* Outcome Level */}
+      {logframeData.goal.impact?.outcomes?.map((outcomeItem:any, outcomeIndex:any) => (
+        <React.Fragment key={`outcome-${outcomeIndex}`}>
+          <tr style={{ backgroundColor: outcomeIndex % 2 === 0 ? '#f8fafc' : 'transparent', fontSize: '10px' }}>
+            <td style={{ border: '1px solid #000', padding: '4px', fontWeight: 'bold', textAlign: 'center' }}>Outcome {outcomeIndex + 1}</td>
+            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.description || "-"}</td>
+            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.indicator || "-"}</td>
+            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.baseline || "-"}</td>
+            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.target || "-"}</td>
+            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.timeline || "-"}</td>
+            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.assumptions || "-"}</td>
+          </tr>
+
+          {/* Output Level */}
+          {outcomeItem.outputs?.map((outputItem:any, outputIndex:any) => (
+            <React.Fragment key={`output-${outputIndex}`}>
+              <tr style={{ backgroundColor: outputIndex % 2 === 0 ? '#f8fafc' : 'transparent', fontSize: '10px' }}>
+                <td style={{ border: '1px solid #000', padding: '4px', fontWeight: 'bold', textAlign: 'center' }}>
+                  Output {outcomeIndex + 1}.{outputIndex + 1}
+                </td>
+                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.description || "-"}</td>
+                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.indicator || "-"}</td>
+                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.baseline || "0"}</td>
+                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.target || "-"}</td>
+                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.timeline || "-"}</td>
+                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.assumptions || "-"}</td>
+              </tr>
+
+              {/* Activity Level */}
+              {outputItem.activities?.map((activityItem:any, activityIndex:any) => (
+                <React.Fragment key={`activity-${activityIndex}`}>
+                  <tr style={{ backgroundColor: activityIndex % 2 === 0 ? '#f8fafc' : 'transparent', fontSize: '10px' }}>
+                    <td style={{ border: '1px solid #000', padding: '4px', fontWeight: 'bold', textAlign: 'center' }}>
+                      Activity {outcomeIndex + 1}.{outputIndex + 1}.{activityIndex + 1}
+                    </td>
+                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.description || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.indicator || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.baseline || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.target || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.timeline || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.assumptions || "-"}</td>
+                  </tr>
+
+                  {/* Inputs Level */}
+                  {activityItem.inputs && (
+                    <tr style={{ backgroundColor: '#f8fafc', fontSize: '10px' }}>
+                      <td style={{ border: '1px solid #000', padding: '4px', fontWeight: 'bold', textAlign: 'center' }}>Input</td>
+                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].description}</td>
+                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].baseline || "(To be determined)"}</td>
+                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].target || "(To be determined)"}</td>
+                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].indicator || "(To be determined)"}</td>
+                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].timeline || "-"}</td>
+                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].assumptions || "(To be determined)"}</td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              ))}
+            </React.Fragment>
+          ))}
+        </React.Fragment>
+      ))}
+    </>
+  )}
+</tbody>
+
+                    </table>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         
         </div>
       </Page>
