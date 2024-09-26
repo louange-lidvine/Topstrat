@@ -7,10 +7,11 @@ import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
 import EditModal from "../EdiModal";
-import html2pdf from "html2pdf.js"; // Import html2pdf.js
-
-
+import html2pdf from "html2pdf.js"; 
+// import PrintModal from "./printModal";
 const PrintModal = dynamic(() => import("./printModal"), { ssr: false });
+import { downloadPdf } from "@/app/utils/downloadPdf";
+import Finals from "../Finals";
 
 interface Project {
   name: string;
@@ -42,49 +43,10 @@ function ProjectCard({
 
   const navigate = useRouter();
 
-    //   const handleDownloadFinals = () => {
-    //     const element = document.getElementById("pdf-content_" + resolvedId);
-    //     const opt = {
-    //         margin: 1,
-    //         filename: `${projectData?.name}.pdf`,
-    //         html2canvas: { scale: 2 },
-    //         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    //     };
-    //     html2pdf().from(element).set(opt).save();
-    // };
-
-const handleDownloadFinals = async (projectId: string) => {
-  const elementId = `pdf-content_${projectId}`;
-
-  const checkElement = () => new Promise((resolve, reject) => {
-    const interval = setInterval(() => {
-      const element = document.getElementById(elementId);
-      if (element) {
-        clearInterval(interval); // Stop polling when element is found
-        resolve(element);
-      }
-    }, 100); 
-
-    setTimeout(() => {
-      clearInterval(interval);
-      reject(`Element with id ${elementId} not found for download`);
-    }, 5000); 
-  });
-
-  try {
-    const element = await checkElement(); 
-    const opt = {
-      margin: 1,
-      filename: `${projectData?.name}.pdf`,
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    };
-
-    html2pdf().from(element).set(opt).save();
-  } catch (error) {
-    console.error(error); 
-  }
-};
+    const handleDownloadFinals = async (projectId: string) => {
+    const elementId = `pdf-content_${projectId}`;
+    await downloadPdf(elementId, project?.name || "project");
+  };
 
 
 
@@ -231,7 +193,7 @@ const handleDownloadFinals = async (projectId: string) => {
                 Print
               </li>
               <li
-                onClick={() => handleDownloadFinals(project?._id)}
+                 onClick={() => handleDownloadFinals(selectedId)}
                 className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
               >
                 Download
@@ -268,6 +230,9 @@ const handleDownloadFinals = async (projectId: string) => {
         pestleData={pestleData}
         logframeData={logframeData}
       />
+          <div className="hidden">
+            <Finals id={selectedId} />
+        </div>
     </div>
   );
 }

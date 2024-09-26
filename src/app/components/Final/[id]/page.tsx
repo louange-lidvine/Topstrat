@@ -1,6 +1,6 @@
 "use client"
+import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
-import Finals from "../../Finals";
 import PestleSkeleton from '../../skeletons/PestleSkeleton';
 import SwotSkeleton from '../../skeletons/SwotSkeleton';
 import LogFrameSkeleton from '../../skeletons/LogFrameSkeleton';
@@ -9,13 +9,15 @@ import { useRouter } from "next/navigation";
 import { baseURL } from "@/app/constants";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import PrintModal from "../../EditProj/printModal";
-import ReactModal from "react-modal";
 import EdiTModal from "../../EdiModal";
 import html2pdf from "html2pdf.js"; 
 import { BiArrowBack } from "react-icons/bi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { downloadPdf } from "@/app/utils/downloadPdf";
+import Finals from "../../Finals";
+const PrintModal = dynamic(() => import("../../EditProj/printModal"), { ssr: false });
+
 
 function Page() {
     const { id } = useParams();
@@ -34,6 +36,11 @@ function Page() {
     const [gravatarUrl, setGravatarUrl] = useState<string>(""); 
     const [hasWatermark, setHasWatermark] = useState(false); 
     const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+
+     const handleDownloadFinals = async (projectId: string) => {
+    const elementId = `pdf-content_${projectId}`;
+    await downloadPdf(elementId, projectData?.name || "project");
+  };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -89,17 +96,6 @@ function Page() {
 
         fetchData();
     }, [id]);
-
-    const handleDownloadFinals = () => {
-        const element = document.getElementById("pdf-content_" + resolvedId);
-        const opt = {
-            margin: 1,
-            filename: `${projectData?.name}.pdf`,
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-        };
-        html2pdf().from(element).set(opt).save();
-    };
 
     const regenerateData = async () => {
         try {
@@ -186,110 +182,7 @@ function Page() {
     
 
     return (
-        // <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
-        //     <div
-        //         className="justify-end flex gap-4 p-3 cursor-pointer"
-        //         onClick={() => router.push("/")}
-        //     >
-        //         <BiArrowBack className="mt-1" />
-        //         <p className="">Return to home</p>
-        //     </div>
-        //     {isLoading ? (
-        //   <div className="w-full">
-        //         <div className="w-full">
-        //                                 <Skeleton width={80} />
-        //                                 <Skeleton />
-        //                             </div>
-        //                                <div className="w-full">
-        //                                     <Skeleton width={80} />
-        //                                     <Skeleton height={30} />
-        //                                 </div>
-        //                                    <div className="w-full">
-        //                                     <Skeleton width={80} />
-        //                                     <Skeleton height={30} />
-        //                                 </div>
-        //                                    <div className="w-full">
-        //                                 <Skeleton width={80} />
-        //                                 <Skeleton height={80} />
-        //                             </div>
-        //        <div className="w-full">
-        //                             <Skeleton width={100} />
-        //                             <SwotSkeleton />
-        //                         </div>
-        //                               <div className="w-full">
-        //                         <Skeleton width={100} />
-        //                         <PestleSkeleton />
-        //                     </div>
-        //                         <div className="w-full">
-        //                         <Skeleton width={80} />
-        //                         <Skeleton height={80} />
-        //                     </div>
-        //                          <div className="w-full">
-        //                         <Skeleton width={80} />
-        //                         <Skeleton height={80} />
-        //                     </div>
-        //          <div className="w-full">
-        //                         <Skeleton width={100} />
-        //                         <LogFrameSkeleton />
-        //                     </div>
-        //   </div>
-        //     ) : (
-          
-         
-        //               <Finals id={resolvedId} />
-          
-                
-          
-        //     )}
-        //     <div className="flex justify-center gap-8 mt-5">
-        //         <button
-        //             onClick={() => router.push('/components/Landingpage')}
-        //             className="bg-blue-400 text-white font-bold rounded-md py-3 px-6"
-        //         >
-        //             Save and Exit
-        //         </button>
-
-        //         <button
-        //             className="bg-blue-default text-white font-bold rounded-md py-3 px-6"
-        //             onClick={handleDownloadFinals}
-        //         >
-        //             Download
-        //         </button>
-
-        //         <button
-        //             className="bg-blue-default text-white font-bold rounded-md py-3 px-6"
-        //             onClick={() => setIsPrintModalOpen(true)}
-        //         >
-        //             Print
-        //         </button>
-
-        //         <button
-        //             onClick={regenerateData}
-        //             className="bg-orange-default text-white font-bold rounded-md py-3 px-6"
-        //         >
-        //             Regenerate
-        //         </button>
-        //         <button
-        //             onClick={() => setIsEditModalOpen(true)}
-        //             className="bg-green-500 text-white font-bold rounded-md py-3 px-6"
-        //         >
-        //             Edit
-        //         </button>
-        //     </div>
-        //     <EdiTModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} id={projectData?._id} />
-        //     <PrintModal
-        //         isOpen={isPrintModalOpen}
-        //         id={resolvedId}
-        //         onClose={() => setIsPrintModalOpen(false)}
-        //         projectData={projectData}
-        //         promptData={promptData}
-        //         pestleData={pestleData}
-        //         logframeData={logframeData}
-        //     />
-        // </div>
-
                 <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
-
               <div className="justify-end flex gap-2 cursor-pointer"  
                 onClick={() =>
                                 router.push('/')
@@ -1255,7 +1148,7 @@ function Page() {
 
                 <button
                      className="bg-blue-default text-white font-bold rounded-md py-3 px-6"
-                     onClick={handleDownloadFinals}
+                    onClick={() => handleDownloadFinals(resolvedId)}
                  >
                      Download
                  </button>
@@ -1290,6 +1183,9 @@ function Page() {
                  pestleData={pestleData}
                  logframeData={logframeData}
              />
+        <div className="hidden">
+            <Finals id={resolvedId} />
+        </div>
          </div>
            
     );
