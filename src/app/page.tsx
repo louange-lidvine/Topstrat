@@ -332,7 +332,7 @@ function Page() {
                                         ✓ Export Strategic plan as PDF
                                     </li>
                                 </ul>
-                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all"     onClick={()=>navigate.push("https://topstrat-payment-portal.vercel.app/")}>
+                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all"     onClick={()=>navigate.push('/Pages/signup')}>
                                     Buy Plan
                                 </button>
                             </div>
@@ -366,7 +366,7 @@ function Page() {
                                         ✓ Export Strategic plan as PDF
                                     </li>
                                 </ul>
-                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all"     onClick={()=>navigate.push("https://topstrat-payment-portal.vercel.app/")}>
+                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all"     onClick={()=>navigate.push("/Pages/signup")}>
                                     Buy Plan
                                 </button>
                             </div>
@@ -397,7 +397,7 @@ function Page() {
                                         ✓ Export Strategic plan as Word
                                     </li>
                                 </ul>
-                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all"     onClick={()=>navigate.push("https://topstrat-payment-portal.vercel.app/")}>
+                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all"     onClick={()=>navigate.push("/Pages/signup")}>
                                     Buy Plan
                                 </button>
                             </div>
