@@ -57,7 +57,7 @@ function Preview() {
                     }
                 );
                 const data = JSON.parse(response.data.logframe.response);
-                console.log(data);
+                 console.log("Fetched Data:", data)
 
                 setLogframeData(data);
                 setEditableLogData(data);
@@ -136,52 +136,81 @@ function Preview() {
             toast.error("Failed to save data. Please try again.");
         }
     };
+const handleCellChange = (
+    category: string,
+    field: string,
+    value: any,
+    index: number,
+    level: string,
+    loc?: {
+        outcomes?: any;  
+        outputs?: any;   
+        activity?: any;  
+        input?: any;     
+    }
+) => {
+    setEditableLogData((prevData: any) => {
+        const newData = _.cloneDeep(prevData); // Clone the previous data to avoid mutations
 
-    function EditData(data: any) {}
-    const handleCellChange = (
-        category: any,
-        field: any,
-        value: any,
-        index: any,
-        level: any,
-        loc?: {
-            outcomes?: any;
-            outputs?: any;
-            actvivity?: any;
-            input?: any;
-        }
-    ) => {
-        setEditableLogData((prevData: any) => {
-            const newData = _.cloneDeep(prevData);
+        // Ensure proper structure before making assignments
+        if (!newData.goal) newData.goal = {};
+        if (!newData.goal.impact) newData.goal.impact = {};
+        if (!newData.goal.impact.outcomes) newData.goal.impact.outcomes = [];
+        if (!newData.goal.impact.outputs) newData.goal.impact.outputs = {};
+
+        if (category === "goal" && field === "impact") {
             if (index === -1) {
-                newData[category][level] = value; 
-                console.log(
-                    "Data saved 1",
-                    newData[category][level],
-                    "-----",
-                    value
-                );
-            } else {
-                if (field === "outcomes") {
-                    newData.goal.impact.outcomes[index][level] = value;
-                } else if (field === "outputs") {
-                    newData.goal.impact.outcomes[loc?.outcomes]["outputs"][
-                        index
-                    ][level] = value;
-                } else if (field === "activities") {
-                    newData.goal.impact.outcomes[loc?.outcomes]["outputs"][
-                        loc?.outputs
-                    ]["activities"][index][level] = value;
-                } else if (field === "inputs") {
-                    newData.goal.impact.outcomes[loc?.outcomes]["outputs"][
-                        loc?.outputs
-                    ]["activities"][loc?.actvivity]["inputs"][index] = value;
+                if (typeof newData.goal.impact.description !== 'string') {
+                    newData.goal.impact.description = ''; 
                 }
+                newData.goal.impact.description = value; 
             }
-            return newData;
-        });
-        console.log("new Data", editableLogData);
-    };
+        } else if (category === "impact") {
+            if (index === -1) {
+                newData.goal.impact.description = value; 
+            } else if (field === "indicators") {
+                if (!Array.isArray(newData.goal.impact.indicators)) {
+                    newData.goal.impact.indicators = [];
+                }
+                newData.goal.impact.indicators[index] = value; // Update indicator
+            }
+        } else if (field === "outcomes" && index >= 0) {
+            newData.goal.impact.outcomes[index][level] = value; // Update outcome field
+        } else if (field === "outputs" && index >= 0) {
+            if (!newData.goal.impact.outcomes[loc?.outcomes].outputs) {
+                newData.goal.impact.outcomes[loc?.outcomes].outputs = []; // Ensure it's an array
+            }
+            newData.goal.impact.outcomes[loc?.outcomes].outputs[index][level] = value; // Update output field
+        } else if (field === "activities" && index >= 0) {
+            newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[index][level] = value; // Update activity field
+        } else if (field === "inputs" && index >= 0) {
+            const inputField = newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index];
+
+            // Ensure that the input field is an object
+            if (typeof inputField === "string" || !inputField) {
+                // Convert string or initialize as an object if it's not already an object
+                newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index] = {
+                    description: "",
+                    baseline: "",
+                    target: "",
+                    indicator: "",
+                    timeline: "",
+                    assumptions: "",
+                };
+            }
+
+            // Now safely update the specific property
+            newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index][level] = value; // Update input field
+        }
+
+        console.log("Updated Data:", newData); // Log updated data for debugging
+        return newData; // Return the updated data
+    });
+};
+
+
+
+
     return (
         <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8">
                   <div className="justify-end flex gap-2 cursor-pointer"  
@@ -255,200 +284,126 @@ function Preview() {
                                 <tbody>
                                     {logframeData && logframeData.goal && (
                                         <>
-                                            {/* Impact Level */}
+                                      
+
                                             <tr className="bg-slate-100">
-                                                <td className="border border-1 p-2 font-bold text-center">
-                                                    Impact
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    <div
-                                                        contentEditable
-                                                        onBlur={(e) =>
-                                                            handleCellChange(
-                                                                "goal",
-                                                                "impact",
-                                                                e.currentTarget
-                                                                    .textContent ||
-                                                                    "",
-                                                                -1,
-                                                                "description"
-                                                            )
-                                                        }
-                                                        suppressContentEditableWarning
-                                                    >
-                                                        {logframeData.goal
-                                                            .impact
-                                                            ?.description ||
-                                                            "-"}
-                                                    </div>
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    {logframeData.goal.impact
-                                                        ?.indicators &&
-                                                        Object.keys(
-                                                            logframeData.goal
-                                                                .impact
-                                                                .indicators
-                                                        ).map((key, idx) => {
-                                                            const indicator =
-                                                                logframeData
-                                                                    .goal.impact
-                                                                    .indicators[
-                                                                    key
-                                                                ];
-                                                            return (
-                                                                <div key={idx}>
-                                                                    <div
-                                                                        contentEditable
-                                                                        onBlur={(
-                                                                            e
-                                                                        ) =>
-                                                                            handleCellChange(
-                                                                                "goal",
-                                                                                "impact",
-                                                                                e
-                                                                                    .currentTarget
-                                                                                    .textContent ||
-                                                                                    "",
-                                                                                idx,
-                                                                                "indicator"
-                                                                            )
-                                                                        }
-                                                                        suppressContentEditableWarning
-                                                                    >
-                                                                        {key ||
-                                                                            ""}
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    {logframeData.goal.impact
-                                                        ?.indicators &&
-                                                        Object.keys(
-                                                            logframeData.goal
-                                                                .impact
-                                                                .indicators
-                                                        ).map((key, idx) => {
-                                                            const indicator =
-                                                                logframeData
-                                                                    .goal.impact
-                                                                    .indicators[
-                                                                    key
-                                                                ];
-                                                            return (
-                                                                <div key={idx}>
-                                                                    <div
-                                                                        contentEditable
-                                                                        onBlur={(
-                                                                            e
-                                                                        ) =>
-                                                                            handleCellChange(
-                                                                                "goal",
-                                                                                "impact",
-                                                                                e
-                                                                                    .currentTarget
-                                                                                    .textContent ||
-                                                                                    "",
-                                                                                idx,
-                                                                                "baseline"
-                                                                            )
-                                                                        }
-                                                                        suppressContentEditableWarning
-                                                                    >
-                                                                        {indicator.baseline ||
-                                                                            ""}
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    {logframeData.goal.impact
-                                                        ?.indicators &&
-                                                        Object.keys(
-                                                            logframeData.goal
-                                                                .impact
-                                                                .indicators
-                                                        ).map((key, idx) => {
-                                                            const indicator =
-                                                                logframeData
-                                                                    .goal.impact
-                                                                    .indicators[
-                                                                    key
-                                                                ];
-                                                            return (
-                                                                <div key={idx}>
-                                                                    <div
-                                                                        contentEditable
-                                                                        onBlur={(
-                                                                            e
-                                                                        ) =>
-                                                                            handleCellChange(
-                                                                                "goal",
-                                                                                "impact",
-                                                                                e
-                                                                                    .currentTarget
-                                                                                    .textContent ||
-                                                                                    "",
-                                                                                idx,
-                                                                                "target"
-                                                                            )
-                                                                        }
-                                                                        suppressContentEditableWarning
-                                                                    >
-                                                                        {indicator.target ||
-                                                                            "-"}
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    <div
-                                                        contentEditable
-                                                        onBlur={(e) =>
-                                                            handleCellChange(
-                                                                "goal",
-                                                                "impact",
-                                                                e.currentTarget
-                                                                    .textContent ||
-                                                                    "",
-                                                                -1,
-                                                                "timeline"
-                                                            )
-                                                        }
-                                                        suppressContentEditableWarning
-                                                    >
-                                                        {logframeData.goal
-                                                            .impact?.timeline ||
-                                                            "-"}
-                                                    </div>
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    <div
-                                                        contentEditable
-                                                        onBlur={(e) =>
-                                                            handleCellChange(
-                                                                "goal",
-                                                                "impact",
-                                                                e.currentTarget
-                                                                    .textContent ||
-                                                                    "",
-                                                                -1,
-                                                                "assumptions"
-                                                            )
-                                                        }
-                                                        suppressContentEditableWarning
-                                                    >
-                                                        {logframeData.goal
-                                                            .impact
-                                                            ?.assumptions ||
-                                                            "-"}
-                                                    </div>
-                                                </td>
-                                            </tr>
+    <td className="border border-1 p-2 font-bold text-center">Impact</td>
+    <td className="border border-1 p-2">
+        <div
+            contentEditable
+            onBlur={(e) =>
+                handleCellChange(
+                    "goal",
+                    "impact",
+                    e.currentTarget.textContent || "",
+                    -1,
+                    "description"
+                )
+            }
+            suppressContentEditableWarning
+        >
+            {logframeData.goal.impact?.description || "-"}
+        </div>
+    </td>
+    <td className="border border-1 p-2">
+        {Object.keys(logframeData.goal.impact?.indicators || {}).map((key, idx) => (
+            <div key={idx}>
+                <div
+                    contentEditable
+                    onBlur={(e) =>
+                        handleCellChange(
+                            "goal",
+                            "impact",
+                            e.currentTarget.textContent || "",
+                            idx,
+                            "indicators"
+                        )
+                    }
+                    suppressContentEditableWarning
+                >
+                   {key}
+                </div>
+            </div>
+        ))}
+    </td>
+    <td className="border border-1 p-2">
+        {Object.keys(logframeData.goal.impact?.indicators || {}).map((key, idx) => (
+            <div key={idx}>
+                <div
+                    contentEditable
+                    onBlur={(e) =>
+                        handleCellChange(
+                            "goal",
+                            "impact",
+                            e.currentTarget.textContent || "",
+                            idx,
+                            "baseline"
+                        )
+                    }
+                    suppressContentEditableWarning
+                >
+                    {logframeData.goal.impact.indicators[key]?.baseline || ""}
+                </div>
+            </div>
+        ))}
+    </td>
+    <td className="border border-1 p-2">
+        {Object.keys(logframeData.goal.impact?.indicators || {}).map((key, idx) => (
+            <div key={idx}>
+                <div
+                    contentEditable
+                    onBlur={(e) =>
+                        handleCellChange(
+                            "goal",
+                            "impact",
+                            e.currentTarget.textContent || "",
+                            idx,
+                            "target"
+                        )
+                    }
+                    suppressContentEditableWarning
+                >
+                    {logframeData.goal.impact.indicators[key]?.target || "-"}
+                </div>
+            </div>
+        ))}
+    </td>
+    <td className="border border-1 p-2">
+        <div
+            contentEditable
+            onBlur={(e) =>
+                handleCellChange(
+                    "goal",
+                    "impact",
+                    e.currentTarget.textContent || "",
+                    -1,
+                    "timeline"
+                )
+            }
+            suppressContentEditableWarning
+        >
+            {logframeData.goal.impact?.timeline || "-"}
+        </div>
+    </td>
+    <td className="border border-1 p-2">
+        <div
+            contentEditable
+            onBlur={(e) =>
+                handleCellChange(
+                    "goal",
+                    "impact",
+                    e.currentTarget.textContent || "",
+                    -1,
+                    "assumptions"
+                )
+            }
+            suppressContentEditableWarning
+        >
+            {logframeData.goal.impact?.assumptions || "-"}
+        </div>
+    </td>
+</tr>
+
 
                                             {/* Outcome Level */}
                                             {logframeData.goal.impact?.outcomes?.map(
@@ -1011,9 +966,10 @@ function Preview() {
                                                                                 </tr>
 
                                                                                 {/* Inputs Level */}
-                                                                                {activityItem.inputs && (
-                                                                                    <tr className="bg-slate-100">
-                                                                                          <td className="border border-1 p-2 font-bold text-center">
+                                                                            {/* Inputs Level */}
+{activityItem.inputs && activityItem.inputs.length > 0 && (
+    <tr className="bg-slate-100">
+        <td className="border border-1 p-2 font-bold text-center">
             Input
         </td>
         {/* Description */}
@@ -1030,13 +986,13 @@ function Preview() {
                         {
                             outcomes: outcomeIndex,
                             outputs: outputIndex,
-                            actvivity: activityIndex,
+                            activity: activityIndex,
                         }
                     )
                 }
                 suppressContentEditableWarning
             >
-                {activityItem.inputs[0].description}
+                {activityItem.inputs[0].description || ""} {/* Default to empty string */}
             </div>
         </td>
         {/* Baseline */}
@@ -1053,13 +1009,13 @@ function Preview() {
                         {
                             outcomes: outcomeIndex,
                             outputs: outputIndex,
-                            actvivity: activityIndex,
+                            activity: activityIndex,
                         }
                     )
                 }
                 suppressContentEditableWarning
             >
-                {activityItem.inputs[0].baseline}
+                {activityItem.inputs[0].baseline || ""} {/* Default to empty string */}
             </div>
         </td>
         {/* Target */}
@@ -1076,13 +1032,13 @@ function Preview() {
                         {
                             outcomes: outcomeIndex,
                             outputs: outputIndex,
-                            actvivity: activityIndex,
+                            activity: activityIndex,
                         }
                     )
                 }
                 suppressContentEditableWarning
             >
-                {activityItem.inputs[0].target}
+                {activityItem.inputs[0].target || ""} {/* Default to empty string */}
             </div>
         </td>
         {/* Indicator */}
@@ -1099,13 +1055,13 @@ function Preview() {
                         {
                             outcomes: outcomeIndex,
                             outputs: outputIndex,
-                            actvivity: activityIndex,
+                            activity: activityIndex,
                         }
                     )
                 }
                 suppressContentEditableWarning
             >
-                {activityItem.inputs[0].indicator}
+                {activityItem.inputs[0].indicator || ""} {/* Default to empty string */}
             </div>
         </td>
         {/* Timeline */}
@@ -1122,16 +1078,17 @@ function Preview() {
                         {
                             outcomes: outcomeIndex,
                             outputs: outputIndex,
-                            actvivity: activityIndex,
+                            activity: activityIndex,
                         }
                     )
                 }
                 suppressContentEditableWarning
             >
-                {activityItem.inputs[0].timeline}
+                {activityItem.inputs[0].timeline || ""} {/* Default to empty string */}
             </div>
         </td>
-                                                                                <td className="border border-1 p-2">
+        {/* Assumptions */}
+        <td className="border border-1 p-2">
             <div
                 contentEditable
                 onBlur={(e) =>
@@ -1144,17 +1101,18 @@ function Preview() {
                         {
                             outcomes: outcomeIndex,
                             outputs: outputIndex,
-                            actvivity: activityIndex,
+                            activity: activityIndex,
                         }
                     )
                 }
                 suppressContentEditableWarning
             >
-                {activityItem.inputs[0].assumptions || "(To be determined)"}
+                {activityItem.inputs[0].assumptions || "-"} {/* Default to dash if undefined */}
             </div>
         </td>
-                                                                                    </tr>
-                                                                                )}
+    </tr>
+)}
+
                                                                             </React.Fragment>
                                                                         )
                                                                     )}

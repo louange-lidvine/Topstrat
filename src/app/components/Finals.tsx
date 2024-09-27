@@ -527,7 +527,7 @@ const MyDocument = () => (
           {logframeData && logframeData.goal && (
             <>
               {/* Impact Level */}
-              <tr style={{ backgroundColor: '#f8fafc', fontSize: '16px' }}>
+              <tr style={{ backgroundColor: 'white', fontSize: '16px' }}>
                 <td style={{ border: '1px solid #000', padding: '10px',  textAlign: 'center' }}>Impact</td>
                 <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.description || "-"}</td>
                 <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
@@ -563,7 +563,7 @@ const MyDocument = () => (
               {/* Outcome Level */}
               {logframeData.goal.impact?.outcomes?.map((outcomeItem:any, outcomeIndex:any) => (
                 <React.Fragment key={`outcome-${outcomeIndex}`}>
-                  <tr style={{backgroundColor: '#f8fafc', fontSize: '16px' }}>
+                  <tr style={{backgroundColor: 'white', fontSize: '16px' }}>
                     <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
                       Outcome {outcomeIndex + 1}
                     </td>
@@ -578,7 +578,7 @@ const MyDocument = () => (
                   {/* Output Level */}
                   {outcomeItem.outputs?.map((outputItem:any, outputIndex:any) => (
                     <React.Fragment key={`output-${outputIndex}`}>
-                      <tr style={{ backgroundColor: '#f8fafc', fontSize: '16px' }}>
+                      <tr style={{ backgroundColor: 'white', fontSize: '16px' }}>
                         <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
                           Output {outcomeIndex + 1}.{outputIndex + 1}
                         </td>
@@ -593,7 +593,7 @@ const MyDocument = () => (
                       {/* Activity Level */}
                       {outputItem.activities?.map((activityItem:any, activityIndex:any) => (
                         <React.Fragment key={`activity-${activityIndex}`}>
-                          <tr style={{backgroundColor: '#f8fafc', fontSize: '16px' }}>
+                          <tr style={{backgroundColor: 'white', fontSize: '16px' }}>
                             <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
                               Activity {outcomeIndex + 1}.{outputIndex + 1}.{activityIndex + 1}
                             </td>
@@ -607,7 +607,7 @@ const MyDocument = () => (
 
                           {/* Input Level */}
                           {activityItem.inputs && (
-                            <tr style={{ backgroundColor: '#f8fafc', fontSize: '16px' }}>
+                            <tr style={{ backgroundColor: 'white', fontSize: '16px' }}>
                               <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>Input</td>
                               <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.description || "-"}</td>
                               <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.indicator || "-"}</td>
