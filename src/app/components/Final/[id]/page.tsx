@@ -1102,19 +1102,19 @@ function Page() {
             {activityItem.inputs[0].description}
         </td>
         <td className="border border-1 p-2">
-            {activityItem.inputs[0].baseline || "(To be determined)"}
+            {activityItem.inputs[0].baseline || "-"}
         </td>
      <td className="border border-1 p-2">
-            {activityItem.inputs[0].target || "(To be determined)"}
+            {activityItem.inputs[0].target || "-"}
         </td>
         <td className="border border-1 p-2">
-            {activityItem.inputs[0].indicator || "(To be determined)"}
+            {activityItem.inputs[0].indicator || "-"}
         </td>
         <td className="border border-1 p-2">
             {activityItem.inputs[0].timeline || "-"}
         </td>
         <td className="border border-1 p-2">
-            {activityItem.inputs[0].assumptions || "(To be determined)"}
+            {activityItem.inputs[0].assumptions || "-"}
         </td>
     
     </tr>

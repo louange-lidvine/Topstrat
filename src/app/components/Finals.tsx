@@ -408,7 +408,7 @@ const MyDocument = () => (
             </div>
           ) : (
             <div className="w-full">
-              <p style={{ fontSize: "20px", fontWeight: "bold", color: "#0B6C79" }}>PESTLE Analysis</p>
+              <p style={{ fontSize: "20px", fontWeight: "bold", color: "#0B6C79" }} className="py-3">PESTLE Analysis</p>
               <table className="border border-1 m-auto">
                 <thead>
                   <tr className="bg-slate-300">
@@ -492,147 +492,145 @@ const MyDocument = () => (
                 <LogFrameSkeleton />
               </div>
             ) : (
-              <div className="w-full">
-                <div className="flex flex-col gap-3">
-                  <div className="text-blue-default font-bold text-2xl py-5">
-                    Logframe
-                  </div>
-                  <h1>Goal : {logframeData?.goal?.description}</h1>
-                  <div className="overflow-x-auto">
-                    <table className="border border-1 m-auto">
-                      <thead>
-                        <tr className="bg-slate-300">
-                          <th
-                            className="border border-1 p-2 text-md  text-blue-default font-bold text-center"
-                            colSpan={2}
-                            style={{ fontSize: "12px", fontWeight: "bold", color: "#0B6C79" }}
-                          >
-                            Results Chain
-                          </th>
-                          <th className="border border-1 p-2 text-md text-blue-default font-bold text-center"
-                          style={{ fontSize: "12px", fontWeight: "bold", color: "#0B6C79" }}>
-                            Indicator
-                          </th>
-                          <th className="border border-1 p-2 text-md text-blue-default font-bold text-center" style={{ fontSize: "12px", fontWeight: "bold", color: "#0B6C79" }}>
-                            Baseline
-                          </th>
-                          <th className="border border-1 p-2 text-md text-blue-default font-bold text-center" style={{ fontSize: "12px", fontWeight: "bold", color: "#0B6C79" }}>
-                            Target
-                          </th>
-                          <th className="border border-1 p-2 text-md text-blue-default font-bold text-center" style={{ fontSize: "12px", fontWeight: "bold", color: "#0B6C79" }}>
-                            Timeline
-                          </th>
-                          <th className="border border-1 p-2 text-md text-blue-default font-bold text-center" style={{ fontSize: "12px", fontWeight: "bold", color: "#0B6C79" }}>
-                            Assumptions
-                          </th>
-                        </tr>
-                      </thead>
-                     <tbody>
-  {logframeData && logframeData.goal && (
-    <>
-      {/* Impact Level */}
-      <tr style={{ backgroundColor: '#f8fafc', fontSize: '10px' }}>
-        <td style={{ border: '1px solid #000', padding: '4px', fontWeight: 'bold', textAlign: 'center' }}>Impact</td>
-        <td style={{ border: '1px solid #000', padding: '4px' }}>{logframeData.goal.impact?.description || "-"}</td>
-        <td style={{ border: '1px solid #000', padding: '4px' }}>
-          {logframeData.goal.impact?.indicators &&
-            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => (
-              <div key={idx} style={{ fontSize: '8px' }}>
-                <p>{key}:</p>
-              </div>
-            ))}
-        </td>
-        <td style={{ border: '1px solid #000', padding: '4px' }}>
-          {logframeData.goal.impact?.indicators &&
-            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
-              const indicator = logframeData.goal.impact.indicators[key];
-              return (
-                <div key={idx} style={{ fontSize: '8px' }}>{indicator.baseline || ""},</div>
-              );
-            })}
-        </td>
-        <td style={{ border: '1px solid #000', padding: '4px' }}>
-          {logframeData.goal.impact?.indicators &&
-            Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
-              const indicator = logframeData.goal.impact.indicators[key];
-              return (
-                <div key={idx} style={{ fontSize: '8px' }}>{indicator.target || "-"}</div>
-              );
-            })}
-        </td>
-        <td style={{ border: '1px solid #000', padding: '4px' }}>{logframeData.goal.impact?.timeline || "-"}</td>
-        <td style={{ border: '1px solid #000', padding: '4px' }}>{logframeData.goal.impact?.assumptions || "-"}</td>
-      </tr>
-
-      {/* Outcome Level */}
-      {logframeData.goal.impact?.outcomes?.map((outcomeItem:any, outcomeIndex:any) => (
-        <React.Fragment key={`outcome-${outcomeIndex}`}>
-          <tr style={{ backgroundColor: outcomeIndex % 2 === 0 ? '#f8fafc' : 'transparent', fontSize: '10px' }}>
-            <td style={{ border: '1px solid #000', padding: '4px', fontWeight: 'bold', textAlign: 'center' }}>Outcome {outcomeIndex + 1}</td>
-            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.description || "-"}</td>
-            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.indicator || "-"}</td>
-            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.baseline || "-"}</td>
-            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.target || "-"}</td>
-            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.timeline || "-"}</td>
-            <td style={{ border: '1px solid #000', padding: '4px' }}>{outcomeItem.assumptions || "-"}</td>
+          <div className="w-full">
+  <div className="flex flex-col gap-3">
+    <div className="text-blue-default font-bold py-5" style={{font:"20px"}}>
+      Logframe
+    </div>
+    <h2 style={{ fontSize: "16px", marginBottom: "8px" }}>Goal: {logframeData?.goal?.description}</h2>
+    <div className="overflow-x-auto">
+      <table className=" border-2 m-auto" style={{ width: "100%", tableLayout: "fixed" }}>
+        <thead>
+          <tr className="bg-slate-300">
+            <th className="border border-1 p-3 text-lg text-blue-default font-bold" colSpan={2}
+              style={{ fontSize: "16px", color: "#0B6C79", width: "25%" }}>
+              Results Chain
+            </th>
+            <th className="border border-1 p-3 text-lg text-blue-default font-bold" style={{ fontSize: "16px", width: "10%" }}>
+              Indicator
+            </th>
+            <th className="border border-1 p-3 text-lg text-blue-default font-bold" style={{ fontSize: "16px", width: "10%" }}>
+              Baseline
+            </th>
+            <th className="border border-1 p-3 text-lg text-blue-default font-bold" style={{ fontSize: "16px", width: "10%" }}>
+              Target
+            </th>
+            <th className="border border-1 p-3 text-lg text-blue-default font-bold" style={{ fontSize: "16px", width: "10%" }}>
+              Timeline
+            </th>
+            <th className="border border-1 p-3 text-lg text-blue-default font-bold" style={{ fontSize: "16px", width: "15%" }}>
+              Assumptions
+            </th>
           </tr>
-
-          {/* Output Level */}
-          {outcomeItem.outputs?.map((outputItem:any, outputIndex:any) => (
-            <React.Fragment key={`output-${outputIndex}`}>
-              <tr style={{ backgroundColor: outputIndex % 2 === 0 ? '#f8fafc' : 'transparent', fontSize: '10px' }}>
-                <td style={{ border: '1px solid #000', padding: '4px', fontWeight: 'bold', textAlign: 'center' }}>
-                  Output {outcomeIndex + 1}.{outputIndex + 1}
+        </thead>
+        <tbody>
+          {logframeData && logframeData.goal && (
+            <>
+              {/* Impact Level */}
+              <tr style={{ backgroundColor: 'white', fontSize: '16px' }}>
+                <td style={{ border: '1px solid #000', padding: '10px',  textAlign: 'center' }}>Impact</td>
+                <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.description || "-"}</td>
+                <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
+                  {logframeData.goal.impact?.indicators &&
+                    Object.keys(logframeData.goal.impact.indicators).map((key, idx) => (
+                      <div key={idx} style={{ fontSize: '16px' }}>
+                        <p>{key}:</p>
+                      </div>
+                    ))}
                 </td>
-                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.description || "-"}</td>
-                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.indicator || "-"}</td>
-                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.baseline || "0"}</td>
-                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.target || "-"}</td>
-                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.timeline || "-"}</td>
-                <td style={{ border: '1px solid #000', padding: '4px' }}>{outputItem.assumptions || "-"}</td>
+                <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>
+                  {logframeData.goal.impact?.indicators &&
+                    Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
+                      const indicator = logframeData.goal.impact.indicators[key];
+                      return (
+                        <div key={idx} style={{ fontSize: '16px' }}>{indicator.baseline || ""}</div>
+                      );
+                    })}
+                </td>
+                <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>
+                  {logframeData.goal.impact?.indicators &&
+                    Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
+                      const indicator = logframeData.goal.impact.indicators[key];
+                      return (
+                        <div key={idx} style={{ fontSize: '16px' }}>{indicator.target || "-"}</div>
+                      );
+                    })}
+                </td>
+                <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.timeline || "-"}</td>
+                <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.assumptions || "-"}</td>
               </tr>
 
-              {/* Activity Level */}
-              {outputItem.activities?.map((activityItem:any, activityIndex:any) => (
-                <React.Fragment key={`activity-${activityIndex}`}>
-                  <tr style={{ backgroundColor: activityIndex % 2 === 0 ? '#f8fafc' : 'transparent', fontSize: '10px' }}>
-                    <td style={{ border: '1px solid #000', padding: '4px', fontWeight: 'bold', textAlign: 'center' }}>
-                      Activity {outcomeIndex + 1}.{outputIndex + 1}.{activityIndex + 1}
+              {/* Outcome Level */}
+              {logframeData.goal.impact?.outcomes?.map((outcomeItem:any, outcomeIndex:any) => (
+                <React.Fragment key={`outcome-${outcomeIndex}`}>
+                  <tr style={{backgroundColor: 'white', fontSize: '16px' }}>
+                    <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
+                      Outcome {outcomeIndex + 1}
                     </td>
-                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.description || "-"}</td>
-                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.indicator || "-"}</td>
-                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.baseline || "-"}</td>
-                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.target || "-"}</td>
-                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.timeline || "-"}</td>
-                    <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.assumptions || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outcomeItem.description || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outcomeItem.indicator || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outcomeItem.baseline || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outcomeItem.target || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outcomeItem.timeline || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outcomeItem.assumptions || "-"}</td>
                   </tr>
 
-                  {/* Inputs Level */}
-                  {activityItem.inputs && (
-                    <tr style={{ backgroundColor: '#f8fafc', fontSize: '10px' }}>
-                      <td style={{ border: '1px solid #000', padding: '4px', fontWeight: 'bold', textAlign: 'center' }}>Input</td>
-                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].description}</td>
-                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].baseline || "(To be determined)"}</td>
-                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].target || "(To be determined)"}</td>
-                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].indicator || "(To be determined)"}</td>
-                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].timeline || "-"}</td>
-                      <td style={{ border: '1px solid #000', padding: '4px' }}>{activityItem.inputs[0].assumptions || "(To be determined)"}</td>
-                    </tr>
-                  )}
+                  {/* Output Level */}
+                  {outcomeItem.outputs?.map((outputItem:any, outputIndex:any) => (
+                    <React.Fragment key={`output-${outputIndex}`}>
+                      <tr style={{ backgroundColor: 'white', fontSize: '16px' }}>
+                        <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
+                          Output {outcomeIndex + 1}.{outputIndex + 1}
+                        </td>
+                        <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outputItem.description || "-"}</td>
+                        <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outputItem.indicator || "-"}</td>
+                        <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outputItem.baseline || "0"}</td>
+                        <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outputItem.target || "-"}</td>
+                        <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outputItem.timeline || "-"}</td>
+                        <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outputItem.assumptions || "-"}</td>
+                      </tr>
+
+                      {/* Activity Level */}
+                      {outputItem.activities?.map((activityItem:any, activityIndex:any) => (
+                        <React.Fragment key={`activity-${activityIndex}`}>
+                          <tr style={{backgroundColor: 'white', fontSize: '16px' }}>
+                            <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
+                              Activity {outcomeIndex + 1}.{outputIndex + 1}.{activityIndex + 1}
+                            </td>
+                            <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.description || "-"}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.indicator || "-"}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.baseline || "-"}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.target || "-"}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.timeline || "-"}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.assumptions || "-"}</td>
+                          </tr>
+
+                          {/* Input Level */}
+                          {activityItem.inputs && (
+                            <tr style={{ backgroundColor: 'white', fontSize: '16px' }}>
+                              <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>Input</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.description || "-"}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.indicator || "-"}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.baseline || "-"}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.target || "-"}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.timeline || "-"}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.assumptions || "-"}</td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </React.Fragment>
+                  ))}
                 </React.Fragment>
               ))}
-            </React.Fragment>
-          ))}
-        </React.Fragment>
-      ))}
-    </>
-  )}
-</tbody>
+            </>
+          )}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-                    </table>
-                  </div>
-                </div>
-              </div>
             )}
           </div>
       </div>
