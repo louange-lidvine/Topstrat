@@ -253,7 +253,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                         
 
                             >
-                                Upgrade payment plan
+                                Upgrade plan
                             </button>
                         </div>
                     </ReactModal>
