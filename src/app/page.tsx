@@ -1,11 +1,25 @@
+"use client"
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Office from "../../public/assets/At the office.png";
 import Background from "../../public/assets/bg.png";
 import logo from '../../public/assets/logo.png'
+import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { FaBars, FaTimes } from 'react-icons/fa'; // For hamburger and close icons
+
+
 
 function Page() {
+    const navigate = useRouter()
+    
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
+
     return (
         <div>
             <Image
@@ -14,7 +28,7 @@ function Page() {
                 alt="background-img"
             />
             <div className="relative min-h-screen  text-gray-900">
-                <nav className="flex justify-between items-center p-4 fixed top-0 w-full bg-white shadow-lg z-20">
+                {/* <nav className="flex justify-between items-center p-4 fixed top-0 w-full bg-white shadow-lg z-20">
                     <div className="flex items-center">
                         <a
                             href="#home"
@@ -78,7 +92,64 @@ function Page() {
                             </button>
                         </Link>
                     </div>
-                </nav>
+                </nav> */}
+
+ <nav className="fixed top-0 w-full bg-white shadow-lg z-20">
+            <div className="flex justify-between items-center p-4">
+                {/* Logo */}
+                <div className="flex items-center">
+                    <a href="#home" className="text-2xl font-bold text-blue-default">
+                        <Image src={logo} alt="alt" width={50} height={50} />
+                    </a>
+                    <h1 className="font-bold text-xl text-blue-default ml-2">TOPSTRAT</h1>
+                </div>
+
+                {/* Hamburger Icon */}
+                <div className="md:hidden">
+                    <button onClick={toggleMenu}>
+                        {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+                    </button>
+                </div>
+
+                {/* Desktop Menu Links */}
+                <div className="hidden md:flex items-center space-x-6 font-semibold text-gray-700">
+                    <Link href="#home" className="hover:text-blue-default transition-colors">Home</Link>
+                    <Link href="#services" className="hover:text-blue-default transition-colors">Services</Link>
+                    <Link href="#about" className="hover:text-blue-default transition-colors">About</Link>
+                    <Link href="#pricing" className="hover:text-blue-default transition-colors">Payment</Link>
+                    <Link href="#contacts" className="hover:text-blue-default transition-colors">Contacts</Link>
+                </div>
+
+                {/* Sign In and Sign Up Buttons (Desktop) */}
+                <div className="hidden md:flex items-center space-x-4">
+                    <Link href="/Pages/signIn" className="font-semibold hover:text-blue-default transition-colors">Sign In</Link>
+                    <Link href="/Pages/signup">
+                        <button className="bg-blue-default text-white px-6 py-2 rounded-full transition-all">
+                            Sign Up
+                        </button>
+                    </Link>
+                </div>
+            </div>
+
+            <div className={`absolute top-0 left-0 w-full bg-white transition-all duration-300 ${menuOpen ? 'h-screen' : 'h-0'} overflow-hidden`}>
+                <div className="flex flex-col items-center justify-center space-y-6 mt-20 font-semibold text-gray-700">
+                    <Link href="#home" className="hover:text-blue-default transition-colors" onClick={toggleMenu}>Home</Link>
+                    <Link href="#services" className="hover:text-blue-default transition-colors" onClick={toggleMenu}>Services</Link>
+                    <Link href="#about" className="hover:text-blue-default transition-colors" onClick={toggleMenu}>About</Link>
+                    <Link href="#pricing" className="hover:text-blue-default transition-colors" onClick={toggleMenu}>Payment</Link>
+                    <Link href="#contacts" className="hover:text-blue-default transition-colors" onClick={toggleMenu}>Contacts</Link>
+                    <Link href="/Pages/signIn" className="hover:text-blue-default transition-colors" onClick={toggleMenu}>Sign In</Link>
+                    <Link href="/Pages/signup">
+                        <button className="bg-blue-default text-white px-6 py-2 rounded-full transition-all">
+                            Sign Up
+                        </button>
+                    </Link>
+                </div>
+            </div>
+        </nav>
+
+
+
 
                 <section
                     id="home"
@@ -261,7 +332,7 @@ function Page() {
                                         ✓ Export Strategic plan as PDF
                                     </li>
                                 </ul>
-                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all">
+                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all"     onClick={()=>navigate.push("https://topstrat-payment-portal.vercel.app/")}>
                                     Buy Plan
                                 </button>
                             </div>
@@ -295,7 +366,7 @@ function Page() {
                                         ✓ Export Strategic plan as PDF
                                     </li>
                                 </ul>
-                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all">
+                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all"     onClick={()=>navigate.push("https://topstrat-payment-portal.vercel.app/")}>
                                     Buy Plan
                                 </button>
                             </div>
@@ -326,7 +397,7 @@ function Page() {
                                         ✓ Export Strategic plan as Word
                                     </li>
                                 </ul>
-                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all">
+                                <button className="bg-blue-default text-white rounded-full px-6 py-3 font-bold hover:bg-blue-700 transition-all"     onClick={()=>navigate.push("https://topstrat-payment-portal.vercel.app/")}>
                                     Buy Plan
                                 </button>
                             </div>

@@ -246,6 +246,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                             >
                                 View all projects
                             </button>
+                            <button
+                            onClick={()=>navigate.push("https://topstrat-payment-portal.vercel.app/")}
+                                type="button"
+                                className="bg-blue-400 py-2 px-6 text-white rounded-md"
+                        
+
+                            >
+                                Upgrade payment plan
+                            </button>
                         </div>
                     </ReactModal>
                 </div>
