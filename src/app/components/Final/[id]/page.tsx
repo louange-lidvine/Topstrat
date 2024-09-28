@@ -9,12 +9,13 @@ import { getCookie } from "cookies-next";
 import PrintModal from "../../EditProj/printModal";
 import ReactModal from "react-modal";
 import EdiTModal from "../../EdiModal";
+import Cover from "../../cover/[id]/page"
 
 function Page() {
     const { id } = useParams();
     const router = useRouter();
     const resolvedId = Array.isArray(id) ? id[0] : id;
-     const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+    const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
     const [promptData, setPromptData] = useState<any>();
@@ -24,12 +25,10 @@ function Page() {
     const [Data, setData] = useState<any>([]);
     const [error, setError] = useState<string | null>(null);
     const [userData, setUserData] = useState<any>(null);
-    const [gravatarUrl, setGravatarUrl] = useState<string>(""); 
-    const [hasWatermark, setHasWatermark] = useState(false); 
+    const [gravatarUrl, setGravatarUrl] = useState<string>("");
+    const [hasWatermark, setHasWatermark] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
-
-
-
+    const [showCover, setShowCover] = useState(false); // New state to control cover visibility
 
     useEffect(() => {
         const fetchData = async () => {
@@ -87,72 +86,69 @@ function Page() {
         fetchData();
     }, [id]);
 
-    
-      useEffect(() => {
-          const getProject = async (id: string) => {
-              try {
-                  const token = getCookie("token");
-                  const response = await axios.get(
-                      `${baseURL}/projects/${id}`,
-                      {
-                          headers: {
-                              "Content-Type": "application/json",
-                              Authorization: `Bearer ${token}`,
-                          },
-                      }
-                  );
-                  console.log("Project data:", response.data);
-                  setProjectData(response.data);
-              } catch (error) {
-                  console.error("Error fetching project data:", error);
-                  setError("Failed to fetch project data.");
-              }
-          };
+    useEffect(() => {
+        const getProject = async (id: string) => {
+            try {
+                const token = getCookie("token");
+                const response = await axios.get(`${baseURL}/projects/${id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log("Project data:", response.data);
+                setProjectData(response.data);
+            } catch (error) {
+                console.error("Error fetching project data:", error);
+                setError("Failed to fetch project data.");
+            }
+        };
 
-          // Fetch user data using userId from localStorage
-          const getUserData = async () => {
-              try {
-                  const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
-                  const token = getCookie("token");
+        const handlePrint = () => {
+            setShowCover(true); // Show the cover when printing
+            setIsPrintModalOpen(true);
+        };
+        // Fetch user data using userId from localStorage
+        const getUserData = async () => {
+            try {
+                const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
+                const token = getCookie("token");
 
-                  if (userId) {
-                      const response = await axios.get(
-                          `${baseURL}/users/${userId}`,
-                          {
-                              headers: {
-                                  "Content-Type": "application/json",
-                                  Authorization: `Bearer ${token}`,
-                              },
-                          }
-                      );
-                      console.log("User data:", response.data);
-                      setUserData(response.data);
+                if (userId) {
+                    const response = await axios.get(
+                        `${baseURL}/users/${userId}`,
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    console.log("User data:", response.data);
+                    setUserData(response.data);
 
-                      if (response.data.gravatar) {
-                          setGravatarUrl(response.data.gravatar);
-                      }
+                    if (response.data.gravatar) {
+                        setGravatarUrl(response.data.gravatar);
+                    }
 
-                      if (response.data.subscription === "FreeTrial") {
-                          setHasWatermark(true);
-                      } else {
-                          setHasWatermark(false);
-                      }
-                  } else {
-                      console.error("User ID not found in localStorage.");
-                  }
-              } catch (error) {
-                  console.error("Error fetching user data:", error);
-                  setError("Failed to fetch user data.");
-              }
-          };
+                    if (response.data.subscription === "FreeTrial") {
+                        setHasWatermark(true);
+                    } else {
+                        setHasWatermark(false);
+                    }
+                } else {
+                    console.error("User ID not found in localStorage.");
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                setError("Failed to fetch user data.");
+            }
+        };
 
-          getProject(id as string);
-          getUserData();
-          setIsLoading(false);
-      }, [id]);
-
-
- 
+        getProject(id as string);
+        getUserData();
+        setIsLoading(false);
+    }, [id]);
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
@@ -161,8 +157,7 @@ function Page() {
         setIsModalOpen(true);
     };
 
-
-       const regenerateData = async () => {
+    const regenerateData = async () => {
         try {
             const token = getCookie("token");
             setIsLoading(true);
@@ -216,39 +211,55 @@ function Page() {
     return (
         <div className="border  border-blue-default my-2 rounded-md">
             <Finals id={resolvedId} />
-             <div className="flex justify-center gap-8 my-5">
-                               <button
-                            onClick={()=>router.push('/components/Landingpage')}
-                            className="bg-blue-400 text-white font-bold rounded-md py-3 px-6"
-                        >
-                            Save and Exit
-                        </button>
-                        <button className="bg-blue-default text-white font-bold rounded-md py-3 px-6" onClick={()=>{setIsPrintModalOpen(true)}}>
-                        Download
-                        </button>
+            <div className="flex justify-center gap-8 my-5">
+                <button
+                    onClick={() => router.push("/components/Landingpage")}
+                    className="bg-blue-400 text-white font-bold rounded-md py-3 px-6"
+                >
+                    Save and Exit
+                </button>
+                <button
+                    className="bg-blue-default text-white font-bold rounded-md py-3 px-6"
+                    onClick={() => {
+                        setIsPrintModalOpen(true);
+                    }}
+                >
+                    Download
+                </button>
 
-                        <button
-                            onClick={regenerateData}
-                            className="bg-orange-default text-white font-bold rounded-md py-3 px-6"
-                        >
-                            Regenerate
-                        </button>
-                        <button
-                            onClick={()=>setIsEditModalOpen(true)}
-                            className="bg-green-500 text-white font-bold rounded-md py-3 px-6"
-                        >
-                            Edit
-                        </button>
-                    </div>
-            <EdiTModal isOpen={isEditModalOpen} onClose={()=>setIsEditModalOpen(false)} id={projectData._id} />
-              <PrintModal
-          isOpen={isPrintModalOpen}
+                <button
+                    onClick={regenerateData}
+                    className="bg-orange-default text-white font-bold rounded-md py-3 px-6"
+                >
+                    Regenerate
+                </button>
+                <button
+                    onClick={() => setIsEditModalOpen(true)}
+                    className="bg-green-500 text-white font-bold rounded-md py-3 px-6"
+                >
+                    Edit
+                </button>
+            </div>
+            {projectData && projectData._id && (
+                <EdiTModal
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    id={projectData._id}
+                />
+            )}
+
+            <PrintModal
+                isOpen={isPrintModalOpen}
                 id={resolvedId}
-                onClose={() => setIsPrintModalOpen(false)}
+                onClose={() => {
+                    setShowCover(false); // Reset cover visibility on close
+                    setIsPrintModalOpen(false);
+                }}
                 projectData={projectData}
                 promptData={promptData}
                 pestleData={pestleData}
                 logframeData={logframeData}
+                showCover={showCover}
             />
         </div>
     );

@@ -21,6 +21,11 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
         Logo: null as File | null,
         description: "",
         method: "",
+        phone: "", // New Input
+        email: "", // New Input
+        physicalAddress: "", // New Input
+        poBox: "", // New Input
+        webURL: "",
     });
 
     const handleCloseModal = () => {
@@ -71,6 +76,12 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
           "autoGenerate",
           formData.method === "quick" ? "true" : "false"
       );
+      // New fields added to form data for later integration
+      formDataToSubmit.append("phone", formData.phone);
+      formDataToSubmit.append("email", formData.email);
+      formDataToSubmit.append("physicalAddress", formData.physicalAddress);
+      formDataToSubmit.append("poBox", formData.poBox);
+      formDataToSubmit.append("webURL", formData.webURL);
 
       // Log the form data to debug using Array.from
       console.log(
@@ -178,7 +189,10 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
                 className="lg:w-[600px] w-[90%] max-h-screen max-w-lg mx-auto p-6 mt-10 bg-white shadow-xl rounded-md"
                 overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start"
             >
-                <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                <form
+                    className="flex flex-col gap-4 max-h-[90vh] overflow-y-auto"
+                    onSubmit={handleSubmit}
+                >
                     <h2 className="text-2xl font-semibold text-center mb-6">
                         Project Information
                     </h2>
@@ -246,6 +260,77 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
                                 onChange={handleFileChange}
                             />
                         </div>
+                    </div>
+                    
+                    <div className="flex flex-col">
+    <label className="text-start mb-2 font-medium text-gray-700">
+        Phone
+    </label>
+    <input
+        type="tel"
+        placeholder="Enter phone number"
+        className="w-full border border-gray-300 py-2 px-3 rounded-md"
+        name="phone"
+        onChange={handleChange}
+        value={formData.phone}
+    />
+</div>
+
+
+                    <div className="flex flex-col">
+                        <label className="text-start mb-2 font-medium text-gray-700">
+                            Email
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Enter phone number"
+                            className="w-full border border-gray-300 py-2 px-3 rounded-md"
+                            name="email"
+                            onChange={handleChange}
+                            value={formData.email}
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label className="text-start mb-2 font-medium text-gray-700">
+                            Physical Address
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Enter physical address"
+                            className="w-full border border-gray-300 py-2 px-3 rounded-md"
+                            name="physicalAddress"
+                            onChange={handleChange}
+                            value={formData.physicalAddress}
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label className="text-start mb-2 font-medium text-gray-700">
+                            PO Box
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Enter PO Box (optional)"
+                            className="w-full border border-gray-300 py-2 px-3 rounded-md"
+                            name="poBox"
+                            onChange={handleChange}
+                            value={formData.poBox}
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label className="text-start mb-2 font-medium text-gray-700">
+                            Web URL
+                        </label>
+                        <input
+                            type="url"
+                            placeholder="Enter web URL (optional)"
+                            className="w-full border border-gray-300 py-2 px-3 rounded-md"
+                            name="webURL"
+                            onChange={handleChange}
+                            value={formData.webURL}
+                        />
                     </div>
 
                     <div className="flex gap-4 w-full mt-2 justify-end">
