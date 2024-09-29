@@ -24,15 +24,17 @@ function Preview() {
         objectives: "",
         strategy: "",
     });
+        const [userData, setUserData] = useState<any>(null); // Store user data here
+
     const[objectiveId,setObjectiveId]=useState<string|null>(null)
     const[strategyId,setStrategyId]=useState<string|null>(null)
     const [isEditingSimpleData, setIsEditingSimpleData] = useState(false);
     const [projectData, setProjectData] = useState<any>();
     const [logframeData, setLogframeData] = useState<any>({});
+        const [gravatarUrl, setGravatarUrl] = useState<string>(""); // Optional: Gravatar URL
+    const [hasWatermark, setHasWatermark] = useState(false);
 
-    const handleNextClick = () => {
-        router.push(`/components/Preview2/${id}`);
-    };
+  
 
     useEffect(() => {
         const getProject = async (id: string) => {
@@ -88,6 +90,69 @@ function Preview() {
             setIsLoading(false);
         }
     };
+
+        useEffect(() => {
+        // Fetch project data
+        const getProject = async (id: string) => {
+            try {
+                const token = getCookie("token");
+                const response = await axios.get(`${baseURL}/projects/${id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log("Project data:", response.data);
+                setProjectData(response.data);
+            } catch (error) {
+                console.error("Error fetching project data:", error);
+                setError("Failed to fetch project data.");
+            }
+        };
+
+        // Fetch user data using userId from localStorage
+        const getUserData = async () => {
+            try {
+                const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
+                const token = getCookie("token");
+
+                if (userId) {
+                    const response = await axios.get(
+                        `${baseURL}/users/${userId}`,
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    console.log("User data:", response.data);
+                    setUserData(response.data);
+
+                    // Optional: If Gravatar URL is part of user data
+                    if (response.data.gravatar) {
+                        setGravatarUrl(response.data.gravatar);
+                    }
+
+                    // Check subscription type for watermark
+                    if (response.data.subscription === "FreeTrial") {
+                        setHasWatermark(true);
+                    } else {
+                        setHasWatermark(false);
+                    }
+                } else {
+                    console.error("User ID not found in localStorage.");
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                setError("Failed to fetch user data.");
+            }
+        };
+
+        getProject(id as string);
+        getUserData();
+        setIsLoading(false);
+    }, [id]);
 
     useEffect(() => {
         fetchData();
@@ -179,8 +244,11 @@ function Preview() {
 
 
     return (
-        <div className="border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium">
-            <div className="justify-end flex gap-2 cursor-pointer" onClick={() => router.push('/')}>
+        <div
+            className={`border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium ${
+                hasWatermark ? "watermarked" : ""
+            }`}
+        >            <div className="justify-end flex gap-2 cursor-pointer" onClick={() => router.push('/')}>
                 <BiArrowBack className="mt-1" />
                 <p className="">Return to home</p>
             </div>
