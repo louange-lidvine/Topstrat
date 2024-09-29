@@ -405,7 +405,7 @@ function Page() {
                     </div>
                 </section>
 
-                <footer
+                {/* <footer
                     id="contacts"
                     className="bg-gray-900 py-16 px-8 md:px-28 text-white"
                 >
@@ -526,7 +526,141 @@ function Page() {
                             </button>
                         </Link>
                     </div>
-                </footer>
+                </footer> */}
+
+
+                <footer
+    id="contacts"
+    className="bg-gray-900 py-16 px-8 md:px-28 text-white"
+>
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-white">
+                TOPSTRAT
+            </h3>
+            <p className="text-gray-300 leading-relaxed">
+                We help organizations achieve their strategic goals through
+                tailored solutions and professional consulting. Contact us for
+                personalized strategies that will help your business thrive.
+            </p>
+        </div>
+
+        <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-white">
+                Quick Links
+            </h3>
+            <ul className="space-y-4">
+                <li>
+                    <Link
+                        href="/"
+                        className="text-white transition-all"
+                    >
+                        Home
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href="/pages/services"
+                        className="text-white transition-all"
+                    >
+                        Services
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href="/pages/about"
+                        className="text-white transition-all"
+                    >
+                        About Us
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href="/pages/contacts"
+                        className="text-white transition-all"
+                    >
+                        Contact
+                    </Link>
+                </li>
+            </ul>
+        </div>
+
+        <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-white">
+                Contact Us
+            </h3>
+            <p className="text-white">
+                Email:{" "}
+                <a
+                    href="mailto:topstrat@gmail.com"
+                    className="text-white hover:underline"
+                >
+                    info@company.com
+                </a>
+            </p>
+            <p className="text-white">
+                Phone:{" "}
+                <a
+                    href="tel:+250786021869"
+                    className="text-white hover:underline"
+                >
+                    +250 788 602 1869
+                </a>
+            </p>
+            <p className="text-white">Address: Kigali-Rwanda</p>
+        </div>
+
+        <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-white">
+                Follow Us
+            </h3>
+            <div className="flex space-x-6">
+                <a
+                    href="#"
+                    className="text-blue-default  transition-all text-2xl"
+                >
+                    <i className="fab fa-facebook"></i>
+                </a>
+                <a
+                    href="#"
+                    className="text-blue-default  transition-all text-2xl"
+                >
+                    <i className="fab fa-twitter"></i>
+                </a>
+                <a
+                    href="#"
+                    className="text-blue-default  transition-all text-2xl"
+                >
+                    <i className="fab fa-linkedin"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {/* Terms and Conditions, Privacy Policy, Data Management Links */}
+    <div className="mt-12 text-center space-y-4">
+        <Link href="https://acrobat.adobe.com/id/urn:aaid:sc:EU:02f8bcc9-0062-4a47-8fb4-d43664dccf55" className="text-white hover:underline">
+            Terms and Conditions
+        </Link>
+        <span className="text-gray-400 mx-2">|</span>
+        <Link href="https://acrobat.adobe.com/id/urn:aaid:sc:EU:37ac33dd-809a-4234-baff-c7d9b944fb19" className="text-white hover:underline">
+            Privacy and data management policy
+        </Link>
+   
+    </div>
+
+    <div className="mt-16 border-t border-gray-700 pt-6 text-center">
+        <p className="text-gray-500">
+            © {new Date().getFullYear()} TOPSTRAT. All Rights Reserved.
+        </p>
+        <Link href="#home">
+            <button className="mt-4 bg-blue-default text-white rounded-full px-6 py-3 font-bold shadow-lg transition-all">
+                Back to Top
+            </button>
+        </Link>
+    </div>
+</footer>
+
             </div>
         </div>
     );
