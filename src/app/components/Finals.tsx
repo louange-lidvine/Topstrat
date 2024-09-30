@@ -33,124 +33,106 @@ function Finals({ id }: FinalsProps) {
   const [userData, setUserData] = useState<any>(null);
   const [gravatarUrl, setGravatarUrl] = useState<string>(""); // Optional: Gravatar URL
   const [hasWatermark, setHasWatermark] = useState(false); // State for watermark
+  const [isFreeTrial, setIsFreeTrial] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = getCookie("token");
-        setIsLoading(true);
 
-        const promptResponse = await axios.get(
-          `${baseURL}/projects/prompts/latest/${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setPromptData(promptResponse.data);
-
-        const projectResponse = await axios.get(`${baseURL}/projects/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setProjectData(projectResponse.data);
-
-        const response = await axios.get(
-          `${baseURL}/projects/prompts/latest/${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setPestleData(JSON.parse(response.data.pestle.response));
-
-        const logframeData = JSON.parse(response.data.logframe.response);
-        setData(logframeData);
-        setLogframeData(logframeData);
-        setIsLoading(false);
-        return logframeData;
-      } catch (error) {
-        setError("Error fetching data");
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
+    useEffect(() => {
+        fetchUserData();
   }, [id]);
 
-  useEffect(() => {
-    // Fetch project data
-    const getProject = async (id: string) => {
-      try {
-        const token = getCookie("token");
-        const response = await axios.get(`${baseURL}/projects/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log("Project data:", response.data);
-        setProjectData(response.data);
-      } catch (error) {
-        console.error("Error fetching project data:", error);
-        setError("Failed to fetch project data.");
-      }
-    };
+   const fetchUserData = async () => {
+    const userId = localStorage.getItem("userId");
+    const token = getCookie("token");
+    try {
+      const response = await fetch(`${baseURL}/users/${userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    // Fetch user data using userId from localStorage
-    const getUserData = async () => {
-      try {
-        const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
-        const token = getCookie("token");
+      if (response.ok) {
+        const data = await response.json();
+        setUserData(data);
 
-        if (userId) {
-          const response = await axios.get(`${baseURL}/users/${userId}`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
+        if (data.subscription === "FreeTrial") {
+          setIsFreeTrial(true);
+          setProjectData({
+            name: "Topstrat Client",
+            description: "Default description for free trial users",
+            logo: logo, 
+            createdAt: new Date().toISOString(),
           });
-          console.log("User data:", response.data);
-          setUserData(response.data);
-
-          // Optional: If Gravatar URL is part of user data
-          if (response.data.gravatar) {
-            setGravatarUrl(response.data.gravatar);
-          }
-
-          // Check subscription type for watermark
-          if (response.data.subscription === "FreeTrial") {
-            setHasWatermark(true);
-          } else {
-            setHasWatermark(false);
-          }
+          setIsLoading(false); 
         } else {
-          console.error("User ID not found in localStorage.");
+          getProject(id as string);
         }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setError("Failed to fetch user data.");
+      } else {
+        console.error("Failed to fetch user data");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
-    getProject(id as string);
-    getUserData();
+useEffect(() => {
+  const fetchData = async () => {
+    const userId = localStorage.getItem("userId");
+    const token = getCookie("token");
+    
+    try {
+      const userResponse = await fetch(`${baseURL}/users/${userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+      if (userResponse.ok) {
+        const userData = await userResponse.json();
+        setUserData(userData);
+
+        // Check if the user has a free trial
+        if (userData.subscription === "FreeTrial") {
+          setIsFreeTrial(true);
+          // Set the default free trial project data
+          setProjectData({
+            name: "Topstrat Client",
+            description: "Default description for free trial users",
+            logo: logo,
+            createdAt: new Date().toISOString(),
+          });
+        } else {
+          // Fetch actual project data if not on free trial
+          getProject(id as string);
+        }
+      } else {
+        console.error("Failed to fetch user data");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  fetchData();
+}, [id]);
+
+// Fetch project only if not on a free trial
+const getProject = async (id: string) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.get(`${baseURL}/projects/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setProjectData(response.data); // Only set if it's not a free trial
     setIsLoading(false);
-  }, [id]);
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+  } catch (error) {
+    console.error("Error fetching project data:", error);
+  }
+};
 
   const renderList = (data: string) => {
     return (
@@ -174,16 +156,6 @@ function Finals({ id }: FinalsProps) {
     );
   };
 
-  const renderTextWithBold = (text: string) => {
-    const parts = text.split(/\*\*(.*?)\*\*/g);
-    return parts.map((part, index) =>
-      index % 2 === 1 ? (
-        <strong key={index}>{part}</strong>
-      ) : (
-        <span key={index}>{part}</span>
-      )
-    );
-  };
 
 const MyDocument = () => (
   <Document pageMode="fullScreen">
@@ -192,10 +164,10 @@ const MyDocument = () => (
         className={`my-4 rounded-md mx-2 p-4 font-medium ${hasWatermark ? "watermarked" : ""}`}
         id={`pdf-content_${id}`}
       >
-{/* Cover Page */}
-<div className="relative w-full h-full bg-white overflow-hidden break-after-page" style={{ height: '1050px'}}>
+
+ {/* <div className="relative w-full h-full bg-white overflow-hidden break-after-page" style={{ height: '1050px'}}>
   <div className="absolute inset-0">
-    {/* Ensure the image covers the entire page */}
+ 
     <Image
       src={cover}
       alt="Cover page image"
@@ -203,33 +175,29 @@ const MyDocument = () => (
     />
   </div>
 
-  {/* Content on top of the image */}
   <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between p-12 text-white">
-    {/* Logo and Project Name */}
     <div className="flex justify-between">
       <div className="flex flex-col items-start">
-        <div className="bg-white p-2 rounded-md">
-          <Image
-            src={projectData?.logo ? projectData.logo : logo}
-            alt="organization logo"
-            width={80}
-            height={80}
-            className="object-contain"
-          />
-        </div>
+          <div className="bg-white p-2 rounded-md">
+              <Image
+                src={isFreeTrial ? logo : projectData?.logo || logo}
+                alt="organization logo"
+                width={80}
+                height={80}
+                className="object-contain"
+              />
+            </div>
         <h2 className="text-xl font-bold mt-2 text-black">
-          {projectData?.name || "Project Name"}
+          {projectData?.name}
         </h2>
       </div>
     </div>
 
-    {/* Main Title */}
     <div className="flex flex-col items-start mt-20">
       <h1 className="text-5xl font-bold text-black">STRATEGIC PLAN</h1>
       <h2 className="text-2xl font-semibold text-black mt-2">2024-2028</h2>
     </div>
 
-    {/* Project Description */}
     <div className="flex flex-col items-start mt-8 text-black">
       <div className="flex flex-col gap-4">
         {isLoading ? (
@@ -239,13 +207,12 @@ const MyDocument = () => (
           </div>
         ) : (
           <div className="w-[50%]">
-            <p>{projectData?.description || "Project description"}</p>
+            <p>{projectData?.description}</p>
           </div>
         )}
       </div>
     </div>
 
-    {/* Contact Information */}
     <div className="text-yellow-500 mt-8">
       <h3 className="text-xl font-semibold">
         {projectData?.createdAt &&
@@ -260,13 +227,87 @@ const MyDocument = () => (
         <br />
         {userData?.email || "email@example.com"}
         <br />
-        www.cooky.com
+        www.topstrat.com
         <br />
         BP 3451 KIGALI-RWANDA
       </p>
     </div>
   </div>
-</div>
+</div>  */}
+
+
+<div className="relative w-full h-full bg-white overflow-hidden break-after-page" style={{ height: '1050px'}}>
+      <div className="absolute inset-0">
+        <Image
+          src={cover}
+          alt="Cover page image"
+          className="w-full h-full"
+        />
+      </div>
+
+      <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between p-12 text-white">
+        {/* Logo and Project Name */}
+        <div className="flex justify-between">
+          <div className="flex flex-col items-start">
+            <div className="bg-white p-2 rounded-md">
+              <Image
+                src={isFreeTrial ? logo : projectData?.logo || logo}
+                alt="organization logo"
+                width={80}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+            <h2 className="text-xl font-bold mt-2 text-black">
+              {isLoading ? <Skeleton width={100} /> : projectData?.name}
+            </h2>
+          </div>
+        </div>
+
+        {/* Main Title */}
+        <div className="flex flex-col items-start mt-20">
+          <h1 className="text-5xl font-bold text-black">STRATEGIC PLAN</h1>
+          <h2 className="text-2xl font-semibold text-black mt-2">2024-2029</h2>
+        </div>
+
+        {/* Project Description */}
+        <div className="flex flex-col items-start mt-8 text-black">
+          <div className="flex flex-col gap-4">
+            {isLoading ? (
+              <div className="w-full">
+                <Skeleton width={100} />
+                <Skeleton />
+              </div>
+            ) : (
+              <div className="w-[50%]">
+                <p>{projectData?.description}</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Contact Information */}
+        <div className="text-yellow-500 mt-8">
+          <h3 className="text-xl font-semibold">
+            {projectData?.createdAt &&
+              new Date(projectData.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+          </h3>
+          <p className="text-sm text-black mt-2">
+            +250-792-531-980
+            <br />
+            {userData?.email || "email@example.com"}
+            <br />
+            www.topstrat.com
+            <br />
+            BP 3451 KIGALI-RWANDA
+          </p>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -527,7 +568,7 @@ const MyDocument = () => (
           {logframeData && logframeData.goal && (
             <>
               {/* Impact Level */}
-              <tr style={{ backgroundColor: 'white', fontSize: '16px' }}>
+              <tr style={{  fontSize: '16px' }}>
                 <td style={{ border: '1px solid #000', padding: '10px',  textAlign: 'center' }}>Impact</td>
                 <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.description || "-"}</td>
                 <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
@@ -563,7 +604,7 @@ const MyDocument = () => (
               {/* Outcome Level */}
               {logframeData.goal.impact?.outcomes?.map((outcomeItem:any, outcomeIndex:any) => (
                 <React.Fragment key={`outcome-${outcomeIndex}`}>
-                  <tr style={{backgroundColor: 'white', fontSize: '16px' }}>
+                  <tr style={{ fontSize: '16px' }}>
                     <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
                       Outcome {outcomeIndex + 1}
                     </td>
@@ -578,7 +619,7 @@ const MyDocument = () => (
                   {/* Output Level */}
                   {outcomeItem.outputs?.map((outputItem:any, outputIndex:any) => (
                     <React.Fragment key={`output-${outputIndex}`}>
-                      <tr style={{ backgroundColor: 'white', fontSize: '16px' }}>
+                      <tr style={{  fontSize: '16px' }}>
                         <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
                           Output {outcomeIndex + 1}.{outputIndex + 1}
                         </td>
@@ -593,7 +634,7 @@ const MyDocument = () => (
                       {/* Activity Level */}
                       {outputItem.activities?.map((activityItem:any, activityIndex:any) => (
                         <React.Fragment key={`activity-${activityIndex}`}>
-                          <tr style={{backgroundColor: 'white', fontSize: '16px' }}>
+                          <tr style={{ fontSize: '16px' }}>
                             <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
                               Activity {outcomeIndex + 1}.{outputIndex + 1}.{activityIndex + 1}
                             </td>
@@ -607,7 +648,7 @@ const MyDocument = () => (
 
                           {/* Input Level */}
                           {activityItem.inputs && (
-                            <tr style={{ backgroundColor: 'white', fontSize: '16px' }}>
+                            <tr style={{  fontSize: '16px' }}>
                               <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>Input</td>
                               <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.description || "-"}</td>
                               <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.indicator || "-"}</td>

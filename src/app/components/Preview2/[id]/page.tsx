@@ -11,11 +11,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BiArrowBack } from "react-icons/bi";
 import SbLoad from "@/app/shared/loader/sbload";
+import '../../../globals.css'
 
 function Preview() {
     const router = useRouter();
     const { id } = useParams();
+        const [userData, setUserData] = useState<any>(null); // Store user data here
+    const [gravatarUrl, setGravatarUrl] = useState<string>(""); // Optional: Gravatar URL
+
         const [isLoad, setIsLoad] = useState(false);
+    const [hasWatermark, setHasWatermark] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const [projectLoading, setProjectLoading] = useState(false);
     const [pestleLoading, setPestleLoading] = useState(false);
@@ -75,6 +81,69 @@ function Preview() {
 
         fetchData();
     }, []);
+
+        useEffect(() => {
+        // Fetch project data
+        const getProject = async (id: string) => {
+            try {
+                const token = getCookie("token");
+                const response = await axios.get(`${baseURL}/projects/${id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log("Project data:", response.data);
+                setProjectData(response.data);
+            } catch (error) {
+                console.error("Error fetching project data:", error);
+                setError("Failed to fetch project data.");
+            }
+        };
+
+        // Fetch user data using userId from localStorage
+        const getUserData = async () => {
+            try {
+                const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
+                const token = getCookie("token");
+
+                if (userId) {
+                    const response = await axios.get(
+                        `${baseURL}/users/${userId}`,
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    console.log("User data:", response.data);
+                    setUserData(response.data);
+
+                    // Optional: If Gravatar URL is part of user data
+                    if (response.data.gravatar) {
+                        setGravatarUrl(response.data.gravatar);
+                    }
+
+                    // Check subscription type for watermark
+                    if (response.data.subscription === "FreeTrial") {
+                        setHasWatermark(true);
+                    } else {
+                        setHasWatermark(false);
+                    }
+                } else {
+                    console.error("User ID not found in localStorage.");
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                setError("Failed to fetch user data.");
+            }
+        };
+
+        getProject(id as string);
+        getUserData();
+   
+    }, [id]);
 
     const saveData = async () => {
         const token = getCookie("token");
@@ -193,8 +262,11 @@ function Preview() {
     };
 
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8 ">
-                  <div className="justify-end flex gap-2 cursor-pointer"  
+   <div
+            className={`border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium ${
+                hasWatermark ? "watermarked" : ""
+            }`}
+        >                  <div className="justify-end flex gap-2 cursor-pointer"  
                 onClick={() =>
                                 router.push('/')
                             }>
