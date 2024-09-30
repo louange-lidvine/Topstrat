@@ -357,7 +357,7 @@ const handleCellChange = (
                                         <>
                                       
 
-                                            <tr className="bg-white">
+                                            <tr className="">
     <td className="border border-1 p-2 font-bold text-center">Impact</td>
     <td className="border border-1 p-2">
         <div
@@ -490,8 +490,8 @@ const handleCellChange = (
                                                                 outcomeIndex %
                                                                     2 ===
                                                                 0
-                                                                    ? "bg-white"
-                                                                    : "bg-white"
+                                                                    ? ""
+                                                                    : ""
                                                             }
                                                         >
                                                             <td className="border border-1 p-2 font-bold text-center">
@@ -653,8 +653,8 @@ const handleCellChange = (
                                                                             outputIndex %
                                                                                 2 ===
                                                                             0
-                                                                                ? "bg-white"
-                                                                                : "bg-white"
+                                                                                ? ""
+                                                                                : ""
                                                                         }
                                                                     >
                                                                         <td className="border border-1 p-2 font-bold text-center">
@@ -843,8 +843,8 @@ const handleCellChange = (
                                                                                         activityIndex %
                                                                                             2 ===
                                                                                         0
-                                                                                            ? "bg-white"
-                                                                                            : "bg-white"
+                                                                                            ? ""
+                                                                                            : ""
                                                                                     }
                                                                                 >
                                                                                     <td className="border border-1 p-2 font-bold text-center">
@@ -1039,7 +1039,7 @@ const handleCellChange = (
                                                                                 {/* Inputs Level */}
                                                                             {/* Inputs Level */}
 {activityItem.inputs && activityItem.inputs.length > 0 && (
-    <tr className="bg-white">
+    <tr className="">
         <td className="border border-1 p-2 font-bold text-center">
             Input
         </td>
