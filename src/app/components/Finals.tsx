@@ -58,6 +58,7 @@ const fetchUserData = async () => {
 
       if (data.subscription === "FreeTrial") {
         setIsFreeTrial(true);
+        setHasWatermark(true)
         setProjectData({
           name: "Topstrat Client",
           description: "Default description for free trial users",
