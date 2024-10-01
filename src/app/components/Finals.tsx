@@ -181,7 +181,7 @@ const MyDocument = () => (
         {/* Logo and Project Name */}
         <div className="flex justify-between">
           <div className="flex flex-col items-start">
-            <div className="bg-white p-2 rounded-md">
+           <div className="bg-white p-5 rounded-md">
               <Image
                 src={isFreeTrial ? logo : projectData?.logo || logo}
                 alt="organization logo"
