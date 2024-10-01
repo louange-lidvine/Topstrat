@@ -17,57 +17,62 @@ function Page() {
   const [isLoading, setIsLoading] = useState(false);
   const [isFreeTrial, setIsFreeTrial] = useState(false);
 
-  useEffect(() => {
-        fetchUserData();
-    const getProject = async (id: string) => {
-      try {
-        const token = getCookie("token");
-        const response = await axios.get(`${baseURL}/projects/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+useEffect(() => {
+    fetchUserData();
+}, [id]);
+
+const fetchUserData = async () => {
+  const userId = localStorage.getItem("userId");
+  const token = getCookie("token");
+
+  try {
+    const response = await fetch(`${baseURL}/users/${userId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setUserData(data);
+
+      if (data.subscription === "FreeTrial") {
+        setIsFreeTrial(true);
+        setProjectData({
+          name: "Topstrat Client",
+          description: "Default description for free trial users",
+          logo: logo, // Use default logo
+          createdAt: new Date().toISOString(),
         });
-        setProjectData(response.data);
-      } catch (error) {
-        console.error("Error fetching project data:", error);
-      }
-    };
-
-    getProject(id as string);
-    setIsLoading(false);
-  }, [id]);
-
-  const fetchUserData = async () => {
-    const userId = localStorage.getItem("userId");
-    const token = getCookie("token");
-    try {
-      const response = await fetch(`${baseURL}/users/${userId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setUserData(data);
-
-        if (data.subscription === "FreeTrial") {
-          setIsFreeTrial(true);
-          setProjectData({
-            name: "Topstrat Client",
-            description: "Default description for free trial users",
-            logo: logo, 
-            createdAt: new Date().toISOString(),
-          });
-        }
       } else {
-        console.error("Failed to fetch user data");
+        getProject(id as string);
       }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+    } else {
+      console.error("Failed to fetch user data");
     }
-  };
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
+};
+
+
+const getProject = async (id: string) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.get(`${baseURL}/projects/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setProjectData(response.data);
+    setIsLoading(false);
+  } catch (error) {
+    console.error("Error fetching project data:", error);
+  }
+};
 
   return (
     <div className="relative w-full border border-blue-default bg-white lg:max-w-6xl my-6 lg:rounded-lg shadow-lg h-screen overflow-hidden">
