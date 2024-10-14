@@ -31,8 +31,8 @@ function Finals({ id }: FinalsProps) {
   const [Data, setData] = useState<any>([]);
   const [error, setError] = useState<string | null>(null);
   const [userData, setUserData] = useState<any>(null);
-  const [gravatarUrl, setGravatarUrl] = useState<string>(""); // Optional: Gravatar URL
-  const [hasWatermark, setHasWatermark] = useState(false); // State for watermark
+  const [gravatarUrl, setGravatarUrl] = useState<string>(""); 
+  const [hasWatermark, setHasWatermark] = useState(false); 
   const [isFreeTrial, setIsFreeTrial] = useState(false);
 
 
@@ -62,10 +62,10 @@ const fetchUserData = async () => {
         setProjectData({
           name: "Topstrat Client",
           description: "Default description for free trial users",
-          logo: logo, // Use default logo
+          logo: logo,
           createdAt: new Date().toISOString(),
         });
-        fetchData(true); 
+        fetchData(); 
       } else {
         getProject(id as string);
       }
@@ -181,7 +181,7 @@ const MyDocument = () => (
         {/* Logo and Project Name */}
         <div className="flex justify-between">
           <div className="flex flex-col items-start">
-           <div className="bg-white p-5 rounded-md">
+           <div className="bg-white p-5 mt-4 rounded-md">
               <Image
                 src={isFreeTrial ? logo : projectData?.logo || logo}
                 alt="organization logo"
@@ -400,55 +400,55 @@ const MyDocument = () => (
                       <tr>
                         <td className="border border-1 p-2 text-md text-blue-default font-bold">Political</td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.political?.inf || "-"}
+                          {pestleData.political?.inf}
                         </td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.political?.imp || "-"}
+                          {pestleData.political?.imp}
                         </td>
                       </tr>
                       <tr>
                         <td className="border border-1 p-2 text-md text-blue-default font-bold">Economic</td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.economic?.inf || "-"}
+                          {pestleData.economic?.inf}
                         </td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.economic?.imp || "-"}
+                          {pestleData.economic?.imp}
                         </td>
                       </tr>
                       <tr>
                         <td className="border border-1 p-2 text-md text-blue-default font-bold">Social</td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.social?.inf || "-"}
+                          {pestleData.social?.inf}
                         </td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.social?.imp || "-"}
+                          {pestleData.social?.imp}
                         </td>
                       </tr>
                       <tr>
                         <td className="border border-1 p-2 text-md text-blue-default font-bold">Technological</td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.technological?.inf || "-"}
+                          {pestleData.technological?.inf}
                         </td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.technological?.imp || "-"}
+                          {pestleData.technological?.imp}
                         </td>
                       </tr>
                       <tr>
                         <td className="border border-1 p-2 text-md text-blue-default font-bold">Legal</td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.legal?.inf || "-"}
+                          {pestleData.legal?.inf}
                         </td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.legal.imp || "-"}
+                          {pestleData.legal.imp}
                         </td>
                       </tr>
                       <tr>
                         <td className="border border-1 p-2 text-md text-blue-default font-bold">Environmental</td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.environmental?.inf || "-"}
+                          {pestleData.environmental?.inf}
                         </td>
                         <td className="border border-1 p-2 text-md text-black">
-                          {pestleData.environmental?.imp || "-"}
+                          {pestleData.environmental?.imp}
                         </td>
                       </tr>
                     </>
@@ -502,7 +502,7 @@ const MyDocument = () => (
               {/* Impact Level */}
               <tr style={{  fontSize: '16px' }}>
                 <td style={{ border: '1px solid #000', padding: '10px',  textAlign: 'center' }}>Impact</td>
-                <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.description || "-"}</td>
+                <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.description}</td>
                 <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
                   {logframeData.goal.impact?.indicators &&
                     Object.keys(logframeData.goal.impact.indicators).map((key, idx) => (
@@ -525,12 +525,12 @@ const MyDocument = () => (
                     Object.keys(logframeData.goal.impact.indicators).map((key, idx) => {
                       const indicator = logframeData.goal.impact.indicators[key];
                       return (
-                        <div key={idx} style={{ fontSize: '16px' }}>{indicator.target || "-"}</div>
+                        <div key={idx} style={{ fontSize: '16px' }}>{indicator.target}</div>
                       );
                     })}
                 </td>
-                <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.timeline || "-"}</td>
-                <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.assumptions || "-"}</td>
+                <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.timeline}</td>
+                <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{logframeData.goal.impact?.assumptions}</td>
               </tr>
 
               {/* Outcome Level */}
@@ -540,12 +540,12 @@ const MyDocument = () => (
                     <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
                       Outcome {outcomeIndex + 1}
                     </td>
-                    <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outcomeItem.description || "-"}</td>
-                    <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outcomeItem.indicator || "-"}</td>
-                    <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outcomeItem.baseline || "-"}</td>
-                    <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outcomeItem.target || "-"}</td>
-                    <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outcomeItem.timeline || "-"}</td>
-                    <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outcomeItem.assumptions || "-"}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outcomeItem.description}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outcomeItem.indicator}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outcomeItem.baseline}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outcomeItem.target}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outcomeItem.timeline}</td>
+                    <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outcomeItem.assumptions}</td>
                   </tr>
 
                   {/* Output Level */}
@@ -555,12 +555,12 @@ const MyDocument = () => (
                         <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
                           Output {outcomeIndex + 1}.{outputIndex + 1}
                         </td>
-                        <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outputItem.description || "-"}</td>
-                        <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outputItem.indicator || "-"}</td>
+                        <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outputItem.description}</td>
+                        <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outputItem.indicator}</td>
                         <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outputItem.baseline || "0"}</td>
-                        <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outputItem.target || "-"}</td>
-                        <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outputItem.timeline || "-"}</td>
-                        <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outputItem.assumptions || "-"}</td>
+                        <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outputItem.target}</td>
+                        <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{outputItem.timeline}</td>
+                        <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{outputItem.assumptions}</td>
                       </tr>
 
                       {/* Activity Level */}
@@ -570,24 +570,24 @@ const MyDocument = () => (
                             <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>
                               Activity {outcomeIndex + 1}.{outputIndex + 1}.{activityIndex + 1}
                             </td>
-                            <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.description || "-"}</td>
-                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.indicator || "-"}</td>
-                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.baseline || "-"}</td>
-                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.target || "-"}</td>
-                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.timeline || "-"}</td>
-                            <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.assumptions || "-"}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.description}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.indicator}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.baseline}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.target}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.timeline}</td>
+                            <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.assumptions}</td>
                           </tr>
 
                           {/* Input Level */}
                           {activityItem.inputs && (
                             <tr style={{  fontSize: '16px' }}>
                               <td style={{ border: '1px solid #000', padding: '10px', textAlign: 'center' }}>Input</td>
-                              <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.description || "-"}</td>
-                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.indicator || "-"}</td>
-                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.baseline || "-"}</td>
-                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.target || "-"}</td>
-                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.timeline || "-"}</td>
-                              <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.inputs?.assumptions || "-"}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.inputs[0]?.description}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs[0]?.indicator}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs[0]?.baseline}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs[0]?.target}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', whiteSpace: 'pre-wrap' }}>{activityItem.inputs[0]?.timeline}</td>
+                              <td style={{ border: '1px solid #000', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{activityItem.inputs[0]?.assumptions}</td>
                             </tr>
                           )}
                         </React.Fragment>
