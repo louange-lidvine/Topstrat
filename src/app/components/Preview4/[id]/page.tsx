@@ -1036,7 +1036,7 @@ const handleCellChange = (
                                                                                     </td>
                                                                                 </tr>
 
-                                                                                {/* Inputs Level */}
+                                                                     
                                                                             {/* Inputs Level */}
 {activityItem.inputs && activityItem.inputs.length > 0 && (
     <tr className="">
