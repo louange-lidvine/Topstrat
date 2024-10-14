@@ -17,10 +17,10 @@ import '../../../globals.css'
 function Preview() {
     const router = useRouter();
     const { id } = useParams();
-        const [error, setError] = useState<string | null>(null);
-        const [isLoad, setIsLoad] = useState(false);
-    const [userData, setUserData] = useState<any>(null); // Store user data here
-    const [gravatarUrl, setGravatarUrl] = useState<string>(""); // Optional: Gravatar URL
+    const [error, setError] = useState<string | null>(null);
+    const [isLoad, setIsLoad] = useState(false);
+    const [userData, setUserData] = useState<any>(null); 
+    const [gravatarUrl, setGravatarUrl] = useState<string>(""); 
     const [hasWatermark, setHasWatermark] = useState(false);
     const [loading, setLoading] = useState(false);
     const [projectData, setProjectData] = useState<any>();
@@ -124,6 +124,7 @@ function Preview() {
                     }
                 );
                 const data = JSON.parse(response.data.logframe.response);
+                console.table("fetched data",data)
                  console.log("Fetched Data:", data)
 
                 setLogframeData(data);
@@ -210,16 +211,15 @@ const handleCellChange = (
     index: number,
     level: string,
     loc?: {
-        outcomes?: any;  
-        outputs?: any;   
-        activity?: any;  
-        input?: any;     
+        outcomes?: any;
+        outputs?: any;
+        activity?: any;
+        input?: any;
     }
 ) => {
     setEditableLogData((prevData: any) => {
-        const newData = _.cloneDeep(prevData); // Clone the previous data to avoid mutations
+        const newData = _.cloneDeep(prevData); 
 
-        // Ensure proper structure before making assignments
         if (!newData.goal) newData.goal = {};
         if (!newData.goal.impact) newData.goal.impact = {};
         if (!newData.goal.impact.outcomes) newData.goal.impact.outcomes = [];
@@ -227,35 +227,40 @@ const handleCellChange = (
 
         if (category === "goal" && field === "impact") {
             if (index === -1) {
-                if (typeof newData.goal.impact.description !== 'string') {
-                    newData.goal.impact.description = ''; 
+                if (level === "description") {
+                    if (typeof newData.goal.impact.description !== 'string') {
+                        newData.goal.impact.description = '';
+                    }
+                    newData.goal.impact.description = value;
+                } else if (level === "assumptions") {
+                    if (typeof newData.goal.impact.assumptions !== 'string') {
+                        newData.goal.impact.assumptions = '';
+                    }
+                    newData.goal.impact.assumptions = value; 
                 }
-                newData.goal.impact.description = value; 
             }
-        } else if (category === "impact") {
-            if (index === -1) {
-                newData.goal.impact.description = value; 
-            } else if (field === "indicators") {
-                if (!Array.isArray(newData.goal.impact.indicators)) {
-                    newData.goal.impact.indicators = [];
-                }
-                newData.goal.impact.indicators[index] = value; // Update indicator
+        }
+
+        if (category === "impact" && field === "indicators" && index >= 0) {
+            if (!Array.isArray(newData.goal.impact.indicators)) {
+                newData.goal.impact.indicators = [];
             }
-        } else if (field === "outcomes" && index >= 0) {
-            newData.goal.impact.outcomes[index][level] = value; // Update outcome field
-        } else if (field === "outputs" && index >= 0) {
+            newData.goal.impact.indicators[index] = value; 
+        }
+
+        if (field === "outcomes" && index >= 0) {
+            newData.goal.impact.outcomes[index][level] = value; 
+        } else if (field === "outputs" && loc?.outcomes !== undefined && index >= 0) {
             if (!newData.goal.impact.outcomes[loc?.outcomes].outputs) {
-                newData.goal.impact.outcomes[loc?.outcomes].outputs = []; // Ensure it's an array
+                newData.goal.impact.outcomes[loc?.outcomes].outputs = []; 
             }
-            newData.goal.impact.outcomes[loc?.outcomes].outputs[index][level] = value; // Update output field
-        } else if (field === "activities" && index >= 0) {
-            newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[index][level] = value; // Update activity field
-        } else if (field === "inputs" && index >= 0) {
+            newData.goal.impact.outcomes[loc?.outcomes].outputs[index][level] = value; 
+        } else if (field === "activities" && loc?.outcomes !== undefined && loc?.outputs !== undefined && index >= 0) {
+            newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[index][level] = value; 
+        } else if (field === "inputs" && loc?.outcomes !== undefined && loc?.outputs !== undefined && loc?.activity !== undefined && index >= 0) {
             const inputField = newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index];
 
-            // Ensure that the input field is an object
             if (typeof inputField === "string" || !inputField) {
-                // Convert string or initialize as an object if it's not already an object
                 newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index] = {
                     description: "",
                     baseline: "",
@@ -266,15 +271,13 @@ const handleCellChange = (
                 };
             }
 
-            // Now safely update the specific property
             newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index][level] = value; // Update input field
         }
 
-        console.log("Updated Data:", newData); // Log updated data for debugging
-        return newData; // Return the updated data
+        console.log("Updated Data:", newData); 
+        return newData; 
     });
 };
-
 
 
 
