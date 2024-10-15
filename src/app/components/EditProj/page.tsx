@@ -7,10 +7,9 @@ import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
 import EditModal from "../EdiModal";
-import html2pdf from "html2pdf.js"; 
 // import PrintModal from "./printModal";
 const PrintModal = dynamic(() => import("./printModal"), { ssr: false });
-import { downloadPdf } from "@/app/utils/downloadPdf";
+import { downloadPdf, downloadWord } from "@/app/utils/downloadPdf";
 import Finals from "../Finals";
 
 interface Project {
@@ -32,6 +31,7 @@ function ProjectCard({
   const { id } = useParams();
   const resolvedId = Array.isArray(id) ? id[0] : id;
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [isElite,setIsElite]= useState(false)
   const [projectData, setProjectData] = useState<any>();
   const [promptData, setPromptData] = useState<any>();
   const [pestleData, setPestleData] = useState<any>();
@@ -43,10 +43,52 @@ function ProjectCard({
 
   const navigate = useRouter();
 
-    const handleDownloadFinals = async (projectId: string) => {
-    const elementId = `pdf-content_${projectId}`;
+  const fetchUserData = async () => {
+  const userId = localStorage.getItem("userId");
+  const token = getCookie("token");
+
+  try {
+    const response = await fetch(`${baseURL}/users/${userId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      if (data.subscription === "Elite") {
+        setIsElite(true);;
+
+      } else {
+      }
+    } else {
+      console.error("Failed to fetch user data");
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
+};
+
+const handleDownloadFinals = async (projectId: string, format: "pdf" | "word") => {
+  const elementId = `pdf-content_${projectId}`;
+
+  // Check if projectId and project name are defined
+  if (!projectId || !project?.name) {
+    console.error("Project ID or name is missing");
+    return;
+  }
+
+  console.log(`Downloading ${format} for project ID: ${projectId}`);
+
+  if (format === "pdf") {
     await downloadPdf(elementId, project?.name || "project");
-  };
+  } else if (format === "word") {
+    await downloadWord(elementId, project?.name || "project");
+  }
+};
+
 
 
 
@@ -96,6 +138,7 @@ function ProjectCard({
       }
     };
     fetchData();
+    fetchUserData()
   }, [resolvedId]);
 
   const checkResponseFormat = (response: any) => {
@@ -193,11 +236,21 @@ function ProjectCard({
                 Print
               </li>
               <li
-                 onClick={() => handleDownloadFinals(selectedId)}
+                 onClick={() => handleDownloadFinals(selectedId,"pdf")}
                 className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
               >
-                Download
+                Download pdf
               </li>
+
+               {isElite && (
+                <li
+                  onClick={() => handleDownloadFinals(selectedId, "word")}
+                  className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
+                >
+                  Download Word
+                </li>
+              )}
+            
               <li
                 className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
                 onClick={() => setEditOpen(true)}
