@@ -1,48 +1,60 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import dynamic from "next/dynamic";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
 import EditModal from "../EdiModal";
+import html2pdf from "html2pdf.js";
+// import PrintModal from "./printModal";
+const PrintModal = dynamic(() => import("./printModal"), { ssr: false });
+import { downloadPdf } from "@/app/utils/downloadPdf";
+import Finals from "../Finals";
 
 interface Project {
-  name: string;
-  _id: string;
+    name: string;
+    _id: string;
 }
 
 function ProjectCard({
-  project,
-  remove,
-  selected,
-  selectedId,
+    project,
+    remove,
+    selected,
+    selectedId,
 }: {
-  project: Project;
-  selected: boolean;
-  selectedId: string;
-  remove: () => void;
+    project: Project;
+    selected: boolean;
+    selectedId: string;
+    remove: () => void;
 }) {
+    const { id } = useParams();
+    const resolvedId = Array.isArray(id) ? id[0] : id;
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [projectData, setProjectData] = useState<any>();
     const [promptData, setPromptData] = useState<any>();
     const [pestleData, setPestleData] = useState<any>();
     const [logframeData, setLogframeData] = useState<any>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
     const [isEditOpen, setEditOpen] = useState(false);
 
     const navigate = useRouter();
 
-    // Reference to the hidden div for PDF generation
-    const printRef = useRef<HTMLDivElement>(null);
+    const handleDownloadFinals = async (projectId: string) => {
+        const elementId = `pdf-content_${projectId}`;
+        await downloadPdf(elementId, project?.name || "project");
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const token = getCookie("token");
                 setIsLoading(true);
 
-                const pestleResponse = await axios.get(
-                    `${baseURL}/projects/prompts/latest/${project._id}`, // replace resolvedId with project._id
+                const promptResponse = await axios.get(
+                    `${baseURL}/projects/prompts/latest/${resolvedId}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -50,17 +62,31 @@ function ProjectCard({
                         },
                     }
                 );
+                setPromptData(promptResponse.data);
 
-                console.log("Pestle Response: ", pestleResponse.data.logframe);
-                const logframeResponse = JSON.parse(
-                    pestleResponse.data.logframe.response
+                const projectResponse = await axios.get(
+                    `${baseURL}/projects/${resolvedId}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
                 );
+                setProjectData(projectResponse.data);
 
-                // Ensure logframeData is an array
+                const pestleResponse = await axios.get(
+                    `${baseURL}/projects/prompts/latest/${resolvedId}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setPestleData(JSON.parse(pestleResponse.data.pestle.response));
                 setLogframeData(
-                    Array.isArray(logframeResponse)
-                        ? logframeResponse
-                        : [logframeResponse]
+                    JSON.parse(pestleResponse.data.logframe.response)
                 );
                 setIsLoading(false);
             } catch (error) {
@@ -69,7 +95,7 @@ function ProjectCard({
             }
         };
         fetchData();
-    }, [project._id]); // dependency on project._id
+    }, [resolvedId]);
 
     const checkResponseFormat = (response: any) => {
         const requiredFields = [
@@ -129,31 +155,6 @@ function ProjectCard({
         }
     };
 
-    const handleDownload = async () => {
-        try {
-            // Dynamically import jsPDF and html2canvas
-            const { default: jsPDF } = await import("jspdf");
-            const { default: html2canvas } = await import("html2canvas");
-
-            const input = printRef.current;
-            if (input) {
-                // Use html2canvas to capture the div content
-                const canvas = await html2canvas(input, { scale: 2 });
-                const imgData = canvas.toDataURL("image/png");
-
-                // Create a new jsPDF instance
-                const pdf = new jsPDF("p", "mm", "a4");
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-                pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-                pdf.save(`${projectData?.name || "project"}.pdf`);
-            }
-        } catch (error) {
-            console.error("Error generating PDF:", error);
-        }
-    };
-
     return (
         <div
             className={`relative group px-10 py-2 mt-1 rounded-sm transition-all duration-200 ${
@@ -192,8 +193,8 @@ function ProjectCard({
                                 Print
                             </li>
                             <li
+                                onClick={() => handleDownloadFinals(selectedId)}
                                 className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
-                                onClick={handleDownload}
                             >
                                 Download
                             </li>
@@ -219,82 +220,16 @@ function ProjectCard({
                 id={project?._id}
             />
 
-            {/* Hidden div to render content for PDF generation */}
-            <div
-                ref={printRef}
-                style={{
-                    position: "absolute",
-                    left: "-10000px",
-                    top: "0px",
-                    width: "210mm", // A4 width size
-                    minHeight: "297mm", // A4 height size
-                    padding: "20mm",
-                    backgroundColor: "white",
-                }}
-            >
-                <div>
-                    <h1 style={{ textAlign: "center" }}>{projectData?.name}</h1>
-                    <h2>Mission</h2>
-                    <p>{promptData?.mission?.response}</p>
-
-                    <h2>Vision</h2>
-                    <p>{promptData?.vision?.response}</p>
-
-                    <h2>SWOT Analysis</h2>
-                    <p>{promptData?.swot?.response}</p>
-
-                    <h2>Objectives</h2>
-                    <p>{promptData?.objectives?.response}</p>
-
-                    <h2>Values</h2>
-                    <p>{promptData?.values?.response}</p>
-
-                    <h2>Strategy</h2>
-                    <p>{promptData?.strategy?.response}</p>
-
-                    {/* Include PESTLE Data */}
-                    <h2>PESTLE Analysis</h2>
-                    {pestleData && (
-                        <ul>
-                            {Object.entries(pestleData).map(
-                                ([key, value]: any) => (
-                                    <li key={key}>
-                                        <strong>{key}:</strong> {value}
-                                    </li>
-                                )
-                            )}
-                        </ul>
-                    )}
-
-                    {/* Include Logframe Data */}
-                    <h2>Logframe</h2>
-                    {logframeData && (
-                        <table border="1" cellPadding="5">
-                            <thead>
-                                <tr>
-                                    <th>Goal</th>
-                                    <th>Objective</th>
-                                    <th>Outcome</th>
-                                    <th>Output</th>
-                                    <th>Activities</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {logframeData.map(
-                                    (item: any, index: number) => (
-                                        <tr key={index}>
-                                            <td>{item.goal}</td>
-                                            <td>{item.objective}</td>
-                                            <td>{item.outcome}</td>
-                                            <td>{item.output}</td>
-                                            <td>{item.activities}</td>
-                                        </tr>
-                                    )
-                                )}
-                            </tbody>
-                        </table>
-                    )}
-                </div>
+            <PrintModal
+                isOpen={isPrintModalOpen}
+                id={selectedId}
+                onClose={() => setIsPrintModalOpen(false)}
+                projectData={projectData}
+                promptDa            ta={promptData}
+                pestleData={pestleData}
+                logframeData={logframeData} showCover={false}/>
+            <div className="hidden">
+                <Finals id={selectedId} />
             </div>
         </div>
     );

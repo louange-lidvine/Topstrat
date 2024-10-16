@@ -56,6 +56,7 @@ const PrintModal: React.FC<PrintModalProps> = ({
 
         const pdf = html2pdf().from(element).set(opt);
 
+        // If the checkbox is checked, print the whole page
         if (printWholePage) {
             await pdf.toPdf().save();
         } else {

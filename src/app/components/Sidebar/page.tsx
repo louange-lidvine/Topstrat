@@ -137,7 +137,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     return (
         <>
             <div className={`hidden lg:flex flex-col text-white max-w-[20vw] bg-blue-default m-2 rounded-md`}>
-                <div className="flex flex-col justify-between gap-20">
+                <div className="flex flex-col justify-between gap-32">
                     <div className="user-part">
                         <Profile />
                     </div>
@@ -146,7 +146,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                         <div className="projects">
                             <div className="title grid grid-cols-2 space-x-16">
                                 <div className="title grid grid-cols-2 space-x-40">
-                                    <h1 className="my-2 ml-10 text-xl font-bold flex-[0.8]">Projects</h1>
+                                    <h1 className="mt-2 ml-10 text-xl font-bold flex-[0.8]">Projects</h1>
                                     <ChooseMethod refetchProject={fetchProjects} closeSidebar={closeSidebar} />
                                 </div>
                             </div>
@@ -245,6 +245,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
 
                             >
                                 View all projects
+                            </button>
+                            <button
+                            onClick={()=>navigate.push("https://topstrat-payment-portal.vercel.app/")}
+                                type="button"
+                                className="bg-blue-400 py-2 px-6 text-white rounded-md"
+                        
+
+                            >
+                                Upgrade plan
                             </button>
                         </div>
                     </ReactModal>

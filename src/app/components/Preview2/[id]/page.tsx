@@ -10,10 +10,13 @@ import { baseURL } from "@/app/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BiArrowBack } from "react-icons/bi";
+import SbLoad from "@/app/shared/loader/sbload";
 
 function Preview() {
     const router = useRouter();
     const { id } = useParams();
+        const [isLoad, setIsLoad] = useState(false);
+
     const [projectLoading, setProjectLoading] = useState(false);
     const [pestleLoading, setPestleLoading] = useState(false);
     const [projectData, setProjectData] = useState<any>();
@@ -75,6 +78,7 @@ function Preview() {
 
     const saveData = async () => {
         const token = getCookie("token");
+        setIsLoad(true)
 
         // Check if promptId is available
         if (!promptId) {
@@ -100,7 +104,6 @@ function Preview() {
             environmental: editablePestleData.environmental || {},
         };
 
-        // Log the request details for debugging
         console.log("Attempting to save data...");
         console.log(
             "PUT URL:",
@@ -126,6 +129,7 @@ function Preview() {
 
             // Update the state with saved data
             setPestleData(editablePestleData);
+            setIsLoad(false)
             setIsEditing(false);
 
             // Display success toast message
@@ -330,12 +334,17 @@ function Preview() {
                         >
                             Regenerate
                         </button>
-                        <button
-                            className="bg-green-500 text-white font-bold rounded-md py-3 px-6"
+                          <button
+                            type="submit"
+                            disabled={isLoad}
                             onClick={saveData}
-                            disabled={!isEditing}
+                            className={`bg-blue-default text-white font-bold py-3 px-6 rounded-md transition ${
+                                isLoad
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : "hover:bg-green-500"
+                            }`}
                         >
-                            Save
+                            {isLoad ? <SbLoad /> : "Save"}
                         </button>
                         <div
                             className="flex bg-blue-default text-white font-bold rounded-md py-3 px-6 cursor-pointer"

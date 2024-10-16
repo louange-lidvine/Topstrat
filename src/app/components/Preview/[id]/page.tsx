@@ -11,10 +11,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { BiArrowBack } from "react-icons/bi";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import '../../../globals.css'
+import SbLoad from "@/app/shared/loader/sbload";
 
 function Preview() {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoad, setIsLoad] = useState(false);
     const router = useRouter();
     const [promptData, setPromptData] = useState<any>();
     const [error, setError] = useState<string | null>(null);
@@ -249,6 +251,7 @@ function Preview() {
     };
 
     const saveData = async () => {
+        setIsLoad(true)
         const token = getCookie("token");
         console.log(simpleData);
 
@@ -313,6 +316,7 @@ function Preview() {
 
             // Refetch data
             await fetchData();
+            setIsLoad(false)
 
             setIsEditing(false);
             setIsEditingSimpleData(false);
@@ -532,13 +536,19 @@ function Preview() {
                         >
                             Regenerate
                         </button>
-                        <button
-                            className="bg-green-500 text-white font-bold rounded-md cursor-pointer py-3 px-6"
+                       <button
+                            type="submit"
+                            disabled={isLoad}
                             onClick={saveData}
-                            disabled={!isEditing}
+                            className={`bg-blue-default text-white font-bold py-3 px-6 rounded-md transition ${
+                                isLoad
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : "hover:bg-green-500"
+                            }`}
                         >
-                            Save
+                            {isLoad ? <SbLoad /> : "Save"}
                         </button>
+
                         <div
                             className="flex bg-blue-default text-white font-bold rounded-md py-3 px-6 cursor-pointer"
                             onClick={() =>
