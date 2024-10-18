@@ -1122,14 +1122,14 @@ function Page() {
                 >
                     Save and Exit
                 </button>
-                {isElite && (
+               
                     <button
                         className="bg-blue-default text-white font-bold rounded-md py-3 px-6"
                         onClick={() => handleDownloadFinals(resolvedId, 'pdf')}
                     >
                         Download pdf
                     </button>
-                )}
+           
                 {isElite && (
                     <button
                         className="bg-blue-default text-white font-bold rounded-md py-3 px-6"
