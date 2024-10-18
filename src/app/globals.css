@@ -22,17 +22,17 @@ textarea {
 }
 
 .watermarked {
-    background-image: url("/path-to-watermark-image.png");
-    background-repeat: no-repeat;
+    background-image: url("../../public/assets/watermark.svg");
+    background-repeat: repeat-y;
     background-position: center;
-    background-size: cover;
+    background-size: contain;
     opacity: 0.9;
     position: relative;
     padding: 2rem;
 }
 
 .watermarked::before {
-    content: "TOPSTRAT";
+    /* content: "TOPSTRAT"; */
     position: absolute;
     top: 50%;
     left: 50%;

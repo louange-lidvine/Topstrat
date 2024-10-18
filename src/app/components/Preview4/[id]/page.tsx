@@ -12,12 +12,16 @@ import _ from "lodash";
 import { BiArrowBack } from "react-icons/bi";
 import { truncate } from "node:fs/promises";
 import SbLoad from "@/app/shared/loader/sbload";
+import '../../../globals.css'
 
 function Preview() {
     const router = useRouter();
     const { id } = useParams();
-        const [isLoad, setIsLoad] = useState(false);
-
+    const [error, setError] = useState<string | null>(null);
+    const [isLoad, setIsLoad] = useState(false);
+    const [userData, setUserData] = useState<any>(null); 
+    const [gravatarUrl, setGravatarUrl] = useState<string>(""); 
+    const [hasWatermark, setHasWatermark] = useState(false);
     const [loading, setLoading] = useState(false);
     const [projectData, setProjectData] = useState<any>();
     const [logframeData, setLogframeData] = useState<any>({});
@@ -42,6 +46,69 @@ function Preview() {
         getProject(id as string);
     }, [id]);
 
+        useEffect(() => {
+        // Fetch project data
+        const getProject = async (id: string) => {
+            try {
+                const token = getCookie("token");
+                const response = await axios.get(`${baseURL}/projects/${id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log("Project data:", response.data);
+                setProjectData(response.data);
+            } catch (error) {
+                console.error("Error fetching project data:", error);
+                setError("Failed to fetch project data.");
+            }
+        };
+
+        // Fetch user data using userId from localStorage
+        const getUserData = async () => {
+            try {
+                const userId = localStorage.getItem("userId"); // Fetch userId from localStorage
+                const token = getCookie("token");
+
+                if (userId) {
+                    const response = await axios.get(
+                        `${baseURL}/users/${userId}`,
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    console.log("User data:", response.data);
+                    setUserData(response.data);
+
+                    // Optional: If Gravatar URL is part of user data
+                    if (response.data.gravatar) {
+                        setGravatarUrl(response.data.gravatar);
+                    }
+
+                    // Check subscription type for watermark
+                    if (response.data.subscription === "FreeTrial") {
+                        setHasWatermark(true);
+                    } else {
+                        setHasWatermark(false);
+                    }
+                } else {
+                    console.error("User ID not found in localStorage.");
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                setError("Failed to fetch user data.");
+            }
+        };
+
+        getProject(id as string);
+        getUserData();
+        // setLoading(false);
+    }, [id]);
+
     useEffect(() => {
         const fetchData = async () => {
             const token = getCookie("token");
@@ -57,6 +124,7 @@ function Preview() {
                     }
                 );
                 const data = JSON.parse(response.data.logframe.response);
+                console.table("fetched data",data)
                  console.log("Fetched Data:", data)
 
                 setLogframeData(data);
@@ -143,16 +211,15 @@ const handleCellChange = (
     index: number,
     level: string,
     loc?: {
-        outcomes?: any;  
-        outputs?: any;   
-        activity?: any;  
-        input?: any;     
+        outcomes?: any;
+        outputs?: any;
+        activity?: any;
+        input?: any;
     }
 ) => {
     setEditableLogData((prevData: any) => {
-        const newData = _.cloneDeep(prevData); // Clone the previous data to avoid mutations
+        const newData = _.cloneDeep(prevData); 
 
-        // Ensure proper structure before making assignments
         if (!newData.goal) newData.goal = {};
         if (!newData.goal.impact) newData.goal.impact = {};
         if (!newData.goal.impact.outcomes) newData.goal.impact.outcomes = [];
@@ -160,35 +227,40 @@ const handleCellChange = (
 
         if (category === "goal" && field === "impact") {
             if (index === -1) {
-                if (typeof newData.goal.impact.description !== 'string') {
-                    newData.goal.impact.description = ''; 
+                if (level === "description") {
+                    if (typeof newData.goal.impact.description !== 'string') {
+                        newData.goal.impact.description = '';
+                    }
+                    newData.goal.impact.description = value;
+                } else if (level === "assumptions") {
+                    if (typeof newData.goal.impact.assumptions !== 'string') {
+                        newData.goal.impact.assumptions = '';
+                    }
+                    newData.goal.impact.assumptions = value; 
                 }
-                newData.goal.impact.description = value; 
             }
-        } else if (category === "impact") {
-            if (index === -1) {
-                newData.goal.impact.description = value; 
-            } else if (field === "indicators") {
-                if (!Array.isArray(newData.goal.impact.indicators)) {
-                    newData.goal.impact.indicators = [];
-                }
-                newData.goal.impact.indicators[index] = value; // Update indicator
+        }
+
+        if (category === "impact" && field === "indicators" && index >= 0) {
+            if (!Array.isArray(newData.goal.impact.indicators)) {
+                newData.goal.impact.indicators = [];
             }
-        } else if (field === "outcomes" && index >= 0) {
-            newData.goal.impact.outcomes[index][level] = value; // Update outcome field
-        } else if (field === "outputs" && index >= 0) {
+            newData.goal.impact.indicators[index] = value; 
+        }
+
+        if (field === "outcomes" && index >= 0) {
+            newData.goal.impact.outcomes[index][level] = value; 
+        } else if (field === "outputs" && loc?.outcomes !== undefined && index >= 0) {
             if (!newData.goal.impact.outcomes[loc?.outcomes].outputs) {
-                newData.goal.impact.outcomes[loc?.outcomes].outputs = []; // Ensure it's an array
+                newData.goal.impact.outcomes[loc?.outcomes].outputs = []; 
             }
-            newData.goal.impact.outcomes[loc?.outcomes].outputs[index][level] = value; // Update output field
-        } else if (field === "activities" && index >= 0) {
-            newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[index][level] = value; // Update activity field
-        } else if (field === "inputs" && index >= 0) {
+            newData.goal.impact.outcomes[loc?.outcomes].outputs[index][level] = value; 
+        } else if (field === "activities" && loc?.outcomes !== undefined && loc?.outputs !== undefined && index >= 0) {
+            newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[index][level] = value; 
+        } else if (field === "inputs" && loc?.outcomes !== undefined && loc?.outputs !== undefined && loc?.activity !== undefined && index >= 0) {
             const inputField = newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index];
 
-            // Ensure that the input field is an object
             if (typeof inputField === "string" || !inputField) {
-                // Convert string or initialize as an object if it's not already an object
                 newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index] = {
                     description: "",
                     baseline: "",
@@ -199,27 +271,29 @@ const handleCellChange = (
                 };
             }
 
-            // Now safely update the specific property
             newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index][level] = value; // Update input field
         }
 
-        console.log("Updated Data:", newData); // Log updated data for debugging
-        return newData; // Return the updated data
+        console.log("Updated Data:", newData); 
+        return newData; 
     });
 };
 
 
 
-
     return (
-        <div className="border border-blue-default my-4 rounded-md mx-2 p-4 font-medium flex flex-col gap-8">
-                  <div className="justify-end flex gap-2 cursor-pointer"  
+        <div
+            className={`border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium ${
+                hasWatermark ? "watermarked" : ""
+            }`}
+        >                  <div className="justify-end flex gap-2 cursor-pointer"  
                 onClick={() =>
                                 router.push('/')
                             }>
                                 <BiArrowBack className="mt-1"/>
                                 <p className="">Return to home</p>
                                 </div>
+                                
             {loading ? (
                 <div>
                     <div className="flex flex-col justify-center items-center gap-4 text-2xl">
@@ -286,7 +360,7 @@ const handleCellChange = (
                                         <>
                                       
 
-                                            <tr className="bg-slate-100">
+                                            <tr className="">
     <td className="border border-1 p-2 font-bold text-center">Impact</td>
     <td className="border border-1 p-2">
         <div
@@ -419,8 +493,8 @@ const handleCellChange = (
                                                                 outcomeIndex %
                                                                     2 ===
                                                                 0
-                                                                    ? "bg-slate-100"
-                                                                    : "bg-slate-50"
+                                                                    ? ""
+                                                                    : ""
                                                             }
                                                         >
                                                             <td className="border border-1 p-2 font-bold text-center">
@@ -582,8 +656,8 @@ const handleCellChange = (
                                                                             outputIndex %
                                                                                 2 ===
                                                                             0
-                                                                                ? "bg-slate-100"
-                                                                                : "bg-slate-50"
+                                                                                ? ""
+                                                                                : ""
                                                                         }
                                                                     >
                                                                         <td className="border border-1 p-2 font-bold text-center">
@@ -772,8 +846,8 @@ const handleCellChange = (
                                                                                         activityIndex %
                                                                                             2 ===
                                                                                         0
-                                                                                            ? "bg-slate-100"
-                                                                                            : "bg-slate-50"
+                                                                                            ? ""
+                                                                                            : ""
                                                                                     }
                                                                                 >
                                                                                     <td className="border border-1 p-2 font-bold text-center">
@@ -965,10 +1039,10 @@ const handleCellChange = (
                                                                                     </td>
                                                                                 </tr>
 
-                                                                                {/* Inputs Level */}
+                                                                     
                                                                             {/* Inputs Level */}
 {activityItem.inputs && activityItem.inputs.length > 0 && (
-    <tr className="bg-slate-100">
+    <tr className="">
         <td className="border border-1 p-2 font-bold text-center">
             Input
         </td>

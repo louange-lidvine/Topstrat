@@ -1,16 +1,54 @@
 "use client";
-import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
-import ReactModal from 'react-modal';
+import { useParams, useRouter } from "next/navigation";
+import React from "react";
+import ReactModal from "react-modal";
+
+interface ProjectData {
+    title: string;
+    description: string;
+    // Add more fields as needed
+}
+
+interface PromptData {
+    question: string;
+    response: string;
+    // Add more fields as needed
+}
+
+interface PestleData {
+    political: string[];
+    economic: string[];
+    social: string[];
+    technological: string[];
+    legal: string[];
+    environmental: string[];
+}
+
+interface LogframeData {
+    objective: string;
+    indicators: string[];
+    // Add more fields as needed
+}
 
 interface EditModalProps {
     isOpen: boolean;
-    id:string;
+    id: string;
     onClose: () => void;
+    projectData: ProjectData; // New prop
+    promptData: PromptData; // New prop
+    pestleData: PestleData; // New prop
+    logframeData: LogframeData; // New prop
 }
 
-const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose ,id}) => {
- 
+const EditModal: React.FC<EditModalProps> = ({
+    isOpen,
+    onClose,
+    id,
+    projectData,
+    promptData,
+    pestleData,
+    logframeData,
+}) => {
     const router = useRouter();
 
     return (
@@ -34,29 +72,38 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose ,id}) => {
 
                     <div
                         className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                        onClick={() => router.push(`/components/Preview1/${id}`)}
+                        onClick={() =>
+                            router.push(`/components/Preview1/${id}`)
+                        }
                     >
                         Section B: SWOT Analysis
                     </div>
 
                     <div
                         className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                        onClick={() => router.push(`/components/Preview2/${id}`)}
+                        onClick={() =>
+                            router.push(`/components/Preview2/${id}`)
+                        }
                     >
                         Section C: PESTLE Analysis
                     </div>
+
                     <div
                         className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                        onClick={() => router.push(`/components/Preview3/${id}`)}
+                        onClick={() =>
+                            router.push(`/components/Preview3/${id}`)
+                        }
                     >
                         Section D: Objectives and Strategies
                     </div>
 
                     <div
                         className="bg-gray-100 h-16 w-full rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex items-center justify-center p-3 text-lg font-medium text-gray-700 hover:bg-gray-200"
-                        onClick={() => router.push(`/components/Preview4/${id}`)}
+                        onClick={() =>
+                            router.push(`/components/Preview4/${id}`)
+                        }
                     >
-                        Section D: Logframe Analysis
+                        Section E: Logframe Analysis
                     </div>
                 </div>
                 <button

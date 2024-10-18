@@ -7,10 +7,10 @@ import { useParams, useRouter } from "next/navigation";
 import { FaEllipsisH } from "react-icons/fa";
 import { baseURL } from "@/app/constants";
 import EditModal from "../EdiModal";
-import html2pdf from "html2pdf.js";
+
 // import PrintModal from "./printModal";
 const PrintModal = dynamic(() => import("./printModal"), { ssr: false });
-import { downloadPdf } from "@/app/utils/downloadPdf";
+import { downloadPdf, downloadWord } from "@/app/utils/downloadPdf";
 import Finals from "../Finals";
 
 interface Project {
@@ -32,6 +32,7 @@ function ProjectCard({
     const { id } = useParams();
     const resolvedId = Array.isArray(id) ? id[0] : id;
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const [isElite, setIsElite] = useState(false);
     const [projectData, setProjectData] = useState<any>();
     const [promptData, setPromptData] = useState<any>();
     const [pestleData, setPestleData] = useState<any>();
@@ -42,10 +43,60 @@ function ProjectCard({
 
     const navigate = useRouter();
 
-    const handleDownloadFinals = async (projectId: string) => {
-        const elementId = `pdf-content_${projectId}`;
-        await downloadPdf(elementId, project?.name || "project");
+    // Fetching data methods...
+    const fetchUserData = async () => {
+        const userId = localStorage.getItem("userId");
+        const token = getCookie("token");
+
+        try {
+            const response = await fetch(`${baseURL}/users/${userId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                if (data.subscription === "Elite") {
+                    setIsElite(true);
+                } else {
+                }
+            } else {
+                console.error("Failed to fetch user data");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
     };
+
+const handleDownloadFinals = async (
+    projectId: string,
+    format: "pdf" | "word"
+) => {
+    const elementId = `pdf-content_${projectId}`;
+
+    // Check if projectId and project name are defined
+    if (!projectId || !project?.name) {
+        console.error("Project ID or name is missing");
+        return;
+    }
+
+    console.log(`Downloading ${format} for project ID: ${projectId}`);
+
+    if (format === "pdf") {
+        // Show the cover page when downloading PDF
+        await downloadPdf(elementId, project?.name || "project", {
+            showCover: true,
+        });
+    } else if (format === "word") {
+        // Hide the cover page when downloading Word
+        await downloadWord(elementId, project?.name || "project", {
+            showCover: false,
+        });
+    }
+};
 
     useEffect(() => {
         const fetchData = async () => {
@@ -95,8 +146,8 @@ function ProjectCard({
             }
         };
         fetchData();
+        fetchUserData();
     }, [resolvedId]);
-
     const checkResponseFormat = (response: any) => {
         const requiredFields = [
             "mission",
@@ -163,17 +214,19 @@ function ProjectCard({
                     : "hover:bg-white hover:bg-opacity-20"
             }`}
         >
+            {/* Project Name */}
             <div
-                className="w-auto cursor-pointer"
+                className="cursor-pointer"
                 onClick={() => handleProjectClick(project._id)}
             >
-                <p>
+                <p className="text-lg text-white truncate">
                     {project?.name?.length > 20
                         ? `${project?.name.slice(0, 16)}...`
                         : project?.name}
                 </p>
             </div>
 
+            {/* Popover Menu */}
             <div
                 className="absolute top-3 right-5 cursor-pointer"
                 onClick={() => setIsPopoverOpen(!isPopoverOpen)}
@@ -193,11 +246,25 @@ function ProjectCard({
                                 Print
                             </li>
                             <li
-                                onClick={() => handleDownloadFinals(selectedId)}
+                                onClick={() =>
+                                    handleDownloadFinals(selectedId, "pdf")
+                                }
                                 className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
                             >
-                                Download
+                                Download PDF
                             </li>
+
+                            {isElite && (
+                                <li
+                                    onClick={() =>
+                                        handleDownloadFinals(selectedId, "word")
+                                    }
+                                    className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
+                                >
+                                    Download Word
+                                </li>
+                            )}
+
                             <li
                                 className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
                                 onClick={() => setEditOpen(true)}
@@ -214,20 +281,31 @@ function ProjectCard({
                     </div>
                 )}
             </div>
+
+            {/* Edit Modal */}
             <EditModal
                 isOpen={isEditOpen}
                 onClose={() => setEditOpen(false)}
                 id={project?._id}
+                projectData={projectData}
+                promptData={promptData}
+                pestleData={pestleData}
+                logframeData={logframeData}
             />
 
+            {/* Print Modal */}
             <PrintModal
                 isOpen={isPrintModalOpen}
                 id={selectedId}
                 onClose={() => setIsPrintModalOpen(false)}
                 projectData={projectData}
-                promptDa            ta={promptData}
+                promptData={promptData}
                 pestleData={pestleData}
-                logframeData={logframeData} showCover={false}/>
+                logframeData={logframeData}
+                showCover={false}
+            />
+
+            {/* Hidden Finals Component */}
             <div className="hidden">
                 <Finals id={selectedId} />
             </div>

@@ -11,7 +11,7 @@ const isTokenExpired = (token: string) => {
     return currentTime > expirationTime;
   } catch (error) {
     console.error("Failed to decode token for expiration check", error);
-    return true; // Treat as expired if decoding fails
+    return true; 
   }
 };
 
