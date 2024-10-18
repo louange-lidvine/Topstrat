@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ReactModal from "react-modal";
 import html2pdf from "html2pdf.js";
 import Finals from "../Finals";
+import Cover from "../cover/[id]/page"
 
 interface PrintModalProps {
     isOpen: boolean;
@@ -11,6 +12,7 @@ interface PrintModalProps {
     pestleData: any;
     id: string;
     logframeData: any;
+    showCover: boolean;
 }
 
 const PrintModal: React.FC<PrintModalProps> = ({
@@ -21,6 +23,7 @@ const PrintModal: React.FC<PrintModalProps> = ({
     promptData,
     pestleData,
     logframeData,
+    showCover,
 }) => {
     const [numberOfPages, setNumberOfPages] = useState(1);
     const [selectedPrinter, setSelectedPrinter] = useState("");
@@ -103,7 +106,10 @@ const PrintModal: React.FC<PrintModalProps> = ({
                 </h2>
                 <div className="flex h-full ">
                     <div className=" h-full flex-1 overflow-y-auto p-4 border-r border-gray-300">
-                        <Finals id={id} />
+                        {showCover && <Cover />}
+                        <div>
+                            <Finals id={id} />
+                        </div>
                     </div>
 
                     <div className="w-1/3 p-4">
