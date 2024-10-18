@@ -7,7 +7,7 @@ function Page() {
     const router = useRouter();
 
     return (
-        <div className="border border-blue-default lg:full my-2 p-6 rounded-md shadow-lg lg:mx-auto lg:w-full">
+        <div className="border border-blue-default lg:h-screen my-2 px-6 py-2 rounded-md shadow-lg lg:mx-auto lg:w-full">
             <div className="flex items-center gap-2 cursor-pointer justify-end"  
                  onClick={() => router.push('/')}>
                 <BiArrowBack className="mt-1" size={24} />
