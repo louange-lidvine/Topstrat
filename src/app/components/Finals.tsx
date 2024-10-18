@@ -167,6 +167,11 @@ function Finals({ id }: FinalsProps) {
         );
     };
 
+    const formatTextWithSpacing = (textArray: string[] | undefined): string => {
+    if (!textArray || textArray.length === 0) return "";
+    return textArray.join(". "); 
+};
+
     const MyDocument = () => (
         <Document pageMode="fullScreen">
             <Page size="A4" style={{ margin: "auto" }}>
@@ -544,313 +549,591 @@ function Finals({ id }: FinalsProps) {
                                 <PestleSkeleton />
                             </div>
                         ) : (
-                            <div style={{ width: "100%", margin: "0 auto" }}>
-                                <p
+                            // <div style={{ width: "100%", margin: "0 auto" }}>
+                            //     <p
+                            //         style={{
+                            //             fontSize: "20px",
+                            //             fontWeight: "bold",
+                            //             color: "#0B6C79",
+                            //             padding: "15px 0",
+                            //         }}
+                            //     >
+                            //         PESTLE Analysis
+                            //     </p>
+                            //     <table
+                            //         style={{
+                            //             width: "100%",
+                            //             borderCollapse: "collapse",
+                            //             margin: "0 auto",
+                            //             border: "1px solid #ccc",
+                            //         }}
+                            //     >
+                            //         <thead>
+                            //             <tr
+                            //                 style={{
+                            //                     backgroundColor: "#e2e8f0",
+                            //                 }}
+                            //             >
+                            //                 <th
+                            //                     style={{
+                            //                         border: "1px solid #ccc",
+                            //                         padding: "10px",
+                            //                         fontSize: "16px",
+                            //                         color: "#0B6C79",
+                            //                         textAlign: "center",
+                            //                         fontWeight: "bold",
+                            //                     }}
+                            //                 ></th>
+                            //                 <th
+                            //                     style={{
+                            //                         border: "1px solid #ccc",
+                            //                         padding: "10px",
+                            //                         fontSize: "16px",
+                            //                         color: "#0B6C79",
+                            //                         textAlign: "center",
+                            //                         fontWeight: "bold",
+                            //                     }}
+                            //                 >
+                            //                     Influence on organization
+                            //                 </th>
+                            //                 <th
+                            //                     style={{
+                            //                         border: "1px solid #ccc",
+                            //                         padding: "10px",
+                            //                         fontSize: "16px",
+                            //                         color: "#0B6C79",
+                            //                         textAlign: "center",
+                            //                         fontWeight: "bold",
+                            //                     }}
+                            //                 >
+                            //                     Impact of organization's
+                            //                     activities
+                            //                 </th>
+                            //             </tr>
+                            //         </thead>
+                            //         <tbody>
+                            //             {pestleData && (
+                            //                 <>
+                            //                     {/* Political */}
+                            //                     <tr>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#0B6C79",
+                            //                                 fontWeight: "bold",
+                            //                             }}
+                            //                         >
+                            //                             Political
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {
+                            //                                 pestleData.political
+                            //                                     ?.inf
+                            //                             }
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {
+                            //                                 pestleData.political
+                            //                                     ?.imp
+                            //                             }
+                            //                         </td>
+                            //                     </tr>
+
+                            //                     {/* Economic */}
+                            //                     <tr>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#0B6C79",
+                            //                                 fontWeight: "bold",
+                            //                             }}
+                            //                         >
+                            //                             Economic
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {
+                            //                                 pestleData.economic
+                            //                                     ?.inf
+                            //                             }
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {
+                            //                                 pestleData.economic
+                            //                                     ?.imp
+                            //                             }
+                            //                         </td>
+                            //                     </tr>
+
+                            //                     {/* Social */}
+                            //                     <tr>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#0B6C79",
+                            //                                 fontWeight: "bold",
+                            //                             }}
+                            //                         >
+                            //                             Social
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {pestleData.social?.inf}
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {pestleData.social?.imp}
+                            //                         </td>
+                            //                     </tr>
+
+                            //                     {/* Technological */}
+                            //                     <tr>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#0B6C79",
+                            //                                 fontWeight: "bold",
+                            //                             }}
+                            //                         >
+                            //                             Technological
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {
+                            //                                 pestleData
+                            //                                     .technological
+                            //                                     ?.inf
+                            //                             }
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {
+                            //                                 pestleData
+                            //                                     .technological
+                            //                                     ?.imp
+                            //                             }
+                            //                         </td>
+                            //                     </tr>
+
+                            //                     {/* Legal */}
+                            //                     <tr>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#0B6C79",
+                            //                                 fontWeight: "bold",
+                            //                             }}
+                            //                         >
+                            //                             Legal
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {pestleData.legal?.inf}
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {pestleData.legal?.imp}
+                            //                         </td>
+                            //                     </tr>
+
+                            //                     {/* Environmental */}
+                            //                     <tr>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#0B6C79",
+                            //                                 fontWeight: "bold",
+                            //                             }}
+                            //                         >
+                            //                             Environmental
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {
+                            //                                 pestleData
+                            //                                     .environmental
+                            //                                     ?.inf
+                            //                             }
+                            //                         </td>
+                            //                         <td
+                            //                             style={{
+                            //                                 border: "1px solid #ccc",
+                            //                                 padding: "10px",
+                            //                                 fontSize: "16px",
+                            //                                 color: "#000",
+                            //                             }}
+                            //                         >
+                            //                             {
+                            //                                 pestleData
+                            //                                     .environmental
+                            //                                     ?.imp
+                            //                             }
+                            //                         </td>
+                            //                     </tr>
+                            //                 </>
+                            //             )}
+                            //         </tbody>
+                            //     </table>
+                            // </div>
+                              <div style={{ width: "100%", margin: "0 auto" }}>
+            <p
+                style={{
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "#0B6C79",
+                    padding: "15px 0",
+                }}
+            >
+                PESTLE Analysis
+            </p>
+            <table
+                style={{
+                    width: "100%",
+                    borderCollapse: "collapse",
+                    margin: "0 auto",
+                    border: "1px solid #ccc",
+                }}
+            >
+                <thead>
+                    <tr
+                        style={{
+                            backgroundColor: "#e2e8f0",
+                        }}
+                    >
+                        <th
+                            style={{
+                                border: "1px solid #ccc",
+                                padding: "10px",
+                                fontSize: "16px",
+                                color: "#0B6C79",
+                                textAlign: "center",
+                                fontWeight: "bold",
+                            }}
+                        ></th>
+                        <th
+                            style={{
+                                border: "1px solid #ccc",
+                                padding: "10px",
+                                fontSize: "16px",
+                                color: "#0B6C79",
+                                textAlign: "center",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            Influence on organization
+                        </th>
+                        <th
+                            style={{
+                                border: "1px solid #ccc",
+                                padding: "10px",
+                                fontSize: "16px",
+                                color: "#0B6C79",
+                                textAlign: "center",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            Impact of organization's activities
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {pestleData && (
+                        <>
+                            {/* Political */}
+                            <tr>
+                                <td
                                     style={{
-                                        fontSize: "20px",
-                                        fontWeight: "bold",
-                                        color: "#0B6C79",
-                                        padding: "15px 0",
-                                    }}
-                                >
-                                    PESTLE Analysis
-                                </p>
-                                <table
-                                    style={{
-                                        width: "100%",
-                                        borderCollapse: "collapse",
-                                        margin: "0 auto",
                                         border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#0B6C79",
+                                        fontWeight: "bold",
                                     }}
                                 >
-                                    <thead>
-                                        <tr
-                                            style={{
-                                                backgroundColor: "#e2e8f0",
-                                            }}
-                                        >
-                                            <th
-                                                style={{
-                                                    border: "1px solid #ccc",
-                                                    padding: "10px",
-                                                    fontSize: "16px",
-                                                    color: "#0B6C79",
-                                                    textAlign: "center",
-                                                    fontWeight: "bold",
-                                                }}
-                                            ></th>
-                                            <th
-                                                style={{
-                                                    border: "1px solid #ccc",
-                                                    padding: "10px",
-                                                    fontSize: "16px",
-                                                    color: "#0B6C79",
-                                                    textAlign: "center",
-                                                    fontWeight: "bold",
-                                                }}
-                                            >
-                                                Influence on organization
-                                            </th>
-                                            <th
-                                                style={{
-                                                    border: "1px solid #ccc",
-                                                    padding: "10px",
-                                                    fontSize: "16px",
-                                                    color: "#0B6C79",
-                                                    textAlign: "center",
-                                                    fontWeight: "bold",
-                                                }}
-                                            >
-                                                Impact of organization's
-                                                activities
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {pestleData && (
-                                            <>
-                                                {/* Political */}
-                                                <tr>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#0B6C79",
-                                                            fontWeight: "bold",
-                                                        }}
-                                                    >
-                                                        Political
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {
-                                                            pestleData.political
-                                                                ?.inf
-                                                        }
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {
-                                                            pestleData.political
-                                                                ?.imp
-                                                        }
-                                                    </td>
-                                                </tr>
+                                    Political
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.political?.inf)}
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.political?.imp)}
+                                </td>
+                            </tr>
 
-                                                {/* Economic */}
-                                                <tr>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#0B6C79",
-                                                            fontWeight: "bold",
-                                                        }}
-                                                    >
-                                                        Economic
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {
-                                                            pestleData.economic
-                                                                ?.inf
-                                                        }
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {
-                                                            pestleData.economic
-                                                                ?.imp
-                                                        }
-                                                    </td>
-                                                </tr>
+                            {/* Economic */}
+                            <tr>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#0B6C79",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    Economic
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.economic?.inf)}
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.economic?.imp)}
+                                </td>
+                            </tr>
 
-                                                {/* Social */}
-                                                <tr>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#0B6C79",
-                                                            fontWeight: "bold",
-                                                        }}
-                                                    >
-                                                        Social
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {pestleData.social?.inf}
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {pestleData.social?.imp}
-                                                    </td>
-                                                </tr>
+                            {/* Social */}
+                            <tr>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#0B6C79",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    Social
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.social?.inf)}
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.social?.imp)}
+                                </td>
+                            </tr>
 
-                                                {/* Technological */}
-                                                <tr>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#0B6C79",
-                                                            fontWeight: "bold",
-                                                        }}
-                                                    >
-                                                        Technological
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {
-                                                            pestleData
-                                                                .technological
-                                                                ?.inf
-                                                        }
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {
-                                                            pestleData
-                                                                .technological
-                                                                ?.imp
-                                                        }
-                                                    </td>
-                                                </tr>
+                            {/* Technological */}
+                            <tr>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#0B6C79",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    Technological
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.technological?.inf)}
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.technological?.imp)}
+                                </td>
+                            </tr>
 
-                                                {/* Legal */}
-                                                <tr>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#0B6C79",
-                                                            fontWeight: "bold",
-                                                        }}
-                                                    >
-                                                        Legal
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {pestleData.legal?.inf}
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {pestleData.legal?.imp}
-                                                    </td>
-                                                </tr>
+                            {/* Legal */}
+                            <tr>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#0B6C79",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    Legal
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.legal?.inf)}
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.legal?.imp)}
+                                </td>
+                            </tr>
 
-                                                {/* Environmental */}
-                                                <tr>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#0B6C79",
-                                                            fontWeight: "bold",
-                                                        }}
-                                                    >
-                                                        Environmental
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {
-                                                            pestleData
-                                                                .environmental
-                                                                ?.inf
-                                                        }
-                                                    </td>
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid #ccc",
-                                                            padding: "10px",
-                                                            fontSize: "16px",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {
-                                                            pestleData
-                                                                .environmental
-                                                                ?.imp
-                                                        }
-                                                    </td>
-                                                </tr>
-                                            </>
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
+                            {/* Environmental */}
+                            <tr>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#0B6C79",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    Environmental
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.environmental?.inf)}
+                                </td>
+                                <td
+                                    style={{
+                                        border: "1px solid #ccc",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        color: "#000",
+                                    }}
+                                >
+                                    {formatTextWithSpacing(pestleData.environmental?.imp)}
+                                </td>
+                            </tr>
+                        </>
+                    )}
+                </tbody>
+            </table>
+        </div>
                         )}
                     </div>
                     <div>
