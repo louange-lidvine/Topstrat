@@ -197,6 +197,11 @@ function Page() {
       };
 
 
+const formatTextWithSpacing = (textArray: string[] | undefined): string => {
+    if (!textArray || textArray.length === 0) return "";
+    return textArray.join(". "); 
+};
+
       const renderTextWithBold = (text: string) => {
         const parts = text.split(/\*\*(.*?)\*\*/g);
         return parts.map((part, index) =>
@@ -562,7 +567,7 @@ function Page() {
                             PESTLE Analysis
                         </p>
                         <div className="flex flex-col gap-3">
-                            <table className="border border-1 m-auto">
+                            {/* <table className="border border-1 m-auto">
                                 <thead>
                                     <tr className="bg-slate-300">
                                         <th className="border border-1 p-2 text-blue-default font-bold text-center"></th>
@@ -658,7 +663,93 @@ function Page() {
                                         </>
                                     )}
                                 </tbody>
-                            </table>
+                            </table> */}
+
+                            <table className="border border-1 m-auto">
+    <thead>
+        <tr className="bg-slate-300">
+            <th className="border border-1 p-2 text-blue-default font-bold text-center"></th>
+            <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                Influence on organization
+            </th>
+            <th className="border border-1 p-2 text-blue-default font-bold text-center">
+                Impact of organization's activities
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {pestleData && (
+            <>
+                <tr>
+                    <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                        Political
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.political.inf)}
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.political.imp)}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                        Economic
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.economic.inf)}
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.economic.imp)}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                        Social
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.social.inf)}
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.social.imp)}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                        Technological
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.technological.inf)}
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.technological.imp)}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                        Legal
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.legal.inf)}
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.legal.imp)}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="border border-1 p-2 text-center font-bold bg-slate-300">
+                        Environmental
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.environmental.inf)}
+                    </td>
+                    <td className="border border-1 p-2">
+                        {formatTextWithSpacing(pestleData.environmental.imp)}
+                    </td>
+                </tr>
+            </>
+        )}
+    </tbody>
+</table>
                         </div>
                     </div>
                 )}
