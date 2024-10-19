@@ -1811,6 +1811,8 @@ function Finals({ id }: FinalsProps) {
                                                                                                         >
                                                                                                             Input
                                                                                                         </td>
+
+                                                                                                        {/* description */}
                                                                                                         <td
                                                                                                             style={{
                                                                                                                 border: "1px solid #000",
@@ -1828,21 +1830,7 @@ function Finals({ id }: FinalsProps) {
                                                                                                                     ?.description
                                                                                                             }
                                                                                                         </td>
-                                                                                                        <td
-                                                                                                            style={{
-                                                                                                                border: "1px solid #000",
-                                                                                                                padding:
-                                                                                                                    "10px",
-                                                                                                                whiteSpace:
-                                                                                                                    "pre-wrap",
-                                                                                                            }}
-                                                                                                        >
-                                                                                                            {
-                                                                                                                activityItem
-                                                                                                                    .inputs[0]
-                                                                                                                    ?.indicator
-                                                                                                            }
-                                                                                                        </td>
+                                                                                                        {/* baseline */}
                                                                                                         <td
                                                                                                             style={{
                                                                                                                 border: "1px solid #000",
@@ -1858,6 +1846,7 @@ function Finals({ id }: FinalsProps) {
                                                                                                                     ?.baseline
                                                                                                             }
                                                                                                         </td>
+                                                                                                        {/* target */}
                                                                                                         <td
                                                                                                             style={{
                                                                                                                 border: "1px solid #000",
@@ -1871,6 +1860,21 @@ function Finals({ id }: FinalsProps) {
                                                                                                                 activityItem
                                                                                                                     .inputs[0]
                                                                                                                     ?.target
+                                                                                                            }
+                                                                                                        </td>
+                                                                                                        <td
+                                                                                                            style={{
+                                                                                                                border: "1px solid #000",
+                                                                                                                padding:
+                                                                                                                    "10px",
+                                                                                                                whiteSpace:
+                                                                                                                    "pre-wrap",
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            {
+                                                                                                                activityItem
+                                                                                                                    .inputs[0]
+                                                                                                                    ?.indicator
                                                                                                             }
                                                                                                         </td>
                                                                                                         <td
