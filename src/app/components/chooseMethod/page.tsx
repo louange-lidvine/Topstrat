@@ -77,11 +77,11 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
           formData.method === "quick" ? "true" : "false"
       );
       // New fields added to form data for later integration
-      formDataToSubmit.append("phone", formData.phone);
-      formDataToSubmit.append("email", formData.email);
-      formDataToSubmit.append("physicalAddress", formData.physicalAddress);
-      formDataToSubmit.append("poBox", formData.poBox);
-      formDataToSubmit.append("webURL", formData.webURL);
+    //   formDataToSubmit.append("phone", formData.phone);
+    //   formDataToSubmit.append("email", formData.email);
+    //   formDataToSubmit.append("physicalAddress", formData.physicalAddress);
+    //   formDataToSubmit.append("poBox", formData.poBox);
+    //   formDataToSubmit.append("webURL", formData.webURL);
 
       // Log the form data to debug using Array.from
       console.log(
@@ -262,7 +262,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
                         </div>
                     </div>
                     
-                    <div className="flex flex-col">
+                    {/* <div className="flex flex-col">
     <label className="text-start mb-2 font-medium text-gray-700">
         Phone
     </label>
@@ -331,7 +331,7 @@ function ChooseMethod({ refetchProject, closeSidebar }: { refetchProject: () => 
                             onChange={handleChange}
                             value={formData.webURL}
                         />
-                    </div>
+                    </div> */}
 
                     <div className="flex gap-4 w-full mt-2 justify-end">
                         <button
