@@ -1144,7 +1144,7 @@ setEditableLogData((prevData: any) => {
                 }
                 suppressContentEditableWarning
             >
-                {activityItem.inputs[0].baseline || ""} {/* Default to empty string */}
+                {activityItem.inputs[0].indicator || ""} {/* Default to empty string */}
             </div>
         </td>
         {/* Target */}
@@ -1167,7 +1167,7 @@ setEditableLogData((prevData: any) => {
                 }
                 suppressContentEditableWarning
             >
-                {activityItem.inputs[0].target || ""} {/* Default to empty string */}
+                {activityItem.inputs[0].baseline || ""} {/* Default to empty string */}
             </div>
         </td>
         {/* Indicator */}
@@ -1190,7 +1190,7 @@ setEditableLogData((prevData: any) => {
                 }
                 suppressContentEditableWarning
             >
-                {activityItem.inputs[0].indicator || ""} {/* Default to empty string */}
+                {activityItem.inputs[0].target || ""} {/* Default to empty string */}
             </div>
         </td>
         {/* Timeline */}

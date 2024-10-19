@@ -1843,7 +1843,7 @@ function Finals({ id }: FinalsProps) {
                                                                                                             {
                                                                                                                 activityItem
                                                                                                                     .inputs[0]
-                                                                                                                    ?.baseline
+                                                                                                                    ?.indicator
                                                                                                             }
                                                                                                         </td>
                                                                                                         {/* target */}
@@ -1859,7 +1859,7 @@ function Finals({ id }: FinalsProps) {
                                                                                                             {
                                                                                                                 activityItem
                                                                                                                     .inputs[0]
-                                                                                                                    ?.target
+                                                                                                                    ?.baseline
                                                                                                             }
                                                                                                         </td>
                                                                                                         <td
@@ -1874,7 +1874,7 @@ function Finals({ id }: FinalsProps) {
                                                                                                             {
                                                                                                                 activityItem
                                                                                                                     .inputs[0]
-                                                                                                                    ?.indicator
+                                                                                                                    ?.target
                                                                                                             }
                                                                                                         </td>
                                                                                                         <td
