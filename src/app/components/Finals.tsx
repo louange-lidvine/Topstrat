@@ -545,6 +545,7 @@ function Finals({ id }: FinalsProps) {
                             </div>
                         ) : (
                             <div style={{ width: "100%", margin: "0 auto" }}>
+                                {/* PESTLE Analysis Title */}
                                 <p
                                     style={{
                                         fontSize: "20px",
@@ -555,6 +556,8 @@ function Finals({ id }: FinalsProps) {
                                 >
                                     PESTLE Analysis
                                 </p>
+
+                                {/* Table to display PESTLE data */}
                                 <table
                                     style={{
                                         width: "100%",
@@ -569,6 +572,7 @@ function Finals({ id }: FinalsProps) {
                                                 backgroundColor: "#e2e8f0",
                                             }}
                                         >
+                                            {/* Empty header for category column */}
                                             <th
                                                 style={{
                                                     border: "1px solid #ccc",
@@ -579,6 +583,7 @@ function Finals({ id }: FinalsProps) {
                                                     fontWeight: "bold",
                                                 }}
                                             ></th>
+                                            {/* Influence column */}
                                             <th
                                                 style={{
                                                     border: "1px solid #ccc",
@@ -591,6 +596,7 @@ function Finals({ id }: FinalsProps) {
                                             >
                                                 Influence on organization
                                             </th>
+                                            {/* Impact column */}
                                             <th
                                                 style={{
                                                     border: "1px solid #ccc",
@@ -606,10 +612,11 @@ function Finals({ id }: FinalsProps) {
                                             </th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
                                         {pestleData && (
                                             <>
-                                                {/* Political */}
+                                                {/* Political Row */}
                                                 <tr>
                                                     <td
                                                         style={{
@@ -628,12 +635,20 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {
-                                                            pestleData.political
-                                                                ?.inf
-                                                        }
+                                                        {typeof pestleData
+                                                            .political?.inf ===
+                                                        "string"
+                                                            ? pestleData.political?.inf.replace(
+                                                                  /\./g,
+                                                                  ".    "
+                                                              )
+                                                            : pestleData
+                                                                  .political
+                                                                  ?.inf}
                                                     </td>
                                                     <td
                                                         style={{
@@ -641,16 +656,24 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {
-                                                            pestleData.political
-                                                                ?.imp
-                                                        }
+                                                        {typeof pestleData
+                                                            .political?.inf ===
+                                                        "string"
+                                                            ? pestleData.political?.imp.replace(
+                                                                  /\./g,
+                                                                  ". "
+                                                              )
+                                                            : pestleData
+                                                                  .political
+                                                                  ?.imp}
                                                     </td>
                                                 </tr>
 
-                                                {/* Economic */}
+                                                {/* Economic Row */}
                                                 <tr>
                                                     <td
                                                         style={{
@@ -669,12 +692,28 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {
-                                                            pestleData.economic
-                                                                ?.inf
-                                                        }
+                                                        {typeof pestleData
+                                                            .economic?.inf ===
+                                                        "string"
+                                                            ? pestleData.economic?.inf
+                                                                  // Replace dot followed by space with ". "
+                                                                  .replace(
+                                                                      /\./g,
+                                                                      "" +
+                                                                          ".\u00A0\u00A0"
+                                                                  )
+                                                                  // If dot is followed by a newline (end of sentence), insert a break
+                                                                  .replace(
+                                                                      /\.\s*$/gm,
+                                                                      ".<br />"
+                                                                  )
+                                                            : pestleData
+                                                                  .economic
+                                                                  ?.inf}
                                                     </td>
                                                     <td
                                                         style={{
@@ -682,16 +721,32 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {
-                                                            pestleData.economic
-                                                                ?.imp
-                                                        }
+                                                        {typeof pestleData
+                                                            .economic?.inf ===
+                                                        "string"
+                                                            ? pestleData.economic?.imp
+                                                                  // Replace dot followed by space with ". "
+                                                                  .replace(
+                                                                      /\./g,
+                                                                      "" +
+                                                                          ".\u00A0\u00A0"
+                                                                  )
+                                                                  // If dot is followed by a newline (end of sentence), insert a break
+                                                                  .replace(
+                                                                      /\.\s*$/gm,
+                                                                      ".<br />"
+                                                                  )
+                                                            : pestleData
+                                                                  .economic
+                                                                  ?.imp}
                                                     </td>
                                                 </tr>
 
-                                                {/* Social */}
+                                                {/* Social Row */}
                                                 <tr>
                                                     <td
                                                         style={{
@@ -710,9 +765,19 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {pestleData.social?.inf}
+                                                        {typeof pestleData
+                                                            .economic?.inf ===
+                                                        "string"
+                                                            ? pestleData.social?.inf.replace(
+                                                                  /\./g,
+                                                                  ". "
+                                                              )
+                                                            : pestleData.social
+                                                                  ?.inf}
                                                     </td>
                                                     <td
                                                         style={{
@@ -720,13 +785,23 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {pestleData.social?.imp}
+                                                        {typeof pestleData
+                                                            .economic?.inf ===
+                                                        "string"
+                                                            ? pestleData.social?.imp.replace(
+                                                                  /\./g,
+                                                                  ". "
+                                                              )
+                                                            : pestleData.social
+                                                                  ?.imp}
                                                     </td>
                                                 </tr>
 
-                                                {/* Technological */}
+                                                {/* Technological Row */}
                                                 <tr>
                                                     <td
                                                         style={{
@@ -745,13 +820,20 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {
-                                                            pestleData
-                                                                .technological
-                                                                ?.inf
-                                                        }
+                                                        {typeof pestleData
+                                                            .technological
+                                                            ?.inf === "string"
+                                                            ? pestleData.technological?.inf.replace(
+                                                                  /\./g,
+                                                                  ". "
+                                                              )
+                                                            : pestleData
+                                                                  .technological
+                                                                  ?.inf}
                                                     </td>
                                                     <td
                                                         style={{
@@ -759,17 +841,24 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {
-                                                            pestleData
-                                                                .technological
-                                                                ?.imp
-                                                        }
+                                                        {typeof pestleData
+                                                            .economic?.imp ===
+                                                        "string"
+                                                            ? pestleData.technological?.imp.replace(
+                                                                  /\./g,
+                                                                  ". "
+                                                              )
+                                                            : pestleData
+                                                                  .technological
+                                                                  ?.imp}
                                                     </td>
                                                 </tr>
 
-                                                {/* Legal */}
+                                                {/* Legal Row */}
                                                 <tr>
                                                     <td
                                                         style={{
@@ -788,9 +877,18 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {pestleData.legal?.inf}
+                                                        {typeof pestleData.legal
+                                                            ?.inf === "string"
+                                                            ? pestleData.legal?.inf.replace(
+                                                                  /\./g,
+                                                                  ". "
+                                                              )
+                                                            : pestleData.legal
+                                                                  ?.inf}
                                                     </td>
                                                     <td
                                                         style={{
@@ -798,13 +896,22 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {pestleData.legal?.imp}
+                                                        {typeof pestleData.legal
+                                                            ?.inf === "string"
+                                                            ? pestleData.legal?.imp.replace(
+                                                                  /\./g,
+                                                                  ". "
+                                                              )
+                                                            : pestleData.legal
+                                                                  ?.inf}
                                                     </td>
                                                 </tr>
 
-                                                {/* Environmental */}
+                                                {/* Environmental Row */}
                                                 <tr>
                                                     <td
                                                         style={{
@@ -823,13 +930,20 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {
-                                                            pestleData
-                                                                .environmental
-                                                                ?.inf
-                                                        }
+                                                        {typeof pestleData
+                                                            .environmental
+                                                            ?.inf === "string"
+                                                            ? pestleData.environmental?.inf.replace(
+                                                                  /\./g,
+                                                                  ".  "
+                                                              )
+                                                            : pestleData
+                                                                  .environmental
+                                                                  ?.inf}
                                                     </td>
                                                     <td
                                                         style={{
@@ -837,13 +951,20 @@ function Finals({ id }: FinalsProps) {
                                                             padding: "10px",
                                                             fontSize: "16px",
                                                             color: "#000",
+                                                            whiteSpace:
+                                                                "pre-wrap",
                                                         }}
                                                     >
-                                                        {
-                                                            pestleData
-                                                                .environmental
-                                                                ?.imp
-                                                        }
+                                                        {typeof pestleData
+                                                            .environmental
+                                                            ?.inf === "string"
+                                                            ? pestleData.environmental?.imp.replace(
+                                                                  /\./g,
+                                                                  ". "
+                                                              )
+                                                            : pestleData
+                                                                  .environmental
+                                                                  ?.imp}
                                                     </td>
                                                 </tr>
                                             </>
