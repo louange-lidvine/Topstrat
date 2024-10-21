@@ -84,12 +84,10 @@ function Preview() {
                     console.log("User data:", response.data);
                     setUserData(response.data);
 
-                    // Optional: If Gravatar URL is part of user data
                     if (response.data.gravatar) {
                         setGravatarUrl(response.data.gravatar);
                     }
 
-                    // Check subscription type for watermark
                     if (response.data.subscription === "FreeTrial") {
                         setHasWatermark(true);
                     } else {
@@ -124,7 +122,7 @@ function Preview() {
                     }
                 );
                 const data = JSON.parse(response.data.logframe.response);
-                console.table("fetched data",data)
+console.info('the data:', data)                
                  console.log("Fetched Data:", data)
 
                 setLogframeData(data);
@@ -204,6 +202,9 @@ function Preview() {
             toast.error("Failed to save data. Please try again.");
         }
     };
+
+
+
 const handleCellChange = (
     category: string,
     field: string,
@@ -218,12 +219,46 @@ const handleCellChange = (
     }
 ) => {
     setEditableLogData((prevData: any) => {
-        const newData = _.cloneDeep(prevData); 
+        const newData = _.cloneDeep(prevData);
 
+        // Ensure proper structure exists in newData
         if (!newData.goal) newData.goal = {};
         if (!newData.goal.impact) newData.goal.impact = {};
         if (!newData.goal.impact.outcomes) newData.goal.impact.outcomes = [];
-        if (!newData.goal.impact.outputs) newData.goal.impact.outputs = {};
+        if (!newData.goal.impact.indicators) newData.goal.impact.indicators = {};
+
+        // Handle key change for indicators
+        if (category === "impact" && field === "indicators" && index >= 0 && level === "key") {
+            const indicatorKeys = Object.keys(newData.goal.impact.indicators || {});
+            const oldKey = indicatorKeys[index];
+
+            if (oldKey && value && oldKey !== value) {
+                // Copy the old value to the new key
+                newData.goal.impact.indicators[value] = { ...newData.goal.impact.indicators[oldKey] };
+
+                // Delete the old key
+                delete newData.goal.impact.indicators[oldKey];
+            }
+        }
+
+        // Handle baseline and target update for indicators
+        if (category === "impact" && field === "indicators" && index >= 0) {
+            const indicatorKeys = Object.keys(newData.goal.impact.indicators || {});
+            const indicatorKey = indicatorKeys[index];
+
+            if (indicatorKey) {
+                if (!newData.goal.impact.indicators[indicatorKey]) {
+                    newData.goal.impact.indicators[indicatorKey] = {};
+                }
+
+                // Handle baseline and target update for indicators
+                if (level === "baseline") {
+                    newData.goal.impact.indicators[indicatorKey].baseline = value;
+                } else if (level === "target") {
+                    newData.goal.impact.indicators[indicatorKey].target = value;
+                }
+            }
+        }
 
         if (category === "goal" && field === "impact") {
             if (index === -1) {
@@ -237,29 +272,38 @@ const handleCellChange = (
                         newData.goal.impact.assumptions = '';
                     }
                     newData.goal.impact.assumptions = value; 
+                } else if (level === "timeline") {
+                    newData.goal.impact.timeline = value; // Handle timeline at impact level
                 }
             }
         }
 
-        if (category === "impact" && field === "indicators" && index >= 0) {
-            if (!Array.isArray(newData.goal.impact.indicators)) {
-                newData.goal.impact.indicators = [];
+        // Handle outcomes update
+        if (field === "outcomes" && index >= 0) {
+            if (!newData.goal.impact.outcomes[index]) {
+                newData.goal.impact.outcomes[index] = {};
             }
-            newData.goal.impact.indicators[index] = value; 
+            newData.goal.impact.outcomes[index][level] = value;
         }
 
-        if (field === "outcomes" && index >= 0) {
-            newData.goal.impact.outcomes[index][level] = value; 
-        } else if (field === "outputs" && loc?.outcomes !== undefined && index >= 0) {
+        // Handle outputs
+        if (field === "outputs" && loc?.outcomes !== undefined && index >= 0) {
             if (!newData.goal.impact.outcomes[loc?.outcomes].outputs) {
-                newData.goal.impact.outcomes[loc?.outcomes].outputs = []; 
+                newData.goal.impact.outcomes[loc?.outcomes].outputs = [];
             }
-            newData.goal.impact.outcomes[loc?.outcomes].outputs[index][level] = value; 
-        } else if (field === "activities" && loc?.outcomes !== undefined && loc?.outputs !== undefined && index >= 0) {
-            newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[index][level] = value; 
-        } else if (field === "inputs" && loc?.outcomes !== undefined && loc?.outputs !== undefined && loc?.activity !== undefined && index >= 0) {
+            newData.goal.impact.outcomes[loc?.outcomes].outputs[index][level] = value;
+        }
+
+        // Handle activities
+        if (field === "activities" && loc?.outcomes !== undefined && loc?.outputs !== undefined && index >= 0) {
+            newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[index][level] = value;
+        }
+
+        // Handle inputs
+        if (field === "inputs" && loc?.outcomes !== undefined && loc?.outputs !== undefined && loc?.activity !== undefined && index >= 0) {
             const inputField = newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index];
 
+            // Initialize input field if not present
             if (typeof inputField === "string" || !inputField) {
                 newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index] = {
                     description: "",
@@ -271,14 +315,19 @@ const handleCellChange = (
                 };
             }
 
-            newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index][level] = value; // Update input field
+            // Update the relevant input field level
+            newData.goal.impact.outcomes[loc?.outcomes].outputs[loc?.outputs].activities[loc?.activity].inputs[index][level] = value;
         }
+setEditableLogData((prevData: any) => {
+    const newData = { ..._.cloneDeep(prevData) }; // Ensure new object reference
+    // Rest of the logic for key update
+    return newData;
+});
 
         console.log("Updated Data:", newData); 
-        return newData; 
+        return newData;
     });
 };
-
 
 
     return (
@@ -384,166 +433,129 @@ const handleCellChange = (
                                     {logframeData && logframeData.goal && (
                                         <>
                                             <tr className="">
-                                                <td className="border border-1 p-2 font-bold text-center">
-                                                    Impact
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    <div
-                                                        contentEditable
-                                                        onBlur={(e) =>
-                                                            handleCellChange(
-                                                                "goal",
-                                                                "impact",
-                                                                e.currentTarget
-                                                                    .textContent ||
-                                                                    "",
-                                                                -1,
-                                                                "description"
-                                                            )
-                                                        }
-                                                        suppressContentEditableWarning
-                                                    >
-                                                        {logframeData.goal
-                                                            .impact
-                                                            ?.description ||
-                                                            "-"}
-                                                    </div>
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    {Object.keys(
-                                                        logframeData.goal.impact
-                                                            ?.indicators || {}
-                                                    ).map((key, idx) => (
-                                                        <div key={idx}>
-                                                            <div
-                                                                contentEditable
-                                                                onBlur={(e) =>
-                                                                    handleCellChange(
-                                                                        "goal",
-                                                                        "impact",
-                                                                        e
-                                                                            .currentTarget
-                                                                            .textContent ||
-                                                                            "",
-                                                                        idx,
-                                                                        "indicators"
-                                                                    )
-                                                                }
-                                                                suppressContentEditableWarning
-                                                            >
-                                                                {key}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    {Object.keys(
-                                                        logframeData.goal.impact
-                                                            ?.indicators || {}
-                                                    ).map((key, idx) => (
-                                                        <div key={idx}>
-                                                            <div
-                                                                contentEditable
-                                                                onBlur={(e) =>
-                                                                    handleCellChange(
-                                                                        "goal",
-                                                                        "impact",
-                                                                        e
-                                                                            .currentTarget
-                                                                            .textContent ||
-                                                                            "",
-                                                                        idx,
-                                                                        "baseline"
-                                                                    )
-                                                                }
-                                                                suppressContentEditableWarning
-                                                            >
-                                                                {logframeData
-                                                                    .goal.impact
-                                                                    .indicators[
-                                                                    key
-                                                                ]?.baseline ||
-                                                                    ""}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    {Object.keys(
-                                                        logframeData.goal.impact
-                                                            ?.indicators || {}
-                                                    ).map((key, idx) => (
-                                                        <div key={idx}>
-                                                            <div
-                                                                contentEditable
-                                                                onBlur={(e) =>
-                                                                    handleCellChange(
-                                                                        "goal",
-                                                                        "impact",
-                                                                        e
-                                                                            .currentTarget
-                                                                            .textContent ||
-                                                                            "",
-                                                                        idx,
-                                                                        "target"
-                                                                    )
-                                                                }
-                                                                suppressContentEditableWarning
-                                                            >
-                                                                {logframeData
-                                                                    .goal.impact
-                                                                    .indicators[
-                                                                    key
-                                                                ]?.target ||
-                                                                    "-"}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    <div
-                                                        contentEditable
-                                                        onBlur={(e) =>
-                                                            handleCellChange(
-                                                                "goal",
-                                                                "impact",
-                                                                e.currentTarget
-                                                                    .textContent ||
-                                                                    "",
-                                                                -1,
-                                                                "timeline"
-                                                            )
-                                                        }
-                                                        suppressContentEditableWarning
-                                                    >
-                                                        {logframeData.goal
-                                                            .impact?.timeline ||
-                                                            "-"}
-                                                    </div>
-                                                </td>
-                                                <td className="border border-1 p-2">
-                                                    <div
-                                                        contentEditable
-                                                        onBlur={(e) =>
-                                                            handleCellChange(
-                                                                "goal",
-                                                                "impact",
-                                                                e.currentTarget
-                                                                    .textContent ||
-                                                                    "",
-                                                                -1,
-                                                                "assumptions"
-                                                            )
-                                                        }
-                                                        suppressContentEditableWarning
-                                                    >
-                                                        {logframeData.goal
-                                                            .impact
-                                                            ?.assumptions ||
-                                                            "-"}
-                                                    </div>
-                                                </td>
-                                            </tr>
+    <td className="border border-1 p-2 font-bold text-center">Impact</td>
+    <td className="border border-1 p-2">
+        <div
+            contentEditable
+            onBlur={(e) =>
+                handleCellChange(
+                    "goal",
+                    "impact",
+                    e.currentTarget.textContent || "",
+                    -1,
+                    "description"
+                )
+            }
+            suppressContentEditableWarning
+        >
+            {logframeData.goal.impact?.description || "-"}
+        </div>
+    </td>
+<td className="border border-1 p-2">
+    {Object.keys(logframeData.goal.impact?.indicators || {}).map((key, idx) => (
+        <div key={idx}>
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "impact",
+                        "indicators",
+                        e.currentTarget.textContent || "",
+                        idx,
+                        "key"
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {key}
+            </div>
+        </div>
+    ))}
+</td>
+
+
+
+
+<td className="border border-1 p-2">
+    {Object.keys(logframeData.goal.impact?.indicators || {}).map((key, idx) => (
+        <div key={idx}>
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "impact",  // Category is "impact"
+                        "indicators",  // Field is "indicators"
+                        e.currentTarget.textContent || "",
+                        idx,
+                        "baseline"  // Update baseline
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {logframeData.goal.impact.indicators[key]?.baseline || ""}
+            </div>
+        </div>
+    ))}
+</td>
+<td className="border border-1 p-2">
+    {Object.keys(logframeData.goal.impact?.indicators || {}).map((key, idx) => (
+        <div key={idx}>
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "impact",  // Category is "impact"
+                        "indicators",  // Field is "indicators"
+                        e.currentTarget.textContent || "",
+                        idx,
+                        "target"  // Update target
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {logframeData.goal.impact.indicators[key]?.target || "-"}
+            </div>
+        </div>
+    ))}
+</td>
+
+<td className="border border-1 p-2">
+    <div
+        contentEditable
+        onBlur={(e) =>
+            handleCellChange(
+                "goal",
+                "impact",
+                e.currentTarget.textContent || "",
+                -1,
+                "timeline"
+            )
+        }
+        suppressContentEditableWarning
+    >
+        {logframeData.goal.impact?.timeline || "-"}
+    </div>
+</td>
+
+    <td className="border border-1 p-2">
+        <div
+            contentEditable
+            onBlur={(e) =>
+                handleCellChange(
+                    "goal",
+                    "impact",
+                    e.currentTarget.textContent || "",
+                    -1,
+                    "assumptions"
+                )
+            }
+            suppressContentEditableWarning
+        >
+            {logframeData.goal.impact?.assumptions || "-"}
+        </div>
+    </td>
+</tr>
+
 
                                             {/* Outcome Level */}
                                             {logframeData.goal.impact?.outcomes?.map(
@@ -1105,228 +1117,154 @@ const handleCellChange = (
                                                                                     </td>
                                                                                 </tr>
 
-                                                                                {/* Inputs Level */}
-                                                                                {activityItem.inputs &&
-                                                                                    activityItem
-                                                                                        .inputs
-                                                                                        .length >
-                                                                                        0 && (
-                                                                                        <tr className="">
-                                                                                            <td className="border border-1 p-2 font-bold text-center">
-                                                                                                Input
-                                                                                            </td>
-                                                                                            {/* Description */}
-                                                                                            <td className="border border-1 p-2">
-                                                                                                <div
-                                                                                                    contentEditable
-                                                                                                    onBlur={(
-                                                                                                        e
-                                                                                                    ) =>
-                                                                                                        handleCellChange(
-                                                                                                            "goal",
-                                                                                                            "inputs",
-                                                                                                            e
-                                                                                                                .currentTarget
-                                                                                                                .textContent ||
-                                                                                                                "",
-                                                                                                            0, // Assuming single input
-                                                                                                            "description",
-                                                                                                            {
-                                                                                                                outcomes:
-                                                                                                                    outcomeIndex,
-                                                                                                                outputs:
-                                                                                                                    outputIndex,
-                                                                                                                activity:
-                                                                                                                    activityIndex,
-                                                                                                            }
-                                                                                                        )
-                                                                                                    }
-                                                                                                    suppressContentEditableWarning
-                                                                                                >
-                                                                                                    {activityItem
-                                                                                                        .inputs[0]
-                                                                                                        .description ||
-                                                                                                        ""}{" "}
-                                                                                                    {/* Default to empty string */}
-                                                                                                </div>
-                                                                                            </td>
-                                                                                            {/* Baseline */}
-                                                                                            <td className="border border-1 p-2">
-                                                                                                <div
-                                                                                                    contentEditable
-                                                                                                    onBlur={(
-                                                                                                        e
-                                                                                                    ) =>
-                                                                                                        handleCellChange(
-                                                                                                            "goal",
-                                                                                                            "inputs",
-                                                                                                            e
-                                                                                                                .currentTarget
-                                                                                                                .textContent ||
-                                                                                                                "",
-                                                                                                            0, // Assuming single input
-                                                                                                            "baseline",
-                                                                                                            {
-                                                                                                                outcomes:
-                                                                                                                    outcomeIndex,
-                                                                                                                outputs:
-                                                                                                                    outputIndex,
-                                                                                                                activity:
-                                                                                                                    activityIndex,
-                                                                                                            }
-                                                                                                        )
-                                                                                                    }
-                                                                                                    suppressContentEditableWarning
-                                                                                                >
-                                                                                                    {activityItem
-                                                                                                        .inputs[0]
-                                                                                                        .baseline ||
-                                                                                                        ""}{" "}
-                                                                                                    {/* Default to empty string */}
-                                                                                                </div>
-                                                                                            </td>
-                                                                                            {/* Target */}
-                                                                                            <td className="border border-1 p-2">
-                                                                                                <div
-                                                                                                    contentEditable
-                                                                                                    onBlur={(
-                                                                                                        e
-                                                                                                    ) =>
-                                                                                                        handleCellChange(
-                                                                                                            "goal",
-                                                                                                            "inputs",
-                                                                                                            e
-                                                                                                                .currentTarget
-                                                                                                                .textContent ||
-                                                                                                                "",
-                                                                                                            0, // Assuming single input
-                                                                                                            "target",
-                                                                                                            {
-                                                                                                                outcomes:
-                                                                                                                    outcomeIndex,
-                                                                                                                outputs:
-                                                                                                                    outputIndex,
-                                                                                                                activity:
-                                                                                                                    activityIndex,
-                                                                                                            }
-                                                                                                        )
-                                                                                                    }
-                                                                                                    suppressContentEditableWarning
-                                                                                                >
-                                                                                                    {activityItem
-                                                                                                        .inputs[0]
-                                                                                                        .target ||
-                                                                                                        ""}{" "}
-                                                                                                    {/* Default to empty string */}
-                                                                                                </div>
-                                                                                            </td>
-                                                                                            {/* Indicator */}
-                                                                                            <td className="border border-1 p-2">
-                                                                                                <div
-                                                                                                    contentEditable
-                                                                                                    onBlur={(
-                                                                                                        e
-                                                                                                    ) =>
-                                                                                                        handleCellChange(
-                                                                                                            "goal",
-                                                                                                            "inputs",
-                                                                                                            e
-                                                                                                                .currentTarget
-                                                                                                                .textContent ||
-                                                                                                                "",
-                                                                                                            0, // Assuming single input
-                                                                                                            "indicator",
-                                                                                                            {
-                                                                                                                outcomes:
-                                                                                                                    outcomeIndex,
-                                                                                                                outputs:
-                                                                                                                    outputIndex,
-                                                                                                                activity:
-                                                                                                                    activityIndex,
-                                                                                                            }
-                                                                                                        )
-                                                                                                    }
-                                                                                                    suppressContentEditableWarning
-                                                                                                >
-                                                                                                    {activityItem
-                                                                                                        .inputs[0]
-                                                                                                        .indicator ||
-                                                                                                        ""}{" "}
-                                                                                                    {/* Default to empty string */}
-                                                                                                </div>
-                                                                                            </td>
-                                                                                            {/* Timeline */}
-                                                                                            <td className="border border-1 p-2">
-                                                                                                <div
-                                                                                                    contentEditable
-                                                                                                    onBlur={(
-                                                                                                        e
-                                                                                                    ) =>
-                                                                                                        handleCellChange(
-                                                                                                            "goal",
-                                                                                                            "inputs",
-                                                                                                            e
-                                                                                                                .currentTarget
-                                                                                                                .textContent ||
-                                                                                                                "",
-                                                                                                            0, // Assuming single input
-                                                                                                            "timeline",
-                                                                                                            {
-                                                                                                                outcomes:
-                                                                                                                    outcomeIndex,
-                                                                                                                outputs:
-                                                                                                                    outputIndex,
-                                                                                                                activity:
-                                                                                                                    activityIndex,
-                                                                                                            }
-                                                                                                        )
-                                                                                                    }
-                                                                                                    suppressContentEditableWarning
-                                                                                                >
-                                                                                                    {activityItem
-                                                                                                        .inputs[0]
-                                                                                                        .timeline ||
-                                                                                                        ""}{" "}
-                                                                                                    {/* Default to empty string */}
-                                                                                                </div>
-                                                                                            </td>
-                                                                                            {/* Assumptions */}
-                                                                                            <td className="border border-1 p-2">
-                                                                                                <div
-                                                                                                    contentEditable
-                                                                                                    onBlur={(
-                                                                                                        e
-                                                                                                    ) =>
-                                                                                                        handleCellChange(
-                                                                                                            "goal",
-                                                                                                            "inputs",
-                                                                                                            e
-                                                                                                                .currentTarget
-                                                                                                                .textContent ||
-                                                                                                                "",
-                                                                                                            0,
-                                                                                                            "assumptions",
-                                                                                                            {
-                                                                                                                outcomes:
-                                                                                                                    outcomeIndex,
-                                                                                                                outputs:
-                                                                                                                    outputIndex,
-                                                                                                                activity:
-                                                                                                                    activityIndex,
-                                                                                                            }
-                                                                                                        )
-                                                                                                    }
-                                                                                                    suppressContentEditableWarning
-                                                                                                >
-                                                                                                    {activityItem
-                                                                                                        .inputs[0]
-                                                                                                        .assumptions ||
-                                                                                                        "-"}{" "}
-                                                                                                    {/* Default to dash if undefined */}
-                                                                                                </div>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    )}
+                                                                     
+                                                                            {/* Inputs Level */}
+{activityItem.inputs && activityItem.inputs.length > 0 && (
+    <tr className="">
+        <td className="border border-1 p-2 font-bold text-center">
+            Input
+        </td>
+        {/* Description */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, // Assuming single input
+                        "description",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            activity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].description || ""} 
+            </div>
+        </td>
+        {/* Baseline */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, 
+                        "baseline",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            activity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].indicator || ""} {/* Default to empty string */}
+            </div>
+        </td>
+        {/* Target */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, // Assuming single input
+                        "target",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            activity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].baseline || ""} {/* Default to empty string */}
+            </div>
+        </td>
+        {/* Indicator */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, // Assuming single input
+                        "indicator",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            activity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].target || ""} {/* Default to empty string */}
+            </div>
+        </td>
+        {/* Timeline */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, // Assuming single input
+                        "timeline",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            activity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].timeline || ""} {/* Default to empty string */}
+            </div>
+        </td>
+        {/* Assumptions */}
+        <td className="border border-1 p-2">
+            <div
+                contentEditable
+                onBlur={(e) =>
+                    handleCellChange(
+                        "goal",
+                        "inputs",
+                        e.currentTarget.textContent || "",
+                        0, 
+                        "assumptions",
+                        {
+                            outcomes: outcomeIndex,
+                            outputs: outputIndex,
+                            activity: activityIndex,
+                        }
+                    )
+                }
+                suppressContentEditableWarning
+            >
+                {activityItem.inputs[0].assumptions || "-"} {/* Default to dash if undefined */}
+            </div>
+        </td>
+    </tr>
+)}
+
                                                                             </React.Fragment>
                                                                         )
                                                                     )}

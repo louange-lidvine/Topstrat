@@ -246,20 +246,30 @@ function Preview() {
         }
     };
 
+
     const handleCellChange = (
-        category: string,
-        field: string,
-        value: string
-    ) => {
-        setEditablePestleData((prevData: any) => ({
-            ...prevData,
-            [category]: {
-                ...prevData[category],
-                [field]: value,
-            },
-        }));
-        setIsEditing(true);
-    };
+    category: string,
+    field: string,
+    value: string[]
+) => {
+    setEditablePestleData((prevData: any) => ({
+        ...prevData,
+        [category]: {
+            ...prevData[category],
+            [field]: value, 
+        },
+    }));
+    setIsEditing(true);
+};
+
+
+const formatTextWithSpacing = (textArray: string[] | undefined): string => {
+    if (!textArray || textArray.length === 0) return "";
+    return textArray.join(". "); 
+};
+
+
+    
 
     return (
         <div
@@ -335,7 +345,7 @@ function Preview() {
                         <PestleSkeleton />
                     ) : (
                         <div className="overflow-x-auto">
-                            <table className="border border-1 m-auto">
+                            {/* <table className="border border-1 m-auto">
                                 <thead>
                                     <tr className="bg-slate-300">
                                         <th className="border border-1 p-2 text-blue-default font-bold text-center">
@@ -414,7 +424,83 @@ function Preview() {
                                         </>
                                     )}
                                 </tbody>
-                            </table>
+                            </table> */}
+
+          <table className="border border-1 m-auto my-6">
+            <thead>
+                <tr className="bg-slate-300">
+                    <th className="border border-1 p-4 text-blue-default font-bold text-center">
+                        Category
+                    </th>
+                    <th className="border border-1 p-4 text-blue-default font-bold text-center">
+                        Influence on organization
+                    </th>
+                    <th className="border border-1 p-4 text-blue-default font-bold text-center">
+                        Impact of organization's activities
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {editablePestleData && (
+                    <>
+                        {[
+                                                "political",
+                                                "economic",
+                                                "social",
+                                                "technological",
+                                                "legal",
+                                                "environmental",
+                                            ].map((category) => (
+                            <tr key={category}>
+                                <td className="border border-1 p-4 text-center font-bold bg-slate-300">
+                                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                                </td>
+                                <td
+                                    className="border border-1 p-4"
+                                    contentEditable
+                                    suppressContentEditableWarning
+                                    onBlur={(e) =>
+                                        handleCellChange(
+                                            category,
+                                            "inf",
+                                            e.currentTarget.textContent
+                                                ? e.currentTarget.textContent.split(". ")
+                                                : []
+                                        )
+                                    }
+                                    style={{
+                                        minWidth: "200px",
+                                        whiteSpace: "pre-wrap", // Ensure multi-line display
+                                    }}
+                                >
+                                    {formatTextWithSpacing(editablePestleData[category]?.inf || [])}
+                                </td>
+                                <td
+                                    className="border border-1 p-4"
+                                    contentEditable
+                                    suppressContentEditableWarning
+                                    onBlur={(e) =>
+                                        handleCellChange(
+                                            category,
+                                            "imp",
+                                            e.currentTarget.textContent
+                                                ? e.currentTarget.textContent.split(". ")
+                                                : []
+                                        )
+                                    }
+                                    style={{
+                                        minWidth: "200px",
+                                        whiteSpace: "pre-wrap", // Ensure multi-line display
+                                    }}
+                                >
+                                    {formatTextWithSpacing(editablePestleData[category]?.imp || [])}
+                                </td>
+                            </tr>
+                        ))}
+                    </>
+                )}
+            </tbody>
+        </table>
                         </div>
                     )}
                     <div className="flex justify-center my-5 gap-8">
