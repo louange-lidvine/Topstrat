@@ -269,8 +269,32 @@ function Preview() {
                 className="justify-end flex gap-2 cursor-pointer"
                 onClick={() => router.push("/")}
             >
-                <BiArrowBack className="mt-1" />
-                <p className="">Return to home</p>
+                <div className="flex gap-6 justify-end">
+                    <div
+                        // className="flex items-center gap-2 cursor-pointer justify-end"
+                        className=" bg-blue-default
+                    text-white
+                    font-bold
+                    py-2
+                    px-4
+                    rounded-md
+                    flex
+                    items-center
+                    gap-2
+                    cursor-pointer"
+                        onClick={() => router.push("/components/Landingpage")}
+                    >
+                        My Dashboard
+                    </div>
+                    <div
+                        className="flex items-center gap-2 cursor-pointer justify-end"
+                        onClick={() => router.push("/")}
+                    >
+                        <BiArrowBack className="mt-1" size={24} />
+
+                        <p className="text-md">Return to Home</p>
+                    </div>
+                </div>
             </div>
             {userData && (
                 <div className="flex items-center gap-4 mb-4">
@@ -532,7 +556,7 @@ function Preview() {
                         >
                             Regenerate
                         </button>
-                         <button
+                        <button
                             type="submit"
                             disabled={isLoad}
                             onClick={saveData}

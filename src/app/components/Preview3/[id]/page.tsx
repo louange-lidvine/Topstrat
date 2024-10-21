@@ -248,9 +248,38 @@ function Preview() {
             className={`border border-blue-default mt-4 mb-12 lg:mb-4 rounded-md mx-2 p-4 font-medium ${
                 hasWatermark ? "watermarked" : ""
             }`}
-        >            <div className="justify-end flex gap-2 cursor-pointer" onClick={() => router.push('/')}>
-                <BiArrowBack className="mt-1" />
-                <p className="">Return to home</p>
+        >
+            {" "}
+            <div
+                className="justify-end flex gap-2 cursor-pointer"
+                onClick={() => router.push("/")}
+            >
+                <div className="flex gap-6 justify-end">
+                    <div
+                        // className="flex items-center gap-2 cursor-pointer justify-end"
+                        className=" bg-blue-default
+                    text-white
+                    font-bold
+                    py-2
+                    px-4
+                    rounded-md
+                    flex
+                    items-center
+                    gap-2
+                    cursor-pointer"
+                        onClick={() => router.push("/components/Landingpage")}
+                    >
+                        My Dashboard
+                    </div>
+                    <div
+                        className="flex items-center gap-2 cursor-pointer justify-end"
+                        onClick={() => router.push("/")}
+                    >
+                        <BiArrowBack className="mt-1" size={24} />
+
+                        <p className="text-md">Return to Home</p>
+                    </div>
+                </div>
             </div>
             <div className="flex flex-col justify-center items-center gap-4 text-xl">
                 <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
@@ -265,39 +294,57 @@ function Preview() {
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-3 no-scroll h-fit">
                         {isLoading ? (
-                           <div className="w-full">
-                    <Skeleton width={80} />
-                    <Skeleton height={120} />
-                  </div>
+                            <div className="w-full">
+                                <Skeleton width={80} />
+                                <Skeleton height={120} />
+                            </div>
                         ) : (
                             <div>
-                                <h3 className="text-xl font-bold text-blue-default">Objectives</h3>
+                                <h3 className="text-xl font-bold text-blue-default">
+                                    Objectives
+                                </h3>
                                 <div className="my-2">
-  <h1 className="text-lg font-bold">General objective</h1>
-                                <p>{logframeData?.goal?.description}</p>
+                                    <h1 className="text-lg font-bold">
+                                        General objective
+                                    </h1>
+                                    <p>{logframeData?.goal?.description}</p>
                                 </div>
-                              
-                                <h1 className="text-lg font-bold">Specific objectives</h1>
+
+                                <h1 className="text-lg font-bold">
+                                    Specific objectives
+                                </h1>
                                 {isEditingSimpleData ? (
                                     <textarea
                                         className="bg-transparent h-fit"
-                                        style={{ height: "200px", width: "1100px" }}
+                                        style={{
+                                            height: "200px",
+                                            width: "1100px",
+                                        }}
                                         value={simpleData.objectives}
-                                                                            onChange={(e) => {
-    setSimpleData((prev) => ({
-        ...prev,
-        objectives: e.target.value,
-    }));
-    setIsEditingSimpleData(true); 
-}}
+                                        onChange={(e) => {
+                                            setSimpleData((prev) => ({
+                                                ...prev,
+                                                objectives: e.target.value,
+                                            }));
+                                            setIsEditingSimpleData(true);
+                                        }}
                                     />
                                 ) : (
-                                    <ol   onDoubleClick={() =>
+                                    <ol
+                                        onDoubleClick={() =>
                                             setIsEditingSimpleData(true)
-                                        }>
-                                        {promptData?.objectives?.response?.split("\n").map((item:any, index:any) => (
-                                            <li key={index} className="py-2">{item}</li>
-                                        ))}
+                                        }
+                                    >
+                                        {promptData?.objectives?.response
+                                            ?.split("\n")
+                                            .map((item: any, index: any) => (
+                                                <li
+                                                    key={index}
+                                                    className="py-2"
+                                                >
+                                                    {item}
+                                                </li>
+                                            ))}
                                     </ol>
                                 )}
                             </div>
@@ -306,33 +353,47 @@ function Preview() {
 
                     <div className="flex flex-col gap-3 no-scroll">
                         {isLoading ? (
-                          <div className="w-full">
-                    <Skeleton width={80} />
-                    <Skeleton height={120} />
-                  </div>
+                            <div className="w-full">
+                                <Skeleton width={80} />
+                                <Skeleton height={120} />
+                            </div>
                         ) : (
                             <div>
-                                <h3 className="text-xl font-bold text-blue-default">Strategy</h3>
+                                <h3 className="text-xl font-bold text-blue-default">
+                                    Strategy
+                                </h3>
                                 {isEditingSimpleData ? (
                                     <textarea
                                         className="bg-transparent h-fit"
-                                        style={{ height: "500px", width: "1100px" }}
+                                        style={{
+                                            height: "500px",
+                                            width: "1100px",
+                                        }}
                                         value={simpleData.strategy}
-                                                                            onChange={(e) => {
-    setSimpleData((prev) => ({
-        ...prev,
-    strategy: e.target.value,
-    }));
-    setIsEditingSimpleData(true);  
-}}
+                                        onChange={(e) => {
+                                            setSimpleData((prev) => ({
+                                                ...prev,
+                                                strategy: e.target.value,
+                                            }));
+                                            setIsEditingSimpleData(true);
+                                        }}
                                     />
                                 ) : (
-                                    <ol   onDoubleClick={() =>
+                                    <ol
+                                        onDoubleClick={() =>
                                             setIsEditingSimpleData(true)
-                                        }>
-                                        {promptData?.strategy?.response?.split("\n").map((item:any, index:any) => (
-                                            <li key={index} className="py-2">{item}</li>
-                                        ))}
+                                        }
+                                    >
+                                        {promptData?.strategy?.response
+                                            ?.split("\n")
+                                            .map((item: any, index: any) => (
+                                                <li
+                                                    key={index}
+                                                    className="py-2"
+                                                >
+                                                    {item}
+                                                </li>
+                                            ))}
                                     </ol>
                                 )}
                             </div>
@@ -340,7 +401,7 @@ function Preview() {
                     </div>
 
                     <div className="flex justify-center my-5 gap-8">
-                                 <button
+                        <button
                             className="bg-orange-default text-white font-bold rounded-md py-3 px-6"
                             onClick={refetchData}
                         >
@@ -348,11 +409,13 @@ function Preview() {
                         </button>
                         <button
                             className="bg-[#ED0C0C] text-white font-bold rounded-md py-3 px-6"
-                            onClick={() => router.push(`../../components/Preview2/${id}`)}
+                            onClick={() =>
+                                router.push(`../../components/Preview2/${id}`)
+                            }
                         >
                             Back
                         </button>
-                      <button
+                        <button
                             type="submit"
                             disabled={isLoad}
                             onClick={saveData}
@@ -366,7 +429,9 @@ function Preview() {
                         </button>
                         <div
                             className="flex bg-blue-default text-white font-bold rounded-md py-3 px-6 cursor-pointer"
-                            onClick={() => router.push(`/components/Preview4/${id}`)}
+                            onClick={() =>
+                                router.push(`/components/Preview4/${id}`)
+                            }
                         >
                             Next
                         </div>
