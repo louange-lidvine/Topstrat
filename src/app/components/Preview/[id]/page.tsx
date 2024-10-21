@@ -336,12 +336,32 @@ function Preview() {
                 hasWatermark ? "watermarked" : ""
             }`}
         >
-            <div
-                className="justify-end flex gap-2 cursor-pointer"
-                onClick={() => router.push("/")}
-            >
-                <BiArrowBack className="mt-1" />
-                <p>Return to home</p>
+            <div className="flex gap-6 justify-end">
+                <div
+                    // className="flex items-center gap-2 cursor-pointer justify-end"
+                    className=" bg-blue-default
+                    text-white
+                    font-bold
+                    py-2
+                    px-4
+                    rounded-md
+                    flex
+                    items-center
+                    gap-2
+                    cursor-pointer"
+                    onClick={() => router.push("/components/Landingpage")}>
+                   
+                
+                    My Projects
+                </div>
+                <div
+                    className="flex items-center gap-2 cursor-pointer justify-end"
+                    onClick={() => router.push("/")}
+                >
+                    <BiArrowBack className="mt-1" size={24} />
+
+                    <p className="text-md">Return to Home</p>
+                </div>
             </div>
 
             {/* Display user information and Gravatar if available */}
@@ -357,7 +377,6 @@ function Preview() {
                 </div>
             )}
 
-            
             <div className="flex flex-col justify-center items-center gap-4 text-xl">
                 <div className="text-gray-400 flex items-center justify-center border-2 p-3 rounded-md py-2 px-6">
                     {projectData && projectData.name}
@@ -519,9 +538,8 @@ function Preview() {
                         )}
                     </div>
 
-              
                     <div className="flex justify-center my-5 gap-8">
-                             <div
+                        <div
                             className="flex bg-blue-400 text-white font-bold rounded-md py-3 px-6 cursor-pointer"
                             onClick={() =>
                                 router.push(`/components/cover/${id}`)
@@ -536,7 +554,7 @@ function Preview() {
                         >
                             Regenerate
                         </button>
-                       <button
+                        <button
                             type="submit"
                             disabled={isLoad}
                             onClick={saveData}
