@@ -51,7 +51,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         const decoded = jwtDecode(token) as { role: string };
 
         if (decoded.role === "admin") {
-            router.push("/components/LandiangPage");
+            router.push("/components/LandingPage");
             toast.success("Admin Logged in successfully");
         } else if (decoded.role === "user") {
             router.push("/components/Landingpage");

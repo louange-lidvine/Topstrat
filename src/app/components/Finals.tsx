@@ -12,7 +12,6 @@ import { useRouter } from "next/navigation";
 import { BiArrowBack } from "react-icons/bi";
 import Image from "next/image";
 import logo from "../../../public/assets/logo.png";
-
 import cover from "../../../public/assets/cover.svg";
 
 interface FinalsProps {
